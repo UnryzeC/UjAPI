@@ -599,8 +599,8 @@ native GetUnitBaseModelById 				takes integer unitTypeId returns string
 native SetUnitBaseModelById 				takes integer unitTypeId, string modelName returns nothing
 native GetUnitBasePortraitById 				takes integer unitTypeId returns string
 native SetUnitBasePortraitById 				takes integer unitTypeId, string portraitName returns nothing
-native GetUnitBaseHotKeyById 				takes integer unitTypeId returns string
-native SetUnitBaseHotKeyById 				takes integer unitTypeId, string hotkey returns nothing
+native GetUnitBaseHotkeyById 				takes integer unitTypeId returns oskeytype
+native SetUnitBaseHotkeyById 				takes integer unitTypeId, oskeytype whichKey returns nothing
 native GetUnitBaseAwakenTipById 			takes integer unitTypeId returns string
 native SetUnitBaseAwakenTipById 			takes integer unitTypeId, string awakenTip returns nothing
 native GetUnitBaseTipById 					takes integer unitTypeId returns string
@@ -646,8 +646,8 @@ native GetUnitBaseModel 					takes unit whichUnit returns string
 native SetUnitBaseModel 					takes unit whichUnit, string model returns nothing
 native GetUnitBasePortrait 					takes unit whichUnit returns string
 native SetUnitBasePortrait 					takes unit whichUnit, string portrait returns nothing
-native GetUnitBaseHotkey 					takes unit whichUnit returns string
-native SetUnitBaseHotkey 					takes unit whichUnit, string hotkey returns nothing
+native GetUnitBaseHotkey 					takes unit whichUnit returns oskeytype
+native SetUnitBaseHotkey 					takes unit whichUnit, oskeytype whichKey returns nothing
 native GetUnitBaseAwakenTip 				takes unit whichUnit returns string
 native SetUnitBaseAwakenTip 				takes unit whichUnit, string awakenTip returns nothing
 native GetUnitBaseTip 						takes unit whichUnit returns string
@@ -697,6 +697,8 @@ native UnitUnapplyUpdates 					takes unit whichUnit returns integer
 native UnitApplyUpdates 					takes unit whichUnit returns integer
 native GetUnitAbility 						takes unit whichUnit, integer aid returns ability
 native GetUnitAbilityByIndex 				takes unit whichUnit, integer index returns ability
+native GetUnitBuff 							takes unit whichUnit, integer buffId returns buff
+native GetUnitBuffLevel 					takes unit whichUnit, integer buffId returns integer
 native UnitAddAbilityEx 					takes unit whichUnit, integer abilityId, boolean checkForDuplicates returns boolean
 native UnitRemoveAbilityEx 					takes unit whichUnit, integer abilityId, boolean removeDuplicates returns boolean
 native IsUnitSelectable 					takes unit whichUnit returns boolean
@@ -788,7 +790,7 @@ native UnitDisableAbilities 				takes unit whichUnit, boolean state returns noth
 native SetUnitStunned 						takes unit whichUnit, boolean state returns nothing
 native GetUnitStunCounter 					takes unit whichUnit returns integer
 native SetUnitStunCounter 					takes unit whichUnit, integer stunCounter returns nothing
-native MorphUnitToTypeIdEx 					takes unit whichUnit, integer uid, integer unk1, integer unk2, integer unk3, integer unk4, integer unk5, integer unk6, integer unk7, integer unk8, integer unk9 returns nothing
+native MorphUnitToTypeIdEx 					takes unit whichUnit, integer uid, integer unitFlags, boolean updateHealthState, boolean updateManaState, integer healthStateId, integer manaStateId, boolean updateScale, boolean replaceAbilities, ability whichAbility, boolean resetBuildingAnimation returns nothing
 native MorphUnitToTypeId 					takes unit whichUnit, integer uid returns nothing
 //
 
@@ -799,12 +801,12 @@ native GetAbilityBaseManaCostById 			takes integer aid, integer level returns in
 native SetAbilityBaseManaCostById 			takes integer aid, integer level, integer manaCost returns integer
 native GetAbilityBaseCooldownById 			takes integer aid, integer level returns real
 native SetAbilityBaseCooldownById 			takes integer aid, integer level, real cooldown returns integer
-native GetAbilityHotkeyById 				takes integer aid returns integer
-native SetAbilityHotkeyById 				takes integer aid, integer key returns integer
-native GetAbilityUnHotkeyById 				takes integer aid returns integer
-native SetAbilityUnHotkeyById 				takes integer aid, integer key returns integer
-native GetAbilityResearchHotkeyById 		takes integer aid returns integer
-native SetAbilityResearchHotkeyById 		takes integer aid, integer key returns integer
+native GetAbilityHotkeyById 				takes integer aid returns oskeytype
+native SetAbilityHotkeyById 				takes integer aid, oskeytype whichKey returns nothing
+native GetAbilityUnHotkeyById 				takes integer aid returns oskeytype
+native SetAbilityUnHotkeyById 				takes integer aid, oskeytype whichKey returns nothing
+native GetAbilityResearchHotkeyById 		takes integer aid returns oskeytype
+native SetAbilityResearchHotkeyById 		takes integer aid, oskeytype whichKey returns nothing
 native GetAbilityEffectSoundById 			takes integer aid returns string
 native SetAbilityEffectSoundById 			takes integer aid, string text returns integer
 native GetAbilityGlobalMessageById 			takes integer aid returns string
@@ -839,13 +841,13 @@ native GetAbilityBaseUberTipById 			takes integer aid, integer level returns str
 native SetAbilityBaseUberTipById 			takes integer aid, integer level, string text returns integer
 native GetAbilityBaseUnUberTipById 			takes integer aid, integer level returns string
 native SetAbilityBaseUnUberTipById 			takes integer aid, integer level, string text returns integer
-native SetAbilityHotkeyByIdEx 				takes integer aid, integer key returns integer
-native GetAbilityHotkey 					takes ability abil returns integer
-native SetAbilityHotkey 					takes ability abil, integer key returns integer
-native GetAbilityUnHotkey 					takes ability abil returns integer
-native SetAbilityUnHotkey 					takes ability abil, integer key returns integer
-native GetAbilityResearchHotkey 			takes ability abil returns integer
-native SetAbilityResearchHotkey 			takes ability abil, integer key returns integer
+native SetAbilityHotkeyByIdEx 				takes integer aid, oskeytype whichKey returns nothing
+native GetAbilityHotkey 					takes ability abil returns oskeytype
+native SetAbilityHotkey 					takes ability abil, oskeytype whichKey returns nothing
+native GetAbilityUnHotkey 					takes ability abil returns oskeytype
+native SetAbilityUnHotkey 					takes ability abil, oskeytype whichKey returns nothing
+native GetAbilityResearchHotkey 			takes ability abil returns oskeytype
+native SetAbilityResearchHotkey 			takes ability abil, oskeytype whichKey returns nothing
 native GetAbilityEffectSound 				takes ability abil returns string
 native SetAbilityEffectSound 				takes ability abil, string text returns integer
 native GetAbilityGlobalMessage 				takes ability abil returns string
@@ -880,7 +882,7 @@ native GetAbilityBaseUberTip 				takes ability abil, integer level returns strin
 native SetAbilityBaseUberTip 				takes ability abil, integer level, string text returns integer
 native GetAbilityBaseUnUberTip 				takes ability abil, integer level returns string
 native SetAbilityBaseUnUberTip 				takes ability abil, integer level, string text returns integer
-native SetAbilityHotkeyEx 					takes ability abil, integer key returns integer
+native SetAbilityHotkeyEx 					takes ability abil, oskeytype whichKey returns nothing
 
 native GetAbilityOrder 						takes ability abil returns integer
 native GetAbilityLevel 						takes ability abil returns integer
@@ -915,7 +917,10 @@ native CastAbilityTarget 					takes ability abil, unit target returns boolean
 //============================================================================
 // Buff API
 //
-native GetBuffRemainingDuration 			takes buff buffabil returns real
+native GetBuffLevel 						takes buff whichBuff returns integer
+native GetBuffRemainingDuration 			takes buff whichBuff returns real
+native RefreshBuff							takes buff whichBuff returns boolean
+native SetBuffRemainingDuration				takes buff whichBuff, real duration returns boolean
 //
 
 // Group API
@@ -1027,8 +1032,8 @@ native GetItemBaseNameById 							takes integer itemId returns string
 native SetItemBaseNameById 							takes integer itemId, string name returns nothing
 native GetItemBaseIconPathById 						takes integer itemId returns string
 native SetItemBaseIconPathById 						takes integer itemId, string path returns nothing
-native GetItemBaseHotKeyById 						takes integer itemId returns integer
-native SetItemBaseHotKeyById 						takes integer itemId, integer key returns nothing
+native GetItemBaseHotkeyById 						takes integer itemId returns oskeytype
+native SetItemBaseHotkeyById 						takes integer itemId, oskeytype whichKey returns nothing
 native GetItemBaseTipById 							takes integer itemId returns string
 native SetItemBaseTipById 							takes integer itemId, string tip returns nothing
 native GetItemBaseUberTipById 						takes integer itemId returns string
@@ -1038,8 +1043,8 @@ native GetItemBaseName 								takes item whichItem returns string
 native SetItemBaseName 								takes item whichItem, string name returns nothing
 native GetItemBaseIconPath 							takes item whichItem returns string
 native SetItemBaseIconPath 							takes item whichItem, string path returns nothing
-native GetItemBaseHotKey 							takes item whichItem returns integer
-native SetItemBaseHotKey 							takes item whichItem, integer key returns nothing
+native GetItemBaseHotkey 							takes item whichItem returns oskeytype
+native SetItemBaseHotkey 							takes item whichItem, oskeytype whichKey returns nothing
 native GetItemBaseTip 								takes item whichItem returns string
 native SetItemBaseTip 								takes item whichItem, string tip returns nothing
 native GetItemBaseUberTip 							takes item whichItem returns string
@@ -1168,30 +1173,10 @@ native QueueItemAnimation 							takes item whichItem, string animation returns 
 //
 
 //============================================================================
-// Damage Event API
+// Force API
 //
-native GetEventDamageFlags						takes nothing returns integer
-native SetEventDamageFlags						takes integer flags returns boolean
-
-native GetEventDamageAbilityId					takes nothing returns integer
-native GetEventDamageTarget 	                takes nothing returns unit
-
-native GetEventAttackType  	                    takes nothing returns attacktype
-native SetEventAttackType                       takes attacktype attackType returns boolean
-
-native GetEventDamageType                       takes nothing returns damagetype
-native SetEventDamageType                       takes damagetype damageType returns boolean
-
-native GetEventDamageTypeFlags                  takes nothing returns integer
-native SetEventDamageTypeFlags                  takes integer damageFlags returns boolean
-
-native GetEventWeaponType  	                    takes nothing returns weapontype
-native SetEventWeaponType                       takes weapontype weaponType returns boolean
-
-native GetEventIsAttack                         takes nothing returns boolean
-native GetEventIsRanged                         takes nothing returns boolean
-
-native SetEventDamage                           takes real damage returns nothing
+native ForceHasPlayer 								takes force whichForce, player whichPlayer returns boolean
+native ForceCountPlayers 							takes force whichForce returns integer
 //
 
 //============================================================================
@@ -1244,14 +1229,40 @@ native SetFrameParent 								takes framehandle whichFrame, framehandle whichPar
 native GetFrameParent 								takes framehandle whichFrame returns framehandle
 native GetFrameHeight 								takes framehandle whichFrame returns real
 native GetFrameWidth 								takes framehandle whichFrame returns real
-native SetFrameFront 								takes framehandle whichFrame, string fontName, real size, integer flags returns nothing
+native SetFrameFont 								takes framehandle whichFrame, string fontName, real size, integer flags returns nothing
 native SetFrameTextAlignment 						takes framehandle whichFrame, textaligntype verticalAlign, textaligntype horizontalAlign returns nothing
 native GetFrameChildrenCount 						takes framehandle whichFrame returns integer
 native GetFrameChild 								takes framehandle whichFrame, integer index returns framehandle
-//native TriggerRegisterFrameEvent 					takes trigger whichTrigger, framehandle whichFrame, frameeventtype frameEvent returns event // not active for now
-// native GetTriggerFrame 							takes returns framehandle // not active for now
-// native GetTriggerFrameEvent 						takes returns frameeventtype // not active for now
-// native GetTriggerFrameValue 						takes returns real // not active for now
-// native GetTriggerFrameText 						takes returns string // not active for now
+native TriggerRegisterFrameEvent 					takes trigger whichTrigger, framehandle whichFrame, frameeventtype frameEvent returns event // not active for now
+native GetTriggerFrame 								takes nothing returns framehandle // not active for now
+native GetTriggerFrameEvent 						takes nothing returns frameeventtype // not active for now
+// native GetTriggerFrameValue 						takes nothing returns real // not active for now
+// native GetTriggerFrameText 						takes nothing returns string // not active for now
 //
 
+//============================================================================
+// Damage Event API
+//
+native GetEventDamageFlags						takes nothing returns integer
+native SetEventDamageFlags						takes integer flags returns boolean
+
+native GetEventDamageAbilityId					takes nothing returns integer
+native GetEventDamageTarget 	                takes nothing returns unit
+
+native GetEventAttackType  	                    takes nothing returns attacktype
+native SetEventAttackType                       takes attacktype attackType returns boolean
+
+native GetEventDamageType                       takes nothing returns damagetype
+native SetEventDamageType                       takes damagetype damageType returns boolean
+
+native GetEventDamageTypeFlags                  takes nothing returns integer
+native SetEventDamageTypeFlags                  takes integer damageFlags returns boolean
+
+native GetEventWeaponType  	                    takes nothing returns weapontype
+native SetEventWeaponType                       takes weapontype weaponType returns boolean
+
+native GetEventIsAttack                         takes nothing returns boolean
+native GetEventIsRanged                         takes nothing returns boolean
+
+native SetEventDamage                           takes real damage returns nothing
+//
