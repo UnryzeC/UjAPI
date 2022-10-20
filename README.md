@@ -34,7 +34,7 @@ TBD
 ## Credits
 
 ### Creator/Developer:
-* Unryze (me) - creating and maintaining WFE.
+* Unryze (me) - creating and maintaining UjAPI.
 
 ### Testers:
 * TBD
