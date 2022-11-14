@@ -138,6 +138,8 @@ type regentype                      					extends handle
 type unitcategory                   					extends handle
 type pathingflag                    					extends handle
 
+type timetype											extends handle
+
 constant native ConvertRace                 			takes integer i returns race
 constant native ConvertAllianceType         			takes integer i returns alliancetype
 constant native ConvertRacePref             			takes integer i returns racepreference
@@ -223,6 +225,8 @@ constant native ConvertDefenseType                      takes integer i returns 
 constant native ConvertRegenType                        takes integer i returns regentype
 constant native ConvertUnitCategory                     takes integer i returns unitcategory
 constant native ConvertPathingFlag                      takes integer i returns pathingflag
+
+constant native ConvertTimeType                      	takes integer i returns timetype
 
 constant native OrderId                     			takes string  orderIdString     returns integer
 constant native OrderId2String              			takes integer orderId           returns string
@@ -2146,6 +2150,15 @@ globals
     constant pathingflag    			PATHING_FLAG_UNFLOATABLE            						= ConvertPathingFlag(64)
     constant pathingflag    			PATHING_FLAG_UNAMPHIBIOUS           						= ConvertPathingFlag(128)
     constant pathingflag    			PATHING_FLAG_UNITEMPLACABLE         						= ConvertPathingFlag(256)
+	
+	constant timetype					TIME_TYPE_YEAR												= ConvertTimeType( 0 )
+	constant timetype					TIME_TYPE_MONTH												= ConvertTimeType( 1 )
+	constant timetype					TIME_TYPE_DAY_OF_WEEK										= ConvertTimeType( 2 )
+	constant timetype					TIME_TYPE_DAY												= ConvertTimeType( 3 )
+	constant timetype					TIME_TYPE_HOUR												= ConvertTimeType( 4 )
+	constant timetype					TIME_TYPE_MINUTE											= ConvertTimeType( 5 )
+	constant timetype					TIME_TYPE_SECOND											= ConvertTimeType( 6 )
+	constant timetype					TIME_TYPE_MILLISECOND										= ConvertTimeType( 7 )
 endglobals
 
 //============================================================================
@@ -2160,7 +2173,6 @@ native Tan      										takes real radians returns real
 // Expect values between -1 and 1...returns 0 for invalid input
 native Asin     										takes real y returns real
 native Acos     										takes real x returns real
-
 native Atan     										takes real x returns real
 
 // Returns 0 if x and y are both 0
@@ -3154,16 +3166,16 @@ native DialogDisplay                					takes player whichPlayer, dialog whichD
 // Creates a new or reads in an existing game cache file stored
 // in the current campaign profile dir
 //
-native  ReloadGameCachesFromDisk 						takes nothing returns boolean
+native ReloadGameCachesFromDisk 						takes nothing returns boolean
 
-native  InitGameCache    								takes string campaignFile returns gamecache
-native  SaveGameCache    								takes gamecache whichCache returns boolean
+native InitGameCache    								takes string campaignFile returns gamecache
+native SaveGameCache    								takes gamecache whichCache returns boolean
 
-native  StoreInteger									takes gamecache cache, string missionKey, string key, integer value returns nothing
-native  StoreReal										takes gamecache cache, string missionKey, string key, real value returns nothing
-native  StoreBoolean									takes gamecache cache, string missionKey, string key, boolean value returns nothing
-native  StoreUnit										takes gamecache cache, string missionKey, string key, unit whichUnit returns boolean
-native  StoreString										takes gamecache cache, string missionKey, string key, string value returns boolean
+native StoreInteger										takes gamecache cache, string missionKey, string key, integer value returns nothing
+native StoreReal										takes gamecache cache, string missionKey, string key, real value returns nothing
+native StoreBoolean										takes gamecache cache, string missionKey, string key, boolean value returns nothing
+native StoreUnit										takes gamecache cache, string missionKey, string key, unit whichUnit returns boolean
+native StoreString										takes gamecache cache, string missionKey, string key, string value returns boolean
 
 native SyncStoredInteger        						takes gamecache cache, string missionKey, string key returns nothing
 native SyncStoredReal           						takes gamecache cache, string missionKey, string key returns nothing
@@ -3171,131 +3183,131 @@ native SyncStoredBoolean        						takes gamecache cache, string missionKey, 
 native SyncStoredUnit           						takes gamecache cache, string missionKey, string key returns nothing
 native SyncStoredString         						takes gamecache cache, string missionKey, string key returns nothing
 
-native  HaveStoredInteger								takes gamecache cache, string missionKey, string key returns boolean
-native  HaveStoredReal									takes gamecache cache, string missionKey, string key returns boolean
-native  HaveStoredBoolean								takes gamecache cache, string missionKey, string key returns boolean
-native  HaveStoredUnit									takes gamecache cache, string missionKey, string key returns boolean
-native  HaveStoredString								takes gamecache cache, string missionKey, string key returns boolean
+native HaveStoredInteger								takes gamecache cache, string missionKey, string key returns boolean
+native HaveStoredReal									takes gamecache cache, string missionKey, string key returns boolean
+native HaveStoredBoolean								takes gamecache cache, string missionKey, string key returns boolean
+native HaveStoredUnit									takes gamecache cache, string missionKey, string key returns boolean
+native HaveStoredString									takes gamecache cache, string missionKey, string key returns boolean
 
-native  FlushGameCache									takes gamecache cache returns nothing
-native  FlushStoredMission								takes gamecache cache, string missionKey returns nothing
-native  FlushStoredInteger								takes gamecache cache, string missionKey, string key returns nothing
-native  FlushStoredReal									takes gamecache cache, string missionKey, string key returns nothing
-native  FlushStoredBoolean								takes gamecache cache, string missionKey, string key returns nothing
-native  FlushStoredUnit									takes gamecache cache, string missionKey, string key returns nothing
-native  FlushStoredString								takes gamecache cache, string missionKey, string key returns nothing
+native FlushGameCache									takes gamecache cache returns nothing
+native FlushStoredMission								takes gamecache cache, string missionKey returns nothing
+native FlushStoredInteger								takes gamecache cache, string missionKey, string key returns nothing
+native FlushStoredReal									takes gamecache cache, string missionKey, string key returns nothing
+native FlushStoredBoolean								takes gamecache cache, string missionKey, string key returns nothing
+native FlushStoredUnit									takes gamecache cache, string missionKey, string key returns nothing
+native FlushStoredString								takes gamecache cache, string missionKey, string key returns nothing
 
 // Will return 0 if the specified value's data is not found in the cache
-native  GetStoredInteger								takes gamecache cache, string missionKey, string key returns integer
-native  GetStoredReal									takes gamecache cache, string missionKey, string key returns real
-native  GetStoredBoolean								takes gamecache cache, string missionKey, string key returns boolean
-native  GetStoredString									takes gamecache cache, string missionKey, string key returns string
-native  RestoreUnit										takes gamecache cache, string missionKey, string key, player forWhichPlayer, real x, real y, real facing returns unit
+native GetStoredInteger									takes gamecache cache, string missionKey, string key returns integer
+native GetStoredReal									takes gamecache cache, string missionKey, string key returns real
+native GetStoredBoolean									takes gamecache cache, string missionKey, string key returns boolean
+native GetStoredString									takes gamecache cache, string missionKey, string key returns string
+native RestoreUnit										takes gamecache cache, string missionKey, string key, player forWhichPlayer, real x, real y, real facing returns unit
 
 
-native  InitHashtable    								takes nothing returns hashtable
+native InitHashtable    								takes nothing returns hashtable
 
-native  SaveInteger										takes hashtable table, integer parentKey, integer childKey, integer value returns nothing
-native  SaveReal										takes hashtable table, integer parentKey, integer childKey, real value returns nothing
-native  SaveBoolean										takes hashtable table, integer parentKey, integer childKey, boolean value returns nothing
-native  SaveStr											takes hashtable table, integer parentKey, integer childKey, string value returns boolean
-native  SavePlayerHandle								takes hashtable table, integer parentKey, integer childKey, player whichPlayer returns boolean
-native  SaveWidgetHandle								takes hashtable table, integer parentKey, integer childKey, widget whichWidget returns boolean
-native  SaveDestructableHandle							takes hashtable table, integer parentKey, integer childKey, destructable whichDestructable returns boolean
-native  SaveItemHandle									takes hashtable table, integer parentKey, integer childKey, item whichItem returns boolean
-native  SaveUnitHandle									takes hashtable table, integer parentKey, integer childKey, unit whichUnit returns boolean
-native  SaveAbilityHandle								takes hashtable table, integer parentKey, integer childKey, ability whichAbility returns boolean
-native  SaveTimerHandle									takes hashtable table, integer parentKey, integer childKey, timer whichTimer returns boolean
-native  SaveTriggerHandle								takes hashtable table, integer parentKey, integer childKey, trigger whichTrigger returns boolean
-native  SaveTriggerConditionHandle						takes hashtable table, integer parentKey, integer childKey, triggercondition whichTriggercondition returns boolean
-native  SaveTriggerActionHandle							takes hashtable table, integer parentKey, integer childKey, triggeraction whichTriggeraction returns boolean
-native  SaveTriggerEventHandle							takes hashtable table, integer parentKey, integer childKey, event whichEvent returns boolean
-native  SaveForceHandle									takes hashtable table, integer parentKey, integer childKey, force whichForce returns boolean
-native  SaveGroupHandle									takes hashtable table, integer parentKey, integer childKey, group whichGroup returns boolean
-native  SaveLocationHandle								takes hashtable table, integer parentKey, integer childKey, location whichLocation returns boolean
-native  SaveRectHandle									takes hashtable table, integer parentKey, integer childKey, rect whichRect returns boolean
-native  SaveBooleanExprHandle							takes hashtable table, integer parentKey, integer childKey, boolexpr whichBoolexpr returns boolean
-native  SaveSoundHandle									takes hashtable table, integer parentKey, integer childKey, sound whichSound returns boolean
-native  SaveEffectHandle								takes hashtable table, integer parentKey, integer childKey, effect whichEffect returns boolean
-native  SaveUnitPoolHandle								takes hashtable table, integer parentKey, integer childKey, unitpool whichUnitpool returns boolean
-native  SaveItemPoolHandle								takes hashtable table, integer parentKey, integer childKey, itempool whichItempool returns boolean
-native  SaveQuestHandle									takes hashtable table, integer parentKey, integer childKey, quest whichQuest returns boolean
-native  SaveQuestItemHandle								takes hashtable table, integer parentKey, integer childKey, questitem whichQuestitem returns boolean
-native  SaveDefeatConditionHandle						takes hashtable table, integer parentKey, integer childKey, defeatcondition whichDefeatcondition returns boolean
-native  SaveTimerDialogHandle							takes hashtable table, integer parentKey, integer childKey, timerdialog whichTimerdialog returns boolean
-native  SaveLeaderboardHandle							takes hashtable table, integer parentKey, integer childKey, leaderboard whichLeaderboard returns boolean
-native  SaveMultiboardHandle							takes hashtable table, integer parentKey, integer childKey, multiboard whichMultiboard returns boolean
-native  SaveMultiboardItemHandle						takes hashtable table, integer parentKey, integer childKey, multiboarditem whichMultiboarditem returns boolean
-native  SaveTrackableHandle								takes hashtable table, integer parentKey, integer childKey, trackable whichTrackable returns boolean
-native  SaveDialogHandle								takes hashtable table, integer parentKey, integer childKey, dialog whichDialog returns boolean
-native  SaveButtonHandle								takes hashtable table, integer parentKey, integer childKey, button whichButton returns boolean
-native  SaveTextTagHandle								takes hashtable table, integer parentKey, integer childKey, texttag whichTexttag returns boolean
-native  SaveLightningHandle								takes hashtable table, integer parentKey, integer childKey, lightning whichLightning returns boolean
-native  SaveImageHandle									takes hashtable table, integer parentKey, integer childKey, image whichImage returns boolean
-native  SaveUbersplatHandle								takes hashtable table, integer parentKey, integer childKey, ubersplat whichUbersplat returns boolean
-native  SaveRegionHandle								takes hashtable table, integer parentKey, integer childKey, region whichRegion returns boolean
-native  SaveFogStateHandle								takes hashtable table, integer parentKey, integer childKey, fogstate whichFogState returns boolean
-native  SaveFogModifierHandle							takes hashtable table, integer parentKey, integer childKey, fogmodifier whichFogModifier returns boolean
-native  SaveAgentHandle									takes hashtable table, integer parentKey, integer childKey, agent whichAgent returns boolean
-native  SaveHashtableHandle								takes hashtable table, integer parentKey, integer childKey, hashtable whichHashtable returns boolean
+native SaveInteger										takes hashtable table, integer parentKey, integer childKey, integer value returns nothing
+native SaveReal											takes hashtable table, integer parentKey, integer childKey, real value returns nothing
+native SaveBoolean										takes hashtable table, integer parentKey, integer childKey, boolean value returns nothing
+native SaveStr											takes hashtable table, integer parentKey, integer childKey, string value returns boolean
+native SavePlayerHandle									takes hashtable table, integer parentKey, integer childKey, player whichPlayer returns boolean
+native SaveWidgetHandle									takes hashtable table, integer parentKey, integer childKey, widget whichWidget returns boolean
+native SaveDestructableHandle							takes hashtable table, integer parentKey, integer childKey, destructable whichDestructable returns boolean
+native SaveItemHandle									takes hashtable table, integer parentKey, integer childKey, item whichItem returns boolean
+native SaveUnitHandle									takes hashtable table, integer parentKey, integer childKey, unit whichUnit returns boolean
+native SaveAbilityHandle								takes hashtable table, integer parentKey, integer childKey, ability whichAbility returns boolean
+native SaveTimerHandle									takes hashtable table, integer parentKey, integer childKey, timer whichTimer returns boolean
+native SaveTriggerHandle								takes hashtable table, integer parentKey, integer childKey, trigger whichTrigger returns boolean
+native SaveTriggerConditionHandle						takes hashtable table, integer parentKey, integer childKey, triggercondition whichTriggercondition returns boolean
+native SaveTriggerActionHandle							takes hashtable table, integer parentKey, integer childKey, triggeraction whichTriggeraction returns boolean
+native SaveTriggerEventHandle							takes hashtable table, integer parentKey, integer childKey, event whichEvent returns boolean
+native SaveForceHandle									takes hashtable table, integer parentKey, integer childKey, force whichForce returns boolean
+native SaveGroupHandle									takes hashtable table, integer parentKey, integer childKey, group whichGroup returns boolean
+native SaveLocationHandle								takes hashtable table, integer parentKey, integer childKey, location whichLocation returns boolean
+native SaveRectHandle									takes hashtable table, integer parentKey, integer childKey, rect whichRect returns boolean
+native SaveBooleanExprHandle							takes hashtable table, integer parentKey, integer childKey, boolexpr whichBoolexpr returns boolean
+native SaveSoundHandle									takes hashtable table, integer parentKey, integer childKey, sound whichSound returns boolean
+native SaveEffectHandle									takes hashtable table, integer parentKey, integer childKey, effect whichEffect returns boolean
+native SaveUnitPoolHandle								takes hashtable table, integer parentKey, integer childKey, unitpool whichUnitpool returns boolean
+native SaveItemPoolHandle								takes hashtable table, integer parentKey, integer childKey, itempool whichItempool returns boolean
+native SaveQuestHandle									takes hashtable table, integer parentKey, integer childKey, quest whichQuest returns boolean
+native SaveQuestItemHandle								takes hashtable table, integer parentKey, integer childKey, questitem whichQuestitem returns boolean
+native SaveDefeatConditionHandle						takes hashtable table, integer parentKey, integer childKey, defeatcondition whichDefeatcondition returns boolean
+native SaveTimerDialogHandle							takes hashtable table, integer parentKey, integer childKey, timerdialog whichTimerdialog returns boolean
+native SaveLeaderboardHandle							takes hashtable table, integer parentKey, integer childKey, leaderboard whichLeaderboard returns boolean
+native SaveMultiboardHandle								takes hashtable table, integer parentKey, integer childKey, multiboard whichMultiboard returns boolean
+native SaveMultiboardItemHandle							takes hashtable table, integer parentKey, integer childKey, multiboarditem whichMultiboarditem returns boolean
+native SaveTrackableHandle								takes hashtable table, integer parentKey, integer childKey, trackable whichTrackable returns boolean
+native SaveDialogHandle									takes hashtable table, integer parentKey, integer childKey, dialog whichDialog returns boolean
+native SaveButtonHandle									takes hashtable table, integer parentKey, integer childKey, button whichButton returns boolean
+native SaveTextTagHandle								takes hashtable table, integer parentKey, integer childKey, texttag whichTexttag returns boolean
+native SaveLightningHandle								takes hashtable table, integer parentKey, integer childKey, lightning whichLightning returns boolean
+native SaveImageHandle									takes hashtable table, integer parentKey, integer childKey, image whichImage returns boolean
+native SaveUbersplatHandle								takes hashtable table, integer parentKey, integer childKey, ubersplat whichUbersplat returns boolean
+native SaveRegionHandle									takes hashtable table, integer parentKey, integer childKey, region whichRegion returns boolean
+native SaveFogStateHandle								takes hashtable table, integer parentKey, integer childKey, fogstate whichFogState returns boolean
+native SaveFogModifierHandle							takes hashtable table, integer parentKey, integer childKey, fogmodifier whichFogModifier returns boolean
+native SaveAgentHandle									takes hashtable table, integer parentKey, integer childKey, agent whichAgent returns boolean
+native SaveHashtableHandle								takes hashtable table, integer parentKey, integer childKey, hashtable whichHashtable returns boolean
 
-native  LoadInteger										takes hashtable table, integer parentKey, integer childKey returns integer
-native  LoadReal										takes hashtable table, integer parentKey, integer childKey returns real
-native  LoadBoolean				    					takes hashtable table, integer parentKey, integer childKey returns boolean
-native  LoadStr 										takes hashtable table, integer parentKey, integer childKey returns string
-native  LoadPlayerHandle								takes hashtable table, integer parentKey, integer childKey returns player
-native  LoadWidgetHandle								takes hashtable table, integer parentKey, integer childKey returns widget
-native  LoadDestructableHandle							takes hashtable table, integer parentKey, integer childKey returns destructable
-native  LoadItemHandle									takes hashtable table, integer parentKey, integer childKey returns item
-native  LoadUnitHandle									takes hashtable table, integer parentKey, integer childKey returns unit
-native  LoadAbilityHandle								takes hashtable table, integer parentKey, integer childKey returns ability
-native  LoadTimerHandle									takes hashtable table, integer parentKey, integer childKey returns timer
-native  LoadTriggerHandle								takes hashtable table, integer parentKey, integer childKey returns trigger
-native  LoadTriggerConditionHandle						takes hashtable table, integer parentKey, integer childKey returns triggercondition
-native  LoadTriggerActionHandle							takes hashtable table, integer parentKey, integer childKey returns triggeraction
-native  LoadTriggerEventHandle							takes hashtable table, integer parentKey, integer childKey returns event
-native  LoadForceHandle									takes hashtable table, integer parentKey, integer childKey returns force
-native  LoadGroupHandle									takes hashtable table, integer parentKey, integer childKey returns group
-native  LoadLocationHandle								takes hashtable table, integer parentKey, integer childKey returns location
-native  LoadRectHandle									takes hashtable table, integer parentKey, integer childKey returns rect
-native  LoadBooleanExprHandle							takes hashtable table, integer parentKey, integer childKey returns boolexpr
-native  LoadSoundHandle									takes hashtable table, integer parentKey, integer childKey returns sound
-native  LoadEffectHandle								takes hashtable table, integer parentKey, integer childKey returns effect
-native  LoadUnitPoolHandle								takes hashtable table, integer parentKey, integer childKey returns unitpool
-native  LoadItemPoolHandle								takes hashtable table, integer parentKey, integer childKey returns itempool
-native  LoadQuestHandle									takes hashtable table, integer parentKey, integer childKey returns quest
-native  LoadQuestItemHandle								takes hashtable table, integer parentKey, integer childKey returns questitem
-native  LoadDefeatConditionHandle						takes hashtable table, integer parentKey, integer childKey returns defeatcondition
-native  LoadTimerDialogHandle							takes hashtable table, integer parentKey, integer childKey returns timerdialog
-native  LoadLeaderboardHandle							takes hashtable table, integer parentKey, integer childKey returns leaderboard
-native  LoadMultiboardHandle							takes hashtable table, integer parentKey, integer childKey returns multiboard
-native  LoadMultiboardItemHandle						takes hashtable table, integer parentKey, integer childKey returns multiboarditem
-native  LoadTrackableHandle								takes hashtable table, integer parentKey, integer childKey returns trackable
-native  LoadDialogHandle								takes hashtable table, integer parentKey, integer childKey returns dialog
-native  LoadButtonHandle								takes hashtable table, integer parentKey, integer childKey returns button
-native  LoadTextTagHandle								takes hashtable table, integer parentKey, integer childKey returns texttag
-native  LoadLightningHandle								takes hashtable table, integer parentKey, integer childKey returns lightning
-native  LoadImageHandle									takes hashtable table, integer parentKey, integer childKey returns image
-native  LoadUbersplatHandle								takes hashtable table, integer parentKey, integer childKey returns ubersplat
-native  LoadRegionHandle								takes hashtable table, integer parentKey, integer childKey returns region
-native  LoadFogStateHandle								takes hashtable table, integer parentKey, integer childKey returns fogstate
-native  LoadFogModifierHandle							takes hashtable table, integer parentKey, integer childKey returns fogmodifier
-native  LoadHashtableHandle								takes hashtable table, integer parentKey, integer childKey returns hashtable
+native LoadInteger										takes hashtable table, integer parentKey, integer childKey returns integer
+native LoadReal											takes hashtable table, integer parentKey, integer childKey returns real
+native LoadBoolean				    					takes hashtable table, integer parentKey, integer childKey returns boolean
+native LoadStr 											takes hashtable table, integer parentKey, integer childKey returns string
+native LoadPlayerHandle									takes hashtable table, integer parentKey, integer childKey returns player
+native LoadWidgetHandle									takes hashtable table, integer parentKey, integer childKey returns widget
+native LoadDestructableHandle							takes hashtable table, integer parentKey, integer childKey returns destructable
+native LoadItemHandle									takes hashtable table, integer parentKey, integer childKey returns item
+native LoadUnitHandle									takes hashtable table, integer parentKey, integer childKey returns unit
+native LoadAbilityHandle								takes hashtable table, integer parentKey, integer childKey returns ability
+native LoadTimerHandle									takes hashtable table, integer parentKey, integer childKey returns timer
+native LoadTriggerHandle								takes hashtable table, integer parentKey, integer childKey returns trigger
+native LoadTriggerConditionHandle						takes hashtable table, integer parentKey, integer childKey returns triggercondition
+native LoadTriggerActionHandle							takes hashtable table, integer parentKey, integer childKey returns triggeraction
+native LoadTriggerEventHandle							takes hashtable table, integer parentKey, integer childKey returns event
+native LoadForceHandle									takes hashtable table, integer parentKey, integer childKey returns force
+native LoadGroupHandle									takes hashtable table, integer parentKey, integer childKey returns group
+native LoadLocationHandle								takes hashtable table, integer parentKey, integer childKey returns location
+native LoadRectHandle									takes hashtable table, integer parentKey, integer childKey returns rect
+native LoadBooleanExprHandle							takes hashtable table, integer parentKey, integer childKey returns boolexpr
+native LoadSoundHandle									takes hashtable table, integer parentKey, integer childKey returns sound
+native LoadEffectHandle									takes hashtable table, integer parentKey, integer childKey returns effect
+native LoadUnitPoolHandle								takes hashtable table, integer parentKey, integer childKey returns unitpool
+native LoadItemPoolHandle								takes hashtable table, integer parentKey, integer childKey returns itempool
+native LoadQuestHandle									takes hashtable table, integer parentKey, integer childKey returns quest
+native LoadQuestItemHandle								takes hashtable table, integer parentKey, integer childKey returns questitem
+native LoadDefeatConditionHandle						takes hashtable table, integer parentKey, integer childKey returns defeatcondition
+native LoadTimerDialogHandle							takes hashtable table, integer parentKey, integer childKey returns timerdialog
+native LoadLeaderboardHandle							takes hashtable table, integer parentKey, integer childKey returns leaderboard
+native LoadMultiboardHandle								takes hashtable table, integer parentKey, integer childKey returns multiboard
+native LoadMultiboardItemHandle							takes hashtable table, integer parentKey, integer childKey returns multiboarditem
+native LoadTrackableHandle								takes hashtable table, integer parentKey, integer childKey returns trackable
+native LoadDialogHandle									takes hashtable table, integer parentKey, integer childKey returns dialog
+native LoadButtonHandle									takes hashtable table, integer parentKey, integer childKey returns button
+native LoadTextTagHandle								takes hashtable table, integer parentKey, integer childKey returns texttag
+native LoadLightningHandle								takes hashtable table, integer parentKey, integer childKey returns lightning
+native LoadImageHandle									takes hashtable table, integer parentKey, integer childKey returns image
+native LoadUbersplatHandle								takes hashtable table, integer parentKey, integer childKey returns ubersplat
+native LoadRegionHandle									takes hashtable table, integer parentKey, integer childKey returns region
+native LoadFogStateHandle								takes hashtable table, integer parentKey, integer childKey returns fogstate
+native LoadFogModifierHandle							takes hashtable table, integer parentKey, integer childKey returns fogmodifier
+native LoadHashtableHandle								takes hashtable table, integer parentKey, integer childKey returns hashtable
 
-native  HaveSavedInteger								takes hashtable table, integer parentKey, integer childKey returns boolean
-native  HaveSavedReal									takes hashtable table, integer parentKey, integer childKey returns boolean
-native  HaveSavedBoolean								takes hashtable table, integer parentKey, integer childKey returns boolean
-native  HaveSavedString									takes hashtable table, integer parentKey, integer childKey returns boolean
-native  HaveSavedHandle     							takes hashtable table, integer parentKey, integer childKey returns boolean
+native HaveSavedInteger									takes hashtable table, integer parentKey, integer childKey returns boolean
+native HaveSavedReal									takes hashtable table, integer parentKey, integer childKey returns boolean
+native HaveSavedBoolean									takes hashtable table, integer parentKey, integer childKey returns boolean
+native HaveSavedString									takes hashtable table, integer parentKey, integer childKey returns boolean
+native HaveSavedHandle     								takes hashtable table, integer parentKey, integer childKey returns boolean
 
-native  RemoveSavedInteger								takes hashtable table, integer parentKey, integer childKey returns nothing
-native  RemoveSavedReal									takes hashtable table, integer parentKey, integer childKey returns nothing
-native  RemoveSavedBoolean								takes hashtable table, integer parentKey, integer childKey returns nothing
-native  RemoveSavedString								takes hashtable table, integer parentKey, integer childKey returns nothing
-native  RemoveSavedHandle								takes hashtable table, integer parentKey, integer childKey returns nothing
+native RemoveSavedInteger								takes hashtable table, integer parentKey, integer childKey returns nothing
+native RemoveSavedReal									takes hashtable table, integer parentKey, integer childKey returns nothing
+native RemoveSavedBoolean								takes hashtable table, integer parentKey, integer childKey returns nothing
+native RemoveSavedString								takes hashtable table, integer parentKey, integer childKey returns nothing
+native RemoveSavedHandle								takes hashtable table, integer parentKey, integer childKey returns nothing
 
-native  FlushParentHashtable							takes hashtable table returns nothing
-native  FlushChildHashtable								takes hashtable table, integer parentKey returns nothing
+native FlushParentHashtable								takes hashtable table returns nothing
+native FlushChildHashtable								takes hashtable table, integer parentKey returns nothing
 
 
 //============================================================================
@@ -3807,6 +3819,8 @@ native HandleToAddress									takes handle h returns integer
 //===================================================
 // Typecasting API Basic (all functions below are IntegerToHandle, since handle is pretty much an integer with start point of 0x100000)
 //
+native I2C												takes integer i returns code
+native C2I												takes code c returns integer
 native HandleToAgent									takes handle h returns agent
 native HandleToEvent									takes handle h returns event
 native HandleToWidget									takes handle h returns widget
@@ -3899,6 +3913,49 @@ native HandleToUbersplat								takes handle h returns ubersplat
 native HandleToHashtable								takes handle h returns hashtable
 native HandleToAnimType									takes handle h returns animtype
 native HandleToSubAnimType								takes handle h returns subanimtype
+//
+
+//============================================================================
+// Execution API
+//
+native IsOperationLimitEnabled							takes nothing returns boolean
+native EnableOperationLimit								takes boolean enable returns nothing
+native ExecuteCode										takes code c returns nothing
+native ExecuteFuncEx									takes string funcName returns nothing
+//
+
+//============================================================================
+// Utility API
+//
+
+// Math API
+native MathRound										takes real r returns integer
+
+native MathRealRound									takes real r returns real
+native MathRealFloor									takes real r returns real
+native MathRealCeil										takes real r returns real
+native MathRealAbs										takes real r returns real
+native MathRealLog										takes real r returns real
+native MathRealLn										takes real r returns real
+
+native MathIntegerAbs									takes integer i returns integer
+native MathIntegerLog									takes integer i returns real
+native MathIntegerLn									takes integer i returns real
+
+native GetAxisZ											takes real x, real y returns real
+
+// String API
+native StringContains									takes string s, string whichString, boolean caseSensitive returns boolean
+native StringFind										takes string s, string whichString, boolean caseSensitive returns integer
+native StringFindFirstOf								takes string s, string whichString, boolean caseSensitive returns integer
+native StringFindFirstNotOf								takes string s, string whichString, boolean caseSensitive returns integer
+native StringFindLastOf									takes string s, string whichString, boolean caseSensitive returns integer
+native StringFindLastNotOf								takes string s, string whichString, boolean caseSensitive returns integer
+//
+
+// Time API
+native GetSystemTime									takes timetype whichTimeType returns integer
+native GetLocalTime										takes timetype whichTimeType returns integer
 //
 
 //============================================================================
@@ -4040,11 +4097,14 @@ native GetUnitBuff 										takes unit whichUnit, integer buffId returns buff
 native GetUnitBuffLevel 								takes unit whichUnit, integer buffId returns integer
 native UnitAddAbilityEx 								takes unit whichUnit, integer abilityId, boolean checkForDuplicates returns boolean
 native UnitRemoveAbilityEx 								takes unit whichUnit, integer abilityId, boolean removeDuplicates returns boolean
+native IsUnitAbilityVisible 							takes unit whichUnit, integer abilityId returns boolean
+native ShowUnitAbility 									takes unit whichUnit, integer abilityId, boolean show returns nothing
 native IsUnitSelectable 								takes unit whichUnit returns boolean
 native SetUnitSelectable 								takes unit whichUnit, boolean selectable returns nothing
 native SetUnitControl 									takes unit whichUnit, integer flagValue, boolean isSetFlagValue, boolean ismove, boolean isattack, boolean isinventory returns nothing // flagValue = 0x200 and isSetFlagValue = true to emulate pause 
 native SetUnitLocustFlag 								takes unit whichUnit, integer flag, integer mode returns nothing
 native SetUnitTruesightImmuneState 						takes unit whichUnit, boolean state returns nothing
+native GetUnitDamageReduction 							takes unit whichUnit returns real
 native GetUnitMagicResistByType 						takes unit whichUnit, integer resistType returns real
 native GetUnitEluneMagicResist 							takes unit whichUnit returns real
 native GetUnitRunicMagicResist 							takes unit whichUnit returns real 
@@ -4137,9 +4197,9 @@ native MorphUnitToTypeId 								takes unit whichUnit, integer uid returns nothi
 // Ability API
 //
 native GetAbilityBaseManaCostById 						takes integer aid, integer level returns integer
-native SetAbilityBaseManaCostById 						takes integer aid, integer level, integer manaCost returns integer
+native SetAbilityBaseManaCostById 						takes integer aid, integer level, integer manaCost returns nothing
 native GetAbilityBaseCooldownById 						takes integer aid, integer level returns real
-native SetAbilityBaseCooldownById 						takes integer aid, integer level, real cooldown returns integer
+native SetAbilityBaseCooldownById 						takes integer aid, integer level, real cooldown returns nothing
 native GetAbilityHotkeyById 							takes integer aid returns oskeytype
 native SetAbilityHotkeyById 							takes integer aid, oskeytype whichKey returns nothing
 native GetAbilityUnHotkeyById 							takes integer aid returns oskeytype
@@ -4147,39 +4207,39 @@ native SetAbilityUnHotkeyById 							takes integer aid, oskeytype whichKey retur
 native GetAbilityResearchHotkeyById 					takes integer aid returns oskeytype
 native SetAbilityResearchHotkeyById 					takes integer aid, oskeytype whichKey returns nothing
 native GetAbilityEffectSoundById 						takes integer aid returns string
-native SetAbilityEffectSoundById 						takes integer aid, string text returns integer
+native SetAbilityEffectSoundById 						takes integer aid, string text returns nothing
 native GetAbilityGlobalMessageById 						takes integer aid returns string
-native SetAbilityGlobalMessageById 						takes integer aid, string text returns integer
+native SetAbilityGlobalMessageById 						takes integer aid, string text returns nothing
 native GetAbilityGlobalSoundById 						takes integer aid returns string
-native SetAbilityGlobalSoundById 						takes integer aid, string text returns integer
+native SetAbilityGlobalSoundById 						takes integer aid, string text returns nothing
 native GetAbilityButtonXById 							takes integer aid returns integer
-native SetAbilityButtonXById 							takes integer aid, integer positionX returns integer
+native SetAbilityButtonXById 							takes integer aid, integer positionX returns nothing
 native GetAbilityButtonYById 							takes integer aid returns integer
-native SetAbilityButtonYById 							takes integer aid, integer positionY returns integer
+native SetAbilityButtonYById 							takes integer aid, integer positionY returns nothing
 native GetAbilityUnButtonXById 							takes integer aid returns integer
-native SetAbilityUnButtonXById 							takes integer aid, integer positionX returns integer
+native SetAbilityUnButtonXById 							takes integer aid, integer positionX returns nothing
 native GetAbilityUnButtonYById 							takes integer aid returns integer
-native SetAbilityUnButtonYById 							takes integer aid, integer positionY returns integer
+native SetAbilityUnButtonYById 							takes integer aid, integer positionY returns nothing
 native GetAbilityResearchButtonXById 					takes integer aid returns integer
-native SetAbilityResearchButtonXById 					takes integer aid, integer positionX returns integer
+native SetAbilityResearchButtonXById 					takes integer aid, integer positionX returns nothing
 native GetAbilityResearchButtonYById 					takes integer aid returns integer
-native SetAbilityResearchButtonYById 					takes integer aid, integer positionY returns integer
+native SetAbilityResearchButtonYById 					takes integer aid, integer positionY returns nothing
 native GetAbilityMissileSpeedById 						takes integer aid returns real
-native SetAbilityMissileSpeedById 						takes integer aid, real missileSpeed returns integer
+native SetAbilityMissileSpeedById 						takes integer aid, real missileSpeed returns nothing
 native GetAbilityMissileArcById 						takes integer aid returns real
-native SetAbilityMissileArcById 						takes integer aid, real missileArc returns integer
+native SetAbilityMissileArcById 						takes integer aid, real missileArc returns nothing
 native GetAbilityIsMissileHomingById 					takes integer aid returns boolean
-native SetAbilityIsMissileHomingById 					takes integer aid, boolean ishoming returns integer
+native SetAbilityIsMissileHomingById 					takes integer aid, boolean ishoming returns nothing
 native GetAbilityBaseSpellDetailsById 					takes integer aid returns integer
-native SetAbilityBaseSpellDetailsById 					takes integer aid, integer level returns integer
+native SetAbilityBaseSpellDetailsById 					takes integer aid, integer level returns nothing
 native GetAbilityBaseTipById 							takes integer aid, integer level returns string
-native SetAbilityBaseTipById 							takes integer aid, integer level, string text returns integer
+native SetAbilityBaseTipById 							takes integer aid, integer level, string text returns nothing
 native GetAbilityBaseUnTipById 							takes integer aid, integer level returns string
-native SetAbilityBaseUnTipById 							takes integer aid, integer level, string text returns integer
+native SetAbilityBaseUnTipById 							takes integer aid, integer level, string text returns nothing
 native GetAbilityBaseUberTipById 						takes integer aid, integer level returns string
-native SetAbilityBaseUberTipById 						takes integer aid, integer level, string text returns integer
+native SetAbilityBaseUberTipById 						takes integer aid, integer level, string text returns nothing
 native GetAbilityBaseUnUberTipById 						takes integer aid, integer level returns string
-native SetAbilityBaseUnUberTipById 						takes integer aid, integer level, string text returns integer
+native SetAbilityBaseUnUberTipById 						takes integer aid, integer level, string text returns nothing
 native SetAbilityHotkeyByIdEx 							takes integer aid, oskeytype whichKey returns nothing
 
 native GetAbilityHotkey 								takes ability whichAbility returns oskeytype
@@ -4189,69 +4249,69 @@ native SetAbilityUnHotkey 								takes ability whichAbility, oskeytype whichKey
 native GetAbilityResearchHotkey 						takes ability whichAbility returns oskeytype
 native SetAbilityResearchHotkey 						takes ability whichAbility, oskeytype whichKey returns nothing
 native GetAbilityEffectSound 							takes ability whichAbility returns string
-native SetAbilityEffectSound 							takes ability whichAbility, string text returns integer
+native SetAbilityEffectSound 							takes ability whichAbility, string text returns nothing
 native GetAbilityGlobalMessage 							takes ability whichAbility returns string
-native SetAbilityGlobalMessage 							takes ability whichAbility, string text returns integer
+native SetAbilityGlobalMessage 							takes ability whichAbility, string text returns nothing
 native GetAbilityGlobalSound 							takes ability whichAbility returns string
-native SetAbilityGlobalSound 							takes ability whichAbility, string text returns integer
+native SetAbilityGlobalSound 							takes ability whichAbility, string text returns nothing
 native GetAbilityButtonX 								takes ability whichAbility returns integer
-native SetAbilityButtonX 								takes ability whichAbility, integer positionX returns integer
+native SetAbilityButtonX 								takes ability whichAbility, integer positionX returns nothing
 native GetAbilityButtonY 								takes ability whichAbility returns integer
-native SetAbilityButtonY 								takes ability whichAbility, integer positionY returns integer
+native SetAbilityButtonY 								takes ability whichAbility, integer positionY returns nothing
 native GetAbilityUnButtonX 								takes ability whichAbility returns integer
-native SetAbilityUnButtonX 								takes ability whichAbility, integer positionX returns integer
+native SetAbilityUnButtonX 								takes ability whichAbility, integer positionX returns nothing
 native GetAbilityUnButtonY 								takes ability whichAbility returns integer
-native SetAbilityUnButtonY 								takes ability whichAbility, integer positionY returns integer
+native SetAbilityUnButtonY 								takes ability whichAbility, integer positionY returns nothing
 native GetAbilityResearchButtonX 						takes ability whichAbility returns integer
-native SetAbilityResearchButtonX 						takes ability whichAbility, integer positionX returns integer
+native SetAbilityResearchButtonX 						takes ability whichAbility, integer positionX returns nothing
 native GetAbilityResearchButtonY 						takes ability whichAbility returns integer
-native SetAbilityResearchButtonY 						takes ability whichAbility, integer positionY returns integer
+native SetAbilityResearchButtonY 						takes ability whichAbility, integer positionY returns nothing
 native GetAbilityMissileSpeed 							takes ability whichAbility returns real
-native SetAbilityMissileSpeed 							takes ability whichAbility, real missileSpeed returns integer
+native SetAbilityMissileSpeed 							takes ability whichAbility, real missileSpeed returns nothing
 native GetAbilityMissileArc 							takes ability whichAbility returns real
-native SetAbilityMissileArc 							takes ability whichAbility, real missileArc returns integer
+native SetAbilityMissileArc 							takes ability whichAbility, real missileArc returns nothing
 native GetAbilityIsMissileHoming 						takes ability whichAbility returns boolean
-native SetAbilityIsMissileHoming 						takes ability whichAbility, boolean ishoming returns integer
+native SetAbilityIsMissileHoming 						takes ability whichAbility, boolean ishoming returns nothing
 native GetAbilityBaseSpellDetails 						takes ability whichAbility returns integer
-native SetAbilityBaseSpellDetails 						takes ability whichAbility, integer level returns integer
+native SetAbilityBaseSpellDetails 						takes ability whichAbility, integer level returns nothing
 native GetAbilityBaseTip 								takes ability whichAbility, integer level returns string
-native SetAbilityBaseTip 								takes ability whichAbility, integer level, string text returns integer
+native SetAbilityBaseTip 								takes ability whichAbility, integer level, string text returns nothing
 native GetAbilityBaseUnTip 								takes ability whichAbility, integer level returns string
-native SetAbilityBaseUnTip 								takes ability whichAbility, integer level, string text returns integer
+native SetAbilityBaseUnTip 								takes ability whichAbility, integer level, string text returns nothing
 native GetAbilityBaseUberTip 							takes ability whichAbility, integer level returns string
-native SetAbilityBaseUberTip 							takes ability whichAbility, integer level, string text returns integer
+native SetAbilityBaseUberTip 							takes ability whichAbility, integer level, string text returns nothing
 native GetAbilityBaseUnUberTip 							takes ability whichAbility, integer level returns string
-native SetAbilityBaseUnUberTip 							takes ability whichAbility, integer level, string text returns integer
+native SetAbilityBaseUnUberTip 							takes ability whichAbility, integer level, string text returns nothing
 native SetAbilityHotkeyEx 								takes ability whichAbility, oskeytype whichKey returns nothing
 
-native GetAbilityOrder 									takes ability whicAbility returns integer
-native GetAbilityLevel 									takes ability whicAbility returns integer
-native GetAbilityBaseTypeId 							takes ability whicAbility returns integer
-native GetAbilityTypeId 								takes ability whicAbility returns integer
-native IsAbilityOnCooldown 								takes ability whicAbility returns boolean
-native IsAbilityEnabled 								takes ability whicAbility returns boolean
-native SetAbilityEnabled 								takes ability whicAbility, boolean flag returns integer
-native IsAbilityShown 									takes ability whicAbility returns boolean
-native ShowAbility 										takes ability whicAbility, boolean flag returns integer
-native IsAbilityEnabledEx 								takes ability whicAbility returns boolean
-native SetAbilityEnabledEx 								takes ability whicAbility, boolean flag returns integer
-native IsAbilityUsable 									takes ability whicAbility returns boolean
-native GetAbilityCastTime 								takes ability whicAbility returns real
-native SetAbilityCastTime 								takes ability whicAbility, real castTime returns integer
-native GetAbilityCastPoint 								takes ability whicAbility returns real
-native SetAbilityCastPoint 								takes ability whicAbility, real castPoint returns integer
-native GetAbilityBackswing 								takes ability whicAbility returns real
-native SetAbilityBackswing 								takes ability whicAbility, real backswing returns integer
-native GetAbilityCooldownEx 							takes ability whicAbility returns real
-native GetAbilityCooldown 								takes ability whicAbility returns real
-native SetAbilityCooldown 								takes ability whicAbility, real cooldown returns integer
-native GetAbilityRemainingCooldown 						takes ability whicAbility returns real
-native StartAbilityCooldown 							takes ability whicAbility, real cooldown returns boolean
-native SilenceAbility 									takes ability whicAbility, boolean flag1, boolean flag2 returns integer
-native UnsilenceAbility 								takes ability whicAbility, boolean flag1, boolean flag2 returns integer
-native CastAbility 										takes ability whicAbility returns boolean
-native CastAbilityGround 								takes ability whicAbility, unit source, real targX, real targY returns boolean
-native CastAbilityTarget 								takes ability whicAbility, unit target returns boolean
+native GetAbilityOrder 									takes ability whichAbility returns integer
+native GetAbilityLevel 									takes ability whichAbility returns integer
+native GetAbilityBaseTypeId 							takes ability whichAbility returns integer
+native GetAbilityTypeId 								takes ability whichAbility returns integer
+native IsAbilityOnCooldown 								takes ability whichAbility returns boolean
+native IsAbilityEnabled 								takes ability whichAbility returns boolean
+native SetAbilityEnabled 								takes ability whichAbility, boolean enable returns nothing
+native IsAbilityVisible 								takes ability whichAbility returns boolean
+native ShowAbility 										takes ability whichAbility, boolean show returns nothing
+native IsAbilityEnabledEx 								takes ability whichAbility returns boolean
+native SetAbilityEnabledEx 								takes ability whichAbility, boolean enable returns nothing
+native IsAbilityUsable 									takes ability whichAbility returns boolean
+native GetAbilityCastTime 								takes ability whichAbility returns real
+native SetAbilityCastTime 								takes ability whichAbility, real castTime returns nothing
+native GetAbilityCastPoint 								takes ability whichAbility returns real
+native SetAbilityCastPoint 								takes ability whichAbility, real castPoint returns nothing
+native GetAbilityBackswing 								takes ability whichAbility returns real
+native SetAbilityBackswing 								takes ability whichAbility, real backswing returns nothing
+native GetAbilityCooldownEx 							takes ability whichAbility returns real
+native GetAbilityCooldown 								takes ability whichAbility returns real
+native SetAbilityCooldown 								takes ability whichAbility, real cooldown returns nothing
+native GetAbilityRemainingCooldown 						takes ability whichAbility returns real
+native StartAbilityCooldown 							takes ability whichAbility, real cooldown returns boolean
+native SilenceAbility 									takes ability whichAbility, boolean hide, boolean disable returns nothing
+native UnsilenceAbility 								takes ability whichAbility, boolean show, boolean enable returns nothing
+native CastAbility 										takes ability whichAbility returns boolean
+native CastAbilityGround 								takes ability whichAbility, unit source, real targX, real targY returns boolean
+native CastAbilityTarget 								takes ability whichAbility, unit target returns boolean
 //
 
 //============================================================================
@@ -4582,9 +4642,32 @@ native GetTriggerFrame 									takes nothing returns framehandle
 native GetTriggerFrameEvent 							takes nothing returns frameeventtype
 // native GetTriggerFrameValue 							takes nothing returns real // not active for now
 // native GetTriggerFrameText 							takes nothing returns string // not active for now
-native  SaveFrameHandle                					takes hashtable table, integer parentKey, integer childKey, framehandle whichFrame returns boolean
-native  LoadFrameHandle             					takes hashtable table, integer parentKey, integer childKey returns framehandle
 //
+
+//============================================================================
+// HashTable API
+//
+native SaveFrameHandle                					takes hashtable table, integer parentKey, integer childKey, framehandle whichFrame returns boolean
+native LoadFrameHandle             						takes hashtable table, integer parentKey, integer childKey returns framehandle
+//
+
+//============================================================================
+// Sync API
+//
+native SyncInteger             							takes string variableName returns nothing
+native SyncReal             							takes string variableName returns nothing
+native SyncBoolean             							takes string variableName returns nothing
+native SyncString             							takes string variableName returns nothing
+native SyncHandle             							takes string variableName returns nothing
+
+native SyncSavedInteger             					takes hashtable table, integer parentKey, integer childKey returns nothing
+native SyncSavedReal             						takes hashtable table, integer parentKey, integer childKey returns nothing
+native SyncSavedBoolean             					takes hashtable table, integer parentKey, integer childKey returns nothing
+native SyncSavedHandle             						takes hashtable table, integer parentKey, integer childKey returns nothing
+native SyncSavedString             						takes hashtable table, integer parentKey, integer childKey returns nothing
+//
+
+
 
 //============================================================================
 // Damage Event API
