@@ -112,7 +112,7 @@ globals
     //===================================================
 
     constant playerunitevent 			EVENT_PLAYER_UNIT_DAMAGED                  					= ConvertPlayerUnitEvent(308)
-    constant playerunitevent 			EVENT_PLAYER_UNIT_DAMAGING                 					= ConvertPlayerUnitEvent(315))
+    constant playerunitevent 			EVENT_PLAYER_UNIT_DAMAGING                 					= ConvertPlayerUnitEvent(315)
     
     //===================================================
     // For use with TriggerRegisterUnitEvent
