@@ -19,6 +19,7 @@ type regentype                      					extends handle
 type unitcategory                   					extends handle
 type pathingflag                    					extends handle
 type timetype											extends handle
+type variabletype										extends handle
 
 constant native ConvertAnimType             			takes integer i returns animtype
 constant native ConvertSubAnimType          			takes integer i returns subanimtype
@@ -36,6 +37,7 @@ constant native ConvertRegenType                        takes integer i returns 
 constant native ConvertUnitCategory                     takes integer i returns unitcategory
 constant native ConvertPathingFlag                      takes integer i returns pathingflag
 constant native ConvertTimeType                      	takes integer i returns timetype
+constant native ConvertVariableType						takes integer i returns variabletype
 
 globals
 
@@ -107,6 +109,7 @@ globals
 	constant subanimtype        		SUBANIM_TYPE_SWIM               							= ConvertSubAnimType(60)
 	constant subanimtype        		SUBANIM_TYPE_ENTANGLE           							= ConvertSubAnimType(61)
 	constant subanimtype        		SUBANIM_TYPE_BERSERK            							= ConvertSubAnimType(62)
+
     //===================================================
     // For use with TriggerRegisterPlayerUnitEvent
     //===================================================
@@ -1338,7 +1341,22 @@ globals
 	constant timetype					TIME_TYPE_HOUR												= ConvertTimeType( 4 )
 	constant timetype					TIME_TYPE_MINUTE											= ConvertTimeType( 5 )
 	constant timetype					TIME_TYPE_SECOND											= ConvertTimeType( 6 )
-	constant timetype					TIME_TYPE_MILLISECOND										= ConvertTimeType( 7 )	
+	constant timetype					TIME_TYPE_MILLISECOND										= ConvertTimeType( 7 
+	
+	constant variabletype				VARIABLE_TYPE_NOTHING										= ConvertVariableType(0)
+	constant variabletype				VARIABLE_TYPE_UNKNOWN										= ConvertVariableType(1)
+	constant variabletype				VARIABLE_TYPE_NULL											= ConvertVariableType(2)
+	constant variabletype				VARIABLE_TYPE_CODE											= ConvertVariableType(3)
+	constant variabletype				VARIABLE_TYPE_INTEGER										= ConvertVariableType(4)
+	constant variabletype				VARIABLE_TYPE_REAL											= ConvertVariableType(5)
+	constant variabletype				VARIABLE_TYPE_STRING										= ConvertVariableType(6)
+	constant variabletype				VARIABLE_TYPE_HANDLE										= ConvertVariableType(7)
+	constant variabletype				VARIABLE_TYPE_BOOLEAN										= ConvertVariableType(8)
+	constant variabletype				VARIABLE_TYPE_INTEGER_ARRAY									= ConvertVariableType(9)
+	constant variabletype				VARIABLE_TYPE_REAL_ARRAY									= ConvertVariableType(10)
+	constant variabletype				VARIABLE_TYPE_STRING_ARRAY									= ConvertVariableType(11)
+	constant variabletype				VARIABLE_TYPE_HANDLE_ARRAY									= ConvertVariableType(12)
+	constant variabletype				VARIABLE_TYPE_BOOLEAN_ARRAY									= ConvertVariableType(13)	
 endglobals
 
 //================Custom natives=====================
@@ -1509,6 +1527,63 @@ native StringFindLastNotOf								takes string s, string whichString, boolean ca
 // Time API
 native GetSystemTime									takes timetype whichTimeType returns integer
 native GetLocalTime										takes timetype whichTimeType returns integer
+//
+
+// Mouse API
+native GetMouseScreenX             						takes nothing returns real
+native GetMouseScreenY             						takes nothing returns real
+
+native SetMouseScreenX             						takes real x returns nothing
+native SetMouseScreenY             						takes real y returns nothing
+native SetMouseScreenPosition             				takes real x, real y returns nothing
+
+native GetMouseScreenPixelX             				takes nothing returns integer
+native GetMouseScreenPixelY             				takes nothing returns integer
+
+native SetMouseScreenPixelX             				takes integer x returns nothing
+native SetMouseScreenPixelY             				takes integer y returns nothing
+native SetMouseScreenPixelPosition             			takes integer x, integer y returns nothing
+
+native GetMouseWorldX             						takes nothing returns real
+native GetMouseWorldY             						takes nothing returns real
+native GetMouseWorldZ             						takes nothing returns real
+//
+
+//============================================================================
+// Sync API
+//
+
+// Variable Sync API
+native GetSyncedVariableType							takes nothing returns variabletype
+native GetSyncedVariableName							takes nothing returns string
+native GetSyncedInteger									takes nothing returns integer
+native GetSyncedReal									takes nothing returns real
+native GetSyncedString									takes nothing returns string
+native GetSyncedHandle									takes nothing returns handle
+native GetSyncedBoolean									takes nothing returns boolean
+
+native SyncInteger             							takes string variableName returns nothing
+native SyncReal             							takes string variableName returns nothing
+native SyncString             							takes string variableName returns nothing
+native SyncHandle             							takes string variableName returns nothing
+native SyncBoolean             							takes string variableName returns nothing
+
+native TriggerRegisterPlayerVariableSyncEvent           takes trigger whichTrigger, player whichPlayer, string variableName returns event
+//
+
+// Hashtable Sync API
+native GetSyncSavedVariableType							takes nothing returns variabletype
+native GetSyncSavedHashtable							takes nothing returns hashtable
+native GetSyncSavedParentKey							takes nothing returns integer
+native GetSyncSavedChildKey								takes nothing returns integer
+
+native SyncSavedInteger             					takes hashtable table, integer parentKey, integer childKey returns nothing
+native SyncSavedReal             						takes hashtable table, integer parentKey, integer childKey returns nothing
+native SyncSavedString             						takes hashtable table, integer parentKey, integer childKey returns nothing
+native SyncSavedHandle             						takes hashtable table, integer parentKey, integer childKey returns nothing
+native SyncSavedBoolean             					takes hashtable table, integer parentKey, integer childKey returns nothing
+
+native TriggerRegisterPlayerHashtableDataSyncEvent      takes trigger whichTrigger, player whichPlayer, hashtable whichHashtable returns event
 //
 
 //============================================================================
@@ -2193,8 +2268,11 @@ native GetFrameChild 									takes framehandle whichFrame, integer index return
 native TriggerRegisterFrameEvent 						takes trigger whichTrigger, framehandle whichFrame, frameeventtype frameEvent returns event
 native GetTriggerFrame 									takes nothing returns framehandle
 native GetTriggerFrameEvent 							takes nothing returns frameeventtype
-// native GetTriggerFrameValue 							takes nothing returns real // not active for now
-// native GetTriggerFrameText 							takes nothing returns string // not active for now
+native GetTriggerFrameVariableType 						takes nothing returns variabletype
+native GetTriggerFrameInteger 							takes nothing returns integer
+native GetTriggerFrameReal 								takes nothing returns real // aka GetTriggerFrameValue
+native GetTriggerFrameBoolean 							takes nothing returns boolean
+native GetTriggerFrameString 							takes nothing returns string // aka GetTriggerFrameText
 //
 
 //============================================================================
@@ -2203,24 +2281,6 @@ native GetTriggerFrameEvent 							takes nothing returns frameeventtype
 native SaveFrameHandle                					takes hashtable table, integer parentKey, integer childKey, framehandle whichFrame returns boolean
 native LoadFrameHandle             						takes hashtable table, integer parentKey, integer childKey returns framehandle
 //
-
-//============================================================================
-// Sync API
-//
-native SyncInteger             							takes string variableName returns nothing
-native SyncReal             							takes string variableName returns nothing
-native SyncBoolean             							takes string variableName returns nothing
-native SyncString             							takes string variableName returns nothing
-native SyncHandle             							takes string variableName returns nothing
-
-native SyncSavedInteger             					takes hashtable table, integer parentKey, integer childKey returns nothing
-native SyncSavedReal             						takes hashtable table, integer parentKey, integer childKey returns nothing
-native SyncSavedBoolean             					takes hashtable table, integer parentKey, integer childKey returns nothing
-native SyncSavedHandle             						takes hashtable table, integer parentKey, integer childKey returns nothing
-native SyncSavedString             						takes hashtable table, integer parentKey, integer childKey returns nothing
-//
-
-
 
 //============================================================================
 // Damage Event API
