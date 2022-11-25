@@ -789,6 +789,14 @@ globals
     constant playerevent        		EVENT_PLAYER_ARROW_UP_DOWN              					= ConvertPlayerEvent(267)
     constant playerevent        		EVENT_PLAYER_ARROW_UP_UP                					= ConvertPlayerEvent(268)
 
+    constant playerevent        		EVENT_PLAYER_MOUSE_DOWN                 					= ConvertPlayerEvent(305)
+    constant playerevent        		EVENT_PLAYER_MOUSE_UP                   					= ConvertPlayerEvent(306)
+    constant playerevent        		EVENT_PLAYER_MOUSE_MOVE                 					= ConvertPlayerEvent(307)
+    constant playerevent        		EVENT_PLAYER_SYNC_DATA                  					= ConvertPlayerEvent(309) // currently not active
+    constant playerevent        		EVENT_PLAYER_KEY                        					= ConvertPlayerEvent(311)
+    constant playerevent        		EVENT_PLAYER_KEY_DOWN                   					= ConvertPlayerEvent(312)
+    constant playerevent        		EVENT_PLAYER_KEY_UP                     					= ConvertPlayerEvent(313)
+
     //===================================================
     // For use with TriggerRegisterPlayerUnitEvent
     //===================================================
@@ -906,6 +914,7 @@ globals
     
     constant raritycontrol  			RARITY_FREQUENT                 							= ConvertRarityControl(0)
     constant raritycontrol  			RARITY_RARE                     							= ConvertRarityControl(1)
+	constant raritycontrol  			RARITY_QUEUE                     							= ConvertRarityControl(2)
 
     constant texmapflags    			TEXMAP_FLAG_NONE                							= ConvertTexMapFlags(0)
     constant texmapflags    			TEXMAP_FLAG_WRAP_U              							= ConvertTexMapFlags(1)
@@ -1001,6 +1010,13 @@ globals
 // OS Key constants
 //===================================================
 
+	constant oskeytype              	OSKEY_LBUTTON                     							= ConvertOsKeyType(0x01)
+	constant oskeytype              	OSKEY_RBUTTON                     							= ConvertOsKeyType(0x02)
+	constant oskeytype              	OSKEY_CANCEL                     							= ConvertOsKeyType(0x03)
+	constant oskeytype              	OSKEY_MBUTTON                     							= ConvertOsKeyType(0x04)
+	constant oskeytype              	OSKEY_XBUTTON1                     							= ConvertOsKeyType(0x05)
+	constant oskeytype              	OSKEY_XBUTTON2                     							= ConvertOsKeyType(0x06)
+	constant oskeytype              	OSKEY_UNDEFINED                     						= ConvertOsKeyType(0x07)
     constant oskeytype              	OSKEY_BACKSPACE                     						= ConvertOsKeyType(0x08)
     constant oskeytype              	OSKEY_TAB                           						= ConvertOsKeyType(0x09)
     constant oskeytype              	OSKEY_CLEAR                         						= ConvertOsKeyType(0x0C)
@@ -1190,6 +1206,13 @@ globals
     constant oskeytype              	OSKEY_NONAME                        						= ConvertOsKeyType(0xFC)
     constant oskeytype              	OSKEY_PA1                           						= ConvertOsKeyType(0xFD)
     constant oskeytype              	OSKEY_OEM_CLEAR                     						= ConvertOsKeyType(0xFE)
+
+    constant integer        			META_KEY_NONE              									= 0
+    constant integer        			META_KEY_SHIFT             									= 1
+    constant integer        			META_KEY_CONTROL               								= 2
+    constant integer        			META_KEY_ALT            									= 4
+	constant integer        			META_KEY_WINDOWS            								= 8
+	// To make a "meta key combination" simply add the values you need, so ALT + SHIFT => metaKey = META_KEY_ALT + META_KEY_SHIFT
 
 //===================================================
 // Instanced Object Operation API constants
@@ -4029,6 +4052,32 @@ native SyncSavedBoolean             					takes hashtable table, integer parentKe
 native TriggerRegisterPlayerHashtableDataSyncEvent      takes trigger whichTrigger, player whichPlayer, hashtable whichHashtable returns event
 //
 
+// Prefix Sync API
+native GetTriggerSyncPrefix                     		takes nothing returns string
+native GetTriggerSyncData                       		takes nothing returns string
+
+native SendSyncData                             		takes string prefix, string data returns boolean
+
+native TriggerRegisterPlayerSyncEvent           		takes trigger whichTrigger, player whichPlayer, string prefix, boolean fromServer returns event
+//
+
+// Key Event API
+native GetTriggerPlayerKey                      		takes nothing returns oskeytype
+native GetTriggerPlayerMetaKey                  		takes nothing returns integer
+native GetTriggerPlayerIsKeyDown                		takes nothing returns boolean
+
+native TriggerRegisterPlayerKeyEvent            		takes trigger whichTrigger, player whichPlayer, oskeytype whichKey, integer whichMetaKey, boolean isKeyDown returns event
+//
+
+// Mouse Event API | For use with EVENT_PLAYER_MOUSE_MOVE
+native GetTriggerPlayerMouseWorldX						takes nothing returns real
+native GetTriggerPlayerMouseWorldY						takes nothing returns real
+native GetTriggerPlayerMouseWorldZ						takes nothing returns real
+
+native GetTriggerPlayerMouseScreenX						takes nothing returns real
+native GetTriggerPlayerMouseScreenY						takes nothing returns real
+//
+
 //============================================================================
 // Unit API
 //
@@ -4257,6 +4306,7 @@ native GetHeroExperienceNeeded 							takes unit whichUnit, integer forLevel ret
 native SetUnitReplaceableTexture 						takes unit whichUnit, string textureName, integer textureIndex returns nothing
 native UnitApplySilence 								takes unit whichUnit, boolean state returns nothing
 native UnitDisableAbilities 							takes unit whichUnit, boolean state returns nothing
+native PauseUnitEx 										takes unit whichUnit, boolean flag returns nothing // this is pretty much a copy of SetUnitStunned, added for compatibility.
 native SetUnitStunned 									takes unit whichUnit, boolean state returns nothing
 native GetUnitStunCounter 								takes unit whichUnit returns integer
 native SetUnitStunCounter 								takes unit whichUnit, integer stunCounter returns nothing
@@ -4428,8 +4478,8 @@ native GetSpecialEffectColour                       	takes effect whichEffect re
 native SetSpecialEffectColour                       	takes effect whichEffect, integer colour returns boolean
 native SetSpecialEffectAlpha                        	takes effect whichEffect, integer alpha returns boolean
 native SetSpecialEffectVertexColour                 	takes effect whichEffect, integer red, integer green, integer blue, integer alpha returns boolean
-native SetSpecialEffectAnimationWithRarityByIndex   	takes effect whichEffect, integer animIndex, integer rarity returns nothing
-native SetSpecialEffectAnimationWithRarity          	takes effect whichEffect, string animation, integer rarity returns nothing
+native SetSpecialEffectAnimationWithRarityByIndex   	takes effect whichEffect, integer animIndex, raritycontrol rarity returns nothing
+native SetSpecialEffectAnimationWithRarity          	takes effect whichEffect, string animation, raritycontrol rarity returns nothing
 native SetSpecialEffectAnimationByIndex             	takes effect whichEffect, integer animIndex returns nothing
 native SetSpecialEffectAnimation                    	takes effect whichEffect, string animation returns nothing
 native QueueSpecialEffectAnimationByIndex           	takes effect whichEffect, integer animIndex returns nothing
@@ -4475,8 +4525,8 @@ native GetTrackableColour                           	takes trackable whichTracka
 native SetTrackableColour                           	takes trackable whichTrackable, integer colour returns boolean
 native SetTrackableAlpha                            	takes trackable whichTrackable, integer alpha returns boolean
 native SetTrackableVertexColour                     	takes trackable whichTrackable, integer red, integer green, integer blue, integer alpha returns boolean
-native SetTrackableAnimationWithRarityByIndex       	takes trackable whichTrackable, integer animIndex, integer rarity returns nothing
-native SetTrackableAnimationWithRarity              	takes trackable whichTrackable, string animation, integer rarity returns nothing
+native SetTrackableAnimationWithRarityByIndex       	takes trackable whichTrackable, integer animIndex, raritycontrol rarity returns nothing
+native SetTrackableAnimationWithRarity              	takes trackable whichTrackable, string animation, raritycontrol rarity returns nothing
 native SetTrackableAnimationByIndex                 	takes trackable whichTrackable, integer animIndex returns nothing
 native SetTrackableAnimation                        	takes trackable whichTrackable, string animation returns nothing
 native QueueTrackableAnimationByIndex               	takes trackable whichTrackable, integer animIndex returns nothing
@@ -4639,8 +4689,8 @@ native SetItemCooldown 									takes item whichItem, real cooldown returns noth
 native StartItemCooldown 								takes unit whichUnit, item whichItem, real cooldown returns nothing
 native GetItemRemainingCooldown 						takes item whichItem returns real
 native SetItemRemainingCooldown 						takes item whichItem, real cooldown returns nothing
-native SetItemAnimationWithRarityByIndex 				takes item whichItem, integer animIndex, integer rarity returns nothing
-native SetItemAnimationWithRarity 						takes item whichItem, string animation, integer rarity returns nothing
+native SetItemAnimationWithRarityByIndex 				takes item whichItem, integer animIndex, raritycontrol rarity returns nothing
+native SetItemAnimationWithRarity 						takes item whichItem, string animation, raritycontrol rarity returns nothing
 native SetItemAnimationByIndex 							takes item whichItem, integer animIndex returns nothing
 native SetItemAnimation 								takes item whichItem, string animation returns nothing
 native QueueItemAnimationByIndex 						takes item whichItem, integer animIndex returns nothing
@@ -4687,7 +4737,12 @@ native SetFrameEnabled 									takes framehandle whichFrame, boolean enabled re
 native IsFrameEnabled 									takes framehandle whichFrame returns boolean
 native SetFrameAlpha 									takes framehandle whichFrame, integer alpha returns nothing
 native GetFrameAlpha 									takes framehandle whichFrame returns integer
-// native SetFrameSpriteAnimation 						takes framehandle whichFrame, integer primaryProp, integer flags returns nothing // not active for now
+native SetFrameSpriteAnimationWithRarityByIndex 		takes framehandle whichFrame, integer animIndex, raritycontrol rarity returns nothing
+native SetFrameSpriteAnimationByIndex 					takes framehandle whichFrame, integer animIndex returns nothing
+native QueueFrameSpriteAnimationByIndex 				takes framehandle whichFrame, integer animIndex returns nothing
+native SetFrameSpriteAnimationWithRarity 				takes framehandle whichFrame, string animationName, raritycontrol rarity returns nothing
+native SetFrameSpriteAnimation 							takes framehandle whichFrame, string animationName returns nothing
+native QueueFrameSpriteAnimation 						takes framehandle whichFrame, string animationName returns nothing
 native SetFrameTexture 									takes framehandle whichFrame, string textureFile, integer flag, boolean blend returns nothing
 native SetFrameScale 									takes framehandle whichFrame, real scale returns nothing
 native SetFrameTooltip 									takes framehandle whichFrame, framehandle tooltipFrame returns nothing
@@ -4699,6 +4754,7 @@ native SetFrameStepSize 								takes framehandle whichFrame, real stepSize retu
 native SetFrameSize 									takes framehandle whichFrame, real width, real height returns nothing
 native SetFrameVertexColourEx 							takes framehandle whichFrame, integer alpha, integer red, integer blue, integer green returns nothing
 native SetFrameVertexColour 							takes framehandle whichFrame, integer colour returns nothing
+native GetFramePriority 								takes framehandle whichFrame returns integer
 native SetFramePriority 								takes framehandle whichFrame, integer priority returns nothing
 native SetFrameParent 									takes framehandle whichFrame, framehandle whichParent returns nothing
 native GetFrameParent 									takes framehandle whichFrame returns framehandle
