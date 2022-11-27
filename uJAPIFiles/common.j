@@ -103,6 +103,7 @@ type framepointtype     								extends handle
 type textaligntype      								extends handle
 type frameeventtype     								extends handle
 type oskeytype          								extends handle
+type mousebuttontype    								extends handle
 
 type abilityintegerfield            					extends handle
 type abilityrealfield               					extends handle
@@ -192,6 +193,7 @@ constant native ConvertFramePointType       			takes integer i returns framepoin
 constant native ConvertTextAlignType        			takes integer i returns textaligntype
 constant native ConvertFrameEventType       			takes integer i returns frameeventtype
 constant native ConvertOsKeyType            			takes integer i returns oskeytype
+constant native ConvertMouseButtonType      			takes integer i returns mousebuttontype
 
 constant native ConvertAbilityIntegerField              takes integer i returns abilityintegerfield
 constant native ConvertAbilityRealField                 takes integer i returns abilityrealfield
@@ -1206,6 +1208,18 @@ globals
     constant oskeytype              	OSKEY_NONAME                        						= ConvertOsKeyType(0xFC)
     constant oskeytype              	OSKEY_PA1                           						= ConvertOsKeyType(0xFD)
     constant oskeytype              	OSKEY_OEM_CLEAR                     						= ConvertOsKeyType(0xFE)
+
+//===================================================
+// Mouse Button constants
+//===================================================
+
+	constant mousebuttontype    		MOUSE_BUTTON_TYPE_LEFT          							= ConvertMouseButtonType(1)
+	constant mousebuttontype    		MOUSE_BUTTON_TYPE_MIDDLE        							= ConvertMouseButtonType(2)
+	constant mousebuttontype    		MOUSE_BUTTON_TYPE_RIGHT         							= ConvertMouseButtonType(3)
+
+//===================================================
+// Meta Keys constants
+//===================================================
 
     constant integer        			META_KEY_NONE              									= 0
     constant integer        			META_KEY_SHIFT             									= 1
@@ -4063,6 +4077,7 @@ native TriggerRegisterPlayerSyncEvent           		takes trigger whichTrigger, pl
 
 // Key Event API
 native GetTriggerPlayerKey                      		takes nothing returns oskeytype
+native GetTriggerPlayerMouseButton             			takes nothing returns mousebuttontype
 native GetTriggerPlayerMetaKey                  		takes nothing returns integer
 native GetTriggerPlayerIsKeyDown                		takes nothing returns boolean
 
@@ -4532,18 +4547,18 @@ native SetTrackableAnimation                        	takes trackable whichTracka
 native QueueTrackableAnimationByIndex               	takes trackable whichTrackable, integer animIndex returns nothing
 native QueueTrackableAnimation                      	takes trackable whichTrackable, string animation returns nothing
 native ResetTrackableetMatrix                       	takes trackable whichTrackable returns nothing
-native SetTrackableOrientationEx                    	takes trackable whichTrackable, real yaw, real pitch, real roll, integer eulerOrder returns boolean // XYZ = 0, YZX = 1, ZXY = 2, ZYX = 3, YXZ = 4, XZY = 5
-native GetTrackableYaw                              	takes trackable whichTrackable returns real // X
-native SetTrackableYaw                              	takes trackable whichTrackable, real yaw returns boolean // X
-native GetTrackableFacing                           	takes trackable whichTrackable returns real // X same as Yaw
-native SetTrackableFacing                           	takes trackable whichTrackable, real facing returns boolean // X same as Yaw
-native GetTrackablePitch                            	takes trackable whichTrackable returns real // Y
-native SetTrackablePitch                            	takes trackable whichTrackable, real pitch returns boolean // Y
-native GetTrackableRoll                             	takes trackable whichTrackable returns real // Z
-native SetTrackableRoll                             	takes trackable whichTrackable, real roll returns boolean // Z
-native SetTrackableOrientation                      	takes trackable whichTrackable, real yaw, real pitch, real roll returns nothing // uses SetTrackableSpaceRotation with XYZ orientation as default
+native SetTrackableOrientationEx                    	takes trackable whichTrackable, real yaw, real pitch, real roll, integer eulerOrder returns boolean
+native GetTrackableYaw                              	takes trackable whichTrackable returns real
+native SetTrackableYaw                              	takes trackable whichTrackable, real yaw returns boolean
+native GetTrackableFacing                           	takes trackable whichTrackable returns real
+native SetTrackableFacing                           	takes trackable whichTrackable, real facing returns boolean
+native GetTrackablePitch                            	takes trackable whichTrackable returns real
+native SetTrackablePitch                            	takes trackable whichTrackable, real pitch returns boolean
+native GetTrackableRoll                             	takes trackable whichTrackable returns real
+native SetTrackableRoll                             	takes trackable whichTrackable, real roll returns boolean
+native SetTrackableOrientation                      	takes trackable whichTrackable, real yaw, real pitch, real roll returns nothing
 native SetTrackableModel                            	takes trackable whichTrackable, string modelName returns nothing
-native SetTrackableModelEx                          	takes trackable whichTrackable, string modelName, integer playerColour returns nothing // 0-15, -1 to ignore the colour.
+native SetTrackableModelEx                          	takes trackable whichTrackable, string modelName, integer playerColour returns nothing
 //
 
 //============================================================================
@@ -4737,12 +4752,6 @@ native SetFrameEnabled 									takes framehandle whichFrame, boolean enabled re
 native IsFrameEnabled 									takes framehandle whichFrame returns boolean
 native SetFrameAlpha 									takes framehandle whichFrame, integer alpha returns nothing
 native GetFrameAlpha 									takes framehandle whichFrame returns integer
-native SetFrameSpriteAnimationWithRarityByIndex 		takes framehandle whichFrame, integer animIndex, raritycontrol rarity returns nothing
-native SetFrameSpriteAnimationByIndex 					takes framehandle whichFrame, integer animIndex returns nothing
-native QueueFrameSpriteAnimationByIndex 				takes framehandle whichFrame, integer animIndex returns nothing
-native SetFrameSpriteAnimationWithRarity 				takes framehandle whichFrame, string animationName, raritycontrol rarity returns nothing
-native SetFrameSpriteAnimation 							takes framehandle whichFrame, string animationName returns nothing
-native QueueFrameSpriteAnimation 						takes framehandle whichFrame, string animationName returns nothing
 native SetFrameTexture 									takes framehandle whichFrame, string textureFile, integer flag, boolean blend returns nothing
 native SetFrameScale 									takes framehandle whichFrame, real scale returns nothing
 native SetFrameTooltip 									takes framehandle whichFrame, framehandle tooltipFrame returns nothing
@@ -4764,7 +4773,9 @@ native SetFrameFont 									takes framehandle whichFrame, string fontName, real
 native SetFrameTextAlignment 							takes framehandle whichFrame, textaligntype verticalAlign, textaligntype horizontalAlign returns nothing
 native GetFrameChildrenCount 							takes framehandle whichFrame returns integer
 native GetFrameChild 									takes framehandle whichFrame, integer index returns framehandle
-native TriggerRegisterFrameEvent 						takes trigger whichTrigger, framehandle whichFrame, frameeventtype frameEvent returns event
+//
+
+// Trigger Frame API
 native GetTriggerFrame 									takes nothing returns framehandle
 native GetTriggerFrameEvent 							takes nothing returns frameeventtype
 native GetTriggerFrameVariableType 						takes nothing returns variabletype
@@ -4772,6 +4783,40 @@ native GetTriggerFrameInteger 							takes nothing returns integer
 native GetTriggerFrameReal 								takes nothing returns real // aka GetTriggerFrameValue
 native GetTriggerFrameBoolean 							takes nothing returns boolean
 native GetTriggerFrameString 							takes nothing returns string // aka GetTriggerFrameText
+
+native TriggerRegisterFrameEvent 						takes trigger whichTrigger, framehandle whichFrame, frameeventtype frameEvent returns event
+//
+
+// Frame Sprite API
+// Copies the logic of Effect API / Trackable API | works only on CSpriteFrame | CStatusBar | CCursorFrame | CTimeOfDayIndicator
+native GetFrameSpriteScale                            	takes framehandle whichFrame returns real
+native SetFrameSpriteScale                            	takes framehandle whichFrame, real scale returns nothing
+native GetFrameSpriteTimeScale                        	takes framehandle whichFrame returns real
+native SetFrameSpriteTimeScale                        	takes framehandle whichFrame, real timescale returns nothing
+native GetFrameSpriteColour                           	takes framehandle whichFrame returns integer
+native SetFrameSpriteColour                           	takes framehandle whichFrame, integer colour returns boolean
+native SetFrameSpriteAlpha                            	takes framehandle whichFrame, integer alpha returns boolean
+native SetFrameSpriteVertexColour                     	takes framehandle whichFrame, integer red, integer green, integer blue, integer alpha returns boolean
+native SetFrameSpriteOrientationEx                    	takes framehandle whichFrame, real yaw, real pitch, real roll, integer eulerOrder returns boolean
+native GetFrameSpriteYaw                              	takes framehandle whichFrame returns real
+native SetFrameSpriteYaw                              	takes framehandle whichFrame, real yaw returns boolean
+native GetFrameSpriteFacing                           	takes framehandle whichFrame returns real
+native SetFrameSpriteFacing                           	takes framehandle whichFrame, real facing returns boolean
+native GetFrameSpritePitch                            	takes framehandle whichFrame returns real
+native SetFrameSpritePitch                            	takes framehandle whichFrame, real pitch returns boolean
+native GetFrameSpriteRoll                             	takes framehandle whichFrame returns real
+native SetFrameSpriteRoll                             	takes framehandle whichFrame, real roll returns boolean
+native SetFrameSpriteOrientation                      	takes framehandle whichFrame, real yaw, real pitch, real roll returns nothing
+
+native SetFrameSpriteModel                            	takes framehandle whichFrame, string modelName returns nothing
+native SetFrameSpriteModelEx                          	takes framehandle whichFrame, string modelName, integer playerColour returns nothing
+
+native SetFrameSpriteAnimationWithRarityByIndex 		takes framehandle whichFrame, integer animIndex, raritycontrol rarity returns nothing
+native SetFrameSpriteAnimationByIndex 					takes framehandle whichFrame, integer animIndex returns nothing
+native QueueFrameSpriteAnimationByIndex 				takes framehandle whichFrame, integer animIndex returns nothing
+native SetFrameSpriteAnimationWithRarity 				takes framehandle whichFrame, string animationName, raritycontrol rarity returns nothing
+native SetFrameSpriteAnimation 							takes framehandle whichFrame, string animationName returns nothing
+native QueueFrameSpriteAnimation 						takes framehandle whichFrame, string animationName returns nothing
 //
 
 //============================================================================
