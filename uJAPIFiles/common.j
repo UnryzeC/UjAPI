@@ -46,6 +46,7 @@ type unitevent          								extends eventid
 type limitop            								extends eventid
 type widgetevent        								extends eventid
 type dialogevent        								extends eventid
+type playermissileevent    								extends eventid
 type unittype           								extends handle
 
 type gamespeed          								extends handle
@@ -97,6 +98,7 @@ type subanimtype        								extends handle
 type image              								extends handle
 type ubersplat          								extends handle
 type hashtable          								extends agent
+type missile											extends agent
 type framehandle        								extends handle
 type originframetype    								extends handle
 type framepointtype     								extends handle
@@ -186,6 +188,7 @@ constant native ConvertDamageType           			takes integer i returns damagetyp
 constant native ConvertWeaponType           			takes integer i returns weapontype
 constant native ConvertSoundType            			takes integer i returns soundtype
 constant native ConvertPathingType          			takes integer i returns pathingtype
+constant native ConvertPlayerMissileEvent				takes integer i returns playermissileevent
 constant native ConvertAnimType             			takes integer i returns animtype
 constant native ConvertSubAnimType          			takes integer i returns subanimtype
 constant native ConvertOriginFrameType      			takes integer i returns originframetype
@@ -826,6 +829,13 @@ globals
     constant unitevent          		EVENT_UNIT_SPELL_FINISH                 					= ConvertUnitEvent(292)
     constant unitevent          		EVENT_UNIT_SPELL_ENDCAST                					= ConvertUnitEvent(293)
     constant unitevent          		EVENT_UNIT_PAWN_ITEM                    					= ConvertUnitEvent(294)
+
+    //===================================================
+    // For use with TriggerRegisterPlayerMissileEvent
+    //===================================================
+
+	constant playermissileevent			EVENT_PLAYER_MISSILE_LAUNCH									= ConvertPlayerMissileEvent(600)
+	constant playermissileevent			EVENT_PLAYER_MISSILE_HIT									= ConvertPlayerMissileEvent(601)
 
     //===================================================
     // Limit Event API constants    
@@ -4096,8 +4106,8 @@ native GetTriggerPlayerMouseScreenY						takes nothing returns real
 //============================================================================
 // Unit API
 //
-native GetUnitBasePrimaryStatById 						takes integer unitTypeId returns integer
-native SetUnitBasePrimaryStatById 						takes integer unitTypeId, integer statIndex returns nothing
+native GetUnitBasePrimaryStatById 						takes integer unitTypeId returns heroattribute
+native SetUnitBasePrimaryStatById 						takes integer unitTypeId, heroattribute whichHeroAttribute returns nothing
 native GetUnitBaseGoldCostById 							takes integer unitTypeId returns integer
 native SetUnitBaseGoldCostById 							takes integer unitTypeId, integer goldCost returns nothing
 native GetUnitBaseDaySightById 							takes integer unitTypeId returns real
@@ -4147,8 +4157,8 @@ native SetUnitBaseMissileArcById 						takes integer unitTypeId, integer attackI
 native GetUnitBaseSelectionScaleById 					takes integer unitTypeId returns real
 native SetUnitBaseSelectionScaleById 					takes integer unitTypeId, real realValue returns nothing
 
-native GetHeroBasePrimaryStat 							takes unit whichUnit returns integer
-native SetHeroBasePrimaryStat 							takes unit whichUnit, integer statIndex returns nothing
+native GetHeroBasePrimaryStat 							takes unit whichUnit returns heroattribute
+native SetHeroBasePrimaryStat 							takes unit whichUnit, heroattribute whichHeroAttribute returns nothing
 native GetUnitBaseGoldCost 								takes unit whichUnit returns integer
 native SetUnitBaseGoldCost 								takes unit whichUnit, integer goldCost returns nothing
 native GetUnitBaseDaySight 								takes unit whichUnit returns real
@@ -4254,10 +4264,10 @@ native SetUnitAttackState 								takes unit whichUnit, integer atttackIndex, in
 native UnitCancelCurrentAttackByIndex 					takes unit whichUnit, integer atttackIndex returns integer
 native UnitResetAttackCooldownByIndex 					takes unit whichUnit, integer atttackIndex returns boolean
 native UnitAddExtraAttackByIndex 						takes unit whichUnit, integer atttackIndex returns boolean
-native GetUnitAttackTypeByIndex 						takes unit whichUnit, integer atttackIndex returns integer
-native SetUnitAttackTypeByIndex 						takes unit whichUnit, integer atttackIndex, integer attackType returns nothing
-native GetUnitWeaponTypeByIndex 						takes unit whichUnit, integer atttackIndex returns integer
-native SetUnitWeaponTypeByIndex 						takes unit whichUnit, integer atttackIndex, integer weaponType returns nothing
+native GetUnitAttackTypeByIndex 						takes unit whichUnit, integer atttackIndex returns attacktype
+native SetUnitAttackTypeByIndex 						takes unit whichUnit, integer atttackIndex, attacktype whichAttackType returns nothing
+native GetUnitWeaponTypeByIndex 						takes unit whichUnit, integer atttackIndex returns weapontype
+native SetUnitWeaponTypeByIndex 						takes unit whichUnit, integer atttackIndex, weapontype whichWeaponType returns nothing
 native GetUnitWeaponSoundByIndex 						takes unit whichUnit, integer atttackIndex returns integer
 native SetUnitWeaponSoundByIndex 						takes unit whichUnit, integer atttackIndex, integer weaponSound returns nothing
 native GetUnitBaseDamageByIndex 						takes unit whichUnit, integer atttackIndex returns integer
@@ -4302,8 +4312,8 @@ native GetUnitMaxMana 									takes unit whichUnit returns real
 native SetUnitMaxMana 									takes unit whichUnit, real maxMana returns nothing
 native GetUnitManaRegen 								takes unit whichUnit returns real
 native SetUnitManaRegen 								takes unit whichUnit, real manaRegen returns nothing
-native GetUnitPrimaryStat 								takes unit whichUnit returns integer
-native SetUnitPrimaryStat 								takes unit whichUnit, integer primaryStatIndex returns nothing
+native GetUnitPrimaryStat 								takes unit whichUnit returns heroattribute
+native SetUnitPrimaryStat 								takes unit whichUnit, heroattribute whichHeroAttribute returns nothing
 native SetUnitModel 									takes unit whichUnit, string modelName returns nothing
 native GetUnitMoveAIType 								takes unit whichUnit returns integer
 native SetUnitMoveAIType 								takes unit whichUnit, integer moveAIType returns nothing
@@ -4710,6 +4720,81 @@ native SetItemAnimationByIndex 							takes item whichItem, integer animIndex re
 native SetItemAnimation 								takes item whichItem, string animation returns nothing
 native QueueItemAnimationByIndex 						takes item whichItem, integer animIndex returns nothing
 native QueueItemAnimation 								takes item whichItem, string animation returns nothing
+//
+
+//============================================================================
+// Missile API
+//
+native KillMissile                       		takes missile whichMissile returns nothing
+native IsMissileVisible                       	takes missile whichMissile returns boolean
+native SetMissileVisibility                   	takes missile whichMissile, boolean visibility returns nothing
+native GetMissileX                            	takes missile whichMissile returns real
+native SetMissileX                            	takes missile whichMissile, real x returns nothing
+native GetMissileY                            	takes missile whichMissile returns real
+native SetMissileY                            	takes missile whichMissile, real y returns nothing
+native GetMissileZ                            	takes missile whichMissile returns real
+native SetMissileZ                            	takes missile whichMissile, real z returns nothing
+native GetMissileHeight                       	takes missile whichMissile returns real
+native SetMissileHeight                       	takes missile whichMissile, real height returns nothing
+native GetMissilePositionLocation             	takes missile whichMissile returns location
+native SetMissilePositionWithZ                	takes missile whichMissile, real x, real y, real z returns nothing
+native SetMissilePosition                     	takes missile whichMissile, real x, real y returns nothing
+native SetMissilePositionLocation             	takes missile whichMissile, location loc returns nothing
+native GetMissileScale                        	takes missile whichMissile returns real
+native SetMissileScale                        	takes missile whichMissile, real scale returns nothing
+native GetMissileTimeScale                    	takes missile whichMissile returns real
+native SetMissileTimeScale                    	takes missile whichMissile, real timescale returns nothing
+native GetMissileColour                       	takes missile whichMissile returns integer
+native SetMissileColour                       	takes missile whichMissile, integer colour returns boolean
+native SetMissileAlpha                        	takes missile whichMissile, integer alpha returns boolean
+native SetMissileVertexColour                 	takes missile whichMissile, integer red, integer green, integer blue, integer alpha returns boolean
+native SetMissileAnimationWithRarityByIndex   	takes missile whichMissile, integer animIndex, raritycontrol rarity returns nothing
+native SetMissileAnimationWithRarity          	takes missile whichMissile, string animation, raritycontrol rarity returns nothing
+native SetMissileAnimationByIndex             	takes missile whichMissile, integer animIndex returns nothing
+native SetMissileAnimation                    	takes missile whichMissile, string animation returns nothing
+native QueueMissileAnimationByIndex           	takes missile whichMissile, integer animIndex returns nothing
+native QueueMissileAnimation                  	takes missile whichMissile, string animation returns nothing
+native ResetMissileMatrix                   	takes missile whichMissile returns nothing
+native SetMissileOrientationEx                	takes missile whichMissile, real yaw, real pitch, real roll, integer eulerOrder returns boolean
+native GetMissileYaw                          	takes missile whichMissile returns real
+native SetMissileYaw                          	takes missile whichMissile, real yaw returns boolean
+native GetMissileFacing                       	takes missile whichMissile returns real
+native SetMissileFacing                       	takes missile whichMissile, real facing returns boolean
+native GetMissilePitch                        	takes missile whichMissile returns real
+native SetMissilePitch                        	takes missile whichMissile, real pitch returns boolean
+native GetMissileRoll                         	takes missile whichMissile returns real
+native SetMissileRoll                         	takes missile whichMissile, real roll returns boolean
+native SetMissileOrientation                  	takes missile whichMissile, real yaw, real pitch, real roll returns nothing
+native SetMissileModel                        	takes missile whichMissile, string modelName returns nothing
+native SetMissileModelEx                      	takes missile whichMissile, string modelName, integer playerColour returns nothing
+
+native GetMissileSource							takes missile whichMissile returns unit
+native SetMissileSource							takes missile whichMissile, unit whichUnit returns nothing
+native GetMissileTarget							takes missile whichMissile returns widget
+native SetMissileTarget							takes missile whichMissile, widget whichWidget returns nothing
+native GetMissileAttackType 					takes missile whichMissile returns attacktype
+native SetMissileAttackType 					takes missile whichMissile, attacktype whichAttackType returns nothing
+native GetMissileDamage 						takes missile whichMissile returns real
+native SetMissileDamage 						takes missile whichMissile, real damage returns nothing
+native GetMissileSpeed 							takes missile whichMissile returns real
+native SetMissileSpeed 							takes missile whichMissile, real speed returns nothing
+native GetMissileArc 							takes missile whichMissile returns real
+native SetMissileArc 							takes missile whichMissile, real arc returns nothing
+native GetMissileWeaponType 					takes missile whichMissile returns weapontype
+native SetMissileWeaponType 					takes missile whichMissile, weapontype whichWeaponType returns nothing
+native GetMissileDamageType 					takes missile whichMissile returns damagetype
+native SetMissileDamageType 					takes missile whichMissile, damagetype whichDamageType returns nothing
+native GetMissileDamageFlags 					takes missile whichMissile returns integer
+native SetMissileDamageFlags 					takes missile whichMissile, integer flags returns nothing
+
+native SaveMissileHandle						takes hashtable whichHashtable, integer parentKey, integer childKey, missile whichMissile returns boolean
+native LoadMissileHandle						takes hashtable whichHashtable, integer parentKey, integer childKey returns missile
+
+native GetTriggerMissile						takes nothing returns missile
+native GetTriggerMissileSource					takes nothing returns unit
+native GetTriggerMissileTarget					takes nothing returns unit
+
+native TriggerRegisterPlayerMissileEvent		takes trigger whichTrigger, player whichPlayer, playermissileevent whichMissileEvent returns event
 //
 
 //============================================================================
