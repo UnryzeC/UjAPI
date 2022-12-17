@@ -21,6 +21,7 @@ type unitcategory                   					extends handle
 type pathingflag                    					extends handle
 type timetype											extends handle
 type variabletype										extends handle
+type playermissileevent    								extends eventid
 
 constant native ConvertAnimType             			takes integer i returns animtype
 constant native ConvertSubAnimType          			takes integer i returns subanimtype
@@ -138,6 +139,12 @@ globals
 
 	constant unitevent 					EVENT_UNIT_DAMAGING                              			= ConvertUnitEvent(314)
 
+    //===================================================
+    // For use with TriggerRegisterPlayerMissileEvent
+    //===================================================
+
+	constant playermissileevent			EVENT_PLAYER_MISSILE_LAUNCH									= ConvertPlayerMissileEvent(600)
+	constant playermissileevent			EVENT_PLAYER_MISSILE_HIT									= ConvertPlayerMissileEvent(601)
 
 //===================================================
 // Custom UI API constants
@@ -2279,7 +2286,7 @@ native SetUnitMaterialTexture 							takes unit whichUnit, string textureName, i
 native SetUnitTexture 									takes unit whichUnit, string textureName, integer textureIndex returns nothing
 native SetUnitReplaceableTexture 						takes unit whichUnit, string textureName, integer textureIndex returns nothing
 native GetUnitMoveAIType 								takes unit whichUnit returns integer
-native SetUnitMoveAIType 								takes unit whichUnit, integer moveAIType returns nothing
+native SetUnitMoveAIType 								takes unit whichUnit, integer moveAIType, boolean flag returns nothing
 native GetUnitMoveType 									takes unit whichUnit returns integer
 native SetUnitMoveType 									takes unit whichUnit, integer moveType returns nothing
 native SetUnitMoveTypeByIndex 							takes unit whichUnit, integer moveIndex returns nothing
@@ -2537,7 +2544,10 @@ native SendSyncData                             		takes string prefix, string da
 native TriggerRegisterPlayerSyncEvent           		takes trigger whichTrigger, player whichPlayer, string prefix, boolean fromServer returns event
 //
 
-// Key Event API
+// Key/KeyEvent API
+native IsKeyPressed										takes oskeytype key returns boolean
+native IsMouseKeyPressed								takes mousebuttontype mouseKey returns boolean
+
 native GetTriggerPlayerKey                      		takes nothing returns oskeytype
 native GetTriggerPlayerMouseButton             			takes nothing returns mousebuttontype
 native GetTriggerPlayerMetaKey                  		takes nothing returns integer
