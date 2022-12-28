@@ -479,6 +479,17 @@ globals
 	constant integer        			META_KEY_WINDOWS            								= 8
 	// To make a "meta key combination" simply add the values you need, so ALT + SHIFT => metaKey = META_KEY_ALT + META_KEY_SHIFT
 
+
+//===================================================
+// Chat Recipient constants
+//===================================================
+
+	constant integer					CHAT_RECIPIENT_ALL											= 0
+	constant integer					CHAT_RECIPIENT_ALLIES										= 1
+	constant integer					CHAT_RECIPIENT_REFEREES										= 2
+	constant integer					CHAT_RECIPIENT_OBSERVERS									= 2
+	constant integer					CHAT_RECIPIENT_PRIVATE										= 3
+
 //===================================================
 // Instanced Object Operation API constants
 //===================================================
@@ -1683,6 +1694,11 @@ native SetMouseScreenPixelPosition             			takes integer x, integer y ret
 native GetMouseWorldX             						takes nothing returns real
 native GetMouseWorldY             						takes nothing returns real
 native GetMouseWorldZ             						takes nothing returns real
+//
+
+// Chat API
+native DisplayChatMessage								takes player whichPlayer, integer recipient, string message returns nothing
+native DisplayTimedChatMessage							takes player whichPlayer, integer recipient, real duration, string message returns nothing
 //
 
 //============================================================================
