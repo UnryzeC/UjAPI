@@ -1673,6 +1673,7 @@ native StringFindLastNotOf								takes string s, string whichString, boolean ca
 //
 
 // Time API
+native GetUjAPIVersion									takes nothing returns string
 native GetSystemTime									takes timetype whichTimeType returns integer
 native GetLocalTime										takes timetype whichTimeType returns integer
 //
