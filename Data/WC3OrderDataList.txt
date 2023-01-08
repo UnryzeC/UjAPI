@@ -1,0 +1,10 @@
+		std::map<uint32_t, std::string_view> COrderMap =
+		{
+			{ '+ord', "COrder" },
+			{ 'ord.', "COrderPoint" },
+			{ 'or.2', "COrderPoint2" },
+			{ 'ordt', "COrderTarget" },
+			{ 'ort2', "COrderTarget2" },
+			{ '+otc', "COrderTrainCancel" },
+			{ '+orc', "COrderReviveCancel" },
+		};
