@@ -3,7 +3,7 @@ enum class Order : uint32_t
     smart = 851971,
     stop = 851972,
     stunned = 851973,
-cmdcancel = 851975,
+    cmdcancel = 851975,
     cmdcancelbuild = 851976,
     cmdcancelrevive = 851977,
     cmdcanceltrain = 851978,
