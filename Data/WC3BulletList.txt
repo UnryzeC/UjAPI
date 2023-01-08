@@ -1,0 +1,6 @@
+		std::map<uint32_t, std::string_view> CBulletMap =
+		{
+			{ '+w3B', "CBulletBase" },
+			{ '+wbu', "CBullet" },
+			{ '+wbp', "CBulletPath" }
+		};
