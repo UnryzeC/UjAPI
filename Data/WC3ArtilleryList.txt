@@ -1,0 +1,11 @@
+		std::map<uint32_t, std::string_view> CArtilleryMap =
+		{
+			{ 'RNvc', "CArtilleryVolcano" },
+			{ 'Mpts', "CArtilleryPlagueToss" },
+			{ 'RNcs', "CArtilleryClusterRockets" },
+			{ 'Rfsh', "CArtilleryFragShards" },
+			{ 'Rbof', "CArtilleryBallsOfFire" },
+			{ 'Rfrb', "CArtilleryFrostBreath" },
+			{ 'B-Ar', "CArtillery" },
+			{ 'B-Al', "CArtilleryLine" },
+		};
