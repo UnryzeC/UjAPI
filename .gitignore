@@ -1,5 +1,19 @@
 # Disable Download of certain files
-Data/WC3OrdersList.txt
+TypeData/WC3AIDataList.txt
+TypeData/WC3AbilityDataList.txt
+TypeData/WC3ArtilleryList.txt
+TypeData/WC3BuffList.txt
+TypeData/WC3BulletList.txt
+TypeData/WC3EventDataList.txt
+TypeData/WC3EventRegList.txt
+TypeData/WC3HandleList.txt
+TypeData/WC3MissileList.txt
+TypeData/WC3OrderDataList.txt
+TypeData/WC3OrdersList.txt
+TypeData/WC3SystemDataList.txt
+TypeData/WC3TaskList.txt
+TypeData/WC3UpgradeDataList.txt
+TypeData/WC3XEffectListData.txt
 
 # Prerequisites
 *.someFileExtToBlock
