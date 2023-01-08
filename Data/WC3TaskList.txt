@@ -1,0 +1,14 @@
+		std::map<uint32_t, std::string_view> CTaskMap =
+		{
+			{ 'task', "CTask" },
+			{ 'tskP', "CTaskParam" },
+			{ 'tskR', "CTaskRotate" },
+			{ 'tskA', "CTaskAction" },
+			{ 'tskO', "CTaskOrderParam" },
+			{ 'tsk.', "CTaskPoint" },
+			{ 'tk.2', "CTaskPoint2" },
+			{ 'tk.t', "CTaskPointAndTarget" },
+			{ 'tskt', "CTaskTarget" },
+			{ 'tkt2', "CTaskTarget2" },
+			{ 'tskg', "CTaskGhost" },
+		};
