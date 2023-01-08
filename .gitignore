@@ -1,0 +1,6 @@
+# Disable Download of certain files
+Data/WC3OrdersList.txt
+
+# Prerequisites
+*.someFileExtToBlock
+
