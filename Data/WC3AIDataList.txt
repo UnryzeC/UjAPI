@@ -1,0 +1,10 @@
+		std::map<uint32_t, std::string_view> CAIDataMap =
+		{
+			{ 'AI-1', "CCompAI" },
+			{ 'AIcs', "CCreepSpot" },
+			{ 'AIts', "CTownSpot" },
+			{ 'AItr', "CThreadAI" },
+			{ 'AIgp', "CGuardPost" },
+			{ 'AI-U', "CUnitAI" },
+			{ 'AI-C', "CCaptainAI" },
+		};
