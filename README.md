@@ -15,7 +15,8 @@ Repository dedicated to Unryze Jass API, library that enhances Warcraft 3 with n
 
 Reserved for in-depth explanation...
 
-### Supported patches
+## Supported patches
+
 * 1.24e
 * 1.26a
 * 1.27a
@@ -23,6 +24,7 @@ Reserved for in-depth explanation...
 * 1.28f
 
 ## Features
+
 1. Custom Launcher with AutoUpdater.
 2. Multi-Window.
 3. Lua support.
