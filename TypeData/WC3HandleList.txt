@@ -55,4 +55,6 @@
 			{ '+trg', "CTriggerWar3" },
 			{ '+tac', "CTriggerAction" },
 			{ 'tcnd', "CTriggerCondition" },
+			{ '+frm', "CFrameWar3" },
+			{ '+fld', "CDataFieldWar3" },
 		};
