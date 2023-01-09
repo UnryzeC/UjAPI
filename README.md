@@ -29,15 +29,25 @@ Reserved for in-depth explanation...
 
 ### 1. TBD:
 
-TBD
+1. Download and Extract to a separate folder.
+2. Launch UjAPI.exe, configure path to Warcraft 3 and World Editor.
+3. Use "Launch" button for Warcraft 3 or World Editor.
+4. Enjoy.
 
 ## Credits
 
 ### Creator/Developer:
 * Unryze (me) - creating and maintaining UjAPI.
 
+### Additonal Thanks To:
+* Ev3nt
+* Symmetra
+
 ### Testers:
-* TBD
+* Daichi
+* N1ghtSiren
+* Nazarpunk
+* rsfghd
 
 ## FAQ
 
