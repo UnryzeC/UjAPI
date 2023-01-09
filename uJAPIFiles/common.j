@@ -1270,6 +1270,7 @@ globals
 	constant abilityintegerfield 		ABILITY_IF_BUTTON_HOTKEY_RESEARCH							= ConvertAbilityIntegerField('auhk')
 	constant abilityintegerfield 		ABILITY_IF_BUTTON_POSITION_RESEARCH_X	  					= ConvertAbilityIntegerField('arpx')
 	constant abilityintegerfield 		ABILITY_IF_BUTTON_POSITION_RESEARCH_Y	  					= ConvertAbilityIntegerField('arpy')
+	constant abilityintegerfield 		ABILITY_IF_BUTTON_HOTKEY_ALL								= ConvertAbilityIntegerField('ahtk') // Set only
 	constant abilityintegerfield 		ABILITY_IF_MISSILE_SPEED				   					= ConvertAbilityIntegerField('amsp')
 	constant abilityintegerfield 		ABILITY_IF_TARGET_ATTACHMENTS			  					= ConvertAbilityIntegerField('atac')
 	constant abilityintegerfield 		ABILITY_IF_CASTER_ATTACHMENTS			  					= ConvertAbilityIntegerField('acac')
@@ -1281,10 +1282,12 @@ globals
 	constant abilitybooleanfield 		ABILITY_BF_HERO_ABILITY										= ConvertAbilityBooleanField('aher') // Get only
 	constant abilitybooleanfield 		ABILITY_BF_ITEM_ABILITY										= ConvertAbilityBooleanField('aite')
 	constant abilitybooleanfield 		ABILITY_BF_CHECK_DEPENDENCIES			  					= ConvertAbilityBooleanField('achd')
+	constant abilitybooleanfield 		ABILITY_BF_HOMING											= ConvertAbilityBooleanField('amho')
 
 	constant abilityrealfield 			ABILITY_RF_ARF_MISSILE_ARC									= ConvertAbilityRealField('amac')
 
 	constant abilitystringfield 		ABILITY_SF_NAME							 					= ConvertAbilityStringField('anam') // Get Only
+	constant abilitystringfield 		ABILITY_SF_ICON_NORMAL										= ConvertAbilityStringField('aart')
 	constant abilitystringfield 		ABILITY_SF_ICON_ACTIVATED				   					= ConvertAbilityStringField('auar')
 	constant abilitystringfield 		ABILITY_SF_ICON_RESEARCH									= ConvertAbilityStringField('arar')
 	constant abilitystringfield 		ABILITY_SF_EFFECT_SOUND					 					= ConvertAbilityStringField('aefs')
@@ -2005,29 +2008,43 @@ globals
 	constant buffstringfield 			BUFF_SF_TOOLTIP_NORMAL_EXTENDED					 			= ConvertBuffStringField('fube')
 
 	// Item
-	constant itemintegerfield 			ITEM_IF_LEVEL				 								= ConvertItemIntegerField('ilev')
-	constant itemintegerfield 			ITEM_IF_NUMBER_OF_CHARGES	 								= ConvertItemIntegerField('iuse')
-	constant itemintegerfield 			ITEM_IF_COOLDOWN_GROUP										= ConvertItemIntegerField('icid')
-	constant itemintegerfield 			ITEM_IF_MAX_HIT_POINTS										= ConvertItemIntegerField('ihtp')
-	constant itemintegerfield 			ITEM_IF_HIT_POINTS											= ConvertItemIntegerField('ihpc')
-	constant itemintegerfield 			ITEM_IF_PRIORITY			  								= ConvertItemIntegerField('ipri')
-	constant itemintegerfield 			ITEM_IF_ARMOR_TYPE											= ConvertItemIntegerField('iarm')
+	constant itemintegerfield 			ITEM_IF_TINTING_COLOR	 									= ConvertItemIntegerField('icol')
 	constant itemintegerfield 			ITEM_IF_TINTING_COLOR_RED	 								= ConvertItemIntegerField('iclr')
 	constant itemintegerfield 			ITEM_IF_TINTING_COLOR_GREEN   								= ConvertItemIntegerField('iclg')
 	constant itemintegerfield 			ITEM_IF_TINTING_COLOR_BLUE									= ConvertItemIntegerField('iclb')
 	constant itemintegerfield 			ITEM_IF_TINTING_COLOR_ALPHA   								= ConvertItemIntegerField('ical')
+	constant itemintegerfield 			ITEM_IF_ARMOR_TYPE											= ConvertItemIntegerField('iarm')
+	constant itemintegerfield 			ITEM_IF_COOLDOWN_GROUP										= ConvertItemIntegerField('icid')
+	constant itemintegerfield 			ITEM_IF_GOLD_COST											= ConvertItemIntegerField('igol')
+	constant itemintegerfield 			ITEM_IF_HIT_POINTS											= ConvertItemIntegerField('ihpc')
+	constant itemintegerfield 			ITEM_IF_LEVEL_UNCLASSIFIED				 					= ConvertItemIntegerField('ilvo')
+	constant itemintegerfield 			ITEM_IF_LEVEL				 								= ConvertItemIntegerField('ilev')
+	constant itemintegerfield 			ITEM_IF_LUMBER_COST											= ConvertItemIntegerField('ilum')
+	constant itemintegerfield 			ITEM_IF_NUMBER_OF_CHARGES	 								= ConvertItemIntegerField('iuse')
+	constant itemintegerfield 			ITEM_IF_PRIORITY			  								= ConvertItemIntegerField('ipri')
+	constant itemintegerfield 			ITEM_IF_STOCK_MAXIMUM										= ConvertItemIntegerField('isto')
+	constant itemintegerfield 			ITEM_IF_STOCK_REPLENISH_INTERVAL							= ConvertItemIntegerField('istr')
+	constant itemintegerfield 			ITEM_IF_STOCK_START_DELAY									= ConvertItemIntegerField('isst')
+	constant itemintegerfield 			ITEM_IF_MAX_HIT_POINTS										= ConvertItemIntegerField('ihtp')
 
 	constant itemrealfield 				ITEM_RF_SCALING_VALUE										= ConvertItemRealField('isca')
+	constant itemrealfield 				ITEM_RF_SELECTION_SIZE										= ConvertItemRealField('issc')
 
-	constant itembooleanfield 			ITEM_BF_DROPPED_WHEN_CARRIER_DIES		 					= ConvertItemBooleanField('idrp')
-	constant itembooleanfield 			ITEM_BF_CAN_BE_DROPPED										= ConvertItemBooleanField('idro')
-	constant itembooleanfield 			ITEM_BF_PERISHABLE											= ConvertItemBooleanField('iper')
-	constant itembooleanfield 			ITEM_BF_INCLUDE_AS_RANDOM_CHOICE		  					= ConvertItemBooleanField('iprn')
-	constant itembooleanfield 			ITEM_BF_USE_AUTOMATICALLY_WHEN_ACQUIRED   					= ConvertItemBooleanField('ipow')
-	constant itembooleanfield 			ITEM_BF_CAN_BE_SOLD_TO_MERCHANTS		  					= ConvertItemBooleanField('ipaw')
 	constant itembooleanfield 			ITEM_BF_ACTIVELY_USED					 					= ConvertItemBooleanField('iusa')
+	constant itembooleanfield 			ITEM_BF_CAN_BE_DROPPED										= ConvertItemBooleanField('idro')
+	constant itembooleanfield 			ITEM_BF_CAN_BE_SOLD_TO_MERCHANTS		  					= ConvertItemBooleanField('ipaw')
+	constant itembooleanfield 			ITEM_BF_DROPPED_WHEN_CARRIER_DIES		 					= ConvertItemBooleanField('idrp')
+	constant itembooleanfield 			ITEM_BF_IGNORE_COOLDOWN		  								= ConvertItemBooleanField('iicd')
+	constant itembooleanfield 			ITEM_BF_INCLUDE_AS_RANDOM_CHOICE		  					= ConvertItemBooleanField('iprn')
+	constant itembooleanfield 			ITEM_BF_PERISHABLE											= ConvertItemBooleanField('iper')
+	constant itembooleanfield 			ITEM_BF_USE_AUTOMATICALLY_WHEN_ACQUIRED   					= ConvertItemBooleanField('ipow')
+	constant itembooleanfield 			ITEM_BF_VALID_FOR_TRANSFORMATION   							= ConvertItemBooleanField('imor')
 
+	constant itemstringfield 			ITEM_SF_NAME						 						= ConvertItemStringField('unam')
+	constant itemstringfield 			ITEM_SF_DESCRIPTION						 					= ConvertItemStringField('ides')
 	constant itemstringfield 			ITEM_SF_MODEL_USED						 					= ConvertItemStringField('ifil')
+	constant itemstringfield 			ITEM_SF_TOOLTIP_NORMAL						 				= ConvertItemStringField('utip')
+	constant itemstringfield 			ITEM_SF_TOOLTIP_EXTENDED						 			= ConvertItemStringField('utub')
 
 	// Unit
 	constant unitintegerfield 			UNIT_IF_DEFENSE_TYPE						  				= ConvertUnitIntegerField('udty')
@@ -2052,7 +2069,6 @@ globals
 	constant unitintegerfield 			UNIT_IF_GOLD_BOUNTY_AWARDED_NUMBER_OF_DICE					= ConvertUnitIntegerField('ubdi')
 	constant unitintegerfield 			UNIT_IF_GOLD_BOUNTY_AWARDED_BASE			  				= ConvertUnitIntegerField('ubba')
 	constant unitintegerfield 			UNIT_IF_GOLD_BOUNTY_AWARDED_SIDES_PER_DIE	 				= ConvertUnitIntegerField('ubsi')
-	constant unitintegerfield 			UNIT_IF_LUMBER_COST											= ConvertUnitIntegerField('ulum')
 	constant unitintegerfield 			UNIT_IF_LUMBER_BOUNTY_AWARDED_NUMBER_OF_DICE  				= ConvertUnitIntegerField('ulbd')
 	constant unitintegerfield 			UNIT_IF_LUMBER_BOUNTY_AWARDED_BASE							= ConvertUnitIntegerField('ulba')
 	constant unitintegerfield 			UNIT_IF_LUMBER_BOUNTY_AWARDED_SIDES_PER_DIE   				= ConvertUnitIntegerField('ulbs')
@@ -2060,6 +2076,9 @@ globals
 	constant unitintegerfield 			UNIT_IF_FORMATION_RANK										= ConvertUnitIntegerField('ufor')
 	constant unitintegerfield 			UNIT_IF_ORIENTATION_INTERPOLATION			 				= ConvertUnitIntegerField('uori')
 	constant unitintegerfield 			UNIT_IF_ELEVATION_SAMPLE_POINTS			   					= ConvertUnitIntegerField('uept')
+	constant unitintegerfield 			UNIT_IF_PROPER_NAMES_COUNT			   						= ConvertUnitIntegerField('upru') // Get Only
+	
+	constant unitintegerfield 			UNIT_IF_TINTING_COLOR					 					= ConvertUnitIntegerField('ucol')
 	constant unitintegerfield 			UNIT_IF_TINTING_COLOR_RED					 				= ConvertUnitIntegerField('uclr')
 	constant unitintegerfield 			UNIT_IF_TINTING_COLOR_GREEN				   					= ConvertUnitIntegerField('uclg')
 	constant unitintegerfield 			UNIT_IF_TINTING_COLOR_BLUE									= ConvertUnitIntegerField('uclb')
@@ -2094,6 +2113,8 @@ globals
 	constant unitrealfield 				UNIT_RF_ANIMATION_WALK_SPEED					 			= ConvertUnitRealField('uwal')
 	constant unitrealfield 				UNIT_RF_DEFENSE								  				= ConvertUnitRealField('udfc')
 	constant unitrealfield 				UNIT_RF_SIGHT_RADIUS							 			= ConvertUnitRealField('usir')
+	constant unitrealfield 				UNIT_RF_SIGHT_RADIUS_DAY							 		= ConvertUnitRealField('usid')
+	constant unitrealfield 				UNIT_RF_SIGHT_RADIUS_NIGHT							 		= ConvertUnitRealField('usin')
 	constant unitrealfield 				UNIT_RF_PRIORITY								 			= ConvertUnitRealField('upri')
 	constant unitrealfield 				UNIT_RF_SPEED												= ConvertUnitRealField('umvc')
 	constant unitrealfield 				UNIT_RF_OCCLUDER_HEIGHT						  				= ConvertUnitRealField('uocc')
@@ -2118,7 +2139,10 @@ globals
 	constant unitbooleanfield 			UNIT_BF_HAS_WATER_SHADOW					  				= ConvertUnitBooleanField('ushr')
 
 	constant unitstringfield 			UNIT_SF_NAME				   								= ConvertUnitStringField('unam')
+	constant unitstringfield 			UNIT_SF_TOOLTIP_NORMAL						 				= ConvertUnitStringField('utip')
+	constant unitstringfield 			UNIT_SF_TOOLTIP_EXTENDED						 			= ConvertUnitStringField('utub')
 	constant unitstringfield 			UNIT_SF_PROPER_NAMES		   								= ConvertUnitStringField('upro')
+	constant unitstringfield 			UNIT_SF_PROPER_NAME		   									= ConvertUnitStringField('uprn') // Get Only
 	constant unitstringfield 			UNIT_SF_GROUND_TEXTURE		 								= ConvertUnitStringField('uubs')
 	constant unitstringfield 			UNIT_SF_SHADOW_IMAGE_UNIT	  								= ConvertUnitStringField('ushu')
 	constant unitstringfield 			UNIT_SF_HERO_ABILITY_LIST				   					= ConvertUnitStringField('uhab')
@@ -2992,7 +3016,7 @@ native		  SelectUnit		  						takes unit whichUnit, boolean flag returns nothing
 
 native		  GetUnitPointValue	   						takes unit whichUnit returns integer
 native		  GetUnitPointValueByType 					takes integer unitType returns integer
-//native		SetUnitPointValueByType 				takes integer unitType, integer newPointValue returns nothing
+native 		  SetUnitPointValueByType 					takes integer unitType, integer newPointValue returns nothing
 
 native		  UnitAddItem			 					takes unit whichUnit, item whichItem returns boolean
 native		  UnitAddItemById		 					takes unit whichUnit, integer itemId returns item
@@ -3026,7 +3050,7 @@ constant native GetUnitFoodUsed	 						takes unit whichUnit returns integer
 constant native GetUnitFoodMade	 						takes unit whichUnit returns integer
 constant native GetFoodMade		 						takes integer unitId returns integer
 constant native GetFoodUsed		 						takes integer unitId returns integer
-native		  SetUnitUseFood	  						takes unit whichUnit, boolean useFood returns nothing
+native 			SetUnitUseFood	  						takes unit whichUnit, boolean useFood returns nothing
 
 constant native GetUnitRallyPoint		   				takes unit whichUnit returns location
 constant native GetUnitRallyUnit						takes unit whichUnit returns unit
@@ -4103,6 +4127,18 @@ native DisplayChatMessage								takes player whichPlayer, integer recipient, st
 native DisplayTimedChatMessage							takes player whichPlayer, integer recipient, real duration, string message returns nothing
 //
 
+// Handle API
+// This function is meant mostly for debugging, for example, to get all units in the map pass '+w3u' as agentBaseTypeId, '+ply' for players, '+mdb' for multiboards, '+frm' for frames accessed/created from jass/lua.
+native GetHandleReferenceCount							takes handle whichHandle returns integer
+native GetHandleBaseTypeId								takes handle whichHandle returns integer // this returns '+w3u' from unit, if it was passed as handle, and so on.
+native GetHandleBaseTypeName							takes handle whichHandle returns string // this returns CUnit from unit, if it was passed as handle, and so on.
+
+native GetFilterHandle									takes nothing returns handle
+native GetEnumHandle									takes nothing returns handle
+
+native EnumHandlesOfType								takes integer handleBaseTypeId, boolexpr filter, code handlerFunc returns nothing
+//
+
 //============================================================================
 // Force API
 //
@@ -4131,23 +4167,24 @@ native GroupRemoveGroupEx				   				takes group destGroup, group sourceGroup ret
 //
 
 native CreateImageSimple								takes string file, real sizeX, real sizeY, real posX, real posY, real posZ, integer imageType returns image
-native GetImageType										takes image whichImage returns integer	
-native GetImageX										takes image whichImage returns real	
-native SetImageX										takes image whichImage, real sizeX returns nothing	
-native GetImageY										takes image whichImage returns real	
-native SetImageY										takes image whichImage, real sizeY returns nothing	
-native GetImageZ										takes image whichImage returns real	
-native SetImageZ										takes image whichImage, real sizeZ returns nothing	
+native GetImageType										takes image whichImage returns integer
+native GetImageX										takes image whichImage returns real
+native SetImageX										takes image whichImage, real sizeX returns nothing
+native GetImageY										takes image whichImage returns real
+native SetImageY										takes image whichImage, real sizeY returns nothing
+native GetImageZ										takes image whichImage returns real
+native SetImageZ										takes image whichImage, real sizeZ returns nothing
 native GetImagePositionLocation							takes image whichImage returns location
 native SetImagePositionLocation							takes image whichImage, location whichLocation returns nothing
-native GetImageOriginX									takes image whichImage returns real	
-native SetImageOriginX									takes image whichImage, real originX returns nothing	
-native GetImageOriginY									takes image whichImage returns real	
-native SetImageOriginY									takes image whichImage, real originY returns nothing	
-native SetImageOrigin									takes image whichImage, real originX, real originY returns nothing	
-native GetImageSizeX									takes image whichImage returns real	
-native SetImageSizeX									takes image whichImage, real sizeX returns nothing	
-native GetImageSizeY									takes image whichImage returns real	
+native GetImageOriginX									takes image whichImage returns real
+native SetImageOriginX									takes image whichImage, real originX returns nothing
+native GetImageOriginY									takes image whichImage returns real
+native SetImageOriginY									takes image whichImage, real originY returns nothing
+native SetImageOrigin									takes image whichImage, real origin returns nothing
+native SetImageOriginEx									takes image whichImage, real originX, real originY returns nothing
+native GetImageSizeX									takes image whichImage returns real
+native SetImageSizeX									takes image whichImage, real sizeX returns nothing
+native GetImageSizeY									takes image whichImage returns real
 native SetImageSizeY									takes image whichImage, real sizeY returns nothing
 native SetImageSize										takes image whichImage, real size returns nothing
 native SetImageSizeEx									takes image whichImage, real sizeX, real sizeY returns nothing
@@ -4163,54 +4200,6 @@ native SetImageTexture									takes image whichImage, string imagePath returns 
 
 //============================================================================
 // Ability API
-//
-
-// Base API
-native GetAbilityBaseManaCostById 						takes integer aid, integer level returns integer
-native SetAbilityBaseManaCostById 						takes integer aid, integer level, integer manaCost returns nothing
-native GetAbilityBaseCooldownById 						takes integer aid, integer level returns real
-native SetAbilityBaseCooldownById 						takes integer aid, integer level, real cooldown returns nothing
-native GetAbilityBaseHotkeyById 						takes integer aid returns oskeytype
-native SetAbilityBaseHotkeyById 						takes integer aid, oskeytype whichKey returns nothing
-native GetAbilityBaseUnHotkeyById 						takes integer aid returns oskeytype
-native SetAbilityBaseUnHotkeyById 						takes integer aid, oskeytype whichKey returns nothing
-native GetAbilityBaseResearchHotkeyById 				takes integer aid returns oskeytype
-native SetAbilityBaseResearchHotkeyById 				takes integer aid, oskeytype whichKey returns nothing
-native GetAbilityBaseEffectSoundById 					takes integer aid returns string
-native SetAbilityBaseEffectSoundById 					takes integer aid, string text returns nothing
-native GetAbilityBaseGlobalMessageById 					takes integer aid returns string
-native SetAbilityBaseGlobalMessageById 					takes integer aid, string text returns nothing
-native GetAbilityBaseGlobalSoundById 					takes integer aid returns string
-native SetAbilityBaseGlobalSoundById 					takes integer aid, string text returns nothing
-native GetAbilityBaseButtonXById 						takes integer aid returns integer
-native SetAbilityBaseButtonXById 						takes integer aid, integer positionX returns nothing
-native GetAbilityBaseButtonYById 						takes integer aid returns integer
-native SetAbilityBaseButtonYById 						takes integer aid, integer positionY returns nothing
-native GetAbilityBaseUnButtonXById 						takes integer aid returns integer
-native SetAbilityBaseUnButtonXById 						takes integer aid, integer positionX returns nothing
-native GetAbilityBaseUnButtonYById 						takes integer aid returns integer
-native SetAbilityBaseUnButtonYById 						takes integer aid, integer positionY returns nothing
-native GetAbilityBaseResearchButtonXById 				takes integer aid returns integer
-native SetAbilityBaseResearchButtonXById 				takes integer aid, integer positionX returns nothing
-native GetAbilityBaseResearchButtonYById 				takes integer aid returns integer
-native SetAbilityBaseResearchButtonYById 				takes integer aid, integer positionY returns nothing
-native GetAbilityBaseMissileSpeedById 					takes integer aid returns real
-native SetAbilityBaseMissileSpeedById 					takes integer aid, real missileSpeed returns nothing
-native GetAbilityBaseMissileArcById 					takes integer aid returns real
-native SetAbilityBaseMissileArcById 					takes integer aid, real missileArc returns nothing
-native GetAbilityBaseIsMissileHomingById 				takes integer aid returns boolean
-native SetAbilityBaseIsMissileHomingById 				takes integer aid, boolean ishoming returns nothing
-native GetAbilityBaseSpellDetailsById 					takes integer aid returns integer
-native SetAbilityBaseSpellDetailsById 					takes integer aid, integer level returns nothing
-native GetAbilityBaseTipById 							takes integer aid, integer level returns string
-native SetAbilityBaseTipById 							takes integer aid, integer level, string text returns nothing
-native GetAbilityBaseUnTipById 							takes integer aid, integer level returns string
-native SetAbilityBaseUnTipById 							takes integer aid, integer level, string text returns nothing
-native GetAbilityBaseUberTipById 						takes integer aid, integer level returns string
-native SetAbilityBaseUberTipById 						takes integer aid, integer level, string text returns nothing
-native GetAbilityBaseUnUberTipById 						takes integer aid, integer level returns string
-native SetAbilityBaseUnUberTipById 						takes integer aid, integer level, string text returns nothing
-native SetAbilityBaseHotkeyByIdEx 						takes integer aid, oskeytype whichKey returns nothing
 //
 
 // Base Field API
@@ -4305,6 +4294,8 @@ native AddAbilityStringLevelArrayField		  			takes ability whichAbility, ability
 native RemoveAbilityStringLevelArrayField	   			takes ability whichAbility, abilitystringlevelarrayfield whichField, integer level, string value returns boolean
 //
 
+native ResetAbilityFieldData							takes ability whichAbility returns boolean // Restores original ability data, meaning it reverts any and all changes made by Field API. Returns true if reset was needed.
+
 // Normal API
 native GetAbilityOrderId 								takes ability whichAbility returns integer
 native SetAbilityOrderId 								takes ability whichAbility, integer orderId returns boolean // Highly experimental, may be removed if proven unstable.
@@ -4330,6 +4321,7 @@ native GetAbilityCooldownEx 							takes ability whichAbility returns real
 native GetAbilityCooldown 								takes ability whichAbility returns real
 native SetAbilityCooldown 								takes ability whichAbility, real cooldown returns nothing
 native GetAbilityRemainingCooldown 						takes ability whichAbility returns real
+native SetAbilityRemainingCooldown 						takes ability whichAbility, real cooldown returns boolean
 native StartAbilityCooldown 							takes ability whichAbility, real cooldown returns boolean
 native SilenceAbility 									takes ability whichAbility, boolean hide, boolean disable returns nothing
 native UnsilenceAbility 								takes ability whichAbility, boolean show, boolean enable returns nothing
@@ -4404,6 +4396,12 @@ native SetSpecialEffectAnimation						takes effect whichEffect, string animation
 native QueueSpecialEffectAnimationByIndex		   		takes effect whichEffect, integer animIndex returns nothing
 native QueueSpecialEffectAnimation				  		takes effect whichEffect, string animation returns nothing
 native SetSpecialEffectAnimationOffsetPercent 			takes effect whichEffect, real percent returns boolean
+
+native GetTriggerSpecialEffect							takes nothing returns effect
+native GetFilterSpecialEffect							takes nothing returns effect
+native GetEnumSpecialEffect								takes nothing returns effect
+
+native EnumSpecialEffectsInRange						takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
 //
 
 //============================================================================
@@ -4452,6 +4450,12 @@ native SetTrackableAnimation							takes trackable whichTrackable, string animat
 native QueueTrackableAnimationByIndex			   		takes trackable whichTrackable, integer animIndex returns nothing
 native QueueTrackableAnimation					  		takes trackable whichTrackable, string animation returns nothing
 native SetTrackableAnimationOffsetPercent 				takes trackable whichTrackable, real percent returns boolean
+
+native GetTriggerTrackable								takes nothing returns trackable
+native GetFilterTrackable								takes nothing returns trackable
+native GetEnumTrackable									takes nothing returns trackable
+
+native EnumTrackablesInRange							takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
 //
 
 //============================================================================
@@ -4530,67 +4534,12 @@ native SetDestructableAnimationWithRarity 				takes destructable whichDestructab
 native SetDestructableAnimationByIndex 					takes destructable whichDestructable, integer animIndex returns nothing
 native QueueDestructableAnimationByIndex 				takes destructable whichDestructable, integer animIndex returns nothing
 native SetDestructableAnimationOffsetPercent 			takes destructable whichDestructable, real percent returns boolean
+
+native EnumDestructablesInRange							takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
 //
 
 //============================================================================
 // Item API
-//
-
-// Base API
-native GetItemBaseNameById 								takes integer itemId returns string
-native SetItemBaseNameById 								takes integer itemId, string name returns nothing
-native GetItemBaseDescriptionById						takes integer itemId returns string
-native SetItemBaseDescriptionById 						takes integer itemId, string name returns nothing
-native GetItemBaseIconById 								takes integer itemId returns string
-native SetItemBaseIconById 								takes integer itemId, string path returns nothing
-native GetItemBaseHotkeyById 							takes integer itemId returns oskeytype
-native SetItemBaseHotkeyById 							takes integer itemId, oskeytype whichKey returns nothing
-native GetItemBaseTipById 								takes integer itemId returns string
-native SetItemBaseTipById 								takes integer itemId, string tip returns nothing
-native GetItemBaseUberTipById 							takes integer itemId returns string
-native SetItemBaseUberTipById 							takes integer itemId, string tip returns nothing
-native GetItemBaseGoldCostById 							takes integer itemId returns integer
-native SetItemBaseGoldCostById 							takes integer itemId, integer goldcost returns nothing
-native GetItemBaseLumberCostById 						takes integer itemId returns integer
-native SetItemBaseLumberCostById 						takes integer itemId, integer lumbercost returns nothing
-native GetItemBaseStockMaximumById 						takes integer itemId returns integer
-native SetItemBaseStockMaximumById 						takes integer itemId, integer stockMax returns nothing
-native GetItemBaseStockReplenishIntervalById 			takes integer itemId returns real
-native SetItemBaseStockReplenishIntervalById 			takes integer itemId, real replenishInterval returns nothing
-native GetItemBaseStockStartDelayById 					takes integer itemId returns real
-native SetItemBaseStockStartDelayById 					takes integer itemId, real stockStartDelay returns nothing
-native GetItemBasePriorityById 							takes integer itemId returns integer
-native SetItemBasePriorityById 							takes integer itemId, integer priority returns nothing
-native GetItemBaseLevelById 							takes integer itemId returns integer
-native SetItemBaseLevelById 							takes integer itemId, integer level returns nothing
-native GetItemBaseOldLevelById 							takes integer itemId returns integer
-native SetItemBaseOldLevelById 							takes integer itemId, integer oldlevel returns nothing
-native GetItemBaseClassificationById 					takes integer itemId returns integer
-native SetItemBaseClassificationById 					takes integer itemId, integer classifictaionId returns nothing
-native GetItemBaseIsMorphById 							takes integer itemId returns boolean
-native SetItemBaseIsMorphById 							takes integer itemId, boolean flag returns nothing
-native GetItemBaseIsPickRandomById 						takes integer itemId returns boolean
-native SetItemBaseIsPickRandomById 						takes integer itemId, boolean flag returns nothing
-native GetItemBaseChargesById 							takes integer itemId returns integer
-native SetItemBaseChargesById 							takes integer itemId, integer charges returns nothing
-native GetItemBaseCooldownIdById 						takes integer itemId returns integer
-native SetItemBaseCooldownIdById 						takes integer itemId, integer cooldownId returns nothing
-native GetItemBaseIsIgnoreCooldownById 					takes integer itemId returns boolean
-native SetItemBaseIsIgnoreCooldownById 					takes integer itemId, boolean flag returns nothing
-native GetItemBaseIsPowerUpById 						takes integer itemId returns boolean
-native SetItemBaseIsPowerUpById 						takes integer itemId, boolean flag returns nothing
-native GetItemBaseIsPawnableById 						takes integer itemId returns boolean
-native SetItemBaseIsPawnableById 						takes integer itemId, boolean flag returns nothing
-native GetItemBaseIsUsableById 							takes integer itemId returns boolean
-native SetItemBaseIsUsableById 							takes integer itemId, boolean flag returns nothing
-native GetItemBaseIsPerishableById 						takes integer itemId returns boolean
-native SetItemBaseIsPerishableById 						takes integer itemId, boolean flag returns nothing
-native GetItemBaseIsDroppableById 						takes integer itemId returns boolean
-native SetItemBaseIsDroppableById 						takes integer itemId, boolean flag returns nothing
-native GetItemBaseIsDroppableOnDeathById 				takes integer itemId returns boolean
-native SetItemBaseIsDroppableOnDeathById 				takes integer itemId, boolean flag returns nothing
-native GetItemBaseIsSellableById 						takes integer itemId returns boolean
-native SetItemBaseIsSellableById 						takes integer itemId, boolean flag returns nothing
 //
 
 // Base Field API
@@ -4661,64 +4610,13 @@ native SetItemAnimation 								takes item whichItem, string animation returns n
 native QueueItemAnimationByIndex 						takes item whichItem, integer animIndex returns nothing
 native QueueItemAnimation 								takes item whichItem, string animation returns nothing
 native SetItemAnimationOffsetPercent 					takes item whichItem, real percent returns boolean
+
+native EnumItemsInRange									takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
 //
 //
 
 //============================================================================
 // Unit API
-//
-
-// Base API
-native GetUnitBasePrimaryStatById 						takes integer unitTypeId returns heroattribute
-native SetUnitBasePrimaryStatById 						takes integer unitTypeId, heroattribute whichHeroAttribute returns nothing
-native GetUnitBaseGoldCostById 							takes integer unitTypeId returns integer
-native SetUnitBaseGoldCostById 							takes integer unitTypeId, integer goldCost returns nothing
-native GetUnitBaseDaySightById 							takes integer unitTypeId returns real
-native SetUnitBaseDaySightById 							takes integer unitTypeId, real daySight returns nothing
-native GetUnitBaseNightSightById 						takes integer unitTypeId returns real
-native SetUnitBaseNightSightById 						takes integer unitTypeId, real nightSight returns nothing
-native GetUnitBaseColourById 							takes integer unitTypeId returns integer
-native SetUnitBaseColourById 							takes integer unitTypeId, integer colour returns nothing
-native GetUnitBaseColourAById 							takes integer unitTypeId returns integer
-native SetUnitBaseColourAById 							takes integer unitTypeId, integer colourA returns nothing
-native GetUnitBaseColourRById 							takes integer unitTypeId returns integer
-native SetUnitBaseColourRById 							takes integer unitTypeId, integer colourR returns nothing
-native GetUnitBaseColourGById 							takes integer unitTypeId returns integer
-native SetUnitBaseColourGById 							takes integer unitTypeId, integer colourG returns nothing
-native GetUnitBaseColourBById 							takes integer unitTypeId returns integer
-native SetUnitBaseColourBById 							takes integer unitTypeId, integer colourB returns nothing
-native GetUnitBaseNameById 								takes integer unitTypeId returns string
-native SetUnitBaseNameById 								takes integer unitTypeId, string name returns nothing
-native GetUnitBaseProperNameById 						takes integer unitTypeId, integer properNameIndex returns string
-native SetUnitBaseProperNameById 						takes integer unitTypeId, integer properNameIndex, string properName returns nothing
-native GetUnitBaseDescriptionById 						takes integer unitTypeId returns string
-native SetUnitBaseDescriptionById 						takes integer unitTypeId, string name returns nothing
-native GetUnitBaseModelById 							takes integer unitTypeId returns string
-native SetUnitBaseModelById 							takes integer unitTypeId, string modelName returns nothing
-native GetUnitBasePortraitById 							takes integer unitTypeId returns string
-native SetUnitBasePortraitById 							takes integer unitTypeId, string portraitName returns nothing
-native GetUnitBaseHotkeyById 							takes integer unitTypeId returns oskeytype
-native SetUnitBaseHotkeyById 							takes integer unitTypeId, oskeytype whichKey returns nothing
-native GetUnitBaseIconById 								takes integer unitTypeId returns string
-native SetUnitBaseIconById 								takes integer unitTypeId, string name returns nothing
-native GetUnitBaseAwakenTipById 						takes integer unitTypeId returns string
-native SetUnitBaseAwakenTipById 						takes integer unitTypeId, string awakenTip returns nothing
-native GetUnitBaseTipById 								takes integer unitTypeId returns string
-native SetUnitBaseTipById 								takes integer unitTypeId, string tip returns nothing
-native GetUnitBaseUberTipById 							takes integer unitTypeId returns string
-native SetUnitBaseUberTipById 							takes integer unitTypeId, string uberTip returns nothing
-native GetUnitBaseReviveTipById 						takes integer unitTypeId returns string
-native SetUnitBaseReviveTipById 						takes integer unitTypeId, string reviveTip returns nothing
-native GetUnitBaseShadowTexById 						takes integer unitTypeId returns string
-native SetUnitBaseShadowTexById 						takes integer unitTypeId, string shadowTexture returns nothing
-native GetUnitBaseMissileArtById 						takes integer unitTypeId, integer attackIndex returns string
-native SetUnitBaseMissileArtById 						takes integer unitTypeId, integer attackIndex, string missleArt returns nothing
-native GetUnitBaseMissileSpeedById 						takes integer unitTypeId, integer attackIndex returns real
-native SetUnitBaseMissileSpeedById 						takes integer unitTypeId, integer attackIndex, real realValue returns nothing
-native GetUnitBaseMissileArcById 						takes integer unitTypeId, integer attackIndex returns real
-native SetUnitBaseMissileArcById 						takes integer unitTypeId, integer attackIndex, real realValue returns nothing
-native GetUnitBaseSelectionScaleById 					takes integer unitTypeId returns real
-native SetUnitBaseSelectionScaleById 					takes integer unitTypeId, real realValue returns nothing
 //
 
 // Base Field API
@@ -4831,12 +4729,14 @@ native IsUnitGatherer 									takes unit whichUnit returns boolean
 native GetUnitCurrentResources 							takes unit whichUnit returns integer
 native GetUnitCurrentSight 								takes unit whichUnit returns real
 native SetUnitCurrentSight 								takes unit whichUnit, real realValue returns nothing
-native GetUnitNextAttackTimeStampByIndex 				takes unit whichUnit, integer attackIndex returns real
-native SetUnitNextAttackTimeStampByIndex 				takes unit whichUnit, integer attackIndex, real time returns nothing
-native SetUnitAttackState 								takes unit whichUnit, integer attackIndex, integer attackState returns integer
-native UnitCancelCurrentAttackByIndex 					takes unit whichUnit, integer attackIndex returns integer
-native UnitResetAttackCooldownByIndex 					takes unit whichUnit, integer attackIndex returns boolean
-native UnitAddExtraAttackByIndex 						takes unit whichUnit, integer attackIndex returns boolean
+native GetUnitAttackRemainingCooldown 					takes unit whichUnit returns real
+native SetUnitAttackRemainingCooldown 					takes unit whichUnit, real time returns nothing
+native GetUnitAttackRemainingDamagePoint 				takes unit whichUnit returns real
+native SetUnitAttackRemainingDamagePoint 				takes unit whichUnit, real time returns nothing
+native GetUnitAttackRemainingBackswing 					takes unit whichUnit returns real
+native SetUnitAttackRemainingBackswing 					takes unit whichUnit, real time returns nothing
+native UnitResetAttack 									takes unit whichUnit returns boolean
+native UnitFinishAttack 								takes unit whichUnit returns boolean
 native GetUnitAttackTypeByIndex 						takes unit whichUnit, integer attackIndex returns attacktype
 native SetUnitAttackTypeByIndex 						takes unit whichUnit, integer attackIndex, attacktype whichAttackType returns nothing
 native GetUnitWeaponTypeByIndex 						takes unit whichUnit, integer attackIndex returns weapontype
@@ -4929,6 +4829,7 @@ native KillMissile					   					takes missile whichMissile returns nothing
 native LaunchTargetMissile					   			takes missile whichMissile, widget whichWidget returns nothing
 native LaunchMissile					   				takes missile whichMissile returns nothing
 
+native IsMissileAlive					   				takes missile whichMissile returns boolean
 native IsMissileVisible					   				takes missile whichMissile returns boolean
 native SetMissileVisible				   				takes missile whichMissile, boolean visibility returns nothing
 native GetMissileX										takes missile whichMissile returns real
@@ -4998,6 +4899,8 @@ native SaveMissileHandle								takes hashtable whichHashtable, integer parentKe
 native LoadMissileHandle								takes hashtable whichHashtable, integer parentKey, integer childKey returns missile
 
 native GetTriggerMissile								takes nothing returns missile
+native GetFilterMissile									takes nothing returns missile
+native GetEnumMissile									takes nothing returns missile
 native GetTriggerMissileSource							takes nothing returns unit
 native GetTriggerMissileTarget							takes nothing returns widget
 native GetTriggerMissileTargetUnit						takes nothing returns unit
@@ -5005,6 +4908,8 @@ native GetTriggerMissileTargetItem						takes nothing returns item
 native GetTriggerMissileTargetDestructable				takes nothing returns destructable
 
 native TriggerRegisterPlayerMissileEvent				takes trigger whichTrigger, player whichPlayer, playermissileevent whichMissileEvent returns event
+
+native EnumMissilesInRange								takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
 //
 
 //============================================================================
