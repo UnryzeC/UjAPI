@@ -23,7 +23,11 @@ Reserved for in-depth explanation...
 * 1.28f
 
 ## Features
-* TBD
+1. Custom Launcher.
+2. Multi-Window.
+3. Lua support.
+4. New custom natives.
+5. Multi-patch support.
 
 ## How to use
 
