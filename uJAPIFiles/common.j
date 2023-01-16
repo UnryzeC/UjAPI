@@ -94,7 +94,7 @@ type soundtype		  									extends handle
 type lightning		  									extends handle
 type pathingtype										extends handle
 type animtype		   									extends handle
-type subanimtype										extends handle
+type subanimtype										extends animtype
 type image			  									extends handle
 type ubersplat		  									extends handle
 type hashtable		  									extends agent
@@ -2040,9 +2040,11 @@ globals
 	constant itembooleanfield 			ITEM_BF_USE_AUTOMATICALLY_WHEN_ACQUIRED   					= ConvertItemBooleanField('ipow')
 	constant itembooleanfield 			ITEM_BF_VALID_FOR_TRANSFORMATION   							= ConvertItemBooleanField('imor')
 
-	constant itemstringfield 			ITEM_SF_NAME						 						= ConvertItemStringField('unam')
-	constant itemstringfield 			ITEM_SF_DESCRIPTION						 					= ConvertItemStringField('ides')
+	constant itemstringfield 			ITEM_SF_ABILITY_LIST										= ConvertItemStringField('iabi')
+	constant itemstringfield 			ITEM_SF_ICON												= ConvertItemStringField('iico')
 	constant itemstringfield 			ITEM_SF_MODEL_USED						 					= ConvertItemStringField('ifil')
+	constant itemstringfield 			ITEM_SF_DESCRIPTION						 					= ConvertItemStringField('ides')
+	constant itemstringfield 			ITEM_SF_NAME						 						= ConvertItemStringField('unam')
 	constant itemstringfield 			ITEM_SF_TOOLTIP_NORMAL						 				= ConvertItemStringField('utip')
 	constant itemstringfield 			ITEM_SF_TOOLTIP_EXTENDED						 			= ConvertItemStringField('utub')
 
@@ -2138,15 +2140,22 @@ globals
 	constant unitbooleanfield 			UNIT_BF_SELECTION_CIRCLE_ON_WATER			 				= ConvertUnitBooleanField('usew')
 	constant unitbooleanfield 			UNIT_BF_HAS_WATER_SHADOW					  				= ConvertUnitBooleanField('ushr')
 
-	constant unitstringfield 			UNIT_SF_NAME				   								= ConvertUnitStringField('unam')
-	constant unitstringfield 			UNIT_SF_TOOLTIP_NORMAL						 				= ConvertUnitStringField('utip')
-	constant unitstringfield 			UNIT_SF_TOOLTIP_EXTENDED						 			= ConvertUnitStringField('utub')
-	constant unitstringfield 			UNIT_SF_PROPER_NAMES		   								= ConvertUnitStringField('upro')
-	constant unitstringfield 			UNIT_SF_PROPER_NAME		   									= ConvertUnitStringField('uprn') // Get Only
-	constant unitstringfield 			UNIT_SF_GROUND_TEXTURE		 								= ConvertUnitStringField('uubs')
-	constant unitstringfield 			UNIT_SF_SHADOW_IMAGE_UNIT	  								= ConvertUnitStringField('ushu')
 	constant unitstringfield 			UNIT_SF_HERO_ABILITY_LIST				   					= ConvertUnitStringField('uhab')
 	constant unitstringfield 			UNIT_SF_ABILITY_LIST				   						= ConvertUnitStringField('uabi')
+	constant unitstringfield 			UNIT_SF_ICON_NORMAL											= ConvertUnitStringField('uico')
+	constant unitstringfield 			UNIT_SF_ICON_SCORE_SCREEN									= ConvertUnitStringField('ussi')
+	constant unitstringfield 			UNIT_SF_MODEL												= ConvertUnitStringField('umdl')
+	constant unitstringfield 			UNIT_SF_PORTRAIT											= ConvertUnitStringField('upor')
+	constant unitstringfield 			UNIT_SF_SHADOW_IMAGE_UNIT	  								= ConvertUnitStringField('ushu')
+	constant unitstringfield 			UNIT_SF_GROUND_TEXTURE		 								= ConvertUnitStringField('uubs')
+	constant unitstringfield 			UNIT_SF_SPECIAL												= ConvertUnitStringField('uspa')
+	constant unitstringfield 			UNIT_SF_NAME				   								= ConvertUnitStringField('unam')
+	constant unitstringfield 			UNIT_SF_PROPER_NAMES		   								= ConvertUnitStringField('upro')
+	constant unitstringfield 			UNIT_SF_PROPER_NAME		   									= ConvertUnitStringField('uprn') // Get Only	
+	constant unitstringfield 			UNIT_SF_TOOLTIP_AWAKEN						 				= ConvertUnitStringField('uawt')
+	constant unitstringfield 			UNIT_SF_TOOLTIP_NORMAL						 				= ConvertUnitStringField('utip')
+	constant unitstringfield 			UNIT_SF_TOOLTIP_EXTENDED						 			= ConvertUnitStringField('utub')
+	constant unitstringfield 			UNIT_SF_TOOLTIP_REVIVE						 				= ConvertUnitStringField('utpr')
 
 	// Unit Weapon
 	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACKS_ENABLED				  				= ConvertUnitWeaponIntegerField('uaen')
@@ -3128,11 +3137,11 @@ native IssueBuildOrder			  						takes unit whichPeon, string unitToBuild, real 
 native IssueBuildOrderById		  						takes unit whichPeon, integer unitId, real x, real y returns boolean
 
 native IssueNeutralImmediateOrder	   					takes player forWhichPlayer, unit neutralStructure, string unitToBuild returns boolean
-native IssueNeutralImmediateOrderById   				takes player forWhichPlayer,unit neutralStructure, integer unitId returns boolean
-native IssueNeutralPointOrder		   					takes player forWhichPlayer,unit neutralStructure, string unitToBuild, real x, real y returns boolean
-native IssueNeutralPointOrderById	   					takes player forWhichPlayer,unit neutralStructure, integer unitId, real x, real y returns boolean
-native IssueNeutralTargetOrder		  					takes player forWhichPlayer,unit neutralStructure, string unitToBuild, widget target returns boolean
-native IssueNeutralTargetOrderById	  					takes player forWhichPlayer,unit neutralStructure, integer unitId, widget target returns boolean
+native IssueNeutralImmediateOrderById   				takes player forWhichPlayer, unit neutralStructure, integer unitId returns boolean
+native IssueNeutralPointOrder		   					takes player forWhichPlayer, unit neutralStructure, string unitToBuild, real x, real y returns boolean
+native IssueNeutralPointOrderById	   					takes player forWhichPlayer, unit neutralStructure, integer unitId, real x, real y returns boolean
+native IssueNeutralTargetOrder		  					takes player forWhichPlayer, unit neutralStructure, string unitToBuild, widget target returns boolean
+native IssueNeutralTargetOrderById	  					takes player forWhichPlayer, unit neutralStructure, integer unitId, widget target returns boolean
 
 native GetUnitCurrentOrder		  						takes unit whichUnit returns integer
 
@@ -3942,6 +3951,7 @@ native HandleToAddress									takes handle h returns integer
 //
 native I2C												takes integer i returns code
 native C2I												takes code c returns integer
+native HandleToHandle									takes handle h returns handle
 native HandleToAgent									takes handle h returns agent
 native HandleToEvent									takes handle h returns event
 native HandleToWidget									takes handle h returns widget
@@ -4071,6 +4081,7 @@ native MathIntegerLog									takes integer i returns real
 native MathIntegerLn									takes integer i returns real
 
 native GetAxisZ											takes real x, real y returns real
+//
 
 // String API
 native StringContains									takes string s, string whichString, boolean caseSensitive returns boolean
@@ -4081,8 +4092,12 @@ native StringFindLastOf									takes string s, string whichString, boolean case
 native StringFindLastNotOf								takes string s, string whichString, boolean caseSensitive returns integer
 //
 
-// Time API
+// Misc API
 native GetUjAPIVersion									takes nothing returns string
+native GetAnimationName                              	takes animtype whichAnim returns string
+//
+
+// Time API
 native GetSystemTime									takes timetype whichTimeType returns integer
 native GetLocalTime										takes timetype whichTimeType returns integer
 //
@@ -4137,6 +4152,24 @@ native GetFilterHandle									takes nothing returns handle
 native GetEnumHandle									takes nothing returns handle
 
 native EnumHandlesOfType								takes integer handleBaseTypeId, boolexpr filter, code handlerFunc returns nothing
+//
+
+//============================================================================
+// Hashtable API
+//
+native SaveHandle										takes hashtable table, integer parentKey, integer childKey, handle whichHandle returns boolean
+native SaveAttackTypeHandle								takes hashtable table, integer parentKey, integer childKey, attacktype whichAttackType returns boolean
+native SaveDamageTypeHandle								takes hashtable table, integer parentKey, integer childKey, damagetype whichDamageType returns boolean
+native SaveWeaponTypeHandle								takes hashtable table, integer parentKey, integer childKey, weapontype whichWeaponType returns boolean
+native SaveMissileHandle								takes hashtable table, integer parentKey, integer childKey, missile whichMissile returns boolean
+native SaveFrameHandle									takes hashtable table, integer parentKey, integer childKey, framehandle whichFrame returns boolean
+
+native LoadHandle			 							takes hashtable table, integer parentKey, integer childKey returns handle
+native LoadAttackTypeHandle								takes hashtable table, integer parentKey, integer childKey returns attacktype
+native LoadDamageTypeHandle								takes hashtable table, integer parentKey, integer childKey returns damagetype
+native LoadWeaponTypeHandle								takes hashtable table, integer parentKey, integer childKey returns weapontype
+native LoadMissileHandle								takes hashtable table, integer parentKey, integer childKey returns missile
+native LoadFrameHandle			 						takes hashtable table, integer parentKey, integer childKey returns framehandle
 //
 
 //============================================================================
@@ -4817,6 +4850,22 @@ native MorphUnitToTypeIdEx 								takes unit whichUnit, integer uid, integer un
 native MorphUnitToTypeId 								takes unit whichUnit, integer uid returns nothing
 native SetUnitAnimationOffsetPercent 					takes unit whichUnit, real percent returns boolean
 //
+
+// Order API
+native QueueImmediateOrderById      					takes unit whichUnit, integer order returns boolean
+native QueuePointOrderById          					takes unit whichUnit, integer order, real x, real y returns boolean
+native QueueTargetOrderById         					takes unit whichUnit, integer order, widget targetWidget returns boolean
+native QueueInstantPointOrderById   					takes unit whichUnit, integer order, real x, real y, widget instantTargetWidget returns boolean
+native QueueInstantTargetOrderById  					takes unit whichUnit, integer order, widget targetWidget, widget instantTargetWidget returns boolean
+native QueueBuildOrderById          					takes unit whichPeon, integer unitId, real x, real y returns boolean
+native QueueNeutralImmediateOrderById   				takes player forWhichPlayer, unit neutralStructure, integer unitId returns boolean
+native QueueNeutralPointOrderById       				takes player forWhichPlayer, unit neutralStructure, integer unitId, real x, real y returns boolean
+native QueueNeutralTargetOrderById      				takes player forWhichPlayer, unit neutralStructure, integer unitId, widget target returns boolean
+native GetUnitOrderCount 								takes unit whichUnit returns integer
+native GetUnitOrderIdByIndex 							takes unit whichUnit, integer index returns integer
+native UnitClearOrders 									takes unit whichUnit, boolean onlyQueued returns nothing
+native UnitForceStopOrder 								takes unit whichUnit, boolean clearQueue returns nothing
+//
 //
 
 //============================================================================
@@ -4895,9 +4944,6 @@ native SetMissileDamageType 							takes missile whichMissile, damagetype whichD
 native GetMissileDamageFlags 							takes missile whichMissile returns integer
 native SetMissileDamageFlags 							takes missile whichMissile, integer flags returns nothing
 
-native SaveMissileHandle								takes hashtable whichHashtable, integer parentKey, integer childKey, missile whichMissile returns boolean
-native LoadMissileHandle								takes hashtable whichHashtable, integer parentKey, integer childKey returns missile
-
 native GetTriggerMissile								takes nothing returns missile
 native GetFilterMissile									takes nothing returns missile
 native GetEnumMissile									takes nothing returns missile
@@ -4972,9 +5018,6 @@ native SetFrameFont 									takes framehandle whichFrame, string fontName, real
 native SetFrameTextAlignment 							takes framehandle whichFrame, textaligntype verticalAlign, textaligntype horizontalAlign returns nothing
 native GetFrameChildrenCount 							takes framehandle whichFrame returns integer
 native GetFrameChild 									takes framehandle whichFrame, integer index returns framehandle
-
-native SaveFrameHandle									takes hashtable table, integer parentKey, integer childKey, framehandle whichFrame returns boolean
-native LoadFrameHandle			 						takes hashtable table, integer parentKey, integer childKey returns framehandle
 //
 
 // Trigger Frame API
