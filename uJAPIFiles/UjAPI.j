@@ -56,6 +56,9 @@ type variabletype										extends handle
 
 type playermissileevent    								extends eventid
 
+type minimapicon        								extends handle
+type commandbuttoneffect            					extends handle
+
 constant native ConvertPlayerMissileEvent				takes integer i returns playermissileevent
 constant native ConvertAnimType             			takes integer i returns animtype
 constant native ConvertSubAnimType          			takes integer i returns subanimtype
@@ -233,6 +236,32 @@ globals
     constant originframetype        	ORIGIN_FRAME_TOP_MSG                						= ConvertOriginFrameType(15)
     constant originframetype        	ORIGIN_FRAME_PORTRAIT               						= ConvertOriginFrameType(16)
     constant originframetype        	ORIGIN_FRAME_WORLD_FRAME            						= ConvertOriginFrameType(17)
+	constant originframetype			ORIGIN_FRAME_CONSOLE_UI										= ConvertOriginFrameType(18)
+	constant originframetype			ORIGIN_FRAME_PORTRAIT_TEXT									= ConvertOriginFrameType(19)
+	constant originframetype			ORIGIN_FRAME_BUFF_BAR										= ConvertOriginFrameType(20)
+	constant originframetype			ORIGIN_FRAME_BUFF_BAR_TEXT									= ConvertOriginFrameType(21)
+	constant originframetype			ORIGIN_FRAME_BUFF_BAR_INDICATOR								= ConvertOriginFrameType(22)
+	constant originframetype			ORIGIN_FRAME_TIME_OF_DAY_INDICATOR							= ConvertOriginFrameType(23)
+	constant originframetype			ORIGIN_FRAME_LEADERBOARD									= ConvertOriginFrameType(24)
+	constant originframetype			ORIGIN_FRAME_MULTIBOARD										= ConvertOriginFrameType(25)
+	constant originframetype			ORIGIN_FRAME_INFO_BAR										= ConvertOriginFrameType(26)
+	constant originframetype			ORIGIN_FRAME_COMMAND_BAR									= ConvertOriginFrameType(27)
+	constant originframetype			ORIGIN_FRAME_RESOURCE_BAR									= ConvertOriginFrameType(28)
+	constant originframetype			ORIGIN_FRAME_RESOURCE_BAR_TEXTURE							= ConvertOriginFrameType(29)
+	constant originframetype			ORIGIN_FRAME_RESOURCE_BAR_TEXT								= ConvertOriginFrameType(30)
+	constant originframetype			ORIGIN_FRAME_UPPERBUTTON_BAR								= ConvertOriginFrameType(31)
+	constant originframetype			ORIGIN_FRAME_UPPERBUTTON_BAR_BUTTON							= ConvertOriginFrameType(32)
+	constant originframetype			ORIGIN_FRAME_PEON_BAR										= ConvertOriginFrameType(33)
+	constant originframetype			ORIGIN_FRAME_PLAYER_MESSAGE									= ConvertOriginFrameType(34)
+	constant originframetype			ORIGIN_FRAME_UNIT_MESSAGE									= ConvertOriginFrameType(35)
+	constant originframetype			ORIGIN_FRAME_CHAT_MESSAGE									= ConvertOriginFrameType(36)
+	constant originframetype			ORIGIN_FRAME_TOP_MESSAGE									= ConvertOriginFrameType(37)
+	constant originframetype			ORIGIN_FRAME_CHAT_EDITBAR									= ConvertOriginFrameType(38)
+	constant originframetype			ORIGIN_FRAME_CINEMATIC_PANEL								= ConvertOriginFrameType(39)
+	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON_COOLDOWN_INDICATOR				= ConvertOriginFrameType(40)
+	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON_AUTOCAST_FRAME					= ConvertOriginFrameType(41)
+	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON_CHARGES_FRAME					= ConvertOriginFrameType(42)
+	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON_CHARGES_TEXT					= ConvertOriginFrameType(43)	
 
     constant framepointtype         	FRAMEPOINT_TOPLEFT                  						= ConvertFramePointType(0)
     constant framepointtype         	FRAMEPOINT_TOP                      						= ConvertFramePointType(1)
@@ -1251,7 +1280,7 @@ globals
 	constant buffstringfield 			BUFF_SF_TOOLTIP_NORMAL_EXTENDED					 			= ConvertBuffStringField('fube')
 
 	// Item
-	constant itemintegerfield 			ITEM_IF_TINTING_COLOR	 									= ConvertItemIntegerField('icol')
+	constant itemintegerfield 			ITEM_IF_TINTING_COLOR	 									= ConvertItemIntegerField('iclt')
 	constant itemintegerfield 			ITEM_IF_TINTING_COLOR_RED	 								= ConvertItemIntegerField('iclr')
 	constant itemintegerfield 			ITEM_IF_TINTING_COLOR_GREEN   								= ConvertItemIntegerField('iclg')
 	constant itemintegerfield 			ITEM_IF_TINTING_COLOR_BLUE									= ConvertItemIntegerField('iclb')
@@ -1323,7 +1352,7 @@ globals
 	constant unitintegerfield 			UNIT_IF_ELEVATION_SAMPLE_POINTS			   					= ConvertUnitIntegerField('uept')
 	constant unitintegerfield 			UNIT_IF_PROPER_NAMES_COUNT			   						= ConvertUnitIntegerField('upru') // Get Only
 	
-	constant unitintegerfield 			UNIT_IF_TINTING_COLOR					 					= ConvertUnitIntegerField('ucol')
+	constant unitintegerfield 			UNIT_IF_TINTING_COLOR					 					= ConvertUnitIntegerField('uclt')
 	constant unitintegerfield 			UNIT_IF_TINTING_COLOR_RED					 				= ConvertUnitIntegerField('uclr')
 	constant unitintegerfield 			UNIT_IF_TINTING_COLOR_GREEN				   					= ConvertUnitIntegerField('uclg')
 	constant unitintegerfield 			UNIT_IF_TINTING_COLOR_BLUE									= ConvertUnitIntegerField('uclb')
@@ -1369,6 +1398,7 @@ globals
 	constant unitrealfield 				UNIT_RF_CAST_BACK_SWING						  				= ConvertUnitRealField('ucbs')
 	constant unitrealfield 				UNIT_RF_CAST_POINT							   				= ConvertUnitRealField('ucpt')
 	constant unitrealfield 				UNIT_RF_MINIMUM_ATTACK_RANGE					 			= ConvertUnitRealField('uamn')
+	constant unitrealfield 				UNIT_RF_COLLISION_SIZE										= ConvertUnitRealField('ucol')
 
 	constant unitbooleanfield 			UNIT_BF_RAISABLE							  				= ConvertUnitBooleanField('urai')
 	constant unitbooleanfield 			UNIT_BF_DECAYABLE							 				= ConvertUnitBooleanField('udec')
@@ -1691,10 +1721,30 @@ native MathRealCeil										takes real r returns real
 native MathRealAbs										takes real r returns real
 native MathRealLog										takes real r returns real
 native MathRealLn										takes real r returns real
+native MathRealMin										takes real a, real b returns real
+native MathRealMax										takes real a, real b returns real
+native MathRealSign										takes real r returns integer
 
 native MathIntegerAbs									takes integer i returns integer
 native MathIntegerLog									takes integer i returns real
 native MathIntegerLn									takes integer i returns real
+native MathIntegerMin									takes integer a, integer b returns integer
+native MathIntegerMax									takes integer a, integer b returns integer
+native MathIntegerSign									takes integer i returns integer
+
+// Angle / Axis / Point API | All natives operate in Degrees!
+
+// These natives act identical to basic Sinc/Cos/Tan/etc. but they take degrees instead of radians, so you won't need to do Ded2Rad or Rad2Deg in multiple functions.
+native MathSinDeg										takes real r returns real
+native MathCosDeg										takes real r returns real
+native MathTanDeg										takes real r returns real
+
+native MathPointProjectionX								takes real x, real angle, real distance returns real
+native MathPointProjectionY								takes real y, real angle, real distance returns real
+native MathAngleBetweenPoints							takes real fromX, real fromY, real toX, real toY returns real
+native MathDistanceBetweenPoints						takes real fromX, real fromY, real toX, real toY returns real
+native MathAngleBetweenLocations						takes location fromLoc, location toLoc returns real
+native MathDistanceBetweenLocations						takes location fromLoc, location toLoc returns real
 
 native GetAxisZ											takes real x, real y returns real
 //
@@ -1972,8 +2022,8 @@ native SetAbilityCooldown 								takes ability whichAbility, real cooldown retu
 native GetAbilityRemainingCooldown 						takes ability whichAbility returns real
 native SetAbilityRemainingCooldown 						takes ability whichAbility, real cooldown returns boolean
 native StartAbilityCooldown 							takes ability whichAbility, real cooldown returns boolean
-native SilenceAbility 									takes ability whichAbility, boolean hide, boolean disable returns nothing
-native UnsilenceAbility 								takes ability whichAbility, boolean show, boolean enable returns nothing
+native DisableAbility 									takes ability whichAbility, boolean hide, boolean disable returns nothing
+native EnableAbility 									takes ability whichAbility, boolean show, boolean enable returns nothing
 native CastAbility 										takes ability whichAbility returns boolean
 native CastAbilityGround 								takes ability whichAbility, real targX, real targY returns boolean
 native CastAbilityTarget 								takes ability whichAbility, widget target returns boolean
@@ -2025,6 +2075,7 @@ native GetSpecialEffectColour					   		takes effect whichEffect returns integer
 native SetSpecialEffectColour					   		takes effect whichEffect, integer colour returns boolean
 native SetSpecialEffectAlpha							takes effect whichEffect, integer alpha returns boolean
 native SetSpecialEffectVertexColour				 		takes effect whichEffect, integer red, integer green, integer blue, integer alpha returns boolean
+native SetSpecialEffectMatrixScale              		takes effect whichEffect, real x, real y, real z returns nothing
 native ResetSpecialEffectetMatrix				   		takes effect whichEffect returns nothing
 native SetSpecialEffectOrientationEx					takes effect whichEffect, real yaw, real pitch, real roll, integer eulerOrder returns boolean // XYZ = 0, YZX = 1, ZXY = 2, ZYX = 3, YXZ = 4, XZY = 5
 native GetSpecialEffectYaw						  		takes effect whichEffect returns real // X
@@ -2359,11 +2410,14 @@ native UnitApplyUpdates 								takes unit whichUnit returns integer
 native GetUnitAbility 									takes unit whichUnit, integer aid returns ability
 native GetUnitAbilityByIndex 							takes unit whichUnit, integer index returns ability
 native GetUnitBuff 										takes unit whichUnit, integer buffId returns buff
+native GetUnitBuffByIndex 								takes unit whichUnit, integer index returns buff
 native GetUnitBuffLevel 								takes unit whichUnit, integer buffId returns integer
 native UnitAddAbilityEx 								takes unit whichUnit, integer abilityId, boolean checkForDuplicates returns boolean
 native UnitRemoveAbilityEx 								takes unit whichUnit, integer abilityId, boolean removeDuplicates returns boolean
 native IsUnitAbilityVisible 							takes unit whichUnit, integer abilityId returns boolean
 native ShowUnitAbility 									takes unit whichUnit, integer abilityId, boolean show returns nothing
+native DisableUnitAbility 								takes unit whichUnit, integer abilityId, boolean hide, boolean disable returns nothing
+native EnableUnitAbility 								takes unit whichUnit, integer abilityId, boolean show, boolean enable returns nothing
 native IsUnitSelectable 								takes unit whichUnit returns boolean
 native SetUnitSelectable 								takes unit whichUnit, boolean selectable returns nothing
 native SetUnitControl 									takes unit whichUnit, integer flagValue, boolean isSetFlagValue, boolean ismove, boolean isattack, boolean isinventory returns nothing // flagValue = 0x200 and isSetFlagValue = true to emulate pause 
@@ -2585,6 +2639,9 @@ native LoadTOCFile 										takes string TOCFile returns boolean
 native CreateFrame 										takes string templateName, framehandle whichParent, integer priority, integer createContext returns framehandle
 native CreateSimpleFrame 								takes string templateName, framehandle whichParent, integer createContext returns framehandle
 native CreateFrameByType 								takes string frameType, string name, framehandle whichParent, string templateName, integer createContext returns framehandle
+native IsFrameRegion									takes framehandle whichFrame returns boolean
+native IsFrameSimple									takes framehandle whichFrame returns boolean
+native IsFrameComplex									takes framehandle whichFrame returns boolean
 native DestroyFrame 									takes framehandle whichFrame returns nothing
 native SetFrameRelativePoint 							takes framehandle whichFrame, framepointtype point, framehandle relativeFrame, framepointtype relativePoint, real x, real y returns nothing
 native SetFrameAbsolutePoint 							takes framehandle whichFrame, framepointtype point, real x, real y returns nothing
@@ -2635,6 +2692,8 @@ native SetFrameTextAlignment 							takes framehandle whichFrame, textaligntype 
 native GetFrameChildrenCount 							takes framehandle whichFrame returns integer
 native GetFrameChild 									takes framehandle whichFrame, integer index returns framehandle
 //
+
+native SetMiniMapTexture								takes string texturePath returns boolean
 
 // Trigger Frame API
 native GetTriggerFrame 									takes nothing returns framehandle
