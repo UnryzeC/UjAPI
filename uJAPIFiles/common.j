@@ -1005,6 +1005,7 @@ globals
 	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON_AUTOCAST_FRAME					= ConvertOriginFrameType(41)
 	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON_CHARGES_FRAME					= ConvertOriginFrameType(42)
 	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON_CHARGES_TEXT					= ConvertOriginFrameType(43)
+	constant originframetype			ORIGIN_FRAME_CURSOR_FRAME									= ConvertOriginFrameType(44)
 
 	constant framepointtype		 		FRAMEPOINT_TOPLEFT				  							= ConvertFramePointType(0)
 	constant framepointtype		 		FRAMEPOINT_TOP					  							= ConvertFramePointType(1)
@@ -3940,12 +3941,18 @@ native Preloader										takes string filename returns nothing
 //===================================================
 // Conversion API
 //
-native BitwiseNOT										takes integer i returns integer
+
+// integers in jass use 4 bytes, that is 32 bits so you can do something like this: BitwiseGetBit( 0xFF001122, 31 ), this will return 1 (as 4th byte is 0xFF which is 11111111 in bits).
+native BitwiseGetBit									takes integer bit, integer bitIndex returns integer
+// integers in jass use 4 bytes, so you can do something like this: BitwiseGetByte( 0xFF001122, 3 ), this will return 0xFF and to get 0x22 you need to: BitwiseGetByte( 0xFF001122, 0 ).
+native BitwiseGetByte									takes integer bit, integer byteIndex returns integer
+
+native BitwiseNOT										takes integer bit returns integer
 native BitwiseAND										takes integer bit1, integer bit2 returns integer
 native BitwiseOR										takes integer bit1, integer bit2 returns integer
 native BitwiseXOR										takes integer bit1, integer bit2 returns integer
-native BitwiseShiftLeft									takes integer bit1, integer bitsToShift returns integer
-native BitwiseShiftRight								takes integer bit1, integer bitsToShift returns integer
+native BitwiseShiftLeft									takes integer bit, integer bitsToShift returns integer
+native BitwiseShiftRight								takes integer bit, integer bitsToShift returns integer
 
 native Id2String										takes integer i returns string
 native String2Id										takes string idString returns integer
@@ -4127,6 +4134,13 @@ native StringFindFirstOf								takes string s, string whichString, boolean case
 native StringFindFirstNotOf								takes string s, string whichString, boolean caseSensitive returns integer
 native StringFindLastOf									takes string s, string whichString, boolean caseSensitive returns integer
 native StringFindLastNotOf								takes string s, string whichString, boolean caseSensitive returns integer
+native StringCount										takes string s, string whichString, boolean caseSensitive returns integer
+native StringTrimLeft									takes string s, boolean caseSensitive returns string
+native StringTrimRight									takes string s, boolean caseSensitive returns string
+native StringTrim										takes string s, boolean caseSensitive returns string
+native StringReverse									takes string s, boolean caseSensitive returns string
+native StringReplace									takes string s, string whichString, string replaceWith, boolean caseSensitive returns string
+native StringInsert										takes string s, string whichString, integer whichPosition, boolean caseSensitive returns string
 //
 
 // Misc API
@@ -4230,6 +4244,41 @@ native GroupGetUnitByIndex				  				takes group whichGroup, integer index return
 native GroupForEachUnit					 				takes group whichGroup returns unit	// this mimics FristOfGroup, but each consecutive call will pick next unit. DO NOT USE this with GroupRemoveUnit, as it will break it.
 native GroupAddGroupEx					  				takes group destGroup, group sourceGroup returns integer
 native GroupRemoveGroupEx				   				takes group destGroup, group sourceGroup returns integer
+//
+
+//============================================================================
+// TextTag API
+//
+native IsTextTagVisible 								takes texttag whichTextTag returns boolean
+native IsTextTagSuspended 								takes texttag whichTextTag returns boolean
+native IsTextTagPermanent 								takes texttag whichTextTag returns real
+native GetTextTagX 										takes texttag whichTextTag returns real
+native SetTextTagX 										takes texttag whichTextTag, real x returns nothing
+native GetTextTagY 										takes texttag whichTextTag returns real
+native SetTextTagY 										takes texttag whichTextTag, real y returns nothing
+native GetTextTagZ 										takes texttag whichTextTag returns real
+native SetTextTagZ 										takes texttag whichTextTag, real z returns nothing
+native GetTextTagHeight 								takes texttag whichTextTag returns real
+native SetTextTagHeight 								takes texttag whichTextTag, real height returns nothing
+native GetTextTagPositionLocation 						takes texttag whichTextTag returns location
+native SetTextTagPositionLocation 						takes texttag whichTextTag, location whichLocation returns nothing
+native GetTextTagColour 								takes texttag whichTextTag returns integer
+native GetTextTagAlpha 									takes texttag whichTextTag returns integer
+native SetTextTagAlpha 									takes texttag whichTextTag, integer alpha returns nothing
+native GetTextTagVelocityX 								takes texttag whichTextTag returns real
+native SetTextTagVelocityX 								takes texttag whichTextTag, real velX returns nothing
+native GetTextTagVelocityY 								takes texttag whichTextTag returns real
+native SetTextTagVelocityY 								takes texttag whichTextTag, real velY returns nothing
+native GetTextTagVelocityZ 								takes texttag whichTextTag returns real
+native SetTextTagVelocityZ 								takes texttag whichTextTag, real velZ returns nothing
+native GetTextTagAge 									takes texttag whichTextTag returns real
+native GetTextTagLifespan 								takes texttag whichTextTag returns real
+native GetTextTagFadepoint 								takes texttag whichTextTag returns real
+native GetTextTagShadowColour 							takes texttag whichTextTag returns integer
+native SetTextTagShadowColour 							takes texttag whichTextTag, integer colour returns nothing
+native GetTextTagShadowAlpha 							takes texttag whichTextTag returns integer
+native SetTextTagShadowAlpha 							takes texttag whichTextTag, integer alpha returns nothing
+native GetTextTagText 									takes texttag whichTextTag returns string
 //
 
 //============================================================================
@@ -4500,6 +4549,7 @@ native GetTrackableColour						   		takes trackable whichTrackable returns integ
 native SetTrackableColour						   		takes trackable whichTrackable, integer colour returns boolean
 native SetTrackableAlpha								takes trackable whichTrackable, integer alpha returns boolean
 native SetTrackableVertexColour					 		takes trackable whichTrackable, integer red, integer green, integer blue, integer alpha returns boolean
+native SetTrackableEffectMatrixScale              		takes trackable whichTrackable, real x, real y, real z returns nothing
 native ResetTrackableetMatrix					   		takes trackable whichTrackable returns nothing
 native SetTrackableOrientationEx						takes trackable whichTrackable, real yaw, real pitch, real roll, integer eulerOrder returns boolean
 native GetTrackableYaw							  		takes trackable whichTrackable returns real
@@ -5098,10 +5148,8 @@ native SetFrameSpritePitch								takes framehandle whichFrame, real pitch retur
 native GetFrameSpriteRoll							 	takes framehandle whichFrame returns real
 native SetFrameSpriteRoll							 	takes framehandle whichFrame, real roll returns boolean
 native SetFrameSpriteOrientation					  	takes framehandle whichFrame, real yaw, real pitch, real roll returns nothing
-
 native SetFrameSpriteModel								takes framehandle whichFrame, string modelName returns nothing
 native SetFrameSpriteModelEx						  	takes framehandle whichFrame, string modelName, integer playerColour returns nothing
-
 native SetFrameSpriteAnimationWithRarityByIndex 		takes framehandle whichFrame, integer animIndex, raritycontrol rarity returns nothing
 native SetFrameSpriteAnimationByIndex 					takes framehandle whichFrame, integer animIndex returns nothing
 native QueueFrameSpriteAnimationByIndex 				takes framehandle whichFrame, integer animIndex returns nothing
@@ -5114,6 +5162,8 @@ native SetFrameSpriteAnimationOffsetPercent				takes framehandle whichFrame, rea
 //============================================================================
 // Sync API
 //
+
+native GetTriggerSyncPlayer								takes nothing returns player
 
 // Variable Sync API
 native GetSyncedVariableType							takes nothing returns variabletype
