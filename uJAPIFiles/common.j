@@ -141,6 +141,7 @@ type pathingflag										extends handle
 type commandbuttoneffect            					extends handle
 type timetype											extends handle
 type variabletype										extends handle
+type jassthread											extends handle
 
 constant native ConvertRace				 				takes integer i returns race
 constant native ConvertAllianceType		 				takes integer i returns alliancetype
@@ -758,7 +759,17 @@ globals
 
 	constant unitevent 					EVENT_UNIT_LOADED											= ConvertUnitEvent(88)
 
+    //===================================================
+    // For use with TriggerRegisterPlayerEvent
+    //===================================================
+
 	constant widgetevent 				EVENT_WIDGET_DEATH							 				= ConvertWidgetEvent(89)
+	constant widgetevent 				EVENT_WIDGET_DAMAGING							 			= ConvertWidgetEvent(400)
+	constant widgetevent 				EVENT_WIDGET_DAMAGED							 			= ConvertWidgetEvent(401)
+
+    //===================================================
+    // For use with TriggerRegisterDialogEvent
+    //===================================================
 
 	constant dialogevent 				EVENT_DIALOG_BUTTON_CLICK					  				= ConvertDialogEvent(90)
 	constant dialogevent 				EVENT_DIALOG_CLICK							 				= ConvertDialogEvent(91)
@@ -1060,15 +1071,15 @@ globals
 	constant oskeytype			  		OSKEY_CONTROL					   							= ConvertOsKeyType(0x11)
 	constant oskeytype			  		OSKEY_ALT						   							= ConvertOsKeyType(0x12)
 	constant oskeytype			  		OSKEY_PAUSE						 							= ConvertOsKeyType(0x13)
-	constant oskeytype			  		OOSKEY_CAPSLOCK					  							= ConvertOsKeyType(0x14)
-	constant oskeytype			  		OOSKEY_KANA						  							= ConvertOsKeyType(0x15)
-	constant oskeytype			  		OOSKEY_HANGUL												= ConvertOsKeyType(0x15)
-	constant oskeytype			  		SOKEY_JUNJA						 							= ConvertOsKeyType(0x17)
-	constant oskeytype			  		SOKEY_FINAL						 							= ConvertOsKeyType(0x18)
-	constant oskeytype			  		SOKEY_HANJA						 							= ConvertOsKeyType(0x19)
-	constant oskeytype			  		SKEY_KANJI						 							= ConvertOsKeyType(0x19)
-	constant oskeytype			  		SKEY_ESCAPE													= ConvertOsKeyType(0x1B)
-	constant oskeytype			  		SKEY_CONVERT					   							= ConvertOsKeyType(0x1C)
+	constant oskeytype			  		OSKEY_CAPSLOCK					  							= ConvertOsKeyType(0x14)
+	constant oskeytype			  		OSKEY_KANA						  							= ConvertOsKeyType(0x15)
+	constant oskeytype			  		OSKEY_HANGUL												= ConvertOsKeyType(0x15)
+	constant oskeytype			  		OSKEY_JUNJA						 							= ConvertOsKeyType(0x17)
+	constant oskeytype			  		OSKEY_FINAL						 							= ConvertOsKeyType(0x18)
+	constant oskeytype			  		OSKEY_HANJA						 							= ConvertOsKeyType(0x19)
+	constant oskeytype			  		OSKEY_KANJI						 							= ConvertOsKeyType(0x19)
+	constant oskeytype			  		OSKEY_ESCAPE												= ConvertOsKeyType(0x1B)
+	constant oskeytype			  		OSKEY_CONVERT					   							= ConvertOsKeyType(0x1C)
 	constant oskeytype			  		OSKEY_NONCONVERT											= ConvertOsKeyType(0x1D)
 	constant oskeytype			  		OSKEY_ACCEPT												= ConvertOsKeyType(0x1E)
 	constant oskeytype			  		OSKEY_MODECHANGE											= ConvertOsKeyType(0x1F)
@@ -1494,6 +1505,8 @@ globals
 	constant abilityintegerlevelfield 	ABILITY_ILF_UPGRADE_TYPE					  				= ConvertAbilityIntegerLevelField('Iglu')
 
 	constant abilityreallevelfield 		ABILITY_RLF_CASTING_TIME									= ConvertAbilityRealLevelField('acas')
+	constant abilityreallevelfield 		ABILITY_RLF_CAST_BACK_SWING						  			= ConvertAbilityRealLevelField('acbs')
+	constant abilityreallevelfield 		ABILITY_RLF_CAST_POINT							   			= ConvertAbilityRealLevelField('acpt')
 	constant abilityreallevelfield 		ABILITY_RLF_DURATION_NORMAL								 	= ConvertAbilityRealLevelField('adur')
 	constant abilityreallevelfield 		ABILITY_RLF_DURATION_HERO								   	= ConvertAbilityRealLevelField('ahdu')
 	constant abilityreallevelfield 		ABILITY_RLF_COOLDOWN										= ConvertAbilityRealLevelField('acdn')
@@ -2080,6 +2093,9 @@ globals
 	constant unitintegerfield 			UNIT_IF_AGILITY_WITH_BONUS									= ConvertUnitIntegerField('uagb')
 	constant unitintegerfield 			UNIT_IF_INTELLIGENCE_WITH_BONUS			   					= ConvertUnitIntegerField('uinb')
 	constant unitintegerfield 			UNIT_IF_STRENGTH_WITH_BONUS				   					= ConvertUnitIntegerField('ustb')
+	constant unitintegerfield 			UNIT_IF_AGILITY_BONUS										= ConvertUnitIntegerField('uag+') // Get Only
+	constant unitintegerfield 			UNIT_IF_INTELLIGENCE_BONUS			   						= ConvertUnitIntegerField('uin+') // Get Only
+	constant unitintegerfield 			UNIT_IF_STRENGTH_BONUS				   						= ConvertUnitIntegerField('ust+') // Get Only
 	constant unitintegerfield 			UNIT_IF_FOOD_USED											= ConvertUnitIntegerField('ufoo')
 	constant unitintegerfield 			UNIT_IF_FOOD_PRODUCED										= ConvertUnitIntegerField('ufma')
 	constant unitintegerfield 			UNIT_IF_GOLD_COST											= ConvertUnitIntegerField('ugol')
@@ -2143,6 +2159,10 @@ globals
 	constant unitrealfield 				UNIT_RF_CAST_POINT							   				= ConvertUnitRealField('ucpt')
 	constant unitrealfield 				UNIT_RF_MINIMUM_ATTACK_RANGE					 			= ConvertUnitRealField('uamn')
 	constant unitrealfield 				UNIT_RF_COLLISION_SIZE										= ConvertUnitRealField('ucol')
+	constant unitrealfield 				UNIT_RF_HEALTH_FROM_BONUS_STRENGTH					   		= ConvertUnitRealField('uhs+') // Get Only
+	constant unitrealfield 				UNIT_RF_MANA_FROM_BONUS_INTELLIGENCE						= ConvertUnitRealField('umi+') // Get Only
+	constant unitrealfield 				UNIT_RF_DEFENSE_BONUS										= ConvertUnitRealField('udf+') // Get Only
+	constant unitrealfield 				UNIT_RF_SPEED_BONUS											= ConvertUnitRealField('umv+') // Get Only
 
 	constant unitbooleanfield 			UNIT_BF_RAISABLE							  				= ConvertUnitBooleanField('urai')
 	constant unitbooleanfield 			UNIT_BF_DECAYABLE							 				= ConvertUnitBooleanField('udec')
@@ -2185,6 +2205,7 @@ globals
 	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_WEAPON_SOUND			  				= ConvertUnitWeaponIntegerField('ucs1')
 	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_AREA_OF_EFFECT_TARGETS				= ConvertUnitWeaponIntegerField('ua1p')
 	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_TARGETS_ALLOWED		   				= ConvertUnitWeaponIntegerField('ua1g')
+	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_DAMAGE_BONUS			   				= ConvertUnitWeaponIntegerField('ud1+') // Get Only | this is the + (Green) or - (Red) value next to attack.
 
 	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_BACKSWING_POINT			  			= ConvertUnitWeaponRealField('ubs1')
 	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT				 			= ConvertUnitWeaponRealField('udp1')
@@ -2200,6 +2221,7 @@ globals
 	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_MEDIUM_DAMAGE 			= ConvertUnitWeaponRealField('ua1h')
 	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_SMALL_DAMAGE  			= ConvertUnitWeaponRealField('ua1q')
 	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_RANGE									= ConvertUnitWeaponRealField('ua1r')
+	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_SPEED_BONUS							= ConvertUnitWeaponRealField('us1+') // Get Only
 
 	constant unitweaponbooleanfield 	UNIT_WEAPON_BF_ATTACK_SHOW_UI				   				= ConvertUnitWeaponBooleanField('uwu1')
 	constant unitweaponbooleanfield 	UNIT_WEAPON_BF_ATTACKS_ENABLED				  				= ConvertUnitWeaponBooleanField('uaen')
@@ -4080,6 +4102,33 @@ native GetNextHandleIndex								takes nothing returns integer
 //============================================================================
 // Execution API
 //
+
+// Jass VM API
+native GetJassMainThread								takes nothing returns jassthread
+native GetJassCurrentThread								takes nothing returns jassthread
+
+// RunScriptEx - this generates a new thread for any given .j file, which can be supplemented by "parent" script, "helper" (this is usually either common.ai or blizzard.j) and the script you want to run. Function returns id of newly created thread, returns 0 on failure.
+native RunJassScriptEx									takes string parentScriptFile, string helperScriptFile, string jassScriptFile returns jassthread
+native RunJassScript									takes string helperScriptFile, string jassScriptFile returns jassthread // this will use common.j as parentScriptFile, and will work exactly as RunScriptEx.
+native RunJassScriptSimple								takes string jassScriptFile returns jassthread // this will use common.j as parentScriptFile, and use jassScriptFile as "helper", and will work exactly as RunScriptEx.
+//
+
+native StopJassThread									takes jassthread thread returns boolean // Stops running thread, this will do nothing to common.j thread, however this CAN and WILL kill off AI thread, if you provided a threadId that was NOT provided by RunScript.
+
+native GetJassGlobalInteger								takes jassthread thread, string variableName returns integer
+native GetJassGlobalReal								takes jassthread thread, string variableName returns real
+native GetJassGlobalString								takes jassthread thread, string variableName returns string
+native GetJassGlobalHandle								takes jassthread thread, string variableName returns handle
+native GetJassGlobalBoolean								takes jassthread thread, string variableName returns boolean
+
+native SetJassGlobalInteger								takes jassthread thread, string variableName, integer value returns boolean
+native SetJassGlobalReal								takes jassthread thread, string variableName, real value returns boolean
+native SetJassGlobalString								takes jassthread thread, string variableName, string value returns boolean
+native SetJassGlobalHandle								takes jassthread thread, string variableName, handle value returns boolean
+native SetJassGlobalBoolean								takes jassthread thread, string variableName, boolean value returns boolean
+//
+
+// Jass Operations
 native IsOperationLimitEnabled							takes nothing returns boolean
 native EnableOperationLimit								takes boolean enable returns nothing
 native ExecuteCode										takes code c returns nothing
@@ -4412,7 +4461,7 @@ native AddAbilityStringLevelArrayField		  			takes ability whichAbility, ability
 native RemoveAbilityStringLevelArrayField	   			takes ability whichAbility, abilitystringlevelarrayfield whichField, integer level, string value returns boolean
 //
 
-native ResetAbilityFieldData							takes ability whichAbility returns boolean // Restores original ability data, meaning it reverts any and all changes made by Field API. Returns true if reset was needed.
+native ResetAbilityFieldData							takes ability whichAbility returns boolean // Restores original ability data, meaning it reverts any and all changes made by Field API. Returns true if reset was successful.
 
 // Normal API
 native GetAbilityOrderId 								takes ability whichAbility returns integer
@@ -4490,6 +4539,7 @@ native GetSpecialEffectScale							takes effect whichEffect returns real
 native SetSpecialEffectScale							takes effect whichEffect, real scale returns nothing
 native GetSpecialEffectTimeScale						takes effect whichEffect returns real
 native SetSpecialEffectTimeScale						takes effect whichEffect, real timescale returns nothing
+native SetSpecialEffectPlayerColour					   	takes effect whichEffect, playercolor color returns nothing
 native GetSpecialEffectColour					   		takes effect whichEffect returns integer
 native SetSpecialEffectColour					   		takes effect whichEffect, integer colour returns boolean
 native SetSpecialEffectAlpha							takes effect whichEffect, integer alpha returns boolean
@@ -4506,6 +4556,9 @@ native SetSpecialEffectPitch							takes effect whichEffect, real pitch returns 
 native GetSpecialEffectRoll						 		takes effect whichEffect returns real // Z
 native SetSpecialEffectRoll						 		takes effect whichEffect, real roll returns boolean // Z
 native SetSpecialEffectOrientation				  		takes effect whichEffect, real yaw, real pitch, real roll returns nothing // uses SetSpecialEffectSpaceRotation with XYZ orientation as default
+native SetSpecialEffectMaterialTexture 					takes effect whichEffect, string textureName, integer materialId, integer textureIndex returns nothing
+native SetSpecialEffectTexture 							takes effect whichEffect, string textureName, integer textureIndex returns nothing
+native SetSpecialEffectReplaceableTexture 				takes effect whichEffect, string textureName, integer textureIndex returns nothing
 native SetSpecialEffectModel							takes effect whichEffect, string modelName returns nothing
 native SetSpecialEffectModelEx					  		takes effect whichEffect, string modelName, integer playerColour returns nothing // 0-15, -1 to ignore the colour.
 native SetSpecialEffectAnimationWithRarityByIndex   	takes effect whichEffect, integer animIndex, raritycontrol rarity returns nothing
@@ -4545,6 +4598,7 @@ native GetTrackableScale								takes trackable whichTrackable returns real
 native SetTrackableScale								takes trackable whichTrackable, real scale returns nothing
 native GetTrackableTimeScale							takes trackable whichTrackable returns real
 native SetTrackableTimeScale							takes trackable whichTrackable, real timescale returns nothing
+native SetTrackablePlayerColour					   		takes trackable whichTrackable, playercolor color returns nothing
 native GetTrackableColour						   		takes trackable whichTrackable returns integer
 native SetTrackableColour						   		takes trackable whichTrackable, integer colour returns boolean
 native SetTrackableAlpha								takes trackable whichTrackable, integer alpha returns boolean
@@ -4561,6 +4615,9 @@ native SetTrackablePitch								takes trackable whichTrackable, real pitch retur
 native GetTrackableRoll							 		takes trackable whichTrackable returns real
 native SetTrackableRoll							 		takes trackable whichTrackable, real roll returns boolean
 native SetTrackableOrientation					  		takes trackable whichTrackable, real yaw, real pitch, real roll returns nothing
+native SetTrackableMaterialTexture 						takes trackable whichTrackable, string textureName, integer materialId, integer textureIndex returns nothing
+native SetTrackableTexture 								takes trackable whichTrackable, string textureName, integer textureIndex returns nothing
+native SetTrackableReplaceableTexture 					takes trackable whichTrackable, string textureName, integer textureIndex returns nothing	
 native SetTrackableModel								takes trackable whichTrackable, string modelName returns nothing
 native SetTrackableModelEx						  		takes trackable whichTrackable, string modelName, integer playerColour returns nothing
 native SetTrackableAnimationWithRarityByIndex	   		takes trackable whichTrackable, integer animIndex, raritycontrol rarity returns nothing
@@ -4606,6 +4663,7 @@ native GetWidgetPitch 									takes widget whichWidget returns real
 native SetWidgetPitch 									takes widget whichWidget, real pitch returns nothing
 native GetWidgetRoll 									takes widget whichWidget returns real
 native SetWidgetRoll 									takes widget whichWidget, real roll returns nothing
+native GetWidgetModel 									takes widget whichWidget returns string
 native SetWidgetModel 									takes widget whichWidget, string modelFile returns nothing
 native SetWidgetModelEx 								takes widget whichWidget, string modelFile, integer playerId returns nothing
 native SetWidgetMaterialTexture 						takes widget whichWidget, string textureName, integer materialId, integer textureIndex returns nothing
@@ -4618,6 +4676,8 @@ native SetWidgetAnimation 								takes widget whichWidget, string animation ret
 native QueueWidgetAnimationByIndex 						takes widget whichWidget, integer animIndex returns nothing
 native QueueWidgetAnimation 							takes widget whichWidget, string animation returns nothing
 native SetWidgetAnimationOffsetPercent 					takes widget whichWidget, real percent returns boolean
+
+native TriggerRegisterWidgetEvent						takes trigger whichTrigger, widget whichWidget, widgetevent whichWidgetEvent returns event
 //
 
 //============================================================================
@@ -4800,8 +4860,10 @@ native SetUnitTypeId 									takes unit whichUnit, integer newId returns nothin
 native GetUnitLocustFlag 								takes unit whichUnit returns integer
 native GetUnitUnderCursor 								takes nothing returns unit
 native GetUnitSelectedCountByPlayer 					takes player whichPlayer returns integer
-native GetUnitSelected 									takes player whichPlayer returns unit
+native GetUnitSelected 									takes player whichPlayer returns unit // Always returns Active unit, aka the "main" one whose UI is drawn.
+native GetUnitInSelectionByIndex 						takes player whichPlayer, integer index returns unit
 native GetFirstUnitInSelection 							takes player whichPlayer returns unit
+native GetLastUnitInSelection 							takes player whichPlayer returns unit
 native IsUnitAlive 										takes unit whichUnit returns boolean // checks unit flags
 native IsUnitDead 										takes unit whichUnit returns boolean // checks internal flag (not a part of unit flags)
 native IsUnitMoving 									takes unit whichUnit returns boolean
@@ -4988,6 +5050,7 @@ native GetMissileScale									takes missile whichMissile returns real
 native SetMissileScale									takes missile whichMissile, real scale returns nothing
 native GetMissileTimeScale								takes missile whichMissile returns real
 native SetMissileTimeScale								takes missile whichMissile, real timescale returns nothing
+native SetMissilePlayerColour					   		takes missile whichMissile, playercolor color returns nothing
 native GetMissileColour					   				takes missile whichMissile returns integer
 native SetMissileColour					   				takes missile whichMissile, integer colour returns boolean
 native SetMissileAlpha									takes missile whichMissile, integer alpha returns boolean
@@ -5003,6 +5066,9 @@ native SetMissilePitch									takes missile whichMissile, real pitch returns bo
 native GetMissileRoll						 			takes missile whichMissile returns real
 native SetMissileRoll						 			takes missile whichMissile, real roll returns boolean
 native SetMissileOrientation				  			takes missile whichMissile, real yaw, real pitch, real roll returns nothing
+native SetMissileMaterialTexture 						takes missile whichMissile, string textureName, integer materialId, integer textureIndex returns nothing
+native SetMissileTexture 								takes missile whichMissile, string textureName, integer textureIndex returns nothing
+native SetMissileReplaceableTexture 					takes missile whichMissile, string textureName, integer textureIndex returns nothing
 native SetMissileModel									takes missile whichMissile, string modelName returns nothing
 native SetMissileModelEx					  			takes missile whichMissile, string modelName, integer playerColour returns nothing
 native SetMissileAnimationWithRarityByIndex   			takes missile whichMissile, integer animIndex, raritycontrol rarity returns nothing
@@ -5134,9 +5200,11 @@ native GetFrameSpriteScale								takes framehandle whichFrame returns real
 native SetFrameSpriteScale								takes framehandle whichFrame, real scale returns nothing
 native GetFrameSpriteTimeScale							takes framehandle whichFrame returns real
 native SetFrameSpriteTimeScale							takes framehandle whichFrame, real timescale returns nothing
+native SetFrameSpritePlayerColour						takes framehandle whichFrame, playercolor color returns nothing
+native GetFrameSpriteAlpha						   		takes framehandle whichFrame returns integer
+native SetFrameSpriteAlpha								takes framehandle whichFrame, integer alpha returns boolean
 native GetFrameSpriteColour						   		takes framehandle whichFrame returns integer
 native SetFrameSpriteColour						   		takes framehandle whichFrame, integer colour returns boolean
-native SetFrameSpriteAlpha								takes framehandle whichFrame, integer alpha returns boolean
 native SetFrameSpriteVertexColour					 	takes framehandle whichFrame, integer red, integer green, integer blue, integer alpha returns boolean
 native SetFrameSpriteOrientationEx						takes framehandle whichFrame, real yaw, real pitch, real roll, integer eulerOrder returns boolean
 native GetFrameSpriteYaw							  	takes framehandle whichFrame returns real
@@ -5148,6 +5216,9 @@ native SetFrameSpritePitch								takes framehandle whichFrame, real pitch retur
 native GetFrameSpriteRoll							 	takes framehandle whichFrame returns real
 native SetFrameSpriteRoll							 	takes framehandle whichFrame, real roll returns boolean
 native SetFrameSpriteOrientation					  	takes framehandle whichFrame, real yaw, real pitch, real roll returns nothing
+native SetFrameSpriteMaterialTexture 					takes framehandle whichFrame, string textureName, integer materialId, integer textureIndex returns nothing
+native SetFrameSpriteTexture 							takes framehandle whichFrame, string textureName, integer textureIndex returns nothing
+native SetFrameSpriteReplaceableTexture 				takes framehandle whichFrame, string textureName, integer textureIndex returns nothing
 native SetFrameSpriteModel								takes framehandle whichFrame, string modelName returns nothing
 native SetFrameSpriteModelEx						  	takes framehandle whichFrame, string modelName, integer playerColour returns nothing
 native SetFrameSpriteAnimationWithRarityByIndex 		takes framehandle whichFrame, integer animIndex, raritycontrol rarity returns nothing

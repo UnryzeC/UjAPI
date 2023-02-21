@@ -50,6 +50,7 @@ type variabletype										extends handle
 type playermissileevent    								extends eventid
 type minimapicon        								extends handle
 type commandbuttoneffect            					extends handle
+type jassthread											extends handle
 
 constant native ConvertPlayerMissileEvent				takes integer i returns playermissileevent
 constant native ConvertAnimType             			takes integer i returns animtype
@@ -175,6 +176,13 @@ globals
 	constant subanimtype        		SUBANIM_TYPE_BERSERK            							= ConvertSubAnimType(62)
 
     //===================================================
+    // For use with TriggerRegisterWidgetEvent
+    //===================================================
+
+	constant widgetevent 				EVENT_WIDGET_DAMAGING							 			= ConvertWidgetEvent(400)
+	constant widgetevent 				EVENT_WIDGET_DAMAGED							 			= ConvertWidgetEvent(401)
+
+    //===================================================
     // For use with TriggerRegisterPlayerEvent
     //===================================================
 
@@ -210,24 +218,24 @@ globals
 // Custom UI API constants
 //===================================================
 
-    constant originframetype        	ORIGIN_FRAME_GAME_UI                						= ConvertOriginFrameType(0)
-    constant originframetype        	ORIGIN_FRAME_COMMAND_BUTTON         						= ConvertOriginFrameType(1)
-    constant originframetype        	ORIGIN_FRAME_HERO_BAR               						= ConvertOriginFrameType(2)
-    constant originframetype        	ORIGIN_FRAME_HERO_BUTTON            						= ConvertOriginFrameType(3)
-    constant originframetype        	ORIGIN_FRAME_HERO_HP_BAR            						= ConvertOriginFrameType(4)
-    constant originframetype        	ORIGIN_FRAME_HERO_MANA_BAR          						= ConvertOriginFrameType(5)
-    constant originframetype        	ORIGIN_FRAME_HERO_BUTTON_INDICATOR							= ConvertOriginFrameType(6)
-    constant originframetype        	ORIGIN_FRAME_ITEM_BUTTON            						= ConvertOriginFrameType(7)
-    constant originframetype        	ORIGIN_FRAME_MINIMAP                						= ConvertOriginFrameType(8)
-    constant originframetype        	ORIGIN_FRAME_MINIMAP_BUTTON         						= ConvertOriginFrameType(9)
-    constant originframetype        	ORIGIN_FRAME_SYSTEM_BUTTON          						= ConvertOriginFrameType(10)
-    constant originframetype        	ORIGIN_FRAME_TOOLTIP                						= ConvertOriginFrameType(11)
-    constant originframetype        	ORIGIN_FRAME_UBERTOOLTIP            						= ConvertOriginFrameType(12)
-    constant originframetype        	ORIGIN_FRAME_CHAT_MSG               						= ConvertOriginFrameType(13)
-    constant originframetype        	ORIGIN_FRAME_UNIT_MSG               						= ConvertOriginFrameType(14)
-    constant originframetype        	ORIGIN_FRAME_TOP_MSG                						= ConvertOriginFrameType(15)
-    constant originframetype        	ORIGIN_FRAME_PORTRAIT               						= ConvertOriginFrameType(16)
-    constant originframetype        	ORIGIN_FRAME_WORLD_FRAME            						= ConvertOriginFrameType(17)
+	constant originframetype			ORIGIN_FRAME_GAME_UI										= ConvertOriginFrameType(0)
+	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON		 							= ConvertOriginFrameType(1)
+	constant originframetype			ORIGIN_FRAME_HERO_BAR			   							= ConvertOriginFrameType(2)
+	constant originframetype			ORIGIN_FRAME_HERO_BUTTON									= ConvertOriginFrameType(3)
+	constant originframetype			ORIGIN_FRAME_HERO_HP_BAR									= ConvertOriginFrameType(4)
+	constant originframetype			ORIGIN_FRAME_HERO_MANA_BAR		  							= ConvertOriginFrameType(5)
+	constant originframetype			ORIGIN_FRAME_HERO_BUTTON_INDICATOR							= ConvertOriginFrameType(6)
+	constant originframetype			ORIGIN_FRAME_ITEM_BUTTON									= ConvertOriginFrameType(7)
+	constant originframetype			ORIGIN_FRAME_MINIMAP										= ConvertOriginFrameType(8)
+	constant originframetype			ORIGIN_FRAME_MINIMAP_BUTTON		 							= ConvertOriginFrameType(9)
+	constant originframetype			ORIGIN_FRAME_SYSTEM_BUTTON		  							= ConvertOriginFrameType(10)
+	constant originframetype			ORIGIN_FRAME_TOOLTIP										= ConvertOriginFrameType(11)
+	constant originframetype			ORIGIN_FRAME_UBERTOOLTIP									= ConvertOriginFrameType(12)
+	constant originframetype			ORIGIN_FRAME_CHAT_MSG			   							= ConvertOriginFrameType(13)
+	constant originframetype			ORIGIN_FRAME_UNIT_MSG			   							= ConvertOriginFrameType(14)
+	constant originframetype			ORIGIN_FRAME_TOP_MSG										= ConvertOriginFrameType(15)
+	constant originframetype			ORIGIN_FRAME_PORTRAIT			   							= ConvertOriginFrameType(16)
+	constant originframetype			ORIGIN_FRAME_WORLD_FRAME									= ConvertOriginFrameType(17)
 	constant originframetype			ORIGIN_FRAME_CONSOLE_UI										= ConvertOriginFrameType(18)
 	constant originframetype			ORIGIN_FRAME_PORTRAIT_TEXT									= ConvertOriginFrameType(19)
 	constant originframetype			ORIGIN_FRAME_BUFF_BAR										= ConvertOriginFrameType(20)
@@ -256,260 +264,259 @@ globals
 	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON_CHARGES_TEXT					= ConvertOriginFrameType(43)
 	constant originframetype			ORIGIN_FRAME_CURSOR_FRAME									= ConvertOriginFrameType(44)
 
-    constant framepointtype         	FRAMEPOINT_TOPLEFT                  						= ConvertFramePointType(0)
-    constant framepointtype         	FRAMEPOINT_TOP                      						= ConvertFramePointType(1)
-    constant framepointtype         	FRAMEPOINT_TOPRIGHT                 						= ConvertFramePointType(2)
-    constant framepointtype         	FRAMEPOINT_LEFT                     						= ConvertFramePointType(3)
-    constant framepointtype         	FRAMEPOINT_CENTER                   						= ConvertFramePointType(4)
-    constant framepointtype         	FRAMEPOINT_RIGHT                    						= ConvertFramePointType(5)
-    constant framepointtype         	FRAMEPOINT_BOTTOMLEFT               						= ConvertFramePointType(6)
-    constant framepointtype         	FRAMEPOINT_BOTTOM                   						= ConvertFramePointType(7)
-    constant framepointtype         	FRAMEPOINT_BOTTOMRIGHT              						= ConvertFramePointType(8)
+	constant framepointtype		 		FRAMEPOINT_TOPLEFT				  							= ConvertFramePointType(0)
+	constant framepointtype		 		FRAMEPOINT_TOP					  							= ConvertFramePointType(1)
+	constant framepointtype		 		FRAMEPOINT_TOPRIGHT				 							= ConvertFramePointType(2)
+	constant framepointtype		 		FRAMEPOINT_LEFT					 							= ConvertFramePointType(3)
+	constant framepointtype		 		FRAMEPOINT_CENTER				   							= ConvertFramePointType(4)
+	constant framepointtype		 		FRAMEPOINT_RIGHT											= ConvertFramePointType(5)
+	constant framepointtype		 		FRAMEPOINT_BOTTOMLEFT			   							= ConvertFramePointType(6)
+	constant framepointtype		 		FRAMEPOINT_BOTTOM				   							= ConvertFramePointType(7)
+	constant framepointtype		 		FRAMEPOINT_BOTTOMRIGHT			  							= ConvertFramePointType(8)
 
-    constant textaligntype          	TEXT_JUSTIFY_TOP                    						= ConvertTextAlignType(0)
-    constant textaligntype          	TEXT_JUSTIFY_MIDDLE                 						= ConvertTextAlignType(1)
-    constant textaligntype          	TEXT_JUSTIFY_BOTTOM                 						= ConvertTextAlignType(2)
-    constant textaligntype          	TEXT_JUSTIFY_LEFT                   						= ConvertTextAlignType(3)
-    constant textaligntype          	TEXT_JUSTIFY_CENTER                 						= ConvertTextAlignType(4)
-    constant textaligntype          	TEXT_JUSTIFY_RIGHT                  						= ConvertTextAlignType(5)
+	constant textaligntype		  		TEXT_JUSTIFY_TOP											= ConvertTextAlignType(0)
+	constant textaligntype		  		TEXT_JUSTIFY_MIDDLE				 							= ConvertTextAlignType(1)
+	constant textaligntype		  		TEXT_JUSTIFY_BOTTOM				 							= ConvertTextAlignType(2)
+	constant textaligntype		  		TEXT_JUSTIFY_LEFT				   							= ConvertTextAlignType(3)
+	constant textaligntype		  		TEXT_JUSTIFY_CENTER				 							= ConvertTextAlignType(4)
+	constant textaligntype		  		TEXT_JUSTIFY_RIGHT				  							= ConvertTextAlignType(5)
 
-    constant frameeventtype         	FRAMEEVENT_CONTROL_CLICK            						= ConvertFrameEventType(1)
-    constant frameeventtype         	FRAMEEVENT_MOUSE_ENTER              						= ConvertFrameEventType(2)
-    constant frameeventtype         	FRAMEEVENT_MOUSE_LEAVE              						= ConvertFrameEventType(3)
-    constant frameeventtype         	FRAMEEVENT_MOUSE_UP                 						= ConvertFrameEventType(4)
-    constant frameeventtype         	FRAMEEVENT_MOUSE_DOWN               						= ConvertFrameEventType(5)
-    constant frameeventtype         	FRAMEEVENT_MOUSE_WHEEL              						= ConvertFrameEventType(6)
-    constant frameeventtype         	FRAMEEVENT_CHECKBOX_CHECKED         						= ConvertFrameEventType(7)
-    constant frameeventtype         	FRAMEEVENT_CHECKBOX_UNCHECKED       						= ConvertFrameEventType(8)
-    constant frameeventtype         	FRAMEEVENT_EDITBOX_TEXT_CHANGED     						= ConvertFrameEventType(9)
-    constant frameeventtype         	FRAMEEVENT_POPUPMENU_ITEM_CHANGED   						= ConvertFrameEventType(10)
-    constant frameeventtype         	FRAMEEVENT_MOUSE_DOUBLECLICK        						= ConvertFrameEventType(11)
-    constant frameeventtype         	FRAMEEVENT_SPRITE_ANIM_UPDATE       						= ConvertFrameEventType(12)
-    constant frameeventtype         	FRAMEEVENT_SLIDER_VALUE_CHANGED     						= ConvertFrameEventType(13)
-    constant frameeventtype         	FRAMEEVENT_DIALOG_CANCEL            						= ConvertFrameEventType(14)
-    constant frameeventtype         	FRAMEEVENT_DIALOG_ACCEPT            						= ConvertFrameEventType(15)
-    constant frameeventtype         	FRAMEEVENT_EDITBOX_ENTER            						= ConvertFrameEventType(16)
+	constant frameeventtype		 		FRAMEEVENT_CONTROL_CLICK									= ConvertFrameEventType(1)
+	constant frameeventtype		 		FRAMEEVENT_MOUSE_ENTER			  							= ConvertFrameEventType(2)
+	constant frameeventtype		 		FRAMEEVENT_MOUSE_LEAVE			  							= ConvertFrameEventType(3)
+	constant frameeventtype		 		FRAMEEVENT_MOUSE_UP				 							= ConvertFrameEventType(4)
+	constant frameeventtype		 		FRAMEEVENT_MOUSE_DOWN			   							= ConvertFrameEventType(5)
+	constant frameeventtype		 		FRAMEEVENT_MOUSE_WHEEL			  							= ConvertFrameEventType(6)
+	constant frameeventtype		 		FRAMEEVENT_CHECKBOX_CHECKED		 							= ConvertFrameEventType(7)
+	constant frameeventtype		 		FRAMEEVENT_CHECKBOX_UNCHECKED	   							= ConvertFrameEventType(8)
+	constant frameeventtype		 		FRAMEEVENT_EDITBOX_TEXT_CHANGED	 							= ConvertFrameEventType(9)
+	constant frameeventtype		 		FRAMEEVENT_POPUPMENU_ITEM_CHANGED   						= ConvertFrameEventType(10)
+	constant frameeventtype		 		FRAMEEVENT_MOUSE_DOUBLECLICK								= ConvertFrameEventType(11)
+	constant frameeventtype		 		FRAMEEVENT_SPRITE_ANIM_UPDATE	   							= ConvertFrameEventType(12)
+	constant frameeventtype		 		FRAMEEVENT_SLIDER_VALUE_CHANGED	 							= ConvertFrameEventType(13)
+	constant frameeventtype		 		FRAMEEVENT_DIALOG_CANCEL									= ConvertFrameEventType(14)
+	constant frameeventtype		 		FRAMEEVENT_DIALOG_ACCEPT									= ConvertFrameEventType(15)
+	constant frameeventtype		 		FRAMEEVENT_EDITBOX_ENTER									= ConvertFrameEventType(16)
 
 //===================================================
 // OS Key constants
 //===================================================
 
-	constant oskeytype              	OSKEY_LBUTTON                     							= ConvertOsKeyType(0x01)
-	constant oskeytype              	OSKEY_RBUTTON                     							= ConvertOsKeyType(0x02)
-	constant oskeytype              	OSKEY_CANCEL                     							= ConvertOsKeyType(0x03)
-	constant oskeytype              	OSKEY_MBUTTON                     							= ConvertOsKeyType(0x04)
-	constant oskeytype              	OSKEY_XBUTTON1                     							= ConvertOsKeyType(0x05)
-	constant oskeytype              	OSKEY_XBUTTON2                     							= ConvertOsKeyType(0x06)
-	constant oskeytype              	OSKEY_UNDEFINED                     						= ConvertOsKeyType(0x07)
-    constant oskeytype              	OSKEY_BACKSPACE                     						= ConvertOsKeyType(0x08)
-    constant oskeytype              	OSKEY_TAB                           						= ConvertOsKeyType(0x09)
-    constant oskeytype              	OSKEY_CLEAR                         						= ConvertOsKeyType(0x0C)
-    constant oskeytype              	OSKEY_RETURN                        						= ConvertOsKeyType(0x0D)
-    constant oskeytype              	OSKEY_SHIFT                         						= ConvertOsKeyType(0x10)
-    constant oskeytype              	OSKEY_CONTROL                       						= ConvertOsKeyType(0x11)
-    constant oskeytype              	OSKEY_ALT                           						= ConvertOsKeyType(0x12)
-    constant oskeytype              	OSKEY_PAUSE                         						= ConvertOsKeyType(0x13)
-    constant oskeytype              	OSKEY_CAPSLOCK                      						= ConvertOsKeyType(0x14)
-    constant oskeytype              	OSKEY_KANA                          						= ConvertOsKeyType(0x15)
-    constant oskeytype              	OSKEY_HANGUL                        						= ConvertOsKeyType(0x15)
-    constant oskeytype              	OSKEY_JUNJA                         						= ConvertOsKeyType(0x17)
-    constant oskeytype              	OSKEY_FINAL                         						= ConvertOsKeyType(0x18)
-    constant oskeytype              	OSKEY_HANJA                         						= ConvertOsKeyType(0x19)
-    constant oskeytype              	OSKEY_KANJI                         						= ConvertOsKeyType(0x19)
-    constant oskeytype              	OSKEY_ESCAPE                        						= ConvertOsKeyType(0x1B)
-    constant oskeytype              	OSKEY_CONVERT                       						= ConvertOsKeyType(0x1C)
-    constant oskeytype              	OSKEY_NONCONVERT                    						= ConvertOsKeyType(0x1D)
-    constant oskeytype              	OSKEY_ACCEPT                        						= ConvertOsKeyType(0x1E)
-    constant oskeytype              	OSKEY_MODECHANGE                    						= ConvertOsKeyType(0x1F)
-    constant oskeytype              	OSKEY_SPACE                         						= ConvertOsKeyType(0x20)
-    constant oskeytype              	OSKEY_PAGEUP                        						= ConvertOsKeyType(0x21)
-    constant oskeytype              	OSKEY_PAGEDOWN                      						= ConvertOsKeyType(0x22)
-    constant oskeytype              	OSKEY_END                           						= ConvertOsKeyType(0x23)
-    constant oskeytype              	OSKEY_HOME                          						= ConvertOsKeyType(0x24)
-    constant oskeytype              	OSKEY_LEFT                          						= ConvertOsKeyType(0x25)
-    constant oskeytype              	OSKEY_UP                            						= ConvertOsKeyType(0x26)
-    constant oskeytype              	OSKEY_RIGHT                         						= ConvertOsKeyType(0x27)
-    constant oskeytype              	OSKEY_DOWN                          						= ConvertOsKeyType(0x28)
-    constant oskeytype              	OSKEY_SELECT                        						= ConvertOsKeyType(0x29)
-    constant oskeytype              	OSKEY_PRINT                         						= ConvertOsKeyType(0x2A)
-    constant oskeytype              	OSKEY_EXECUTE                       						= ConvertOsKeyType(0x2B)
-    constant oskeytype              	OSKEY_PRINTSCREEN                   						= ConvertOsKeyType(0x2C)
-    constant oskeytype              	OSKEY_INSERT                        						= ConvertOsKeyType(0x2D)
-    constant oskeytype              	OSKEY_DELETE                        						= ConvertOsKeyType(0x2E)
-    constant oskeytype              	OSKEY_HELP                          						= ConvertOsKeyType(0x2F)
-    constant oskeytype              	OSKEY_0                             						= ConvertOsKeyType(0x30)
-    constant oskeytype              	OSKEY_1                             						= ConvertOsKeyType(0x31)
-    constant oskeytype              	OSKEY_2                             						= ConvertOsKeyType(0x32)
-    constant oskeytype              	OSKEY_3                             						= ConvertOsKeyType(0x33)
-    constant oskeytype              	OSKEY_4                             						= ConvertOsKeyType(0x34)
-    constant oskeytype              	OSKEY_5                             						= ConvertOsKeyType(0x35)
-    constant oskeytype              	OSKEY_6                             						= ConvertOsKeyType(0x36)
-    constant oskeytype              	OSKEY_7                             						= ConvertOsKeyType(0x37)
-    constant oskeytype              	OSKEY_8                             						= ConvertOsKeyType(0x38)
-    constant oskeytype              	OSKEY_9                             						= ConvertOsKeyType(0x39)
-    constant oskeytype              	OSKEY_A                             						= ConvertOsKeyType(0x41)
-    constant oskeytype              	OSKEY_B                             						= ConvertOsKeyType(0x42)
-    constant oskeytype              	OSKEY_C                             						= ConvertOsKeyType(0x43)
-    constant oskeytype              	OSKEY_D                             						= ConvertOsKeyType(0x44)
-    constant oskeytype              	OSKEY_E                             						= ConvertOsKeyType(0x45)
-    constant oskeytype              	OSKEY_F                             						= ConvertOsKeyType(0x46)
-    constant oskeytype              	OSKEY_G                             						= ConvertOsKeyType(0x47)
-    constant oskeytype              	OSKEY_H                             						= ConvertOsKeyType(0x48)
-    constant oskeytype              	OSKEY_I                             						= ConvertOsKeyType(0x49)
-    constant oskeytype              	OSKEY_J                             						= ConvertOsKeyType(0x4A)
-    constant oskeytype              	OSKEY_K                             						= ConvertOsKeyType(0x4B)
-    constant oskeytype              	OSKEY_L                             						= ConvertOsKeyType(0x4C)
-    constant oskeytype              	OSKEY_M                             						= ConvertOsKeyType(0x4D)
-    constant oskeytype              	OSKEY_N                             						= ConvertOsKeyType(0x4E)
-    constant oskeytype              	OSKEY_O                             						= ConvertOsKeyType(0x4F)
-    constant oskeytype              	OSKEY_P                             						= ConvertOsKeyType(0x50)
-    constant oskeytype              	OSKEY_Q                             						= ConvertOsKeyType(0x51)
-    constant oskeytype              	OSKEY_R                             						= ConvertOsKeyType(0x52)
-    constant oskeytype              	OSKEY_S                             						= ConvertOsKeyType(0x53)
-    constant oskeytype              	OSKEY_T                             						= ConvertOsKeyType(0x54)
-    constant oskeytype              	OSKEY_U                             						= ConvertOsKeyType(0x55)
-    constant oskeytype              	OSKEY_V                             						= ConvertOsKeyType(0x56)
-    constant oskeytype              	OSKEY_W                             						= ConvertOsKeyType(0x57)
-    constant oskeytype              	OSKEY_X                             						= ConvertOsKeyType(0x58)
-    constant oskeytype              	OSKEY_Y                             						= ConvertOsKeyType(0x59)
-    constant oskeytype              	OSKEY_Z                             						= ConvertOsKeyType(0x5A)
-    constant oskeytype              	OSKEY_LMETA                         						= ConvertOsKeyType(0x5B)
-    constant oskeytype              	OSKEY_RMETA                         						= ConvertOsKeyType(0x5C)
-    constant oskeytype              	OSKEY_APPS                          						= ConvertOsKeyType(0x5D)
-    constant oskeytype              	OSKEY_SLEEP                         						= ConvertOsKeyType(0x5F)
-    constant oskeytype              	OSKEY_NUMPAD0                       						= ConvertOsKeyType(0x60)
-    constant oskeytype              	OSKEY_NUMPAD1                       						= ConvertOsKeyType(0x61)
-    constant oskeytype              	OSKEY_NUMPAD2                       						= ConvertOsKeyType(0x62)
-    constant oskeytype              	OSKEY_NUMPAD3                       						= ConvertOsKeyType(0x63)
-    constant oskeytype              	OSKEY_NUMPAD4                       						= ConvertOsKeyType(0x64)
-    constant oskeytype              	OSKEY_NUMPAD5                       						= ConvertOsKeyType(0x65)
-    constant oskeytype              	OSKEY_NUMPAD6                       						= ConvertOsKeyType(0x66)
-    constant oskeytype              	OSKEY_NUMPAD7                       						= ConvertOsKeyType(0x67)
-    constant oskeytype              	OSKEY_NUMPAD8                       						= ConvertOsKeyType(0x68)
-    constant oskeytype              	OSKEY_NUMPAD9                       						= ConvertOsKeyType(0x69)
-    constant oskeytype              	OSKEY_MULTIPLY                      						= ConvertOsKeyType(0x6A)
-    constant oskeytype              	OSKEY_ADD                           						= ConvertOsKeyType(0x6B)
-    constant oskeytype              	OSKEY_SEPARATOR                     						= ConvertOsKeyType(0x6C)
-    constant oskeytype              	OSKEY_SUBTRACT                      						= ConvertOsKeyType(0x6D)
-    constant oskeytype              	OSKEY_DECIMAL                       						= ConvertOsKeyType(0x6E)
-    constant oskeytype              	OSKEY_DIVIDE                        						= ConvertOsKeyType(0x6F)
-    constant oskeytype              	OSKEY_F1                            						= ConvertOsKeyType(0x70)
-    constant oskeytype              	OSKEY_F2                            						= ConvertOsKeyType(0x71)
-    constant oskeytype              	OSKEY_F3                            						= ConvertOsKeyType(0x72)
-    constant oskeytype              	OSKEY_F4                            						= ConvertOsKeyType(0x73)
-    constant oskeytype              	OSKEY_F5                            						= ConvertOsKeyType(0x74)
-    constant oskeytype              	OSKEY_F6                            						= ConvertOsKeyType(0x75)
-    constant oskeytype              	OSKEY_F7                            						= ConvertOsKeyType(0x76)
-    constant oskeytype              	OSKEY_F8                            						= ConvertOsKeyType(0x77)
-    constant oskeytype              	OSKEY_F9                            						= ConvertOsKeyType(0x78)
-    constant oskeytype              	OSKEY_F10                           						= ConvertOsKeyType(0x79)
-    constant oskeytype              	OSKEY_F11                           						= ConvertOsKeyType(0x7A)
-    constant oskeytype              	OSKEY_F12                           						= ConvertOsKeyType(0x7B)
-    constant oskeytype              	OSKEY_F13                           						= ConvertOsKeyType(0x7C)
-    constant oskeytype              	OSKEY_F14                           						= ConvertOsKeyType(0x7D)
-    constant oskeytype              	OSKEY_F15                           						= ConvertOsKeyType(0x7E)
-    constant oskeytype              	OSKEY_F16                           						= ConvertOsKeyType(0x7F)
-    constant oskeytype              	OSKEY_F17                           						= ConvertOsKeyType(0x80)
-    constant oskeytype              	OSKEY_F18                           						= ConvertOsKeyType(0x81)
-    constant oskeytype              	OSKEY_F19                           						= ConvertOsKeyType(0x82)
-    constant oskeytype              	OSKEY_F20                           						= ConvertOsKeyType(0x83)
-    constant oskeytype              	OSKEY_F21                           						= ConvertOsKeyType(0x84)
-    constant oskeytype              	OSKEY_F22                           						= ConvertOsKeyType(0x85)
-    constant oskeytype              	OSKEY_F23                           						= ConvertOsKeyType(0x86)
-    constant oskeytype              	OSKEY_F24                           						= ConvertOsKeyType(0x87)
-    constant oskeytype              	OSKEY_NUMLOCK                       						= ConvertOsKeyType(0x90)
-    constant oskeytype              	OSKEY_SCROLLLOCK                    						= ConvertOsKeyType(0x91)
-    constant oskeytype              	OSKEY_OEM_NEC_EQUAL                 						= ConvertOsKeyType(0x92)
-    constant oskeytype              	OSKEY_OEM_FJ_JISHO                  						= ConvertOsKeyType(0x92)
-    constant oskeytype              	OSKEY_OEM_FJ_MASSHOU                						= ConvertOsKeyType(0x93)
-    constant oskeytype              	OSKEY_OEM_FJ_TOUROKU                						= ConvertOsKeyType(0x94)
-    constant oskeytype              	OSKEY_OEM_FJ_LOYA                   						= ConvertOsKeyType(0x95)
-    constant oskeytype              	OSKEY_OEM_FJ_ROYA                   						= ConvertOsKeyType(0x96)
-    constant oskeytype              	OSKEY_LSHIFT                        						= ConvertOsKeyType(0xA0)
-    constant oskeytype              	OSKEY_RSHIFT                        						= ConvertOsKeyType(0xA1)
-    constant oskeytype              	OSKEY_LCONTROL                      						= ConvertOsKeyType(0xA2)
-    constant oskeytype              	OSKEY_RCONTROL                      						= ConvertOsKeyType(0xA3)
-    constant oskeytype              	OSKEY_LALT                          						= ConvertOsKeyType(0xA4)
-    constant oskeytype              	OSKEY_RALT                          						= ConvertOsKeyType(0xA5)
-    constant oskeytype              	OSKEY_BROWSER_BACK                  						= ConvertOsKeyType(0xA6)
-    constant oskeytype              	OSKEY_BROWSER_FORWARD               						= ConvertOsKeyType(0xA7)
-    constant oskeytype              	OSKEY_BROWSER_REFRESH               						= ConvertOsKeyType(0xA8)
-    constant oskeytype              	OSKEY_BROWSER_STOP                  						= ConvertOsKeyType(0xA9)
-    constant oskeytype              	OSKEY_BROWSER_SEARCH                						= ConvertOsKeyType(0xAA)
-    constant oskeytype              	OSKEY_BROWSER_FAVORITES             						= ConvertOsKeyType(0xAB)
-    constant oskeytype              	OSKEY_BROWSER_HOME                  						= ConvertOsKeyType(0xAC)
-    constant oskeytype              	OSKEY_VOLUME_MUTE                   						= ConvertOsKeyType(0xAD)
-    constant oskeytype              	OSKEY_VOLUME_DOWN                   						= ConvertOsKeyType(0xAE)
-    constant oskeytype              	OSKEY_VOLUME_UP                     						= ConvertOsKeyType(0xAF)
-    constant oskeytype              	OSKEY_MEDIA_NEXT_TRACK              						= ConvertOsKeyType(0xB0)
-    constant oskeytype              	OSKEY_MEDIA_PREV_TRACK              						= ConvertOsKeyType(0xB1)
-    constant oskeytype              	OSKEY_MEDIA_STOP                    						= ConvertOsKeyType(0xB2)
-    constant oskeytype              	OSKEY_MEDIA_PLAY_PAUSE              						= ConvertOsKeyType(0xB3)
-    constant oskeytype              	OSKEY_LAUNCH_MAIL                   						= ConvertOsKeyType(0xB4)
-    constant oskeytype              	OSKEY_LAUNCH_MEDIA_SELECT           						= ConvertOsKeyType(0xB5)
-    constant oskeytype              	OSKEY_LAUNCH_APP1                   						= ConvertOsKeyType(0xB6)
-    constant oskeytype              	OSKEY_LAUNCH_APP2                   						= ConvertOsKeyType(0xB7)
-    constant oskeytype              	OSKEY_OEM_1                         						= ConvertOsKeyType(0xBA)
-    constant oskeytype              	OSKEY_OEM_PLUS                      						= ConvertOsKeyType(0xBB)
-    constant oskeytype              	OSKEY_OEM_COMMA                     						= ConvertOsKeyType(0xBC)
-    constant oskeytype              	OSKEY_OEM_MINUS                     						= ConvertOsKeyType(0xBD)
-    constant oskeytype              	OSKEY_OEM_PERIOD                    						= ConvertOsKeyType(0xBE)
-    constant oskeytype              	OSKEY_OEM_2                         						= ConvertOsKeyType(0xBF)
-    constant oskeytype              	OSKEY_OEM_3                         						= ConvertOsKeyType(0xC0)
-    constant oskeytype              	OSKEY_OEM_4                         						= ConvertOsKeyType(0xDB)
-    constant oskeytype              	OSKEY_OEM_5                         						= ConvertOsKeyType(0xDC)
-    constant oskeytype              	OSKEY_OEM_6                         						= ConvertOsKeyType(0xDD)
-    constant oskeytype              	OSKEY_OEM_7                         						= ConvertOsKeyType(0xDE)
-    constant oskeytype              	OSKEY_OEM_8                         						= ConvertOsKeyType(0xDF)
-    constant oskeytype              	OSKEY_OEM_AX                        						= ConvertOsKeyType(0xE1)
-    constant oskeytype              	OSKEY_OEM_102                       						= ConvertOsKeyType(0xE2)
-    constant oskeytype              	OSKEY_ICO_HELP                      						= ConvertOsKeyType(0xE3)
-    constant oskeytype              	OSKEY_ICO_00                        						= ConvertOsKeyType(0xE4)
-    constant oskeytype              	OSKEY_PROCESSKEY                    						= ConvertOsKeyType(0xE5)
-    constant oskeytype              	OSKEY_ICO_CLEAR                     						= ConvertOsKeyType(0xE6)
-    constant oskeytype              	OSKEY_PACKET                        						= ConvertOsKeyType(0xE7)
-    constant oskeytype              	OSKEY_OEM_RESET                     						= ConvertOsKeyType(0xE9)
-    constant oskeytype              	OSKEY_OEM_JUMP                      						= ConvertOsKeyType(0xEA)
-    constant oskeytype              	OSKEY_OEM_PA1                       						= ConvertOsKeyType(0xEB)
-    constant oskeytype              	OSKEY_OEM_PA2                       						= ConvertOsKeyType(0xEC)
-    constant oskeytype              	OSKEY_OEM_PA3                       						= ConvertOsKeyType(0xED)
-    constant oskeytype              	OSKEY_OEM_WSCTRL                    						= ConvertOsKeyType(0xEE)
-    constant oskeytype              	OSKEY_OEM_CUSEL                     						= ConvertOsKeyType(0xEF)
-    constant oskeytype              	OSKEY_OEM_ATTN                      						= ConvertOsKeyType(0xF0)
-    constant oskeytype              	OSKEY_OEM_FINISH                    						= ConvertOsKeyType(0xF1)
-    constant oskeytype              	OSKEY_OEM_COPY                      						= ConvertOsKeyType(0xF2)
-    constant oskeytype              	OSKEY_OEM_AUTO                      						= ConvertOsKeyType(0xF3)
-    constant oskeytype              	OSKEY_OEM_ENLW                      						= ConvertOsKeyType(0xF4)
-    constant oskeytype              	OSKEY_OEM_BACKTAB                   						= ConvertOsKeyType(0xF5)
-    constant oskeytype              	OSKEY_ATTN                          						= ConvertOsKeyType(0xF6)
-    constant oskeytype              	OSKEY_CRSEL                         						= ConvertOsKeyType(0xF7)
-    constant oskeytype              	OSKEY_EXSEL                         						= ConvertOsKeyType(0xF8)
-    constant oskeytype              	OSKEY_EREOF                         						= ConvertOsKeyType(0xF9)
-    constant oskeytype              	OSKEY_PLAY                          						= ConvertOsKeyType(0xFA)
-    constant oskeytype              	OSKEY_ZOOM                          						= ConvertOsKeyType(0xFB)
-    constant oskeytype              	OSKEY_NONAME                        						= ConvertOsKeyType(0xFC)
-    constant oskeytype              	OSKEY_PA1                           						= ConvertOsKeyType(0xFD)
-    constant oskeytype              	OSKEY_OEM_CLEAR                     						= ConvertOsKeyType(0xFE)
+	constant oskeytype			  		OSKEY_LBUTTON					 							= ConvertOsKeyType(0x01)
+	constant oskeytype			  		OSKEY_RBUTTON					 							= ConvertOsKeyType(0x02)
+	constant oskeytype			  		OSKEY_CANCEL					 							= ConvertOsKeyType(0x03)
+	constant oskeytype			  		OSKEY_MBUTTON					 							= ConvertOsKeyType(0x04)
+	constant oskeytype			  		OSKEY_XBUTTON1					 							= ConvertOsKeyType(0x05)
+	constant oskeytype			  		OSKEY_XBUTTON2					 							= ConvertOsKeyType(0x06)
+	constant oskeytype			  		OSKEY_UNDEFINED					 							= ConvertOsKeyType(0x07)
+	constant oskeytype			  		OSKEY_BACKSPACE					 							= ConvertOsKeyType(0x08)
+	constant oskeytype			  		OSKEY_TAB						   							= ConvertOsKeyType(0x09)
+	constant oskeytype			  		OSKEY_CLEAR						 							= ConvertOsKeyType(0x0C)
+	constant oskeytype			  		OSKEY_RETURN												= ConvertOsKeyType(0x0D)
+	constant oskeytype			  		OSKEY_SHIFT						 							= ConvertOsKeyType(0x10)
+	constant oskeytype			  		OSKEY_CONTROL					   							= ConvertOsKeyType(0x11)
+	constant oskeytype			  		OSKEY_ALT						   							= ConvertOsKeyType(0x12)
+	constant oskeytype			  		OSKEY_PAUSE						 							= ConvertOsKeyType(0x13)
+	constant oskeytype			  		OSKEY_CAPSLOCK					  							= ConvertOsKeyType(0x14)
+	constant oskeytype			  		OSKEY_KANA						  							= ConvertOsKeyType(0x15)
+	constant oskeytype			  		OSKEY_HANGUL												= ConvertOsKeyType(0x15)
+	constant oskeytype			  		OSKEY_JUNJA						 							= ConvertOsKeyType(0x17)
+	constant oskeytype			  		OSKEY_FINAL						 							= ConvertOsKeyType(0x18)
+	constant oskeytype			  		OSKEY_HANJA						 							= ConvertOsKeyType(0x19)
+	constant oskeytype			  		OSKEY_KANJI						 							= ConvertOsKeyType(0x19)
+	constant oskeytype			  		OSKEY_ESCAPE												= ConvertOsKeyType(0x1B)
+	constant oskeytype			  		OSKEY_CONVERT					   							= ConvertOsKeyType(0x1C)
+	constant oskeytype			  		OSKEY_NONCONVERT											= ConvertOsKeyType(0x1D)
+	constant oskeytype			  		OSKEY_ACCEPT												= ConvertOsKeyType(0x1E)
+	constant oskeytype			  		OSKEY_MODECHANGE											= ConvertOsKeyType(0x1F)
+	constant oskeytype			  		OSKEY_SPACE						 							= ConvertOsKeyType(0x20)
+	constant oskeytype			  		OSKEY_PAGEUP												= ConvertOsKeyType(0x21)
+	constant oskeytype			  		OSKEY_PAGEDOWN					  							= ConvertOsKeyType(0x22)
+	constant oskeytype			  		OSKEY_END						   							= ConvertOsKeyType(0x23)
+	constant oskeytype			  		OSKEY_HOME						  							= ConvertOsKeyType(0x24)
+	constant oskeytype			  		OSKEY_LEFT						  							= ConvertOsKeyType(0x25)
+	constant oskeytype			  		OSKEY_UP													= ConvertOsKeyType(0x26)
+	constant oskeytype			  		OSKEY_RIGHT						 							= ConvertOsKeyType(0x27)
+	constant oskeytype			  		OSKEY_DOWN						  							= ConvertOsKeyType(0x28)
+	constant oskeytype			  		OSKEY_SELECT												= ConvertOsKeyType(0x29)
+	constant oskeytype			  		OSKEY_PRINT						 							= ConvertOsKeyType(0x2A)
+	constant oskeytype			  		OSKEY_EXECUTE					   							= ConvertOsKeyType(0x2B)
+	constant oskeytype			  		OSKEY_PRINTSCREEN				   							= ConvertOsKeyType(0x2C)
+	constant oskeytype			  		OSKEY_INSERT												= ConvertOsKeyType(0x2D)
+	constant oskeytype			  		OSKEY_DELETE												= ConvertOsKeyType(0x2E)
+	constant oskeytype			  		OSKEY_HELP						  							= ConvertOsKeyType(0x2F)
+	constant oskeytype			  		OSKEY_0							 							= ConvertOsKeyType(0x30)
+	constant oskeytype			  		OSKEY_1							 							= ConvertOsKeyType(0x31)
+	constant oskeytype			  		OSKEY_2							 							= ConvertOsKeyType(0x32)
+	constant oskeytype			  		OSKEY_3							 							= ConvertOsKeyType(0x33)
+	constant oskeytype			  		OSKEY_4							 							= ConvertOsKeyType(0x34)
+	constant oskeytype			  		OSKEY_5							 							= ConvertOsKeyType(0x35)
+	constant oskeytype			  		OSKEY_6							 							= ConvertOsKeyType(0x36)
+	constant oskeytype			  		OSKEY_7							 							= ConvertOsKeyType(0x37)
+	constant oskeytype			  		OSKEY_8							 							= ConvertOsKeyType(0x38)
+	constant oskeytype			  		OSKEY_9							 							= ConvertOsKeyType(0x39)
+	constant oskeytype			  		OSKEY_A							 							= ConvertOsKeyType(0x41)
+	constant oskeytype			  		OSKEY_B							 							= ConvertOsKeyType(0x42)
+	constant oskeytype			  		OSKEY_C							 							= ConvertOsKeyType(0x43)
+	constant oskeytype			  		OSKEY_D							 							= ConvertOsKeyType(0x44)
+	constant oskeytype			  		OSKEY_E							 							= ConvertOsKeyType(0x45)
+	constant oskeytype			  		OSKEY_F							 							= ConvertOsKeyType(0x46)
+	constant oskeytype			  		OSKEY_G							 							= ConvertOsKeyType(0x47)
+	constant oskeytype			  		OSKEY_H							 							= ConvertOsKeyType(0x48)
+	constant oskeytype			  		OSKEY_I							 							= ConvertOsKeyType(0x49)
+	constant oskeytype			  		OSKEY_J							 							= ConvertOsKeyType(0x4A)
+	constant oskeytype			  		OSKEY_K							 							= ConvertOsKeyType(0x4B)
+	constant oskeytype			  		OSKEY_L							 							= ConvertOsKeyType(0x4C)
+	constant oskeytype			  		OSKEY_M							 							= ConvertOsKeyType(0x4D)
+	constant oskeytype			  		OSKEY_N							 							= ConvertOsKeyType(0x4E)
+	constant oskeytype			  		OSKEY_O							 							= ConvertOsKeyType(0x4F)
+	constant oskeytype			  		OSKEY_P							 							= ConvertOsKeyType(0x50)
+	constant oskeytype			  		OSKEY_Q							 							= ConvertOsKeyType(0x51)
+	constant oskeytype			  		OSKEY_R							 							= ConvertOsKeyType(0x52)
+	constant oskeytype			  		OSKEY_S							 							= ConvertOsKeyType(0x53)
+	constant oskeytype			  		OSKEY_T							 							= ConvertOsKeyType(0x54)
+	constant oskeytype			  		OSKEY_U							 							= ConvertOsKeyType(0x55)
+	constant oskeytype			  		OSKEY_V							 							= ConvertOsKeyType(0x56)
+	constant oskeytype			  		OSKEY_W							 							= ConvertOsKeyType(0x57)
+	constant oskeytype			  		OSKEY_X							 							= ConvertOsKeyType(0x58)
+	constant oskeytype			  		OSKEY_Y							 							= ConvertOsKeyType(0x59)
+	constant oskeytype			  		OSKEY_Z							 							= ConvertOsKeyType(0x5A)
+	constant oskeytype			  		OSKEY_LMETA						 							= ConvertOsKeyType(0x5B)
+	constant oskeytype			  		OSKEY_RMETA						 							= ConvertOsKeyType(0x5C)
+	constant oskeytype			  		OSKEY_APPS						  							= ConvertOsKeyType(0x5D)
+	constant oskeytype			  		OSKEY_SLEEP						 							= ConvertOsKeyType(0x5F)
+	constant oskeytype			  		OSKEY_NUMPAD0					   							= ConvertOsKeyType(0x60)
+	constant oskeytype			  		OSKEY_NUMPAD1					   							= ConvertOsKeyType(0x61)
+	constant oskeytype			  		OSKEY_NUMPAD2					   							= ConvertOsKeyType(0x62)
+	constant oskeytype			  		OSKEY_NUMPAD3					   							= ConvertOsKeyType(0x63)
+	constant oskeytype			  		OSKEY_NUMPAD4					   							= ConvertOsKeyType(0x64)
+	constant oskeytype			  		OSKEY_NUMPAD5					   							= ConvertOsKeyType(0x65)
+	constant oskeytype			  		OSKEY_NUMPAD6					   							= ConvertOsKeyType(0x66)
+	constant oskeytype			  		OSKEY_NUMPAD7					   							= ConvertOsKeyType(0x67)
+	constant oskeytype			  		OSKEY_NUMPAD8					   							= ConvertOsKeyType(0x68)
+	constant oskeytype			  		OSKEY_NUMPAD9					   							= ConvertOsKeyType(0x69)
+	constant oskeytype			  		OSKEY_MULTIPLY					  							= ConvertOsKeyType(0x6A)
+	constant oskeytype			  		OSKEY_ADD						   							= ConvertOsKeyType(0x6B)
+	constant oskeytype			  		OSKEY_SEPARATOR					 							= ConvertOsKeyType(0x6C)
+	constant oskeytype			  		OSKEY_SUBTRACT					  							= ConvertOsKeyType(0x6D)
+	constant oskeytype			  		OSKEY_DECIMAL					   							= ConvertOsKeyType(0x6E)
+	constant oskeytype			  		OSKEY_DIVIDE												= ConvertOsKeyType(0x6F)
+	constant oskeytype			  		OSKEY_F1													= ConvertOsKeyType(0x70)
+	constant oskeytype			  		OSKEY_F2													= ConvertOsKeyType(0x71)
+	constant oskeytype			  		OSKEY_F3													= ConvertOsKeyType(0x72)
+	constant oskeytype			  		OSKEY_F4													= ConvertOsKeyType(0x73)
+	constant oskeytype			  		OSKEY_F5													= ConvertOsKeyType(0x74)
+	constant oskeytype			  		OSKEY_F6													= ConvertOsKeyType(0x75)
+	constant oskeytype			  		OSKEY_F7													= ConvertOsKeyType(0x76)
+	constant oskeytype			  		OSKEY_F8													= ConvertOsKeyType(0x77)
+	constant oskeytype			  		OSKEY_F9													= ConvertOsKeyType(0x78)
+	constant oskeytype			  		OSKEY_F10						   							= ConvertOsKeyType(0x79)
+	constant oskeytype			  		OSKEY_F11						   							= ConvertOsKeyType(0x7A)
+	constant oskeytype			  		OSKEY_F12						   							= ConvertOsKeyType(0x7B)
+	constant oskeytype			  		OSKEY_F13						   							= ConvertOsKeyType(0x7C)
+	constant oskeytype			  		OSKEY_F14						   							= ConvertOsKeyType(0x7D)
+	constant oskeytype			  		OSKEY_F15						   							= ConvertOsKeyType(0x7E)
+	constant oskeytype			  		OSKEY_F16						   							= ConvertOsKeyType(0x7F)
+	constant oskeytype			  		OSKEY_F17						   							= ConvertOsKeyType(0x80)
+	constant oskeytype			  		OSKEY_F18						   							= ConvertOsKeyType(0x81)
+	constant oskeytype			  		OSKEY_F19						   							= ConvertOsKeyType(0x82)
+	constant oskeytype			  		OSKEY_F20						   							= ConvertOsKeyType(0x83)
+	constant oskeytype			  		OSKEY_F21						   							= ConvertOsKeyType(0x84)
+	constant oskeytype			  		OSKEY_F22						   							= ConvertOsKeyType(0x85)
+	constant oskeytype			  		OSKEY_F23						   							= ConvertOsKeyType(0x86)
+	constant oskeytype			  		OSKEY_F24						   							= ConvertOsKeyType(0x87)
+	constant oskeytype			  		OSKEY_NUMLOCK					   							= ConvertOsKeyType(0x90)
+	constant oskeytype			  		OSKEY_SCROLLLOCK											= ConvertOsKeyType(0x91)
+	constant oskeytype			  		OSKEY_OEM_NEC_EQUAL				 							= ConvertOsKeyType(0x92)
+	constant oskeytype			  		OSKEY_OEM_FJ_JISHO				  							= ConvertOsKeyType(0x92)
+	constant oskeytype			  		OSKEY_OEM_FJ_MASSHOU										= ConvertOsKeyType(0x93)
+	constant oskeytype			  		OSKEY_OEM_FJ_TOUROKU										= ConvertOsKeyType(0x94)
+	constant oskeytype			  		OSKEY_OEM_FJ_LOYA				   							= ConvertOsKeyType(0x95)
+	constant oskeytype			  		OSKEY_OEM_FJ_ROYA				   							= ConvertOsKeyType(0x96)
+	constant oskeytype			  		OSKEY_LSHIFT												= ConvertOsKeyType(0xA0)
+	constant oskeytype			  		OSKEY_RSHIFT												= ConvertOsKeyType(0xA1)
+	constant oskeytype			  		OSKEY_LCONTROL					  							= ConvertOsKeyType(0xA2)
+	constant oskeytype			  		OSKEY_RCONTROL					  							= ConvertOsKeyType(0xA3)
+	constant oskeytype			  		OSKEY_LALT						  							= ConvertOsKeyType(0xA4)
+	constant oskeytype			  		OSKEY_RALT						  							= ConvertOsKeyType(0xA5)
+	constant oskeytype			  		OSKEY_BROWSER_BACK				  							= ConvertOsKeyType(0xA6)
+	constant oskeytype			  		OSKEY_BROWSER_FORWARD			   							= ConvertOsKeyType(0xA7)
+	constant oskeytype			  		OSKEY_BROWSER_REFRESH			   							= ConvertOsKeyType(0xA8)
+	constant oskeytype			  		OSKEY_BROWSER_STOP				  							= ConvertOsKeyType(0xA9)
+	constant oskeytype			  		OSKEY_BROWSER_SEARCH										= ConvertOsKeyType(0xAA)
+	constant oskeytype			  		OSKEY_BROWSER_FAVORITES			 							= ConvertOsKeyType(0xAB)
+	constant oskeytype			  		OSKEY_BROWSER_HOME				  							= ConvertOsKeyType(0xAC)
+	constant oskeytype			  		OSKEY_VOLUME_MUTE				   							= ConvertOsKeyType(0xAD)
+	constant oskeytype			  		OSKEY_VOLUME_DOWN				   							= ConvertOsKeyType(0xAE)
+	constant oskeytype			  		OSKEY_VOLUME_UP					 							= ConvertOsKeyType(0xAF)
+	constant oskeytype			  		OSKEY_MEDIA_NEXT_TRACK			  							= ConvertOsKeyType(0xB0)
+	constant oskeytype			  		OSKEY_MEDIA_PREV_TRACK			  							= ConvertOsKeyType(0xB1)
+	constant oskeytype			  		OSKEY_MEDIA_STOP											= ConvertOsKeyType(0xB2)
+	constant oskeytype			  		OSKEY_MEDIA_PLAY_PAUSE			  							= ConvertOsKeyType(0xB3)
+	constant oskeytype			  		OSKEY_LAUNCH_MAIL				   							= ConvertOsKeyType(0xB4)
+	constant oskeytype			  		OSKEY_LAUNCH_MEDIA_SELECT		   							= ConvertOsKeyType(0xB5)
+	constant oskeytype			  		OSKEY_LAUNCH_APP1				   							= ConvertOsKeyType(0xB6)
+	constant oskeytype			  		OSKEY_LAUNCH_APP2				   							= ConvertOsKeyType(0xB7)
+	constant oskeytype			  		OSKEY_OEM_1						 							= ConvertOsKeyType(0xBA)
+	constant oskeytype			  		OSKEY_OEM_PLUS					  							= ConvertOsKeyType(0xBB)
+	constant oskeytype			  		OSKEY_OEM_COMMA					 							= ConvertOsKeyType(0xBC)
+	constant oskeytype			  		OSKEY_OEM_MINUS					 							= ConvertOsKeyType(0xBD)
+	constant oskeytype			  		OSKEY_OEM_PERIOD											= ConvertOsKeyType(0xBE)
+	constant oskeytype			  		OSKEY_OEM_2						 							= ConvertOsKeyType(0xBF)
+	constant oskeytype			  		OSKEY_OEM_3						 							= ConvertOsKeyType(0xC0)
+	constant oskeytype			  		OSKEY_OEM_4						 							= ConvertOsKeyType(0xDB)
+	constant oskeytype			  		OSKEY_OEM_5						 							= ConvertOsKeyType(0xDC)
+	constant oskeytype			  		OSKEY_OEM_6						 							= ConvertOsKeyType(0xDD)
+	constant oskeytype			  		OSKEY_OEM_7						 							= ConvertOsKeyType(0xDE)
+	constant oskeytype			  		OSKEY_OEM_8						 							= ConvertOsKeyType(0xDF)
+	constant oskeytype			  		OSKEY_OEM_AX												= ConvertOsKeyType(0xE1)
+	constant oskeytype			  		OSKEY_OEM_102					   							= ConvertOsKeyType(0xE2)
+	constant oskeytype			  		OSKEY_ICO_HELP					  							= ConvertOsKeyType(0xE3)
+	constant oskeytype			  		OSKEY_ICO_00												= ConvertOsKeyType(0xE4)
+	constant oskeytype			  		OSKEY_PROCESSKEY											= ConvertOsKeyType(0xE5)
+	constant oskeytype			  		OSKEY_ICO_CLEAR					 							= ConvertOsKeyType(0xE6)
+	constant oskeytype			  		OSKEY_PACKET												= ConvertOsKeyType(0xE7)
+	constant oskeytype			  		OSKEY_OEM_RESET					 							= ConvertOsKeyType(0xE9)
+	constant oskeytype			  		OSKEY_OEM_JUMP					  							= ConvertOsKeyType(0xEA)
+	constant oskeytype			  		OSKEY_OEM_PA1					   							= ConvertOsKeyType(0xEB)
+	constant oskeytype			  		OSKEY_OEM_PA2					   							= ConvertOsKeyType(0xEC)
+	constant oskeytype			  		OSKEY_OEM_PA3					   							= ConvertOsKeyType(0xED)
+	constant oskeytype			  		OSKEY_OEM_WSCTRL											= ConvertOsKeyType(0xEE)
+	constant oskeytype			  		OSKEY_OEM_CUSEL					 							= ConvertOsKeyType(0xEF)
+	constant oskeytype			  		OSKEY_OEM_ATTN					  							= ConvertOsKeyType(0xF0)
+	constant oskeytype			  		OSKEY_OEM_FINISH											= ConvertOsKeyType(0xF1)
+	constant oskeytype			  		OSKEY_OEM_COPY					  							= ConvertOsKeyType(0xF2)
+	constant oskeytype			  		OSKEY_OEM_AUTO					  							= ConvertOsKeyType(0xF3)
+	constant oskeytype			  		OSKEY_OEM_ENLW					  							= ConvertOsKeyType(0xF4)
+	constant oskeytype			  		OSKEY_OEM_BACKTAB				   							= ConvertOsKeyType(0xF5)
+	constant oskeytype			  		OSKEY_ATTN						  							= ConvertOsKeyType(0xF6)
+	constant oskeytype			  		OSKEY_CRSEL						 							= ConvertOsKeyType(0xF7)
+	constant oskeytype			  		OSKEY_EXSEL						 							= ConvertOsKeyType(0xF8)
+	constant oskeytype			  		OSKEY_EREOF						 							= ConvertOsKeyType(0xF9)
+	constant oskeytype			  		OSKEY_PLAY						  							= ConvertOsKeyType(0xFA)
+	constant oskeytype			  		OSKEY_ZOOM						  							= ConvertOsKeyType(0xFB)
+	constant oskeytype			  		OSKEY_NONAME												= ConvertOsKeyType(0xFC)
+	constant oskeytype			  		OSKEY_PA1						   							= ConvertOsKeyType(0xFD)
+	constant oskeytype			  		OSKEY_OEM_CLEAR					 							= ConvertOsKeyType(0xFE)
 
 //===================================================
 // Mouse Button constants
 //===================================================
 
-	constant mousebuttontype    		MOUSE_BUTTON_TYPE_LEFT          							= ConvertMouseButtonType(1)
-	constant mousebuttontype    		MOUSE_BUTTON_TYPE_MIDDLE        							= ConvertMouseButtonType(2)
-	constant mousebuttontype    		MOUSE_BUTTON_TYPE_RIGHT         							= ConvertMouseButtonType(3)
+	constant mousebuttontype			MOUSE_BUTTON_TYPE_LEFT		  								= ConvertMouseButtonType(1)
+	constant mousebuttontype			MOUSE_BUTTON_TYPE_MIDDLE									= ConvertMouseButtonType(2)
+	constant mousebuttontype			MOUSE_BUTTON_TYPE_RIGHT		 								= ConvertMouseButtonType(3)
 
 //===================================================
 // Meta Keys constants
 //===================================================
 
-    constant integer        			META_KEY_NONE              									= 0
-    constant integer        			META_KEY_SHIFT             									= 1
-    constant integer        			META_KEY_CONTROL               								= 2
-    constant integer        			META_KEY_ALT            									= 4
-	constant integer        			META_KEY_WINDOWS            								= 8
+	constant integer					META_KEY_NONE			  									= 0
+	constant integer					META_KEY_SHIFT			 									= 1
+	constant integer					META_KEY_CONTROL			   								= 2
+	constant integer					META_KEY_ALT												= 4
+	constant integer					META_KEY_WINDOWS											= 8
 	// To make a "meta key combination" simply add the values you need, so ALT + SHIFT => metaKey = META_KEY_ALT + META_KEY_SHIFT
-
 
 //===================================================
 // Chat Recipient constants
@@ -744,6 +751,8 @@ globals
 	constant abilityintegerlevelfield 	ABILITY_ILF_UPGRADE_TYPE					  				= ConvertAbilityIntegerLevelField('Iglu')
 
 	constant abilityreallevelfield 		ABILITY_RLF_CASTING_TIME									= ConvertAbilityRealLevelField('acas')
+	constant abilityreallevelfield 		ABILITY_RLF_CAST_BACK_SWING						  			= ConvertAbilityRealLevelField('acbs')
+	constant abilityreallevelfield 		ABILITY_RLF_CAST_POINT							   			= ConvertAbilityRealLevelField('acpt')
 	constant abilityreallevelfield 		ABILITY_RLF_DURATION_NORMAL								 	= ConvertAbilityRealLevelField('adur')
 	constant abilityreallevelfield 		ABILITY_RLF_DURATION_HERO								   	= ConvertAbilityRealLevelField('ahdu')
 	constant abilityreallevelfield 		ABILITY_RLF_COOLDOWN										= ConvertAbilityRealLevelField('acdn')
@@ -1330,12 +1339,16 @@ globals
 	constant unitintegerfield 			UNIT_IF_AGILITY_WITH_BONUS									= ConvertUnitIntegerField('uagb')
 	constant unitintegerfield 			UNIT_IF_INTELLIGENCE_WITH_BONUS			   					= ConvertUnitIntegerField('uinb')
 	constant unitintegerfield 			UNIT_IF_STRENGTH_WITH_BONUS				   					= ConvertUnitIntegerField('ustb')
+	constant unitintegerfield 			UNIT_IF_AGILITY_BONUS										= ConvertUnitIntegerField('uag+') // Get Only
+	constant unitintegerfield 			UNIT_IF_INTELLIGENCE_BONUS			   						= ConvertUnitIntegerField('uin+') // Get Only
+	constant unitintegerfield 			UNIT_IF_STRENGTH_BONUS				   						= ConvertUnitIntegerField('ust+') // Get Only
 	constant unitintegerfield 			UNIT_IF_FOOD_USED											= ConvertUnitIntegerField('ufoo')
 	constant unitintegerfield 			UNIT_IF_FOOD_PRODUCED										= ConvertUnitIntegerField('ufma')
 	constant unitintegerfield 			UNIT_IF_GOLD_COST											= ConvertUnitIntegerField('ugol')
 	constant unitintegerfield 			UNIT_IF_GOLD_BOUNTY_AWARDED_NUMBER_OF_DICE					= ConvertUnitIntegerField('ubdi')
 	constant unitintegerfield 			UNIT_IF_GOLD_BOUNTY_AWARDED_BASE			  				= ConvertUnitIntegerField('ubba')
 	constant unitintegerfield 			UNIT_IF_GOLD_BOUNTY_AWARDED_SIDES_PER_DIE	 				= ConvertUnitIntegerField('ubsi')
+	constant unitintegerfield 			UNIT_IF_LUMBER_COST											= ConvertUnitIntegerField('ulum')
 	constant unitintegerfield 			UNIT_IF_LUMBER_BOUNTY_AWARDED_NUMBER_OF_DICE  				= ConvertUnitIntegerField('ulbd')
 	constant unitintegerfield 			UNIT_IF_LUMBER_BOUNTY_AWARDED_BASE							= ConvertUnitIntegerField('ulba')
 	constant unitintegerfield 			UNIT_IF_LUMBER_BOUNTY_AWARDED_SIDES_PER_DIE   				= ConvertUnitIntegerField('ulbs')
@@ -1344,7 +1357,7 @@ globals
 	constant unitintegerfield 			UNIT_IF_ORIENTATION_INTERPOLATION			 				= ConvertUnitIntegerField('uori')
 	constant unitintegerfield 			UNIT_IF_ELEVATION_SAMPLE_POINTS			   					= ConvertUnitIntegerField('uept')
 	constant unitintegerfield 			UNIT_IF_PROPER_NAMES_COUNT			   						= ConvertUnitIntegerField('upru') // Get Only
-	
+	constant unitintegerfield 			UNIT_IF_HOTKEY			   									= ConvertUnitIntegerField('uhot')
 	constant unitintegerfield 			UNIT_IF_TINTING_COLOR					 					= ConvertUnitIntegerField('uclt')
 	constant unitintegerfield 			UNIT_IF_TINTING_COLOR_RED					 				= ConvertUnitIntegerField('uclr')
 	constant unitintegerfield 			UNIT_IF_TINTING_COLOR_GREEN				   					= ConvertUnitIntegerField('uclg')
@@ -1392,6 +1405,10 @@ globals
 	constant unitrealfield 				UNIT_RF_CAST_POINT							   				= ConvertUnitRealField('ucpt')
 	constant unitrealfield 				UNIT_RF_MINIMUM_ATTACK_RANGE					 			= ConvertUnitRealField('uamn')
 	constant unitrealfield 				UNIT_RF_COLLISION_SIZE										= ConvertUnitRealField('ucol')
+	constant unitrealfield 				UNIT_RF_HEALTH_FROM_BONUS_STRENGTH					   		= ConvertUnitRealField('uhs+') // Get Only
+	constant unitrealfield 				UNIT_RF_MANA_FROM_BONUS_INTELLIGENCE						= ConvertUnitRealField('umi+') // Get Only
+	constant unitrealfield 				UNIT_RF_DEFENSE_BONUS										= ConvertUnitRealField('udf+') // Get Only
+	constant unitrealfield 				UNIT_RF_SPEED_BONUS											= ConvertUnitRealField('umv+') // Get Only
 
 	constant unitbooleanfield 			UNIT_BF_RAISABLE							  				= ConvertUnitBooleanField('urai')
 	constant unitbooleanfield 			UNIT_BF_DECAYABLE							 				= ConvertUnitBooleanField('udec')
@@ -1430,9 +1447,11 @@ globals
 	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_DAMAGE_SIDES_PER_DIE	  				= ConvertUnitWeaponIntegerField('ua1s')
 	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_MAXIMUM_NUMBER_OF_TARGETS 			= ConvertUnitWeaponIntegerField('utc1')
 	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_ATTACK_TYPE			   				= ConvertUnitWeaponIntegerField('ua1t')
+	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_WEAPON_TYPE			   				= ConvertUnitWeaponIntegerField('ua1w')
 	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_WEAPON_SOUND			  				= ConvertUnitWeaponIntegerField('ucs1')
 	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_AREA_OF_EFFECT_TARGETS				= ConvertUnitWeaponIntegerField('ua1p')
 	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_TARGETS_ALLOWED		   				= ConvertUnitWeaponIntegerField('ua1g')
+	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_DAMAGE_BONUS			   				= ConvertUnitWeaponIntegerField('ud1+') // Get Only | this is the + (Green) or - (Red) value next to attack.
 
 	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_BACKSWING_POINT			  			= ConvertUnitWeaponRealField('ubs1')
 	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT				 			= ConvertUnitWeaponRealField('udp1')
@@ -1448,6 +1467,7 @@ globals
 	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_MEDIUM_DAMAGE 			= ConvertUnitWeaponRealField('ua1h')
 	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_SMALL_DAMAGE  			= ConvertUnitWeaponRealField('ua1q')
 	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_RANGE									= ConvertUnitWeaponRealField('ua1r')
+	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_SPEED_BONUS							= ConvertUnitWeaponRealField('us1+') // Get Only
 
 	constant unitweaponbooleanfield 	UNIT_WEAPON_BF_ATTACK_SHOW_UI				   				= ConvertUnitWeaponBooleanField('uwu1')
 	constant unitweaponbooleanfield 	UNIT_WEAPON_BF_ATTACKS_ENABLED				  				= ConvertUnitWeaponBooleanField('uaen')
@@ -1455,82 +1475,82 @@ globals
 	
 	constant unitweaponstringfield 		UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART			 			= ConvertUnitWeaponStringField('ua1m')
 
-    // Move Type
-    constant movetype       			MOVE_TYPE_UNKNOWN               							= ConvertMoveType(0)
-    constant movetype       			MOVE_TYPE_FOOT                  							= ConvertMoveType(1)
-    constant movetype       			MOVE_TYPE_FLY                   							= ConvertMoveType(2)
-    constant movetype       			MOVE_TYPE_HORSE                 							= ConvertMoveType(4)
-    constant movetype       			MOVE_TYPE_HOVER                 							= ConvertMoveType(8)
-    constant movetype       			MOVE_TYPE_FLOAT                 							= ConvertMoveType(16)
-    constant movetype       			MOVE_TYPE_AMPHIBIOUS            							= ConvertMoveType(32)
-    constant movetype       			MOVE_TYPE_UNBUILDABLE           							= ConvertMoveType(64)
+	// Move Type
+	constant movetype	   				MOVE_TYPE_UNKNOWN			   								= ConvertMoveType(0)
+	constant movetype	   				MOVE_TYPE_FOOT				  								= ConvertMoveType(1)
+	constant movetype	   				MOVE_TYPE_FLY				   								= ConvertMoveType(2)
+	constant movetype	   				MOVE_TYPE_HORSE				 								= ConvertMoveType(4)
+	constant movetype	   				MOVE_TYPE_HOVER				 								= ConvertMoveType(8)
+	constant movetype	   				MOVE_TYPE_FLOAT				 								= ConvertMoveType(16)
+	constant movetype	   				MOVE_TYPE_AMPHIBIOUS										= ConvertMoveType(32)
+	constant movetype	   				MOVE_TYPE_UNBUILDABLE		   								= ConvertMoveType(64)
   
-    // Target Flag
-    constant targetflag     			TARGET_FLAG_NONE                							= ConvertTargetFlag(1)
-    constant targetflag     			TARGET_FLAG_GROUND              							= ConvertTargetFlag(2)
-    constant targetflag     			TARGET_FLAG_AIR                 							= ConvertTargetFlag(4)
-    constant targetflag     			TARGET_FLAG_STRUCTURE           							= ConvertTargetFlag(8)
-    constant targetflag     			TARGET_FLAG_WARD                							= ConvertTargetFlag(16)
-    constant targetflag     			TARGET_FLAG_ITEM                							= ConvertTargetFlag(32)
-    constant targetflag     			TARGET_FLAG_TREE                							= ConvertTargetFlag(64)
-    constant targetflag     			TARGET_FLAG_WALL                							= ConvertTargetFlag(128)
-    constant targetflag     			TARGET_FLAG_DEBRIS              							= ConvertTargetFlag(256)
-    constant targetflag     			TARGET_FLAG_DECORATION          							= ConvertTargetFlag(512)
-    constant targetflag     			TARGET_FLAG_BRIDGE              							= ConvertTargetFlag(1024)
+	// Target Flag
+	constant targetflag	 				TARGET_FLAG_NONE											= ConvertTargetFlag(1)
+	constant targetflag	 				TARGET_FLAG_GROUND			  								= ConvertTargetFlag(2)
+	constant targetflag	 				TARGET_FLAG_AIR				 								= ConvertTargetFlag(4)
+	constant targetflag	 				TARGET_FLAG_STRUCTURE		   								= ConvertTargetFlag(8)
+	constant targetflag	 				TARGET_FLAG_WARD											= ConvertTargetFlag(16)
+	constant targetflag	 				TARGET_FLAG_ITEM											= ConvertTargetFlag(32)
+	constant targetflag	 				TARGET_FLAG_TREE											= ConvertTargetFlag(64)
+	constant targetflag	 				TARGET_FLAG_WALL											= ConvertTargetFlag(128)
+	constant targetflag	 				TARGET_FLAG_DEBRIS			  								= ConvertTargetFlag(256)
+	constant targetflag	 				TARGET_FLAG_DECORATION		  								= ConvertTargetFlag(512)
+	constant targetflag	 				TARGET_FLAG_BRIDGE			  								= ConvertTargetFlag(1024)
 
-    // defense type
-    constant defensetype    			DEFENSE_TYPE_LIGHT              							= ConvertDefenseType(0)
-    constant defensetype    			DEFENSE_TYPE_MEDIUM             							= ConvertDefenseType(1)
-    constant defensetype    			DEFENSE_TYPE_LARGE              							= ConvertDefenseType(2)
-    constant defensetype    			DEFENSE_TYPE_FORT               							= ConvertDefenseType(3)
-    constant defensetype    			DEFENSE_TYPE_NORMAL             							= ConvertDefenseType(4)
-    constant defensetype    			DEFENSE_TYPE_HERO               							= ConvertDefenseType(5)
-    constant defensetype    			DEFENSE_TYPE_DIVINE             							= ConvertDefenseType(6)
-    constant defensetype    			DEFENSE_TYPE_NONE               							= ConvertDefenseType(7)
+	// defense type
+	constant defensetype				DEFENSE_TYPE_LIGHT			  								= ConvertDefenseType(0)
+	constant defensetype				DEFENSE_TYPE_MEDIUM			 								= ConvertDefenseType(1)
+	constant defensetype				DEFENSE_TYPE_LARGE			  								= ConvertDefenseType(2)
+	constant defensetype				DEFENSE_TYPE_FORT			   								= ConvertDefenseType(3)
+	constant defensetype				DEFENSE_TYPE_NORMAL			 								= ConvertDefenseType(4)
+	constant defensetype				DEFENSE_TYPE_HERO			   								= ConvertDefenseType(5)
+	constant defensetype				DEFENSE_TYPE_DIVINE			 								= ConvertDefenseType(6)
+	constant defensetype				DEFENSE_TYPE_NONE			   								= ConvertDefenseType(7)
 
-    // Hero Attribute
-    constant heroattribute  			HERO_ATTRIBUTE_STR              							= ConvertHeroAttribute(1)
-    constant heroattribute  			HERO_ATTRIBUTE_INT              							= ConvertHeroAttribute(2)
-    constant heroattribute  			HERO_ATTRIBUTE_AGI              							= ConvertHeroAttribute(3)
+	// Hero Attribute
+	constant heroattribute  			HERO_ATTRIBUTE_STR			  								= ConvertHeroAttribute(1)
+	constant heroattribute  			HERO_ATTRIBUTE_INT			  								= ConvertHeroAttribute(2)
+	constant heroattribute  			HERO_ATTRIBUTE_AGI			  								= ConvertHeroAttribute(3)
 
-    // Armor Type
-    constant armortype      			ARMOR_TYPE_WHOKNOWS             							= ConvertArmorType(0)
-    constant armortype      			ARMOR_TYPE_FLESH                							= ConvertArmorType(1)
-    constant armortype      			ARMOR_TYPE_METAL                							= ConvertArmorType(2)
-    constant armortype      			ARMOR_TYPE_WOOD                 							= ConvertArmorType(3)
-    constant armortype      			ARMOR_TYPE_ETHREAL              							= ConvertArmorType(4)
-    constant armortype      			ARMOR_TYPE_STONE                							= ConvertArmorType(5)
+	// Armor Type
+	constant armortype	  				ARMOR_TYPE_WHOKNOWS			 								= ConvertArmorType(0)
+	constant armortype	  				ARMOR_TYPE_FLESH											= ConvertArmorType(1)
+	constant armortype	  				ARMOR_TYPE_METAL											= ConvertArmorType(2)
+	constant armortype	  				ARMOR_TYPE_WOOD				 								= ConvertArmorType(3)
+	constant armortype	  				ARMOR_TYPE_ETHREAL			  								= ConvertArmorType(4)
+	constant armortype	  				ARMOR_TYPE_STONE											= ConvertArmorType(5)
 
-    // Regeneration Type
-    constant regentype      			REGENERATION_TYPE_NONE          							= ConvertRegenType(0)
-    constant regentype      			REGENERATION_TYPE_ALWAYS        							= ConvertRegenType(1)
-    constant regentype      			REGENERATION_TYPE_BLIGHT        							= ConvertRegenType(2)
-    constant regentype      			REGENERATION_TYPE_DAY           							= ConvertRegenType(3)
-    constant regentype      			REGENERATION_TYPE_NIGHT         							= ConvertRegenType(4)
+	// Regeneration Type
+	constant regentype	  				REGENERATION_TYPE_NONE		  								= ConvertRegenType(0)
+	constant regentype	  				REGENERATION_TYPE_ALWAYS									= ConvertRegenType(1)
+	constant regentype	  				REGENERATION_TYPE_BLIGHT									= ConvertRegenType(2)
+	constant regentype	  				REGENERATION_TYPE_DAY		   								= ConvertRegenType(3)
+	constant regentype	  				REGENERATION_TYPE_NIGHT		 								= ConvertRegenType(4)
 
-    // Unit Category
-    constant unitcategory   			UNIT_CATEGORY_GIANT             							= ConvertUnitCategory(1)
-    constant unitcategory   			UNIT_CATEGORY_UNDEAD            							= ConvertUnitCategory(2)
-    constant unitcategory   			UNIT_CATEGORY_SUMMONED          							= ConvertUnitCategory(4)
-    constant unitcategory   			UNIT_CATEGORY_MECHANICAL        							= ConvertUnitCategory(8)
-    constant unitcategory   			UNIT_CATEGORY_PEON              							= ConvertUnitCategory(16)
-    constant unitcategory   			UNIT_CATEGORY_SAPPER            							= ConvertUnitCategory(32)
-    constant unitcategory   			UNIT_CATEGORY_TOWNHALL          							= ConvertUnitCategory(64)
-    constant unitcategory   			UNIT_CATEGORY_ANCIENT           							= ConvertUnitCategory(128)
-    constant unitcategory   			UNIT_CATEGORY_NEUTRAL           							= ConvertUnitCategory(256)
-    constant unitcategory   			UNIT_CATEGORY_WARD              							= ConvertUnitCategory(512)
-    constant unitcategory   			UNIT_CATEGORY_STANDON           							= ConvertUnitCategory(1024)
-    constant unitcategory   			UNIT_CATEGORY_TAUREN            							= ConvertUnitCategory(2048)
+	// Unit Category
+	constant unitcategory   			UNIT_CATEGORY_GIANT			 								= ConvertUnitCategory(1)
+	constant unitcategory   			UNIT_CATEGORY_UNDEAD										= ConvertUnitCategory(2)
+	constant unitcategory   			UNIT_CATEGORY_SUMMONED		  								= ConvertUnitCategory(4)
+	constant unitcategory   			UNIT_CATEGORY_MECHANICAL									= ConvertUnitCategory(8)
+	constant unitcategory   			UNIT_CATEGORY_PEON			  								= ConvertUnitCategory(16)
+	constant unitcategory   			UNIT_CATEGORY_SAPPER										= ConvertUnitCategory(32)
+	constant unitcategory   			UNIT_CATEGORY_TOWNHALL		  								= ConvertUnitCategory(64)
+	constant unitcategory   			UNIT_CATEGORY_ANCIENT		   								= ConvertUnitCategory(128)
+	constant unitcategory   			UNIT_CATEGORY_NEUTRAL		   								= ConvertUnitCategory(256)
+	constant unitcategory   			UNIT_CATEGORY_WARD			  								= ConvertUnitCategory(512)
+	constant unitcategory   			UNIT_CATEGORY_STANDON		   								= ConvertUnitCategory(1024)
+	constant unitcategory   			UNIT_CATEGORY_TAUREN										= ConvertUnitCategory(2048)
 
-    // Pathing Flag
-    constant pathingflag    			PATHING_FLAG_UNWALKABLE             						= ConvertPathingFlag(2)
-    constant pathingflag    			PATHING_FLAG_UNFLYABLE              						= ConvertPathingFlag(4)
-    constant pathingflag    			PATHING_FLAG_UNBUILDABLE            						= ConvertPathingFlag(8)
-    constant pathingflag    			PATHING_FLAG_UNPEONHARVEST          						= ConvertPathingFlag(16)
-    constant pathingflag    			PATHING_FLAG_BLIGHTED               						= ConvertPathingFlag(32)
-    constant pathingflag    			PATHING_FLAG_UNFLOATABLE            						= ConvertPathingFlag(64)
-    constant pathingflag    			PATHING_FLAG_UNAMPHIBIOUS           						= ConvertPathingFlag(128)
-    constant pathingflag    			PATHING_FLAG_UNITEMPLACABLE         						= ConvertPathingFlag(256)
+	// Pathing Flag
+	constant pathingflag				PATHING_FLAG_UNWALKABLE			 							= ConvertPathingFlag(2)
+	constant pathingflag				PATHING_FLAG_UNFLYABLE			  							= ConvertPathingFlag(4)
+	constant pathingflag				PATHING_FLAG_UNBUILDABLE									= ConvertPathingFlag(8)
+	constant pathingflag				PATHING_FLAG_UNPEONHARVEST		  							= ConvertPathingFlag(16)
+	constant pathingflag				PATHING_FLAG_BLIGHTED			   							= ConvertPathingFlag(32)
+	constant pathingflag				PATHING_FLAG_UNFLOATABLE									= ConvertPathingFlag(64)
+	constant pathingflag				PATHING_FLAG_UNAMPHIBIOUS		   							= ConvertPathingFlag(128)
+	constant pathingflag				PATHING_FLAG_UNITEMPLACABLE		 							= ConvertPathingFlag(256)
 	
 	constant timetype					TIME_TYPE_YEAR												= ConvertTimeType(0)
 	constant timetype					TIME_TYPE_MONTH												= ConvertTimeType(1)
@@ -1557,11 +1577,13 @@ globals
 	constant variabletype				VARIABLE_TYPE_BOOLEAN_ARRAY									= ConvertVariableType(13)
 endglobals
 
+
 //================Custom natives=====================
 
 //===================================================
 // Conversion API
 //
+
 // integers in jass use 4 bytes, that is 32 bits so you can do something like this: BitwiseGetBit( 0xFF001122, 31 ), this will return 1 (as 4th byte is 0xFF which is 11111111 in bits).
 native BitwiseGetBit									takes integer bit, integer bitIndex returns integer
 // integers in jass use 4 bytes, so you can do something like this: BitwiseGetByte( 0xFF001122, 3 ), this will return 0xFF and to get 0x22 you need to: BitwiseGetByte( 0xFF001122, 0 ).
@@ -1700,6 +1722,33 @@ native GetNextHandleIndex								takes nothing returns integer
 //============================================================================
 // Execution API
 //
+
+// Jass VM API
+native GetJassMainThread								takes nothing returns jassthread
+native GetJassCurrentThread								takes nothing returns jassthread
+
+// RunScriptEx - this generates a new thread for any given .j file, which can be supplemented by "parent" script, "helper" (this is usually either common.ai or blizzard.j) and the script you want to run. Function returns id of newly created thread, returns 0 on failure.
+native RunJassScriptEx									takes string parentScriptFile, string helperScriptFile, string jassScriptFile returns jassthread
+native RunJassScript									takes string helperScriptFile, string jassScriptFile returns jassthread // this will use common.j as parentScriptFile, and will work exactly as RunScriptEx.
+native RunJassScriptSimple								takes string jassScriptFile returns jassthread // this will use common.j as parentScriptFile, and use jassScriptFile as "helper", and will work exactly as RunScriptEx.
+//
+
+native StopJassThread									takes jassthread thread returns boolean // Stops running thread, this will do nothing to common.j thread, however this CAN and WILL kill off AI thread, if you provided a threadId that was NOT provided by RunScript.
+
+native GetJassGlobalInteger								takes jassthread thread, string variableName returns integer
+native GetJassGlobalReal								takes jassthread thread, string variableName returns real
+native GetJassGlobalString								takes jassthread thread, string variableName returns string
+native GetJassGlobalHandle								takes jassthread thread, string variableName returns handle
+native GetJassGlobalBoolean								takes jassthread thread, string variableName returns boolean
+
+native SetJassGlobalInteger								takes jassthread thread, string variableName, integer value returns boolean
+native SetJassGlobalReal								takes jassthread thread, string variableName, real value returns boolean
+native SetJassGlobalString								takes jassthread thread, string variableName, string value returns boolean
+native SetJassGlobalHandle								takes jassthread thread, string variableName, handle value returns boolean
+native SetJassGlobalBoolean								takes jassthread thread, string variableName, boolean value returns boolean
+//
+
+// Jass Operations
 native IsOperationLimitEnabled							takes nothing returns boolean
 native EnableOperationLimit								takes boolean enable returns nothing
 native ExecuteCode										takes code c returns nothing
@@ -1880,7 +1929,7 @@ native GetTextTagZ 										takes texttag whichTextTag returns real
 native SetTextTagZ 										takes texttag whichTextTag, real z returns nothing
 native GetTextTagHeight 								takes texttag whichTextTag returns real
 native SetTextTagHeight 								takes texttag whichTextTag, real height returns nothing
-native GetTextTagLocation 								takes texttag whichTextTag returns location
+native GetTextTagPositionLocation 						takes texttag whichTextTag returns location
 native SetTextTagPositionLocation 						takes texttag whichTextTag, location whichLocation returns nothing
 native GetTextTagColour 								takes texttag whichTextTag returns integer
 native GetTextTagAlpha 									takes texttag whichTextTag returns integer
@@ -2032,7 +2081,7 @@ native AddAbilityStringLevelArrayField		  			takes ability whichAbility, ability
 native RemoveAbilityStringLevelArrayField	   			takes ability whichAbility, abilitystringlevelarrayfield whichField, integer level, string value returns boolean
 //
 
-native ResetAbilityFieldData							takes ability whichAbility returns boolean // Restores original ability data, meaning it reverts any and all changes made by Field API. Returns true if reset was needed.
+native ResetAbilityFieldData							takes ability whichAbility returns boolean // Restores original ability data, meaning it reverts any and all changes made by Field API. Returns true if reset was successful.
 
 // Normal API
 native GetAbilityOrderId 								takes ability whichAbility returns integer
@@ -2110,6 +2159,7 @@ native GetSpecialEffectScale							takes effect whichEffect returns real
 native SetSpecialEffectScale							takes effect whichEffect, real scale returns nothing
 native GetSpecialEffectTimeScale						takes effect whichEffect returns real
 native SetSpecialEffectTimeScale						takes effect whichEffect, real timescale returns nothing
+native SetSpecialEffectPlayerColour					   	takes effect whichEffect, playercolor color returns nothing
 native GetSpecialEffectColour					   		takes effect whichEffect returns integer
 native SetSpecialEffectColour					   		takes effect whichEffect, integer colour returns boolean
 native SetSpecialEffectAlpha							takes effect whichEffect, integer alpha returns boolean
@@ -2126,6 +2176,9 @@ native SetSpecialEffectPitch							takes effect whichEffect, real pitch returns 
 native GetSpecialEffectRoll						 		takes effect whichEffect returns real // Z
 native SetSpecialEffectRoll						 		takes effect whichEffect, real roll returns boolean // Z
 native SetSpecialEffectOrientation				  		takes effect whichEffect, real yaw, real pitch, real roll returns nothing // uses SetSpecialEffectSpaceRotation with XYZ orientation as default
+native SetSpecialEffectMaterialTexture 					takes effect whichEffect, string textureName, integer materialId, integer textureIndex returns nothing
+native SetSpecialEffectTexture 							takes effect whichEffect, string textureName, integer textureIndex returns nothing
+native SetSpecialEffectReplaceableTexture 				takes effect whichEffect, string textureName, integer textureIndex returns nothing
 native SetSpecialEffectModel							takes effect whichEffect, string modelName returns nothing
 native SetSpecialEffectModelEx					  		takes effect whichEffect, string modelName, integer playerColour returns nothing // 0-15, -1 to ignore the colour.
 native SetSpecialEffectAnimationWithRarityByIndex   	takes effect whichEffect, integer animIndex, raritycontrol rarity returns nothing
@@ -2165,6 +2218,7 @@ native GetTrackableScale								takes trackable whichTrackable returns real
 native SetTrackableScale								takes trackable whichTrackable, real scale returns nothing
 native GetTrackableTimeScale							takes trackable whichTrackable returns real
 native SetTrackableTimeScale							takes trackable whichTrackable, real timescale returns nothing
+native SetTrackablePlayerColour					   		takes trackable whichTrackable, playercolor color returns nothing
 native GetTrackableColour						   		takes trackable whichTrackable returns integer
 native SetTrackableColour						   		takes trackable whichTrackable, integer colour returns boolean
 native SetTrackableAlpha								takes trackable whichTrackable, integer alpha returns boolean
@@ -2181,6 +2235,9 @@ native SetTrackablePitch								takes trackable whichTrackable, real pitch retur
 native GetTrackableRoll							 		takes trackable whichTrackable returns real
 native SetTrackableRoll							 		takes trackable whichTrackable, real roll returns boolean
 native SetTrackableOrientation					  		takes trackable whichTrackable, real yaw, real pitch, real roll returns nothing
+native SetTrackableMaterialTexture 						takes trackable whichTrackable, string textureName, integer materialId, integer textureIndex returns nothing
+native SetTrackableTexture 								takes trackable whichTrackable, string textureName, integer textureIndex returns nothing
+native SetTrackableReplaceableTexture 					takes trackable whichTrackable, string textureName, integer textureIndex returns nothing	
 native SetTrackableModel								takes trackable whichTrackable, string modelName returns nothing
 native SetTrackableModelEx						  		takes trackable whichTrackable, string modelName, integer playerColour returns nothing
 native SetTrackableAnimationWithRarityByIndex	   		takes trackable whichTrackable, integer animIndex, raritycontrol rarity returns nothing
@@ -2226,6 +2283,7 @@ native GetWidgetPitch 									takes widget whichWidget returns real
 native SetWidgetPitch 									takes widget whichWidget, real pitch returns nothing
 native GetWidgetRoll 									takes widget whichWidget returns real
 native SetWidgetRoll 									takes widget whichWidget, real roll returns nothing
+native GetWidgetModel 									takes widget whichWidget returns string
 native SetWidgetModel 									takes widget whichWidget, string modelFile returns nothing
 native SetWidgetModelEx 								takes widget whichWidget, string modelFile, integer playerId returns nothing
 native SetWidgetMaterialTexture 						takes widget whichWidget, string textureName, integer materialId, integer textureIndex returns nothing
@@ -2238,6 +2296,8 @@ native SetWidgetAnimation 								takes widget whichWidget, string animation ret
 native QueueWidgetAnimationByIndex 						takes widget whichWidget, integer animIndex returns nothing
 native QueueWidgetAnimation 							takes widget whichWidget, string animation returns nothing
 native SetWidgetAnimationOffsetPercent 					takes widget whichWidget, real percent returns boolean
+
+native TriggerRegisterWidgetEvent						takes trigger whichTrigger, widget whichWidget, widgetevent whichWidgetEvent returns event
 //
 
 //============================================================================
@@ -2420,8 +2480,10 @@ native SetUnitTypeId 									takes unit whichUnit, integer newId returns nothin
 native GetUnitLocustFlag 								takes unit whichUnit returns integer
 native GetUnitUnderCursor 								takes nothing returns unit
 native GetUnitSelectedCountByPlayer 					takes player whichPlayer returns integer
-native GetUnitSelected 									takes player whichPlayer returns unit
+native GetUnitSelected 									takes player whichPlayer returns unit // Always returns Active unit, aka the "main" one whose UI is drawn.
+native GetUnitInSelectionByIndex 						takes player whichPlayer, integer index returns unit
 native GetFirstUnitInSelection 							takes player whichPlayer returns unit
+native GetLastUnitInSelection 							takes player whichPlayer returns unit
 native IsUnitAlive 										takes unit whichUnit returns boolean // checks unit flags
 native IsUnitDead 										takes unit whichUnit returns boolean // checks internal flag (not a part of unit flags)
 native IsUnitMoving 									takes unit whichUnit returns boolean
@@ -2445,8 +2507,8 @@ native EnableUnitAttackEx 								takes unit whichUnit, boolean enable returns n
 native IsUnitStateNormal 								takes unit whichUnit, boolean additionalCheck returns boolean
 native RedrawUnit 										takes unit whichUnit returns nothing
 native UpdateUnitInfoBar 								takes unit whichUnit returns integer
-native UnitUnapplyUpdates 								takes unit whichUnit returns integer
-native UnitApplyUpdates 								takes unit whichUnit returns integer
+native UnitUnapplyUpgrades 								takes unit whichUnit returns integer
+native UnitApplyUpgrades 								takes unit whichUnit returns integer
 native GetUnitAbility 									takes unit whichUnit, integer aid returns ability
 native GetUnitAbilityByIndex 							takes unit whichUnit, integer index returns ability
 native GetUnitBuff 										takes unit whichUnit, integer buffId returns buff
@@ -2608,6 +2670,7 @@ native GetMissileScale									takes missile whichMissile returns real
 native SetMissileScale									takes missile whichMissile, real scale returns nothing
 native GetMissileTimeScale								takes missile whichMissile returns real
 native SetMissileTimeScale								takes missile whichMissile, real timescale returns nothing
+native SetMissilePlayerColour					   		takes missile whichMissile, playercolor color returns nothing
 native GetMissileColour					   				takes missile whichMissile returns integer
 native SetMissileColour					   				takes missile whichMissile, integer colour returns boolean
 native SetMissileAlpha									takes missile whichMissile, integer alpha returns boolean
@@ -2623,6 +2686,9 @@ native SetMissilePitch									takes missile whichMissile, real pitch returns bo
 native GetMissileRoll						 			takes missile whichMissile returns real
 native SetMissileRoll						 			takes missile whichMissile, real roll returns boolean
 native SetMissileOrientation				  			takes missile whichMissile, real yaw, real pitch, real roll returns nothing
+native SetMissileMaterialTexture 						takes missile whichMissile, string textureName, integer materialId, integer textureIndex returns nothing
+native SetMissileTexture 								takes missile whichMissile, string textureName, integer textureIndex returns nothing
+native SetMissileReplaceableTexture 					takes missile whichMissile, string textureName, integer textureIndex returns nothing
 native SetMissileModel									takes missile whichMissile, string modelName returns nothing
 native SetMissileModelEx					  			takes missile whichMissile, string modelName, integer playerColour returns nothing
 native SetMissileAnimationWithRarityByIndex   			takes missile whichMissile, integer animIndex, raritycontrol rarity returns nothing
@@ -2754,9 +2820,11 @@ native GetFrameSpriteScale								takes framehandle whichFrame returns real
 native SetFrameSpriteScale								takes framehandle whichFrame, real scale returns nothing
 native GetFrameSpriteTimeScale							takes framehandle whichFrame returns real
 native SetFrameSpriteTimeScale							takes framehandle whichFrame, real timescale returns nothing
+native SetFrameSpritePlayerColour						takes framehandle whichFrame, playercolor color returns nothing
+native GetFrameSpriteAlpha						   		takes framehandle whichFrame returns integer
+native SetFrameSpriteAlpha								takes framehandle whichFrame, integer alpha returns boolean
 native GetFrameSpriteColour						   		takes framehandle whichFrame returns integer
 native SetFrameSpriteColour						   		takes framehandle whichFrame, integer colour returns boolean
-native SetFrameSpriteAlpha								takes framehandle whichFrame, integer alpha returns boolean
 native SetFrameSpriteVertexColour					 	takes framehandle whichFrame, integer red, integer green, integer blue, integer alpha returns boolean
 native SetFrameSpriteOrientationEx						takes framehandle whichFrame, real yaw, real pitch, real roll, integer eulerOrder returns boolean
 native GetFrameSpriteYaw							  	takes framehandle whichFrame returns real
@@ -2768,6 +2836,9 @@ native SetFrameSpritePitch								takes framehandle whichFrame, real pitch retur
 native GetFrameSpriteRoll							 	takes framehandle whichFrame returns real
 native SetFrameSpriteRoll							 	takes framehandle whichFrame, real roll returns boolean
 native SetFrameSpriteOrientation					  	takes framehandle whichFrame, real yaw, real pitch, real roll returns nothing
+native SetFrameSpriteMaterialTexture 					takes framehandle whichFrame, string textureName, integer materialId, integer textureIndex returns nothing
+native SetFrameSpriteTexture 							takes framehandle whichFrame, string textureName, integer textureIndex returns nothing
+native SetFrameSpriteReplaceableTexture 				takes framehandle whichFrame, string textureName, integer textureIndex returns nothing
 native SetFrameSpriteModel								takes framehandle whichFrame, string modelName returns nothing
 native SetFrameSpriteModelEx						  	takes framehandle whichFrame, string modelName, integer playerColour returns nothing
 native SetFrameSpriteAnimationWithRarityByIndex 		takes framehandle whichFrame, integer animIndex, raritycontrol rarity returns nothing
