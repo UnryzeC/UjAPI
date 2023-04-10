@@ -45,8 +45,8 @@ type unitevent		  									extends eventid
 type limitop											extends eventid
 type widgetevent										extends eventid
 type dialogevent										extends eventid
-type playermissileevent									extends eventid
 type unittype		   									extends handle
+type projectiletype		   								extends handle
 type gamespeed		  									extends handle
 type gamedifficulty	 									extends handle
 type gametype		   									extends handle
@@ -97,7 +97,8 @@ type subanimtype										extends animtype
 type image			  									extends handle
 type ubersplat		  									extends handle
 type hashtable		  									extends agent
-type missile											extends agent
+type projectile											extends agent
+type doodad												extends agent
 type framehandle										extends handle
 type originframetype									extends handle
 type framepointtype	 									extends handle
@@ -142,6 +143,7 @@ type commandbuttoneffect            					extends handle
 type timetype											extends handle
 type variabletype										extends handle
 type jassthread											extends handle
+type handlelist											extends handle
 
 constant native ConvertRace				 				takes integer i returns race
 constant native ConvertAllianceType		 				takes integer i returns alliancetype
@@ -187,7 +189,7 @@ constant native ConvertDamageType		   				takes integer i returns damagetype
 constant native ConvertWeaponType		   				takes integer i returns weapontype
 constant native ConvertSoundType						takes integer i returns soundtype
 constant native ConvertPathingType		  				takes integer i returns pathingtype
-constant native ConvertPlayerMissileEvent				takes integer i returns playermissileevent
+constant native ConvertProjectileType					takes integer i returns projectiletype
 constant native ConvertAnimType			 				takes integer i returns animtype
 constant native ConvertSubAnimType		  				takes integer i returns subanimtype
 constant native ConvertOriginFrameType	  				takes integer i returns originframetype
@@ -246,9 +248,10 @@ constant native GetObjectName			   				takes integer objectId returns string
 
 globals
 
-//===================================================
-// Game Constants	
-//===================================================
+	//===================================================
+	// Game Constants	
+	//===================================================
+
 	constant boolean					FALSE						   								= false
 	constant boolean					TRUE														= true
 	constant integer					JASS_MAX_ARRAY_SIZE			 								= 8192
@@ -425,9 +428,9 @@ globals
 	constant subanimtype				SUBANIM_TYPE_ENTANGLE		   								= ConvertSubAnimType(61)
 	constant subanimtype				SUBANIM_TYPE_BERSERK										= ConvertSubAnimType(62)
 
-//===================================================
-// Map Setup Constants	
-//===================================================
+	//===================================================
+	// Map Setup Constants	
+	//===================================================
 
 	constant racepreference	 			RACE_PREF_HUMAN					 							= ConvertRacePref(1)
 	constant racepreference	 			RACE_PREF_ORC					   							= ConvertRacePref(2)
@@ -508,9 +511,10 @@ globals
 	constant playerslotstate 			PLAYER_SLOT_STATE_PLAYING		   							= ConvertPlayerSlotState(1)
 	constant playerslotstate 			PLAYER_SLOT_STATE_LEFT			  							= ConvertPlayerSlotState(2)
 
-//===================================================
-// Sound Constants
-//===================================================
+	//===================================================
+	// Sound Constants
+	//===================================================
+
 	constant volumegroup 				SOUND_VOLUMEGROUP_UNITMOVEMENT	  							= ConvertVolumeGroup(0)
 	constant volumegroup 				SOUND_VOLUMEGROUP_UNITSOUNDS								= ConvertVolumeGroup(1)
 	constant volumegroup 				SOUND_VOLUMEGROUP_COMBAT									= ConvertVolumeGroup(2)
@@ -520,13 +524,12 @@ globals
 	constant volumegroup 				SOUND_VOLUMEGROUP_AMBIENTSOUNDS	 							= ConvertVolumeGroup(6)
 	constant volumegroup 				SOUND_VOLUMEGROUP_FIRE			  							= ConvertVolumeGroup(7)
 
-
-//===================================================
-// Game, Player, and Unit States
-//
-// For use with TriggerRegister<X>StateEvent
-//
-//===================================================
+	//===================================================
+	// Game, Player, and Unit States
+	//
+	// For use with TriggerRegister<X>StateEvent
+	//
+	//===================================================
 
 	constant igamestate 				GAME_STATE_DIVINE_INTERVENTION		  						= ConvertIGameState(0)
 	constant igamestate 				GAME_STATE_DISCONNECTED				 						= ConvertIGameState(1)
@@ -598,20 +601,20 @@ globals
 	constant playerscore 				PLAYER_SCORE_RESOURCE_TOTAL									= ConvertPlayerScore(23)
 	constant playerscore 				PLAYER_SCORE_TOTAL					 						= ConvertPlayerScore(24)
 		
-//===================================================
-// Game, Player and Unit Events
-//
-//  When an event causes a trigger to fire these
-//  values allow the action code to determine which
-//  event was dispatched and therefore which set of
-//  native functions should be used to get information
-//  about the event.
-//
-// Do NOT change the order or value of these constants
-// without insuring that the JASS_GAME_EVENTS_WAR3 enum
-// is changed to match.
-//
-//===================================================
+	//===================================================
+	// Game, Player and Unit Events
+	//
+	//  When an event causes a trigger to fire these
+	//  values allow the action code to determine which
+	//  event was dispatched and therefore which set of
+	//  native functions should be used to get information
+	//  about the event.
+	//
+	// Do NOT change the order or value of these constants
+	// without insuring that the JASS_GAME_EVENTS_WAR3 enum
+	// is changed to match.
+	//
+	//===================================================
 
 	//===================================================
 	// For use with TriggerRegisterGameEvent	
@@ -637,6 +640,7 @@ globals
 	//===================================================
 	// For use with TriggerRegisterPlayerEvent
 	//===================================================
+
 	constant playerevent 				EVENT_PLAYER_STATE_LIMIT			   						= ConvertPlayerEvent(11)
 	constant playerevent 				EVENT_PLAYER_ALLIANCE_CHANGED		  						= ConvertPlayerEvent(12)
 
@@ -760,7 +764,7 @@ globals
 	constant unitevent 					EVENT_UNIT_LOADED											= ConvertUnitEvent(88)
 
     //===================================================
-    // For use with TriggerRegisterPlayerEvent
+    // For use with TriggerRegisterWidgetEvent
     //===================================================
 
 	constant widgetevent 				EVENT_WIDGET_DEATH							 				= ConvertWidgetEvent(89)
@@ -823,6 +827,13 @@ globals
 	constant playerunitevent			EVENT_PLAYER_UNIT_SPELL_ENDCAST		 						= ConvertPlayerUnitEvent(276)
 	constant playerunitevent			EVENT_PLAYER_UNIT_PAWN_ITEM			 						= ConvertPlayerUnitEvent(277)
 
+	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_RECEIVED								= ConvertPlayerUnitEvent(500)
+	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_REFRESHED							= ConvertPlayerUnitEvent(501)
+	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_ENDED								= ConvertPlayerUnitEvent(502)
+
+	constant playerunitevent			EVENT_PLAYER_UNIT_PROJECTILE_LAUNCH							= ConvertPlayerUnitEvent(600)
+	constant playerunitevent			EVENT_PLAYER_UNIT_PROJECTILE_HIT							= ConvertPlayerUnitEvent(601)
+
 	//===================================================
 	// For use with TriggerRegisterUnitEvent
 	//===================================================
@@ -837,12 +848,12 @@ globals
 	constant unitevent		  			EVENT_UNIT_SPELL_ENDCAST									= ConvertUnitEvent(293)
 	constant unitevent		  			EVENT_UNIT_PAWN_ITEM										= ConvertUnitEvent(294)
 
-	//===================================================
-	// For use with TriggerRegisterPlayerMissileEvent
-	//===================================================
+	constant unitevent					EVENT_UNIT_BUFF_RECEIVED									= ConvertUnitEvent(510)
+	constant unitevent					EVENT_UNIT_BUFF_REFRESHED									= ConvertUnitEvent(511)
+	constant unitevent					EVENT_UNIT_BUFF_ENDED										= ConvertUnitEvent(512)
 
-	constant playermissileevent			EVENT_PLAYER_MISSILE_LAUNCH									= ConvertPlayerMissileEvent(600)
-	constant playermissileevent			EVENT_PLAYER_MISSILE_HIT									= ConvertPlayerMissileEvent(601)
+	constant unitevent					EVENT_UNIT_PROJECTILE_LAUNCH								= ConvertUnitEvent(610)
+	constant unitevent					EVENT_UNIT_PROJECTILE_HIT									= ConvertUnitEvent(611)
 
 	//===================================================
 	// Limit Event API constants	
@@ -856,9 +867,9 @@ globals
 	constant limitop 					GREATER_THAN						   						= ConvertLimitOp(4)
 	constant limitop 					NOT_EQUAL							  						= ConvertLimitOp(5)
 
-//===================================================
-// Unit Type Constants for use with IsUnitType()
-//===================================================
+	//===================================================
+	// Unit Type Constants for use with IsUnitType()
+	//===================================================
 
 	constant unittype 					UNIT_TYPE_HERO												= ConvertUnitType(0)
 	constant unittype 					UNIT_TYPE_DEAD												= ConvertUnitType(1)
@@ -894,9 +905,20 @@ globals
 	constant unittype 					UNIT_TYPE_ETHEREAL											= ConvertUnitType(25)
 	constant unittype 					UNIT_TYPE_MAGIC_IMMUNE										= ConvertUnitType(26)
 
-//===================================================
-// Unit Type Constants for use with ChooseRandomItemEx()
-//===================================================
+	//===================================================
+	// Projectile Type Constants for use with IsProjectileType()
+	//===================================================
+
+	constant projectiletype 			PROJECTILE_TYPE_BULLET										= ConvertProjectileType(0)
+	constant projectiletype 			PROJECTILE_TYPE_MISSILE										= ConvertProjectileType(1)
+	constant projectiletype 			PROJECTILE_TYPE_ARTILLERY				   					= ConvertProjectileType(2)
+	
+	constant projectiletype 			PROJECTILE_TYPE_VISIBLE				   						= ConvertProjectileType(4)
+	constant projectiletype 			PROJECTILE_TYPE_DEAD				   						= ConvertProjectileType(5)
+
+	//===================================================
+	// Unit Type Constants for use with ChooseRandomItemEx()
+	//===================================================
 
 	constant itemtype 					ITEM_TYPE_PERMANENT				   							= ConvertItemType(0)
 	constant itemtype 					ITEM_TYPE_CHARGED					 						= ConvertItemType(1)
@@ -911,9 +933,9 @@ globals
 	// Deprecated, should use ITEM_TYPE_POWERUP
 	constant itemtype 					ITEM_TYPE_TOME												= ConvertItemType(2)
 
-//===================================================
-// Animatable Camera Fields
-//===================================================
+	//===================================================
+	// Animatable Camera Fields
+	//===================================================
 
 	constant camerafield 				CAMERA_FIELD_TARGET_DISTANCE	   							= ConvertCameraField(0)
 	constant camerafield 				CAMERA_FIELD_FARZ				  							= ConvertCameraField(1)
@@ -944,18 +966,18 @@ globals
 	constant fogstate	   				FOG_OF_WAR_FOGGED			   								= ConvertFogState(2)
 	constant fogstate	   				FOG_OF_WAR_VISIBLE			  								= ConvertFogState(4)
 
-//===================================================
-// Camera Margin constants for use with GetCameraMargin
-//===================================================
+	//===================================================
+	// Camera Margin constants for use with GetCameraMargin
+	//===================================================
 
 	constant integer					CAMERA_MARGIN_LEFT			  								= 0
 	constant integer					CAMERA_MARGIN_RIGHT			 								= 1
 	constant integer					CAMERA_MARGIN_TOP			   								= 2
 	constant integer					CAMERA_MARGIN_BOTTOM										= 3
 
-//===================================================
-// Effect API constants
-//===================================================
+	//===================================================
+	// Effect API constants
+	//===================================================
 
 	constant effecttype	 				EFFECT_TYPE_EFFECT			  								= ConvertEffectType(0)
 	constant effecttype	 				EFFECT_TYPE_TARGET			  								= ConvertEffectType(1)
@@ -968,9 +990,9 @@ globals
 	constant soundtype	  				SOUND_TYPE_EFFECT			   								= ConvertSoundType(0)
 	constant soundtype	  				SOUND_TYPE_EFFECT_LOOPED									= ConvertSoundType(1)
 
-//===================================================
-// Custom UI API constants
-//===================================================
+	//===================================================
+	// Custom UI API constants
+	//===================================================
 
 	constant originframetype			ORIGIN_FRAME_GAME_UI										= ConvertOriginFrameType(0)
 	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON		 							= ConvertOriginFrameType(1)
@@ -1052,9 +1074,9 @@ globals
 	constant frameeventtype		 		FRAMEEVENT_DIALOG_ACCEPT									= ConvertFrameEventType(15)
 	constant frameeventtype		 		FRAMEEVENT_EDITBOX_ENTER									= ConvertFrameEventType(16)
 
-//===================================================
-// OS Key constants
-//===================================================
+	//===================================================
+	// OS Key constants
+	//===================================================
 
 	constant oskeytype			  		OSKEY_LBUTTON					 							= ConvertOsKeyType(0x01)
 	constant oskeytype			  		OSKEY_RBUTTON					 							= ConvertOsKeyType(0x02)
@@ -1253,17 +1275,17 @@ globals
 	constant oskeytype			  		OSKEY_PA1						   							= ConvertOsKeyType(0xFD)
 	constant oskeytype			  		OSKEY_OEM_CLEAR					 							= ConvertOsKeyType(0xFE)
 
-//===================================================
-// Mouse Button constants
-//===================================================
+	//===================================================
+	// Mouse Button constants
+	//===================================================
 
 	constant mousebuttontype			MOUSE_BUTTON_TYPE_LEFT		  								= ConvertMouseButtonType(1)
 	constant mousebuttontype			MOUSE_BUTTON_TYPE_MIDDLE									= ConvertMouseButtonType(2)
 	constant mousebuttontype			MOUSE_BUTTON_TYPE_RIGHT		 								= ConvertMouseButtonType(3)
 
-//===================================================
-// Meta Keys constants
-//===================================================
+	//===================================================
+	// Meta Keys constants
+	//===================================================
 
 	constant integer					META_KEY_NONE			  									= 0
 	constant integer					META_KEY_SHIFT			 									= 1
@@ -1272,9 +1294,9 @@ globals
 	constant integer					META_KEY_WINDOWS											= 8
 	// To make a "meta key combination" simply add the values you need, so ALT + SHIFT => metaKey = META_KEY_ALT + META_KEY_SHIFT
 
-//===================================================
-// Chat Recipient constants
-//===================================================
+	//===================================================
+	// Chat Recipient constants
+	//===================================================
 
 	constant integer					CHAT_RECIPIENT_ALL											= 0
 	constant integer					CHAT_RECIPIENT_ALLIES										= 1
@@ -1282,9 +1304,9 @@ globals
 	constant integer					CHAT_RECIPIENT_OBSERVERS									= 2
 	constant integer					CHAT_RECIPIENT_PRIVATE										= 3
 
-//===================================================
-// Instanced Object Operation API constants
-//===================================================
+	//===================================================
+	// Instanced Object Operation API constants
+	//===================================================
 	
 	// Ability
 	constant abilityintegerfield 		ABILITY_IF_BUTTON_POSITION_NORMAL_X							= ConvertAbilityIntegerField('abpx')
@@ -2607,8 +2629,8 @@ native DestroyBoolExpr  								takes boolexpr e returns nothing
 
 native TriggerRegisterVariableEvent 					takes trigger whichTrigger, string varName, limitop opcode, real limitval returns event
 
-	// EVENT_GAME_VARIABLE_LIMIT
-	//constant native string GetTriggeringVariableName takes nothing returns string
+// EVENT_GAME_VARIABLE_LIMIT
+//constant native string GetTriggeringVariableName takes nothing returns string
 
 // Creates it's own timer and triggers when it expires
 native TriggerRegisterTimerEvent 						takes trigger whichTrigger, real timeout, boolean periodic returns event
@@ -3931,15 +3953,15 @@ native SetDoodadAnimationRect   						takes rect r, integer doodadID, string ani
 //============================================================================
 // Computer AI interface
 //
-native StartMeleeAI		 								takes player num, string script				 returns nothing
-native StartCampaignAI	  								takes player num, string script				 returns nothing
+native StartMeleeAI		 								takes player num, string script	returns nothing
+native StartCampaignAI	  								takes player num, string script returns nothing
 native CommandAI										takes player num, integer command, integer data returns nothing
-native PauseCompAI		  								takes player p,   boolean pause				 returns nothing
-native GetAIDifficulty	  								takes player num								returns aidifficulty
+native PauseCompAI		  								takes player p,   boolean pause returns nothing
+native GetAIDifficulty	  								takes player num returns aidifficulty
 
-native RemoveGuardPosition  							takes unit hUnit								returns nothing
-native RecycleGuardPosition 							takes unit hUnit								returns nothing
-native RemoveAllGuardPositions 							takes player num							 	returns nothing
+native RemoveGuardPosition  							takes unit hUnit returns nothing
+native RecycleGuardPosition 							takes unit hUnit returns nothing
+native RemoveAllGuardPositions 							takes player num returns nothing
 
 //============================================================================
 native Cheat											takes string cheatStr returns nothing
@@ -4254,6 +4276,10 @@ native GetEnumHandle									takes nothing returns handle
 native EnumHandlesOfType								takes integer handleBaseTypeId, boolexpr filter, code handlerFunc returns nothing
 //
 
+// AntiHack API
+native EnableAntiHack									takes boolean enable returns nothing
+//
+
 //============================================================================
 // Hashtable API
 //
@@ -4261,14 +4287,14 @@ native SaveHandle										takes hashtable table, integer parentKey, integer chi
 native SaveAttackTypeHandle								takes hashtable table, integer parentKey, integer childKey, attacktype whichAttackType returns boolean
 native SaveDamageTypeHandle								takes hashtable table, integer parentKey, integer childKey, damagetype whichDamageType returns boolean
 native SaveWeaponTypeHandle								takes hashtable table, integer parentKey, integer childKey, weapontype whichWeaponType returns boolean
-native SaveMissileHandle								takes hashtable table, integer parentKey, integer childKey, missile whichMissile returns boolean
+native SaveProjectileHandle								takes hashtable table, integer parentKey, integer childKey, projectile whichProjectile returns boolean
 native SaveFrameHandle									takes hashtable table, integer parentKey, integer childKey, framehandle whichFrame returns boolean
 
 native LoadHandle			 							takes hashtable table, integer parentKey, integer childKey returns handle
 native LoadAttackTypeHandle								takes hashtable table, integer parentKey, integer childKey returns attacktype
 native LoadDamageTypeHandle								takes hashtable table, integer parentKey, integer childKey returns damagetype
 native LoadWeaponTypeHandle								takes hashtable table, integer parentKey, integer childKey returns weapontype
-native LoadMissileHandle								takes hashtable table, integer parentKey, integer childKey returns missile
+native LoadProjectileHandle								takes hashtable table, integer parentKey, integer childKey returns projectile
 native LoadFrameHandle			 						takes hashtable table, integer parentKey, integer childKey returns framehandle
 //
 
@@ -4293,6 +4319,116 @@ native GroupGetUnitByIndex				  				takes group whichGroup, integer index return
 native GroupForEachUnit					 				takes group whichGroup returns unit	// this mimics FristOfGroup, but each consecutive call will pick next unit. DO NOT USE this with GroupRemoveUnit, as it will break it.
 native GroupAddGroupEx					  				takes group destGroup, group sourceGroup returns integer
 native GroupRemoveGroupEx				   				takes group destGroup, group sourceGroup returns integer
+//
+
+//============================================================================
+// Handle List API
+// For some of the functions, follow these rules: handleTypeId is base typeId of the object, such as '+w3u' for units, more on this below. And last, but not least typeId is the id of a widget/ability/buff, i.e. 'hfoo' for footman, etc.
+// Handle Type Id List:
+// Handle = 0 (NULL) | Agent = '+w3a' (for any agent) | Widget = '+w3w' | Unit = '+w3u' | Item = 'item' | Destructable = '+w3d' | Ability = 'abil' | Buff = 'buff' | Effect = 'efct' | Projectile = 'proj' | Frame = '+frm'
+// For any handleTypeId that is not present here, you can use GetHandleBaseTypeId on any handle to get its handleTypeId.
+// Note: Ability = 'abil', Buff = 'buff' and Projectile = 'proj' are custom, meaning they do not exist internally.
+
+native HandleListCreate									takes nothing returns handlelist
+native HandleListDestroy								takes handlelist whichHandleList returns nothing
+native HandleListAddHandle						 		takes handlelist whichHandleList, handle whichHandle returns nothing
+native HandleListRemoveHandle					  		takes handlelist whichHandleList, handle whichHandle returns nothing
+native HandleListAddList					  			takes handlelist destHandleList, handlelist sourceHandleList returns integer
+native HandleListRemoveList				   				takes handlelist destHandleList, handlelist sourceHandleList returns integer
+native HandleListClear						   			takes handlelist whichHandleList returns nothing
+native HandleListContainsHandle							takes handlelist whichHandleList, handle whichHandle returns boolean
+
+native HandleListGetCount								takes handlelist whichHandleList returns integer
+native HandleListGetCountEx								takes handlelist whichHandleList, integer handleTypeId returns integer
+
+native HandleListGetAgentCount                          takes handlelist whichHandleList returns integer
+native HandleListGetWidgetCount                         takes handlelist whichHandleList returns integer
+native HandleListGetUnitCount                           takes handlelist whichHandleList returns integer
+native HandleListGetItemCount                           takes handlelist whichHandleList returns integer
+native HandleListGetDestructableCount                   takes handlelist whichHandleList returns integer
+native HandleListGetAbilityCount                        takes handlelist whichHandleList returns integer
+native HandleListGetBuffCount                           takes handlelist whichHandleList returns integer
+native HandleListGetEffectCount                         takes handlelist whichHandleList returns integer
+native HandleListGetProjectileCount                     takes handlelist whichHandleList returns integer
+native HandleListGetFrameCount                          takes handlelist whichHandleList returns integer
+
+native HandleListGetHandleByIndex				  		takes handlelist whichHandleList, integer index returns handle
+native HandleListGetHandleByIndexEx				  		takes handlelist whichHandleList, integer handleTypeId, integer index returns handle
+
+native HandleListGetAgentByIndex				  		takes handlelist whichHandleList, integer index returns agent
+native HandleListGetWidgetByIndex				  		takes handlelist whichHandleList, integer index returns widget
+native HandleListGetUnitByIndex				  			takes handlelist whichHandleList, integer index returns unit
+native HandleListGetItemByIndex				  			takes handlelist whichHandleList, integer index returns item
+native HandleListGetDestructableByIndex				  	takes handlelist whichHandleList, integer index returns destructable
+native HandleListGetAbilityByIndex				  		takes handlelist whichHandleList, integer index returns ability
+native HandleListGetBuffByIndex				  			takes handlelist whichHandleList, integer index returns buff
+native HandleListGetEffectByIndex				  		takes handlelist whichHandleList, integer index returns effect
+native HandleListGetProjectileByIndex				  	takes handlelist whichHandleList, integer index returns projectile
+native HandleListGetFrameByIndex				  		takes handlelist whichHandleList, integer index returns framehandle
+
+native HandleListGetFilterHandle				  		takes nothing returns handle
+native HandleListGetFilterAgent				  			takes nothing returns agent
+native HandleListGetFilterWidget				  		takes nothing returns widget
+native HandleListGetFilterUnit				  			takes nothing returns unit
+native HandleListGetFilterItem				  			takes nothing returns item
+native HandleListGetFilterDestructable					takes nothing returns destructable
+native HandleListGetFilterAbility				  		takes nothing returns ability
+native HandleListGetFilterBuff				  			takes nothing returns buff
+native HandleListGetFilterEffect				  		takes nothing returns effect
+native HandleListGetFilterProjectile				  	takes nothing returns projectile
+native HandleListGetFilterFrame				  			takes nothing returns framehandle
+
+native HandleListGetEnumHandle				  			takes nothing returns handle
+native HandleListGetEnumAgent				  			takes nothing returns agent
+native HandleListGetEnumWidget				  			takes nothing returns widget
+native HandleListGetEnumUnit				  			takes nothing returns unit
+native HandleListGetEnumItem				  			takes nothing returns item
+native HandleListGetEnumDestructable					takes nothing returns destructable
+native HandleListGetEnumAbility				  			takes nothing returns ability
+native HandleListGetEnumBuff				  			takes nothing returns buff
+native HandleListGetEnumEffect				  			takes nothing returns effect
+native HandleListGetEnumProjectile				  		takes nothing returns projectile
+native HandleListGetEnumFrame				  			takes nothing returns framehandle
+
+native HandleListEnumInRange							takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+native HandleListEnumInRangeEx							takes handlelist whichHandleList, real x, real y, real radius, integer handleTypeId, boolexpr filter returns nothing
+
+native HandleListEnumAgentsInRange				  		takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+native HandleListEnumWidgetsInRange				  		takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+native HandleListEnumUnitsInRange				  		takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+native HandleListEnumItemsInRange				  		takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+native HandleListEnumDestructablesInRange				takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+native HandleListEnumEffectsInRange				  		takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+native HandleListEnumProjectilesInRange				  	takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+
+native HandleListEnumInRangeOfLoc						takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+native HandleListEnumInRangeOfLocEx						takes handlelist whichHandleList, location whichLocation, real radius, integer handleTypeId, boolexpr filter returns nothing
+
+native HandleListEnumAgentsInRangeOfLoc				  	takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+native HandleListEnumWidgetsInRangeOfLoc				takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+native HandleListEnumUnitsInRangeOfLoc				  	takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+native HandleListEnumItemsInRangeOfLoc				  	takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+native HandleListEnumDestructablesInRangeOfLoc			takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+native HandleListEnumEffectsInRangeOfLoc				takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+native HandleListEnumProjectilesInRangeOfLoc			takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+
+native HandleListEnumInRect								takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+native HandleListEnumInRectEx							takes handlelist whichHandleList, rect whichRect, integer handleTypeId, boolexpr filter returns nothing
+
+native HandleListEnumAgentsInRect				  		takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+native HandleListEnumWidgetsInRect				  		takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+native HandleListEnumUnitsInRect				  		takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+native HandleListEnumItemsInRect				  		takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+native HandleListEnumDestructablesInRect				takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+native HandleListEnumEffectsInRect				  		takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+native HandleListEnumProjectilesInRect				  	takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+
+native HandleListEnumByTypeId							takes handlelist whichHandleList, integer typeId, boolexpr filter returns nothing
+native HandleListEnumByTypeIdEx							takes handlelist whichHandleList, integer handleTypeId, integer typeId, boolexpr filter returns nothing
+
+native HandleListForEach								takes handlelist whichHandleList, code c returns nothing
+native HandleListForEachByTypeId						takes handlelist whichHandleList, integer typeId, code c returns nothing
+native HandleListForEachByTypeIdEx						takes handlelist whichHandleList, integer handleTypeId, integer typeId, code c returns nothing
 //
 
 //============================================================================
@@ -4363,6 +4499,31 @@ native IsImageVisible									takes image whichImage returns boolean
 native GetImageConstantHeight							takes image whichImage returns real
 native GetImageTexture									takes image whichImage returns string
 native SetImageTexture									takes image whichImage, string imagePath returns nothing
+//
+
+//============================================================================
+// Doodad API
+//
+native GetDoodadCount									takes nothing returns integer
+native GetDoodadByIndex									takes integer index returns doodad
+native GetDoodadIndex									takes doodad whichDoodad returns integer
+
+native SetDoodadAnimationWithRarityByIndex 				takes doodad whichDoodad, integer animIndex, raritycontrol rarity returns nothing
+native SetDoodadAnimationWithRarity 					takes doodad whichDoodad, string animationName, raritycontrol rarity returns nothing
+native SetDoodadAnimationByIndex 						takes doodad whichDoodad, integer animIndex returns nothing
+native SetDoodadAnimationEx 							takes doodad whichDoodad, string animationName returns nothing
+native QueueDoodadAnimationByIndex 						takes doodad whichDoodad, integer animIndex returns nothing
+native QueueDoodadAnimation 							takes doodad whichDoodad, string animationName returns nothing
+native SetDoodadAnimationOffsetPercent 					takes doodad whichDoodad, real percent returns nothing
+
+native GetFilterDoodad									takes nothing returns doodad
+native GetEnumDoodad									takes nothing returns doodad
+
+native EnumDoodadsInRange								takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
+native EnumDoodadsInRangeEx								takes real x, real y, real radius, integer typeId, boolean nearestOnly, boolexpr filter, code handlerFunc returns nothing
+
+native EnumDoodadsInRect								takes rect whichRect, boolexpr filter, code handlerFunc returns nothing
+native EnumDoodadsInRectEx								takes rect whichRect, integer typeId, boolean nearestOnly, boolexpr filter, code handlerFunc returns nothing
 //
 
 //============================================================================
@@ -4464,6 +4625,7 @@ native RemoveAbilityStringLevelArrayField	   			takes ability whichAbility, abil
 native ResetAbilityFieldData							takes ability whichAbility returns boolean // Restores original ability data, meaning it reverts any and all changes made by Field API. Returns true if reset was successful.
 
 // Normal API
+native GetAbilityOwner									takes ability whichAbility returns unit
 native GetAbilityOrderId 								takes ability whichAbility returns integer
 native SetAbilityOrderId 								takes ability whichAbility, integer orderId returns boolean // Highly experimental, may be removed if proven unstable.
 native GetAbilityLevel 									takes ability whichAbility returns integer
@@ -4484,7 +4646,6 @@ native GetAbilityCastPoint 								takes ability whichAbility returns real
 native SetAbilityCastPoint 								takes ability whichAbility, real castPoint returns nothing
 native GetAbilityBackswing 								takes ability whichAbility returns real
 native SetAbilityBackswing 								takes ability whichAbility, real backswing returns nothing
-native GetAbilityCooldownEx 							takes ability whichAbility returns real
 native GetAbilityCooldown 								takes ability whichAbility returns real
 native SetAbilityCooldown 								takes ability whichAbility, real cooldown returns nothing
 native GetAbilityRemainingCooldown 						takes ability whichAbility returns real
@@ -4495,6 +4656,11 @@ native EnableAbility 									takes ability whichAbility, boolean show, boolean 
 native CastAbility 										takes ability whichAbility returns boolean
 native CastAbilityGround 								takes ability whichAbility, real targX, real targY returns boolean
 native CastAbilityTarget 								takes ability whichAbility, widget target returns boolean
+
+native GetFilterAbility									takes nothing returns ability
+native GetEnumAbility									takes nothing returns ability
+
+native EnumUnitAbilities								takes unit whichUnit, boolexpr whichBoolexpr, code whichCode returns boolean
 //
 
 //============================================================================
@@ -4512,10 +4678,24 @@ native SetBuffStringField								takes buff whichBuff, buffstringfield whichFiel
 //
 
 // Normal API
+native GetBuffTypeId									takes buff whichBuff returns integer
+native GetBuffBaseTypeId								takes buff whichBuff returns integer
+native GetBuffOwner										takes buff whichbuff returns unit
 native GetBuffLevel 									takes buff whichBuff returns integer
+native SetBuffLevel										takes buff whichBuff, integer level returns nothing
 native GetBuffRemainingDuration 						takes buff whichBuff returns real
 native SetBuffRemainingDuration							takes buff whichBuff, real duration returns boolean
 native RefreshBuff										takes buff whichBuff returns boolean
+
+native GetFilterBuff									takes nothing returns buff
+native GetEnumBuff										takes nothing returns buff
+
+native EnumUnitBuffs									takes unit whichUnit, boolexpr whichBoolexpr, code whichCode returns boolean
+
+native GetTriggerBuff									takes nothing returns buff
+native GetTriggerBuffSourceAbility						takes nothing returns ability
+native GetTriggerBuffSourceUnit							takes nothing returns unit
+native GetTriggerBuffTarget								takes nothing returns unit
 //
 
 //============================================================================
@@ -4562,11 +4742,11 @@ native SetSpecialEffectReplaceableTexture 				takes effect whichEffect, string t
 native SetSpecialEffectModel							takes effect whichEffect, string modelName returns nothing
 native SetSpecialEffectModelEx					  		takes effect whichEffect, string modelName, integer playerColour returns nothing // 0-15, -1 to ignore the colour.
 native SetSpecialEffectAnimationWithRarityByIndex   	takes effect whichEffect, integer animIndex, raritycontrol rarity returns nothing
-native SetSpecialEffectAnimationWithRarity		  		takes effect whichEffect, string animation, raritycontrol rarity returns nothing
+native SetSpecialEffectAnimationWithRarity		  		takes effect whichEffect, string animationName, raritycontrol rarity returns nothing
 native SetSpecialEffectAnimationByIndex			 		takes effect whichEffect, integer animIndex returns nothing
-native SetSpecialEffectAnimation						takes effect whichEffect, string animation returns nothing
+native SetSpecialEffectAnimation						takes effect whichEffect, string animationName returns nothing
 native QueueSpecialEffectAnimationByIndex		   		takes effect whichEffect, integer animIndex returns nothing
-native QueueSpecialEffectAnimation				  		takes effect whichEffect, string animation returns nothing
+native QueueSpecialEffectAnimation				  		takes effect whichEffect, string animationName returns nothing
 native SetSpecialEffectAnimationOffsetPercent 			takes effect whichEffect, real percent returns boolean
 
 native GetTriggerSpecialEffect							takes nothing returns effect
@@ -4621,11 +4801,11 @@ native SetTrackableReplaceableTexture 					takes trackable whichTrackable, strin
 native SetTrackableModel								takes trackable whichTrackable, string modelName returns nothing
 native SetTrackableModelEx						  		takes trackable whichTrackable, string modelName, integer playerColour returns nothing
 native SetTrackableAnimationWithRarityByIndex	   		takes trackable whichTrackable, integer animIndex, raritycontrol rarity returns nothing
-native SetTrackableAnimationWithRarity			  		takes trackable whichTrackable, string animation, raritycontrol rarity returns nothing
+native SetTrackableAnimationWithRarity			  		takes trackable whichTrackable, string animationName, raritycontrol rarity returns nothing
 native SetTrackableAnimationByIndex				 		takes trackable whichTrackable, integer animIndex returns nothing
-native SetTrackableAnimation							takes trackable whichTrackable, string animation returns nothing
+native SetTrackableAnimation							takes trackable whichTrackable, string animationName returns nothing
 native QueueTrackableAnimationByIndex			   		takes trackable whichTrackable, integer animIndex returns nothing
-native QueueTrackableAnimation					  		takes trackable whichTrackable, string animation returns nothing
+native QueueTrackableAnimation					  		takes trackable whichTrackable, string animationName returns nothing
 native SetTrackableAnimationOffsetPercent 				takes trackable whichTrackable, real percent returns boolean
 
 native GetTriggerTrackable								takes nothing returns trackable
@@ -4670,11 +4850,11 @@ native SetWidgetMaterialTexture 						takes widget whichWidget, string textureNa
 native SetWidgetTexture 								takes widget whichWidget, string textureName, integer textureIndex returns nothing
 native SetWidgetReplaceableTexture 						takes widget whichWidget, string textureName, integer textureIndex returns nothing
 native SetWidgetAnimationWithRarityByIndex 				takes widget whichWidget, integer animIndex, raritycontrol rarity returns nothing
-native SetWidgetAnimationWithRarity 					takes widget whichWidget, string animation, raritycontrol rarity returns nothing
+native SetWidgetAnimationWithRarity 					takes widget whichWidget, string animationName, raritycontrol rarity returns nothing
 native SetWidgetAnimationByIndex 						takes widget whichWidget, integer animIndex returns nothing
-native SetWidgetAnimation 								takes widget whichWidget, string animation returns nothing
+native SetWidgetAnimation 								takes widget whichWidget, string animationName returns nothing
 native QueueWidgetAnimationByIndex 						takes widget whichWidget, integer animIndex returns nothing
-native QueueWidgetAnimation 							takes widget whichWidget, string animation returns nothing
+native QueueWidgetAnimation 							takes widget whichWidget, string animationName returns nothing
 native SetWidgetAnimationOffsetPercent 					takes widget whichWidget, real percent returns boolean
 
 native TriggerRegisterWidgetEvent						takes trigger whichTrigger, widget whichWidget, widgetevent whichWidgetEvent returns event
@@ -4710,7 +4890,7 @@ native SetDestructableMaterialTexture 					takes destructable whichDestructable,
 native SetDestructableTexture 							takes destructable whichDestructable, string textureName, integer textureIndex returns nothing
 native SetDestructableReplaceableTexture 				takes destructable whichDestructable, string textureName, integer textureIndex returns nothing
 native SetDestructableAnimationWithRarityByIndex 		takes destructable whichDestructable, integer animIndex, raritycontrol rarity returns nothing
-native SetDestructableAnimationWithRarity 				takes destructable whichDestructable, string animation, raritycontrol rarity returns nothing
+native SetDestructableAnimationWithRarity 				takes destructable whichDestructable, string animationName, raritycontrol rarity returns nothing
 native SetDestructableAnimationByIndex 					takes destructable whichDestructable, integer animIndex returns nothing
 native QueueDestructableAnimationByIndex 				takes destructable whichDestructable, integer animIndex returns nothing
 native SetDestructableAnimationOffsetPercent 			takes destructable whichDestructable, real percent returns boolean
@@ -4784,11 +4964,11 @@ native SetItemMaterialTexture 							takes item whichItem, string textureName, i
 native SetItemTexture 									takes item whichItem, string textureName, integer textureIndex returns nothing
 native SetItemReplaceableTexture 						takes item whichItem, string textureName, integer textureIndex returns nothing
 native SetItemAnimationWithRarityByIndex 				takes item whichItem, integer animIndex, raritycontrol rarity returns nothing
-native SetItemAnimationWithRarity 						takes item whichItem, string animation, raritycontrol rarity returns nothing
+native SetItemAnimationWithRarity 						takes item whichItem, string animationName, raritycontrol rarity returns nothing
 native SetItemAnimationByIndex 							takes item whichItem, integer animIndex returns nothing
-native SetItemAnimation 								takes item whichItem, string animation returns nothing
+native SetItemAnimation 								takes item whichItem, string animationName returns nothing
 native QueueItemAnimationByIndex 						takes item whichItem, integer animIndex returns nothing
-native QueueItemAnimation 								takes item whichItem, string animation returns nothing
+native QueueItemAnimation 								takes item whichItem, string animationName returns nothing
 native SetItemAnimationOffsetPercent 					takes item whichItem, real percent returns boolean
 
 native EnumItemsInRange									takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
@@ -4955,8 +5135,8 @@ native SetUnitArmourType 								takes unit whichUnit, defensetype whichArmour r
 native GetUnitArmour 									takes unit whichUnit returns real
 native SetUnitArmour 									takes unit whichUnit, real armour returns nothing
 native GetUnitTimeScale 								takes unit whichUnit returns real
-native GetUnitUnitBaseMoveSpeed 						takes unit whichUnit returns real
-native SetUnitUnitBaseMoveSpeed 						takes unit whichUnit, real baseMoveSpeed returns nothing
+native GetUnitBaseMoveSpeed 							takes unit whichUnit returns real
+native SetUnitBaseMoveSpeed 							takes unit whichUnit, real baseMoveSpeed returns nothing
 native GetUnitTotalMoveSpeed 							takes unit whichUnit returns real
 native GetUnitBonusMoveSpeedPercent 					takes unit whichUnit returns real
 native SetUnitBonusMoveSpeedPercent 					takes unit whichUnit, real bonusMoveSpeedPercent returns nothing
@@ -4991,6 +5171,8 @@ native SetUnitFacingEx 									takes unit whichUnit, real facing, boolean isIns
 native SetUnitFacingInstant 							takes unit whichUnit, real facing returns nothing
 native GetUnitMinimapX 									takes unit whichUnit returns real
 native GetUnitMinimapY 									takes unit whichUnit returns real
+native GetUnitRallyPointX 								takes unit whichUnit returns real
+native GetUnitRallyPointY 								takes unit whichUnit returns real
 native GetHeroMaxLevelExperienceNeeded 					takes unit whichUnit returns integer
 native GetHeroExperienceNeeded 							takes unit whichUnit, integer forLevel returns integer
 native UnitApplySilence 								takes unit whichUnit, boolean state returns nothing
@@ -4999,6 +5181,8 @@ native PauseUnitEx 										takes unit whichUnit, boolean flag returns nothing 
 native SetUnitStunned 									takes unit whichUnit, boolean state returns nothing
 native GetUnitStunCounter 								takes unit whichUnit returns integer
 native SetUnitStunCounter 								takes unit whichUnit, integer stunCounter returns nothing
+native SetUnitKiller									takes unit whichUnit, unit killer returns nothing
+native KillUnitEx										takes unit whichUnit, unit killer returns nothing
 native MorphUnitToTypeIdEx 								takes unit whichUnit, integer uid, integer unitFlags, boolean updateHealthState, boolean updateManaState, integer healthStateId, integer manaStateId, boolean updateScale, boolean replaceAbilities, ability whichAbility, boolean resetBuildingAnimation returns nothing
 native MorphUnitToTypeId 								takes unit whichUnit, integer uid returns nothing
 native SetUnitAnimationOffsetPercent 					takes unit whichUnit, real percent returns boolean
@@ -5022,97 +5206,112 @@ native UnitForceStopOrder 								takes unit whichUnit, boolean clearQueue retur
 //
 
 //============================================================================
-// Missile API
+// Projectile API
+// For Projectile Type Ids: https://github.com/UnryzeC/UjAPI/blob/main/TypeData/ in there check out these files: WC3BulletList.txt / WC3ProjectileList.txt / WC3ArtilleryList.txt
 //
-native CreateMissile									takes integer missileTypeId returns missile
-native CreateMissileEx									takes unit owner, integer missileTypeId, integer attackIndex returns missile
-native SetMissileUnitData								takes missile whichMissile, unit owner, integer attackIndex returns nothing
-native KillMissile					   					takes missile whichMissile returns nothing
-native LaunchTargetMissile					   			takes missile whichMissile, widget whichWidget returns nothing
-native LaunchMissile					   				takes missile whichMissile returns nothing
+native CreateProjectile									takes integer projectileTypeId returns projectile
+native CreateProjectileEx								takes unit owner, integer projectileTypeId, integer attackIndex returns projectile
+native SetProjectileUnitData							takes projectile whichProjectile, unit owner, integer attackIndex returns nothing
+native KillProjectile					   				takes projectile whichProjectile returns nothing
+native LaunchTargetProjectile					   		takes projectile whichProjectile, widget whichWidget returns nothing
+native LaunchProjectile					   				takes projectile whichProjectile returns nothing
 
-native IsMissileAlive					   				takes missile whichMissile returns boolean
-native IsMissileVisible					   				takes missile whichMissile returns boolean
-native SetMissileVisible				   				takes missile whichMissile, boolean visibility returns nothing
-native GetMissileX										takes missile whichMissile returns real
-native SetMissileX										takes missile whichMissile, real x returns nothing
-native GetMissileY										takes missile whichMissile returns real
-native SetMissileY										takes missile whichMissile, real y returns nothing
-native GetMissileZ										takes missile whichMissile returns real
-native SetMissileZ										takes missile whichMissile, real z returns nothing
-native GetMissileHeight					   				takes missile whichMissile returns real
-native SetMissileHeight					   				takes missile whichMissile, real height returns nothing
-native GetMissilePositionLocation			 			takes missile whichMissile returns location
-native SetMissilePositionWithZ							takes missile whichMissile, real x, real y, real z returns nothing
-native SetMissilePosition					 			takes missile whichMissile, real x, real y returns nothing
-native SetMissilePositionLocation			 			takes missile whichMissile, location loc returns nothing
-native GetMissileScale									takes missile whichMissile returns real
-native SetMissileScale									takes missile whichMissile, real scale returns nothing
-native GetMissileTimeScale								takes missile whichMissile returns real
-native SetMissileTimeScale								takes missile whichMissile, real timescale returns nothing
-native SetMissilePlayerColour					   		takes missile whichMissile, playercolor color returns nothing
-native GetMissileColour					   				takes missile whichMissile returns integer
-native SetMissileColour					   				takes missile whichMissile, integer colour returns boolean
-native SetMissileAlpha									takes missile whichMissile, integer alpha returns boolean
-native SetMissileVertexColour				 			takes missile whichMissile, integer red, integer green, integer blue, integer alpha returns boolean
-native ResetMissileMatrix				   				takes missile whichMissile returns nothing
-native SetMissileOrientationEx							takes missile whichMissile, real yaw, real pitch, real roll, integer eulerOrder returns boolean
-native GetMissileYaw						  			takes missile whichMissile returns real
-native SetMissileYaw						  			takes missile whichMissile, real yaw returns boolean
-native GetMissileFacing					   				takes missile whichMissile returns real
-native SetMissileFacing					   				takes missile whichMissile, real facing returns boolean
-native GetMissilePitch									takes missile whichMissile returns real
-native SetMissilePitch									takes missile whichMissile, real pitch returns boolean
-native GetMissileRoll						 			takes missile whichMissile returns real
-native SetMissileRoll						 			takes missile whichMissile, real roll returns boolean
-native SetMissileOrientation				  			takes missile whichMissile, real yaw, real pitch, real roll returns nothing
-native SetMissileMaterialTexture 						takes missile whichMissile, string textureName, integer materialId, integer textureIndex returns nothing
-native SetMissileTexture 								takes missile whichMissile, string textureName, integer textureIndex returns nothing
-native SetMissileReplaceableTexture 					takes missile whichMissile, string textureName, integer textureIndex returns nothing
-native SetMissileModel									takes missile whichMissile, string modelName returns nothing
-native SetMissileModelEx					  			takes missile whichMissile, string modelName, integer playerColour returns nothing
-native SetMissileAnimationWithRarityByIndex   			takes missile whichMissile, integer animIndex, raritycontrol rarity returns nothing
-native SetMissileAnimationWithRarity		  			takes missile whichMissile, string animation, raritycontrol rarity returns nothing
-native SetMissileAnimationByIndex			 			takes missile whichMissile, integer animIndex returns nothing
-native SetMissileAnimation								takes missile whichMissile, string animation returns nothing
-native QueueMissileAnimationByIndex		   				takes missile whichMissile, integer animIndex returns nothing
-native QueueMissileAnimation				  			takes missile whichMissile, string animation returns nothing
-native SetMissileAnimationOffsetPercent 				takes missile whichMissile, real percent returns boolean
+native IsProjectileType					   				takes projectile whichProjectile, projectiletype whichType returns boolean
+native IsProjectileAlive					   			takes projectile whichProjectile returns boolean
+native IsProjectileVisible					   			takes projectile whichProjectile returns boolean
+native SetProjectileVisible				   				takes projectile whichProjectile, boolean visibility returns nothing
+native GetProjectileX									takes projectile whichProjectile returns real
+native SetProjectileX									takes projectile whichProjectile, real x returns nothing
+native GetProjectileY									takes projectile whichProjectile returns real
+native SetProjectileY									takes projectile whichProjectile, real y returns nothing
+native GetProjectileZ									takes projectile whichProjectile returns real
+native SetProjectileZ									takes projectile whichProjectile, real z returns nothing
+native GetProjectileHeight					   			takes projectile whichProjectile returns real
+native SetProjectileHeight					   			takes projectile whichProjectile, real height returns nothing
+native GetProjectilePositionLocation			 		takes projectile whichProjectile returns location
+native SetProjectilePositionWithZ						takes projectile whichProjectile, real x, real y, real z returns nothing
+native SetProjectilePosition					 		takes projectile whichProjectile, real x, real y returns nothing
+native SetProjectilePositionLocation			 		takes projectile whichProjectile, location loc returns nothing
+native GetProjectileScale								takes projectile whichProjectile returns real
+native SetProjectileScale								takes projectile whichProjectile, real scale returns nothing
+native GetProjectileTimeScale							takes projectile whichProjectile returns real
+native SetProjectileTimeScale							takes projectile whichProjectile, real timescale returns nothing
+native SetProjectilePlayerColour					   	takes projectile whichProjectile, playercolor color returns nothing
+native GetProjectileColour					   			takes projectile whichProjectile returns integer
+native SetProjectileColour					   			takes projectile whichProjectile, integer colour returns boolean
+native SetProjectileAlpha								takes projectile whichProjectile, integer alpha returns boolean
+native SetProjectileVertexColour				 		takes projectile whichProjectile, integer red, integer green, integer blue, integer alpha returns boolean
+native ResetProjectileMatrix				   			takes projectile whichProjectile returns nothing
+native SetProjectileOrientationEx						takes projectile whichProjectile, real yaw, real pitch, real roll, integer eulerOrder returns boolean
+native GetProjectileYaw						  			takes projectile whichProjectile returns real
+native SetProjectileYaw						  			takes projectile whichProjectile, real yaw returns boolean
+native GetProjectileFacing					   			takes projectile whichProjectile returns real
+native SetProjectileFacing					   			takes projectile whichProjectile, real facing returns boolean
+native GetProjectilePitch								takes projectile whichProjectile returns real
+native SetProjectilePitch								takes projectile whichProjectile, real pitch returns boolean
+native GetProjectileRoll						 		takes projectile whichProjectile returns real
+native SetProjectileRoll						 		takes projectile whichProjectile, real roll returns boolean
+native SetProjectileOrientation				  			takes projectile whichProjectile, real yaw, real pitch, real roll returns nothing
+native SetProjectileMaterialTexture 					takes projectile whichProjectile, string textureName, integer materialId, integer textureIndex returns nothing
+native SetProjectileTexture 							takes projectile whichProjectile, string textureName, integer textureIndex returns nothing
+native SetProjectileReplaceableTexture 					takes projectile whichProjectile, string textureName, integer textureIndex returns nothing
+native SetProjectileModel								takes projectile whichProjectile, string modelName returns nothing
+native SetProjectileModelEx					  			takes projectile whichProjectile, string modelName, integer playerColour returns nothing
+native SetProjectileAnimationWithRarityByIndex   		takes projectile whichProjectile, integer animIndex, raritycontrol rarity returns nothing
+native SetProjectileAnimationWithRarity		  			takes projectile whichProjectile, string animationName, raritycontrol rarity returns nothing
+native SetProjectileAnimationByIndex			 		takes projectile whichProjectile, integer animIndex returns nothing
+native SetProjectileAnimation							takes projectile whichProjectile, string animationName returns nothing
+native QueueProjectileAnimationByIndex		   			takes projectile whichProjectile, integer animIndex returns nothing
+native QueueProjectileAnimation				  			takes projectile whichProjectile, string animationName returns nothing
+native SetProjectileAnimationOffsetPercent 				takes projectile whichProjectile, real percent returns boolean
 
-native GetMissileSource									takes missile whichMissile returns unit
-native SetMissileSource									takes missile whichMissile, unit whichUnit returns nothing
-native GetMissileTarget									takes missile whichMissile returns widget
-native GetMissileTargetUnit								takes missile whichMissile returns unit
-native GetMissileTargetItem								takes missile whichMissile returns item
-native GetMissileTargetDestructable						takes missile whichMissile returns destructable
-native SetMissileTarget									takes missile whichMissile, widget whichWidget returns nothing
-native GetMissileAttackType 							takes missile whichMissile returns attacktype
-native SetMissileAttackType 							takes missile whichMissile, attacktype whichAttackType returns nothing
-native GetMissileDamage 								takes missile whichMissile returns real
-native SetMissileDamage 								takes missile whichMissile, real damage returns nothing
-native GetMissileSpeed 									takes missile whichMissile returns real
-native SetMissileSpeed 									takes missile whichMissile, real speed returns nothing
-native GetMissileArc 									takes missile whichMissile returns real
-native SetMissileArc 									takes missile whichMissile, real arc returns nothing
-native GetMissileWeaponType 							takes missile whichMissile returns weapontype
-native SetMissileWeaponType 							takes missile whichMissile, weapontype whichWeaponType returns nothing
-native GetMissileDamageType 							takes missile whichMissile returns damagetype
-native SetMissileDamageType 							takes missile whichMissile, damagetype whichDamageType returns nothing
-native GetMissileDamageFlags 							takes missile whichMissile returns integer
-native SetMissileDamageFlags 							takes missile whichMissile, integer flags returns nothing
+native GetProjectileSource								takes projectile whichProjectile returns unit
+native SetProjectileSource								takes projectile whichProjectile, unit whichUnit returns nothing
+native GetProjectileTargetPointX						takes projectile whichProjectile returns real
+native GetProjectileTargetPointY						takes projectile whichProjectile returns real
+native GetProjectileTargetPointZ						takes projectile whichProjectile returns real
+native GetProjectileTargetPoint							takes projectile whichProjectile returns location
+native GetProjectileTarget								takes projectile whichProjectile returns widget
+native GetProjectileTargetUnit							takes projectile whichProjectile returns unit
+native GetProjectileTargetItem							takes projectile whichProjectile returns item
+native GetProjectileTargetDestructable					takes projectile whichProjectile returns destructable
+native SetProjectileTarget								takes projectile whichProjectile, widget whichWidget returns nothing
+native GetProjectileAttackType 							takes projectile whichProjectile returns attacktype
+native SetProjectileAttackType 							takes projectile whichProjectile, attacktype whichAttackType returns nothing
+native GetProjectileDamage 								takes projectile whichProjectile returns real
+native SetProjectileDamage 								takes projectile whichProjectile, real damage returns nothing
+native GetProjectileAreaOfEffectFullDamage              takes projectile whichProjectile returns real
+native SetProjectileAreaOfEffectFullDamage              takes projectile whichProjectile, real area returns nothing
+native GetProjectileAreaOfEffectMediumDamage            takes projectile whichProjectile returns real
+native SetProjectileAreaOfEffectMediumDamage            takes projectile whichProjectile, real area returns nothing
+native GetProjectileAreaOfEffectSmallDamage             takes projectile whichProjectile returns real
+native SetProjectileAreaOfEffectSmallDamage             takes projectile whichProjectile, real area returns nothing
+native GetProjectileAreaOfEffectMediumDamageFactor      takes projectile whichProjectile returns real
+native SetProjectileAreaOfEffectMediumDamageFactor      takes projectile whichProjectile, real factor returns nothing
+native GetProjectileAreaOfEffectSmallDamageFactor       takes projectile whichProjectile returns real
+native SetProjectileAreaOfEffectSmallDamageFactor       takes projectile whichProjectile, real factor returns nothing
+native GetProjectileSpeed 								takes projectile whichProjectile returns real
+native SetProjectileSpeed 								takes projectile whichProjectile, real speed returns nothing
+native GetProjectileArc 								takes projectile whichProjectile returns real
+native SetProjectileArc 								takes projectile whichProjectile, real arc returns nothing
+native GetProjectileWeaponType 							takes projectile whichProjectile returns weapontype
+native SetProjectileWeaponType 							takes projectile whichProjectile, weapontype whichWeaponType returns nothing
+native GetProjectileDamageType 							takes projectile whichProjectile returns damagetype
+native SetProjectileDamageType 							takes projectile whichProjectile, damagetype whichDamageType returns nothing
+native GetProjectileDamageFlags 						takes projectile whichProjectile returns integer
+native SetProjectileDamageFlags 						takes projectile whichProjectile, integer flags returns nothing
 
-native GetTriggerMissile								takes nothing returns missile
-native GetFilterMissile									takes nothing returns missile
-native GetEnumMissile									takes nothing returns missile
-native GetTriggerMissileSource							takes nothing returns unit
-native GetTriggerMissileTarget							takes nothing returns widget
-native GetTriggerMissileTargetUnit						takes nothing returns unit
-native GetTriggerMissileTargetItem						takes nothing returns item
-native GetTriggerMissileTargetDestructable				takes nothing returns destructable
+native GetTriggerProjectile								takes nothing returns projectile
+native GetFilterProjectile								takes nothing returns projectile
+native GetEnumProjectile								takes nothing returns projectile
+native GetTriggerProjectileSource						takes nothing returns unit
+native GetTriggerProjectileTarget						takes nothing returns widget
+native GetTriggerProjectileTargetUnit					takes nothing returns unit
+native GetTriggerProjectileTargetItem					takes nothing returns item
+native GetTriggerProjectileTargetDestructable			takes nothing returns destructable
 
-native TriggerRegisterPlayerMissileEvent				takes trigger whichTrigger, player whichPlayer, playermissileevent whichMissileEvent returns event
-
-native EnumMissilesInRange								takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
+native EnumProjectilesInRange							takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
+native EnumProjectilesInRect							takes rect whichRect, boolexpr filter, code handlerFunc returns nothing
 //
 
 //============================================================================
