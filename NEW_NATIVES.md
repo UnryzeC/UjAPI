@@ -1,3 +1,3 @@
 layout: page
 title: "New Natives"
-permalink: /UjAPI/natives
+permalink: /natives
