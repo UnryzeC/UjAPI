@@ -4341,6 +4341,7 @@ native HandleListContainsHandle							takes handlelist whichHandleList, handle w
 native HandleListGetCount								takes handlelist whichHandleList returns integer
 native HandleListGetCountEx								takes handlelist whichHandleList, integer handleTypeId returns integer
 
+native HandleListGetHandleCount                         takes handlelist whichHandleList returns integer
 native HandleListGetAgentCount                          takes handlelist whichHandleList returns integer
 native HandleListGetWidgetCount                         takes handlelist whichHandleList returns integer
 native HandleListGetUnitCount                           takes handlelist whichHandleList returns integer
@@ -4355,6 +4356,7 @@ native HandleListGetFrameCount                          takes handlelist whichHa
 native HandleListGetHandleByIndex				  		takes handlelist whichHandleList, integer index returns handle
 native HandleListGetHandleByIndexEx				  		takes handlelist whichHandleList, integer handleTypeId, integer index returns handle
 
+native HandleListGetHandleByIndex				  		takes handlelist whichHandleList, integer index returns handle
 native HandleListGetAgentByIndex				  		takes handlelist whichHandleList, integer index returns agent
 native HandleListGetWidgetByIndex				  		takes handlelist whichHandleList, integer index returns widget
 native HandleListGetUnitByIndex				  			takes handlelist whichHandleList, integer index returns unit
