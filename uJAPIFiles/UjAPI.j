@@ -196,12 +196,14 @@ globals
 
     constant playerunitevent 			EVENT_PLAYER_UNIT_DAMAGED                  					= ConvertPlayerUnitEvent(308)
     constant playerunitevent 			EVENT_PLAYER_UNIT_DAMAGING                 					= ConvertPlayerUnitEvent(315)
+	constant playerunitevent 			EVENT_PLAYER_UNIT_ATTACK_FINISHED				 			= ConvertPlayerUnitEvent(317)
     
     //===================================================
     // For use with TriggerRegisterUnitEvent
     //===================================================
 
 	constant unitevent 					EVENT_UNIT_DAMAGING                              			= ConvertUnitEvent(314)
+	constant unitevent 					EVENT_UNIT_ATTACK_FINISHED				 					= ConvertUnitEvent(316)
 
     //===================================================
     // For use with TriggerRegisterWidgetEvent
@@ -586,6 +588,7 @@ globals
 	constant abilitybooleanfield 		ABILITY_BF_HOMING											= ConvertAbilityBooleanField('amho')
 
 	constant abilityrealfield 			ABILITY_RF_ARF_MISSILE_ARC									= ConvertAbilityRealField('amac')
+	constant abilityrealfield 			ABILITY_RF_AURA_REFRESH_TIME								= ConvertAbilityRealField('artm')
 
 	constant abilitystringfield 		ABILITY_SF_NAME							 					= ConvertAbilityStringField('anam') // Get Only
 	constant abilitystringfield 		ABILITY_SF_ICON_NORMAL										= ConvertAbilityStringField('aart')
@@ -732,6 +735,7 @@ globals
 	constant abilityintegerlevelfield 	ABILITY_ILF_UPGRADE_LEVELS									= ConvertAbilityIntegerLevelField('Igl1')
 	constant abilityintegerlevelfield 	ABILITY_ILF_NUMBER_OF_SUMMONED_UNITS_NDO2	 				= ConvertAbilityIntegerLevelField('Ndo2')
 	constant abilityintegerlevelfield 	ABILITY_ILF_BEASTS_PER_SECOND				 				= ConvertAbilityIntegerLevelField('Nst1')
+	constant abilityintegerlevelfield 	ABILITY_ILF_TARGETS_ALLOWED					   				= ConvertAbilityIntegerLevelField('atar')
 	constant abilityintegerlevelfield 	ABILITY_ILF_TARGET_TYPE					   					= ConvertAbilityIntegerLevelField('Ncl2')
 	constant abilityintegerlevelfield 	ABILITY_ILF_OPTIONS						   					= ConvertAbilityIntegerLevelField('Ncl3')
 	constant abilityintegerlevelfield 	ABILITY_ILF_ARMOR_PENALTY_NAB3								= ConvertAbilityIntegerLevelField('Nab3')
@@ -1526,6 +1530,26 @@ globals
 	constant targetflag	 				TARGET_FLAG_DEBRIS			  								= ConvertTargetFlag(256)
 	constant targetflag	 				TARGET_FLAG_DECORATION		  								= ConvertTargetFlag(512)
 	constant targetflag	 				TARGET_FLAG_BRIDGE			  								= ConvertTargetFlag(1024)
+	constant targetflag	 				TARGET_FLAG_SELF											= ConvertTargetFlag(4096)
+	constant targetflag	 				TARGET_FLAG_PLAYER_UNITS    								= ConvertTargetFlag(8192)
+	constant targetflag	 				TARGET_FLAG_ALLIED											= ConvertTargetFlag(16384)
+    constant targetflag	 				TARGET_FLAG_FRIEND											= ConvertTargetFlag(24576) // ALLIED | PLAYER_UNITS
+	constant targetflag	 				TARGET_FLAG_NEUTRAL											= ConvertTargetFlag(32768)
+    constant targetflag	 				TARGET_FLAG_ENEMY		    								= ConvertTargetFlag(65536)
+    constant targetflag	 				TARGET_FLAG_NOT_SELF        								= ConvertTargetFlag(122880) // ENEMY | NEUTRAL | FRIEND
+    constant targetflag	 				TARGET_FLAG_VULNERABLE										= ConvertTargetFlag(1048576)
+    constant targetflag	 				TARGET_FLAG_INVULNERABLE									= ConvertTargetFlag(2097152)
+    constant targetflag	 				TARGET_FLAG_HERO											= ConvertTargetFlag(4194304)
+    constant targetflag	 				TARGET_FLAG_NON_HERO										= ConvertTargetFlag(8388608)
+    constant targetflag	 				TARGET_FLAG_ALIVE											= ConvertTargetFlag(16777216)
+    constant targetflag	 				TARGET_FLAG_DEAD											= ConvertTargetFlag(33554432)
+    constant targetflag	 				TARGET_FLAG_ORGANIC											= ConvertTargetFlag(67108864)
+    constant targetflag	 				TARGET_FLAG_MECHANICAL										= ConvertTargetFlag(134217728)
+    constant targetflag	 				TARGET_FLAG_NON_SUICIDAL									= ConvertTargetFlag(268435456)
+    constant targetflag	 				TARGET_FLAG_SUICIDAL										= ConvertTargetFlag(536870912)
+    constant targetflag	 				TARGET_FLAG_NON_ANCIENT										= ConvertTargetFlag(1073741824)
+    constant targetflag	 				TARGET_FLAG_ANCIENT											= ConvertTargetFlag(2147483648)
+    constant targetflag	 				TARGET_FLAG_EMPTY											= ConvertTargetFlag(4294967295)
 
 	// defense type
 	constant defensetype				DEFENSE_TYPE_LIGHT			  								= ConvertDefenseType(0)
@@ -1967,7 +1991,6 @@ native HandleListContainsHandle							takes handlelist whichHandleList, handle w
 native HandleListGetCount								takes handlelist whichHandleList returns integer
 native HandleListGetCountEx								takes handlelist whichHandleList, integer handleTypeId returns integer
 
-native HandleListGetHandleCount                         takes handlelist whichHandleList returns integer
 native HandleListGetAgentCount                          takes handlelist whichHandleList returns integer
 native HandleListGetWidgetCount                         takes handlelist whichHandleList returns integer
 native HandleListGetUnitCount                           takes handlelist whichHandleList returns integer
@@ -1982,7 +2005,6 @@ native HandleListGetFrameCount                          takes handlelist whichHa
 native HandleListGetHandleByIndex				  		takes handlelist whichHandleList, integer index returns handle
 native HandleListGetHandleByIndexEx				  		takes handlelist whichHandleList, integer handleTypeId, integer index returns handle
 
-native HandleListGetHandleByIndex				  		takes handlelist whichHandleList, integer index returns handle
 native HandleListGetAgentByIndex				  		takes handlelist whichHandleList, integer index returns agent
 native HandleListGetWidgetByIndex				  		takes handlelist whichHandleList, integer index returns widget
 native HandleListGetUnitByIndex				  			takes handlelist whichHandleList, integer index returns unit
@@ -2260,6 +2282,7 @@ native GetAbilityLevel 									takes ability whichAbility returns integer
 native SetAbilityLevel 									takes ability whichAbility, integer level returns integer
 native GetAbilityBaseTypeId 							takes ability whichAbility returns integer
 native GetAbilityTypeId 								takes ability whichAbility returns integer
+native IsAbilityTargetAllowed 							takes ability whichAbility, widget whichWidget returns boolean
 native IsAbilityOnCooldown 								takes ability whichAbility returns boolean
 native IsAbilityEnabled 								takes ability whichAbility returns boolean
 native SetAbilityEnabled 								takes ability whichAbility, boolean enable returns nothing
@@ -2369,6 +2392,11 @@ native SetSpecialEffectTexture 							takes effect whichEffect, string textureNa
 native SetSpecialEffectReplaceableTexture 				takes effect whichEffect, string textureName, integer textureIndex returns nothing
 native SetSpecialEffectModel							takes effect whichEffect, string modelName returns nothing
 native SetSpecialEffectModelEx					  		takes effect whichEffect, string modelName, integer playerColour returns nothing // 0-15, -1 to ignore the colour.
+// whichObject can be bone, reference, sound, aka any object of a model
+native GetSpecialEffectModelObjectPositionX				takes effect whichEffect, string whichObject returns real
+native GetSpecialEffectModelObjectPositionY				takes effect whichEffect, string whichObject returns real
+native GetSpecialEffectModelObjectPositionZ				takes effect whichEffect, string whichObject returns real
+native GetSpecialEffectModelObjectPositionLoc			takes effect whichEffect, string whichObject returns location
 native SetSpecialEffectAnimationWithRarityByIndex   	takes effect whichEffect, integer animIndex, raritycontrol rarity returns nothing
 native SetSpecialEffectAnimationWithRarity		  		takes effect whichEffect, string animationName, raritycontrol rarity returns nothing
 native SetSpecialEffectAnimationByIndex			 		takes effect whichEffect, integer animIndex returns nothing
@@ -2428,6 +2456,10 @@ native SetTrackableTexture 								takes trackable whichTrackable, string textur
 native SetTrackableReplaceableTexture 					takes trackable whichTrackable, string textureName, integer textureIndex returns nothing	
 native SetTrackableModel								takes trackable whichTrackable, string modelName returns nothing
 native SetTrackableModelEx						  		takes trackable whichTrackable, string modelName, integer playerColour returns nothing
+native GetTrackableModelObjectPositionX					takes trackable whichTrackable, string whichObject returns real
+native GetTrackableModelObjectPositionY					takes trackable whichTrackable, string whichObject returns real
+native GetTrackableModelObjectPositionZ					takes trackable whichTrackable, string whichObject returns real
+native GetTrackableModelObjectPositionLoc				takes trackable whichTrackable, string whichObject returns location
 native SetTrackableAnimationWithRarityByIndex	   		takes trackable whichTrackable, integer animIndex, raritycontrol rarity returns nothing
 native SetTrackableAnimationWithRarity			  		takes trackable whichTrackable, string animationName, raritycontrol rarity returns nothing
 native SetTrackableAnimationByIndex				 		takes trackable whichTrackable, integer animIndex returns nothing
@@ -2477,6 +2509,10 @@ native SetWidgetModelEx 								takes widget whichWidget, string modelFile, inte
 native SetWidgetMaterialTexture 						takes widget whichWidget, string textureName, integer materialId, integer textureIndex returns nothing
 native SetWidgetTexture 								takes widget whichWidget, string textureName, integer textureIndex returns nothing
 native SetWidgetReplaceableTexture 						takes widget whichWidget, string textureName, integer textureIndex returns nothing
+native GetWidgetModelObjectPositionX					takes widget whichWidget, string whichObject returns real
+native GetWidgetModelObjectPositionY					takes widget whichWidget, string whichObject returns real
+native GetWidgetModelObjectPositionZ					takes widget whichWidget, string whichObject returns real
+native GetWidgetModelObjectPositionLoc					takes widget whichWidget, string whichObject returns location
 native SetWidgetAnimationWithRarityByIndex 				takes widget whichWidget, integer animIndex, raritycontrol rarity returns nothing
 native SetWidgetAnimationWithRarity 					takes widget whichWidget, string animationName, raritycontrol rarity returns nothing
 native SetWidgetAnimationByIndex 						takes widget whichWidget, integer animIndex returns nothing
@@ -2517,6 +2553,10 @@ native SetDestructableModelEx 							takes destructable whichDestructable, strin
 native SetDestructableMaterialTexture 					takes destructable whichDestructable, string textureName, integer materialId, integer textureIndex returns nothing
 native SetDestructableTexture 							takes destructable whichDestructable, string textureName, integer textureIndex returns nothing
 native SetDestructableReplaceableTexture 				takes destructable whichDestructable, string textureName, integer textureIndex returns nothing
+native GetDestructableModelObjectPositionX				takes destructable whichDestructable, string whichObject returns real
+native GetDestructableModelObjectPositionY				takes destructable whichDestructable, string whichObject returns real
+native GetDestructableModelObjectPositionZ				takes destructable whichDestructable, string whichObject returns real
+native GetDestructableModelObjectPositionLoc			takes destructable whichDestructable, string whichObject returns location
 native SetDestructableAnimationWithRarityByIndex 		takes destructable whichDestructable, integer animIndex, raritycontrol rarity returns nothing
 native SetDestructableAnimationWithRarity 				takes destructable whichDestructable, string animationName, raritycontrol rarity returns nothing
 native SetDestructableAnimationByIndex 					takes destructable whichDestructable, integer animIndex returns nothing
@@ -2591,6 +2631,10 @@ native SetItemModelEx 									takes item whichItem, string modelFile, integer p
 native SetItemMaterialTexture 							takes item whichItem, string textureName, integer materialId, integer textureIndex returns nothing
 native SetItemTexture 									takes item whichItem, string textureName, integer textureIndex returns nothing
 native SetItemReplaceableTexture 						takes item whichItem, string textureName, integer textureIndex returns nothing
+native GetItemModelObjectPositionX						takes item whichItem, string whichObject returns real
+native GetItemModelObjectPositionY						takes item whichItem, string whichObject returns real
+native GetItemModelObjectPositionZ						takes item whichItem, string whichObject returns real
+native GetItemModelObjectPositionLoc					takes item whichItem, string whichObject returns location
 native SetItemAnimationWithRarityByIndex 				takes item whichItem, integer animIndex, raritycontrol rarity returns nothing
 native SetItemAnimationWithRarity 						takes item whichItem, string animationName, raritycontrol rarity returns nothing
 native SetItemAnimationByIndex 							takes item whichItem, integer animIndex returns nothing
@@ -2813,6 +2857,10 @@ native SetUnitKiller									takes unit whichUnit, unit killer returns nothing
 native KillUnitEx										takes unit whichUnit, unit killer returns nothing
 native MorphUnitToTypeIdEx 								takes unit whichUnit, integer uid, integer unitFlags, boolean updateHealthState, boolean updateManaState, integer healthStateId, integer manaStateId, boolean updateScale, boolean replaceAbilities, ability whichAbility, boolean resetBuildingAnimation returns nothing
 native MorphUnitToTypeId 								takes unit whichUnit, integer uid returns nothing
+native GetUnitModelObjectPositionX						takes unit whichUnit, string whichObject returns real
+native GetUnitModelObjectPositionY						takes unit whichUnit, string whichObject returns real
+native GetUnitModelObjectPositionZ						takes unit whichUnit, string whichObject returns real
+native GetUnitModelObjectPositionLoc					takes unit whichUnit, string whichObject returns location
 native SetUnitAnimationOffsetPercent 					takes unit whichUnit, real percent returns boolean
 //
 
@@ -2885,6 +2933,10 @@ native SetProjectileTexture 							takes projectile whichProjectile, string text
 native SetProjectileReplaceableTexture 					takes projectile whichProjectile, string textureName, integer textureIndex returns nothing
 native SetProjectileModel								takes projectile whichProjectile, string modelName returns nothing
 native SetProjectileModelEx					  			takes projectile whichProjectile, string modelName, integer playerColour returns nothing
+native GetProjectileModelObjectPositionX				takes projectile whichProjectile, string whichObject returns real
+native GetProjectileModelObjectPositionY				takes projectile whichProjectile, string whichObject returns real
+native GetProjectileModelObjectPositionZ				takes projectile whichProjectile, string whichObject returns real
+native GetProjectileModelObjectPositionLoc				takes projectile whichProjectile, string whichObject returns location
 native SetProjectileAnimationWithRarityByIndex   		takes projectile whichProjectile, integer animIndex, raritycontrol rarity returns nothing
 native SetProjectileAnimationWithRarity		  			takes projectile whichProjectile, string animationName, raritycontrol rarity returns nothing
 native SetProjectileAnimationByIndex			 		takes projectile whichProjectile, integer animIndex returns nothing
@@ -3005,6 +3057,8 @@ native SetFrameFont 									takes framehandle whichFrame, string fontName, real
 native SetFrameTextAlignment 							takes framehandle whichFrame, textaligntype verticalAlign, textaligntype horizontalAlign returns nothing
 native GetFrameChildrenCount 							takes framehandle whichFrame returns integer
 native GetFrameChild 									takes framehandle whichFrame, integer index returns framehandle
+native GetFrameCheckState								takes framehandle whichFrame returns boolean
+native SetFrameCheckState								takes framehandle whichFrame, boolean isCheck returns nothing
 //
 
 native SetMiniMapTexture								takes string texturePath returns boolean
@@ -3017,8 +3071,10 @@ native GetTriggerFrameInteger 							takes nothing returns integer
 native GetTriggerFrameReal 								takes nothing returns real // aka GetTriggerFrameValue
 native GetTriggerFrameBoolean 							takes nothing returns boolean
 native GetTriggerFrameString 							takes nothing returns string // aka GetTriggerFrameText
+native GetTriggerFrameMouseButton 						takes nothing returns mousebuttontype
 
 native TriggerRegisterFrameEvent 						takes trigger whichTrigger, framehandle whichFrame, frameeventtype frameEvent returns event
+native RegisterFrameMouseButton							takes framehandle whichFrame, mousebuttontype whichButton, boolean isAdd returns nothing // Add/Remove for event handling on Left/Middle/Right Mouse buttons, works for any CSimpleButton / CControl and whichever frame extends them.
 //
 
 // Frame Sprite API
