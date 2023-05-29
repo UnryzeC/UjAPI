@@ -205,13 +205,6 @@ globals
 	constant unitevent 					EVENT_UNIT_DAMAGING                              			= ConvertUnitEvent(314)
 	constant unitevent 					EVENT_UNIT_ATTACK_FINISHED				 					= ConvertUnitEvent(316)
 
-    //===================================================
-    // For use with TriggerRegisterWidgetEvent
-    //===================================================
-
-	constant widgetevent 				EVENT_WIDGET_DAMAGING							 			= ConvertWidgetEvent(400)
-	constant widgetevent 				EVENT_WIDGET_DAMAGED							 			= ConvertWidgetEvent(401)
-
 	//===================================================
 	// For use with TriggerRegisterPlayerUnitEvent
 	//===================================================
