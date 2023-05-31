@@ -359,6 +359,7 @@ enum class Order : uint32_t
     parasiteoff = 852603,
     submerge = 852604,
     unsubmerge = 852605,
+    spellbook = 852608,
     neutralspell = 852630,
     militiaunconvert = 852651,
     clusterrockets = 852652,
