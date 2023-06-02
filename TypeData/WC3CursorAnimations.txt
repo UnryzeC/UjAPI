@@ -1,6 +1,6 @@
 std::map<uint32_t,std::string_view> = 
 { 
-  { 0, "Normal },
+  { 0, "Normal" },
   { 1, "Select" },
   { 2, "Target" },
   { 3, "TargetSelect" },
