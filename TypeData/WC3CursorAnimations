@@ -1,0 +1,14 @@
+std::map<uint32_t,std::string_view> = 
+{ 
+  { 0, "Normal },
+  { 1, "Select" },
+  { 2, "Target" },
+  { 3, "TargetSelect" },
+  { 4, "InvalidTarget" },
+  { 5, "HoldItem" },
+  { 6, "Scroll" },
+  { 7, "Left" },
+  { 8, "Right" },
+  { 9, "Up" },
+  { 10, "Down" },
+};
