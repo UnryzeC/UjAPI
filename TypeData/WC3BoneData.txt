@@ -1,0 +1,13 @@
+std::map<uint32_t,std::string_view> = 
+{ 
+  { 'ches', "bone_chest" },
+  { 'foot', "bone_foot" },
+  { 'hand', "bone_hand" },
+  { 'head', "bone_head" },
+  { 'turr', "bone_turret" },
+  { 'alte', "alternate" },
+  { 'left', "left" },
+  { 'righ', "right" },
+  { 'moun', "mount" },
+  { 'smar', "smart" },
+};
