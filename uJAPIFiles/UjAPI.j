@@ -1,6 +1,6 @@
 //============================================================================
 // Native types. All native functions take extended handle types when
-// possible to help prevent passing bad values to native functions 
+// possible to help prevent passing bad values to native functions
 //
 type projectiletype										extends handle
 type minimapicon										extends handle
