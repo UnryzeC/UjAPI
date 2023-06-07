@@ -15,6 +15,9 @@ TypeData/WC3TaskList.txt
 TypeData/WC3UpgradeDataList.txt
 TypeData/WC3XEffectListData.txt
 
+uJAPIFiles/common.j
+uJAPIFiles/UjAPI.j
+
 # Prerequisites
 *.someFileExtToBlock
 
