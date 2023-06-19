@@ -1853,6 +1853,8 @@ native MathRealLn										takes real r returns real
 native MathRealMin										takes real a, real b returns real
 native MathRealMax										takes real a, real b returns real
 native MathRealSign										takes real r returns integer
+native MathRealClamp									takes real value, real min, real max returns real
+native MathRealLerp										takes real a, real b, real t returns real
 
 native MathIntegerAbs									takes integer i returns integer
 native MathIntegerLog									takes integer i returns real
@@ -1860,6 +1862,7 @@ native MathIntegerLn									takes integer i returns real
 native MathIntegerMin									takes integer a, integer b returns integer
 native MathIntegerMax									takes integer a, integer b returns integer
 native MathIntegerSign									takes integer i returns integer
+native MathIntegerClamp									takes integer value, integer min, integer max returns integer
 
 // Angle / Axis / Point API | All natives operate in Degrees!
 
@@ -3104,8 +3107,12 @@ native IsFrameEnabled									takes framehandle whichFrame returns boolean
 native SetFrameEnabled									takes framehandle whichFrame, boolean enabled returns nothing
 native IsFrameDraggable									takes framehandle whichFrame returns boolean
 native SetFrameDraggable								takes framehandle whichFrame, boolean enabled returns nothing
+native GetFrameTrackState								takes framehandle whichFrame returns integer
+native SetFrameTrackState								takes framehandle whichFrame, integer trackState returns nothing // 0 - NONE | 1 - Track | 2 - Ignore Track
 native SetFrameAlpha									takes framehandle whichFrame, integer alpha returns nothing
 native GetFrameAlpha									takes framehandle whichFrame returns integer
+native GetFrameTexture									takes framehandle whichFrame, integer textureId returns string
+native SetFrameTextureEx								takes framehandle whichFrame, string backgroundTextureFile, string borderTextureFile, integer textureId, boolean blend returns nothing
 native SetFrameTexture									takes framehandle whichFrame, string textureFile, integer textureId, boolean blend returns nothing
 native SetFrameScale									takes framehandle whichFrame, real scale returns nothing
 native SetFrameTooltip									takes framehandle whichFrame, framehandle tooltipFrame returns nothing
@@ -3114,6 +3121,10 @@ native SetFrameValue									takes framehandle whichFrame, real value returns no
 native GetFrameValue									takes framehandle whichFrame returns real
 native SetFrameMinMaxValues								takes framehandle whichFrame, real minVal, real maxVal returns nothing
 native SetFrameStepSize									takes framehandle whichFrame, real stepSize returns nothing
+native GetFrameWidth									takes framehandle whichFrame returns real
+native SetFrameWidth									takes framehandle whichFrame, real width returns nothing
+native GetFrameHeight									takes framehandle whichFrame returns real
+native SetFrameHeight									takes framehandle whichFrame, real height returns nothing
 native SetFrameSize										takes framehandle whichFrame, real width, real height returns nothing
 native SetFrameVertexColourEx							takes framehandle whichFrame, integer alpha, integer red, integer blue, integer green returns nothing
 native SetFrameVertexColour								takes framehandle whichFrame, integer colour returns nothing
@@ -3121,10 +3132,10 @@ native GetFramePriority									takes framehandle whichFrame returns integer
 native SetFramePriority									takes framehandle whichFrame, integer priority returns nothing
 native SetFrameParent									takes framehandle whichFrame, framehandle whichParent returns nothing
 native GetFrameParent									takes framehandle whichFrame returns framehandle
-native GetFrameHeight									takes framehandle whichFrame returns real
-native GetFrameWidth									takes framehandle whichFrame returns real
 native SetFrameFont										takes framehandle whichFrame, string fontName, real size, integer flags returns nothing
 native SetFrameTextAlignment							takes framehandle whichFrame, textaligntype verticalAlign, textaligntype horizontalAlign returns nothing
+native SetFrameTextVerticalAlignment					takes framehandle whichFrame, textaligntype verticalAlign returns nothing
+native SetFrameTextHorizontalAlignment					takes framehandle whichFrame, textaligntype horizontalAlign returns nothing
 native GetFrameChildrenCount							takes framehandle whichFrame returns integer
 native GetFrameChild									takes framehandle whichFrame, integer index returns framehandle
 native GetFrameCheckState								takes framehandle whichFrame returns boolean
