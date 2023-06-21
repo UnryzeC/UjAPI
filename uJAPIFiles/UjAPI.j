@@ -1916,7 +1916,7 @@ native TextFileWriteLine								takes textfilehandle whichTextFile, string text 
 
 // Misc API
 native GetUjAPIVersion									takes nothing returns string
-native GetAnimationName	takes animtype whichAnim returns string
+native GetAnimationName									takes animtype whichAnim returns string
 //
 
 // Time API
