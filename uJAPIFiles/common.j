@@ -2969,7 +2969,7 @@ native TriggerAddAction									takes trigger whichTrigger, code actionFunc retu
 native TriggerRemoveAction								takes trigger whichTrigger, triggeraction whichAction returns nothing
 native TriggerClearActions								takes trigger whichTrigger returns nothing
 native TriggerSleepAction								takes real timeout returns nothing
-native TriggerWaitForSound								takes sound s, real offset returns nothing
+native TriggerWaitForSound								takes sound whichSound, real offset returns nothing
 native TriggerEvaluate									takes trigger whichTrigger returns boolean
 native TriggerExecute									takes trigger whichTrigger returns nothing
 native TriggerExecuteWait								takes trigger whichTrigger returns nothing
@@ -4286,10 +4286,11 @@ native ConsolePrint										takes string s returns nothing
 
 // Text File API
 native TextFileOpen										takes string filePath returns textfilehandle
+native TextFileExists									takes string filePath returns boolean
 native TextFileGetPath									takes textfilehandle whichTextFile returns string
 native TextFileClose									takes textfilehandle whichTextFile returns nothing
 native TextFileClear									takes textfilehandle whichTextFile returns nothing
-native TextFileErase									takes textfilehandle whichTextFile returns nothing
+native TextFileDelete									takes textfilehandle whichTextFile returns nothing
 native TextFileCountLines								takes textfilehandle whichTextFile returns integer
 native TextFileReadLine									takes textfilehandle whichTextFile, integer lineNumber returns string
 native TextFileReadAll									takes textfilehandle whichTextFile returns string
@@ -4298,7 +4299,16 @@ native TextFileWriteLine								takes textfilehandle whichTextFile, string text 
 
 // Misc API
 native GetUjAPIVersion									takes nothing returns string
-native GetAnimationName	takes animtype whichAnim returns string
+native GetAnimationName									takes animtype whichAnim returns string
+//
+
+// Sound API
+native RemoveSound										takes sound whichSound returns nothing
+
+native ReplaceSound										takes sound whichSound, string fileName, boolean looping, boolean is3D, boolean stopwhenoutofrange, integer fadeInRate, integer fadeOutRate, string eaxSetting returns sound
+native ReplaceSoundWithLabel							takes sound whichSound, string fileName, boolean looping, boolean is3D, boolean stopwhenoutofrange, integer fadeInRate, integer fadeOutRate, string SLKEntryName returns sound
+native ReplaceSoundFromLabel							takes sound whichSound, string soundLabel, boolean looping, boolean is3D, boolean stopwhenoutofrange, integer fadeInRate, integer fadeOutRate returns sound
+native ReplaceMIDISound									takes sound whichSound, string soundLabel, integer fadeInRate, integer fadeOutRate returns sound
 //
 
 // Time API
@@ -4518,11 +4528,11 @@ native HandleListEnumDestructablesInRect				takes handlelist whichHandleList, re
 native HandleListEnumEffectsInRect						takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 native HandleListEnumProjectilesInRect					takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 
-native HandleListEnumByTypeId							takes handlelist whichHandleList, integer typeId, boolexpr filter returns nothing
+native HandleListEnumByTypeId							takes handlelist whichHandleList, integer handleTypeId, boolexpr filter returns nothing
 native HandleListEnumByTypeIdEx							takes handlelist whichHandleList, integer handleTypeId, integer typeId, boolexpr filter returns nothing
 
 native HandleListForEach								takes handlelist whichHandleList, code c returns nothing
-native HandleListForEachByTypeId						takes handlelist whichHandleList, integer typeId, code c returns nothing
+native HandleListForEachByTypeId						takes handlelist whichHandleList, integer handleTypeId, code c returns nothing
 native HandleListForEachByTypeIdEx						takes handlelist whichHandleList, integer handleTypeId, integer typeId, code c returns nothing
 //
 
