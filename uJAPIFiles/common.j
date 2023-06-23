@@ -4282,6 +4282,7 @@ native StringInsert										takes string s, string whichString, integer whichPo
 // Debug API
 native ConsoleEnable									takes boolean flag returns nothing
 native ConsolePrint										takes string s returns nothing
+native ConsolePause										takes string s returns nothing
 //
 
 // Text File API
@@ -4315,6 +4316,7 @@ native ReplaceMIDISound									takes sound whichSound, string soundLabel, integ
 native GetSystemTime									takes timetype whichTimeType returns integer
 native GetLocalTime										takes timetype whichTimeType returns integer
 native GetTimeStamp										takes boolean isLocalTime, integer isMiliseconds returns string
+native GetTickCount										takes nothing returns integer
 //
 
 // Screen/Window API
@@ -4854,6 +4856,7 @@ native GetSpecialEffectModelObjectPositionX				takes effect whichEffect, string 
 native GetSpecialEffectModelObjectPositionY				takes effect whichEffect, string whichObject returns real
 native GetSpecialEffectModelObjectPositionZ				takes effect whichEffect, string whichObject returns real
 native GetSpecialEffectModelObjectPositionLoc			takes effect whichEffect, string whichObject returns location
+native GetSpecialEffectCurrentAnimationId				takes effect whichEffect returns integer
 native SetSpecialEffectAnimationWithRarityByIndex		takes effect whichEffect, integer animIndex, raritycontrol rarity returns nothing
 native SetSpecialEffectAnimationWithRarity				takes effect whichEffect, string animationName, raritycontrol rarity returns nothing
 native SetSpecialEffectAnimationByIndex					takes effect whichEffect, integer animIndex returns nothing
@@ -4917,6 +4920,7 @@ native GetTrackableModelObjectPositionX					takes trackable whichTrackable, stri
 native GetTrackableModelObjectPositionY					takes trackable whichTrackable, string whichObject returns real
 native GetTrackableModelObjectPositionZ					takes trackable whichTrackable, string whichObject returns real
 native GetTrackableModelObjectPositionLoc				takes trackable whichTrackable, string whichObject returns location
+native GetTrackableCurrentAnimationId					takes trackable whichTrackable returns integer
 native SetTrackableAnimationWithRarityByIndex			takes trackable whichTrackable, integer animIndex, raritycontrol rarity returns nothing
 native SetTrackableAnimationWithRarity					takes trackable whichTrackable, string animationName, raritycontrol rarity returns nothing
 native SetTrackableAnimationByIndex						takes trackable whichTrackable, integer animIndex returns nothing
@@ -4974,6 +4978,7 @@ native GetWidgetModelObjectPositionX					takes widget whichWidget, string whichO
 native GetWidgetModelObjectPositionY					takes widget whichWidget, string whichObject returns real
 native GetWidgetModelObjectPositionZ					takes widget whichWidget, string whichObject returns real
 native GetWidgetModelObjectPositionLoc					takes widget whichWidget, string whichObject returns location
+native GetWidgetCurrentAnimationId						takes widget whichWidget returns integer
 native SetWidgetAnimationWithRarityByIndex				takes widget whichWidget, integer animIndex, raritycontrol rarity returns nothing
 native SetWidgetAnimationWithRarity						takes widget whichWidget, string animationName, raritycontrol rarity returns nothing
 native SetWidgetAnimationByIndex						takes widget whichWidget, integer animIndex returns nothing
@@ -5018,6 +5023,7 @@ native GetDestructableModelObjectPositionX				takes destructable whichDestructab
 native GetDestructableModelObjectPositionY				takes destructable whichDestructable, string whichObject returns real
 native GetDestructableModelObjectPositionZ				takes destructable whichDestructable, string whichObject returns real
 native GetDestructableModelObjectPositionLoc			takes destructable whichDestructable, string whichObject returns location
+native GetDestructableCurrentAnimationId				takes destructable whichDestructable returns integer
 native SetDestructableAnimationWithRarityByIndex		takes destructable whichDestructable, integer animIndex, raritycontrol rarity returns nothing
 native SetDestructableAnimationWithRarity				takes destructable whichDestructable, string animationName, raritycontrol rarity returns nothing
 native SetDestructableAnimationByIndex					takes destructable whichDestructable, integer animIndex returns nothing
@@ -5096,6 +5102,7 @@ native GetItemModelObjectPositionX						takes item whichItem, string whichObject
 native GetItemModelObjectPositionY						takes item whichItem, string whichObject returns real
 native GetItemModelObjectPositionZ						takes item whichItem, string whichObject returns real
 native GetItemModelObjectPositionLoc					takes item whichItem, string whichObject returns location
+native GetItemCurrentAnimationId						takes item whichItem returns integer
 native SetItemAnimationWithRarityByIndex				takes item whichItem, integer animIndex, raritycontrol rarity returns nothing
 native SetItemAnimationWithRarity						takes item whichItem, string animationName, raritycontrol rarity returns nothing
 native SetItemAnimationByIndex							takes item whichItem, integer animIndex returns nothing
@@ -5323,6 +5330,7 @@ native GetUnitModelObjectPositionX						takes unit whichUnit, string whichObject
 native GetUnitModelObjectPositionY						takes unit whichUnit, string whichObject returns real
 native GetUnitModelObjectPositionZ						takes unit whichUnit, string whichObject returns real
 native GetUnitModelObjectPositionLoc					takes unit whichUnit, string whichObject returns location
+native GetUnitCurrentAnimationId						takes unit whichUnit returns integer
 native SetUnitAnimationOffsetPercent					takes unit whichUnit, real percent returns boolean
 //
 
@@ -5399,6 +5407,7 @@ native GetProjectileModelObjectPositionX				takes projectile whichProjectile, st
 native GetProjectileModelObjectPositionY				takes projectile whichProjectile, string whichObject returns real
 native GetProjectileModelObjectPositionZ				takes projectile whichProjectile, string whichObject returns real
 native GetProjectileModelObjectPositionLoc				takes projectile whichProjectile, string whichObject returns location
+native GetProjectileCurrentAnimationId					takes projectile whichProjectile returns integer
 native SetProjectileAnimationWithRarityByIndex			takes projectile whichProjectile, integer animIndex, raritycontrol rarity returns nothing
 native SetProjectileAnimationWithRarity					takes projectile whichProjectile, string animationName, raritycontrol rarity returns nothing
 native SetProjectileAnimationByIndex					takes projectile whichProjectile, integer animIndex returns nothing
@@ -5501,8 +5510,14 @@ native IsFrameDraggable									takes framehandle whichFrame returns boolean
 native SetFrameDraggable								takes framehandle whichFrame, boolean enabled returns nothing
 native GetFrameTrackState								takes framehandle whichFrame returns integer
 native SetFrameTrackState								takes framehandle whichFrame, integer trackState returns nothing // 0 - NONE | 1 - Track | 2 - Ignore Track
-native SetFrameAlpha									takes framehandle whichFrame, integer alpha returns nothing
+native GetFrameColourEx									takes framehandle whichFrame, integer textureId returns integer
+native SetFrameColourEx									takes framehandle whichFrame, integer textureId, integer colour returns nothing
+native GetFrameColour									takes framehandle whichFrame returns integer
+native SetFrameColour									takes framehandle whichFrame, integer colour returns nothing
+native GetFrameAlphaEx									takes framehandle whichFrame, integer textureId returns integer
+native SetFrameAlphaEx									takes framehandle whichFrame, integer textureId, integer alpha returns nothing
 native GetFrameAlpha									takes framehandle whichFrame returns integer
+native SetFrameAlpha									takes framehandle whichFrame, integer alpha returns nothing
 native GetFrameTexture									takes framehandle whichFrame, integer textureId returns string
 native SetFrameTextureEx								takes framehandle whichFrame, string backgroundTextureFile, string borderTextureFile, integer textureId, boolean blend returns nothing
 native SetFrameTexture									takes framehandle whichFrame, string textureFile, integer textureId, boolean blend returns nothing
@@ -5580,6 +5595,7 @@ native SetFrameSpriteTexture							takes framehandle whichFrame, string textureN
 native SetFrameSpriteReplaceableTexture					takes framehandle whichFrame, string textureName, integer textureIndex returns nothing
 native SetFrameSpriteModel								takes framehandle whichFrame, string modelName returns nothing
 native SetFrameSpriteModelEx							takes framehandle whichFrame, string modelName, integer playerColour returns nothing
+native GetFrameSpriteCurrentAnimationId					takes framehandle whichFrame returns integer
 native SetFrameSpriteAnimationWithRarityByIndex			takes framehandle whichFrame, integer animIndex, raritycontrol rarity returns nothing
 native SetFrameSpriteAnimationByIndex					takes framehandle whichFrame, integer animIndex returns nothing
 native QueueFrameSpriteAnimationByIndex					takes framehandle whichFrame, integer animIndex returns nothing
