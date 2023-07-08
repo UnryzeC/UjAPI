@@ -260,6 +260,13 @@ constant native AbilityId2String						takes integer abilityId returns string
 // Looks up the "name" field for any object (unit, item, ability)
 constant native GetObjectName							takes integer objectId returns string
 
+constant native GetBJMaxPlayers							takes nothing returns integer
+constant native GetBJPlayerNeutralVictim				takes nothing returns integer
+constant native GetBJPlayerNeutralExtra					takes nothing returns integer
+constant native GetBJMaxPlayerSlots						takes nothing returns integer
+constant native GetPlayerNeutralPassive					takes nothing returns integer
+constant native GetPlayerNeutralAggressive				takes nothing returns integer
+
 globals
 
 	//===================================================
@@ -270,8 +277,8 @@ globals
 	constant boolean					TRUE														= true
 	constant integer					JASS_MAX_ARRAY_SIZE											= 262144
 
-	constant integer					PLAYER_NEUTRAL_PASSIVE										= 15
-	constant integer					PLAYER_NEUTRAL_AGGRESSIVE									= 12
+	constant integer					PLAYER_NEUTRAL_PASSIVE										= GetPlayerNeutralPassive( )
+	constant integer					PLAYER_NEUTRAL_AGGRESSIVE									= GetPlayerNeutralAggressive( )
 
 	constant playercolor				PLAYER_COLOR_RED											= ConvertPlayerColor(0)
 	constant playercolor				PLAYER_COLOR_BLUE											= ConvertPlayerColor(1)
@@ -285,6 +292,18 @@ globals
 	constant playercolor				PLAYER_COLOR_LIGHT_BLUE										= ConvertPlayerColor(9)
 	constant playercolor				PLAYER_COLOR_AQUA											= ConvertPlayerColor(10)
 	constant playercolor				PLAYER_COLOR_BROWN											= ConvertPlayerColor(11)
+	constant playercolor				PLAYER_COLOR_MAROON											= ConvertPlayerColor(12)
+	constant playercolor				PLAYER_COLOR_NAVY											= ConvertPlayerColor(13)
+	constant playercolor				PLAYER_COLOR_TURQUOISE										= ConvertPlayerColor(14)
+	constant playercolor				PLAYER_COLOR_VIOLET											= ConvertPlayerColor(15)
+	constant playercolor				PLAYER_COLOR_WHEAT											= ConvertPlayerColor(16)
+	constant playercolor				PLAYER_COLOR_PEACH											= ConvertPlayerColor(17)
+	constant playercolor				PLAYER_COLOR_MINT											= ConvertPlayerColor(18)
+	constant playercolor				PLAYER_COLOR_LAVENDER										= ConvertPlayerColor(19)
+	constant playercolor				PLAYER_COLOR_COAL											= ConvertPlayerColor(20)
+	constant playercolor				PLAYER_COLOR_SNOW											= ConvertPlayerColor(21)
+	constant playercolor				PLAYER_COLOR_EMERALD										= ConvertPlayerColor(22)
+	constant playercolor				PLAYER_COLOR_PEANUT											= ConvertPlayerColor(23)
 
 	constant race						RACE_HUMAN													= ConvertRace(1)
 	constant race						RACE_ORC													= ConvertRace(2)
@@ -2475,6 +2494,16 @@ globals
 	constant variabletype				VARIABLE_TYPE_STRING_ARRAY									= ConvertVariableType(11)
 	constant variabletype				VARIABLE_TYPE_HANDLE_ARRAY									= ConvertVariableType(12)
 	constant variabletype				VARIABLE_TYPE_BOOLEAN_ARRAY									= ConvertVariableType(13)
+
+	constant integer 					CORNER_FLAG_UPPER_LEFT 										= 1
+	constant integer 					CORNER_FLAG_UPPER_RIGHT 									= 2
+	constant integer 					CORNER_FLAG_BOTTOM_LEFT 									= 4
+	constant integer 					CORNER_FLAG_BOTTOM_RIGHT 									= 8
+	constant integer 					CORNER_FLAG_TOP 											= 16
+	constant integer 					CORNER_FLAG_LEFT 											= 32
+	constant integer 					CORNER_FLAG_BOTTOM 											= 64
+	constant integer 					CORNER_FLAG_RIGHT 											= 128
+	constant integer 					CORNER_FLAG_ALL 											= 255
 endglobals
 
 //============================================================================
@@ -4475,18 +4504,22 @@ native EnableAntiHack									takes boolean enable returns nothing
 // Hashtable API
 //
 native SaveHandle										takes hashtable table, integer parentKey, integer childKey, handle whichHandle returns boolean
+native SaveCode											takes hashtable table, integer parentKey, integer childKey, code whichCode returns boolean
 native SaveAttackTypeHandle								takes hashtable table, integer parentKey, integer childKey, attacktype whichAttackType returns boolean
 native SaveDamageTypeHandle								takes hashtable table, integer parentKey, integer childKey, damagetype whichDamageType returns boolean
 native SaveWeaponTypeHandle								takes hashtable table, integer parentKey, integer childKey, weapontype whichWeaponType returns boolean
 native SaveProjectileHandle								takes hashtable table, integer parentKey, integer childKey, projectile whichProjectile returns boolean
 native SaveFrameHandle									takes hashtable table, integer parentKey, integer childKey, framehandle whichFrame returns boolean
+native SaveHandleList									takes hashtable table, integer parentKey, integer childKey, handlelist whichHandleList returns boolean
 
 native LoadHandle										takes hashtable table, integer parentKey, integer childKey returns handle
+native LoadCode											takes hashtable table, integer parentKey, integer childKey returns code
 native LoadAttackTypeHandle								takes hashtable table, integer parentKey, integer childKey returns attacktype
 native LoadDamageTypeHandle								takes hashtable table, integer parentKey, integer childKey returns damagetype
 native LoadWeaponTypeHandle								takes hashtable table, integer parentKey, integer childKey returns weapontype
 native LoadProjectileHandle								takes hashtable table, integer parentKey, integer childKey returns projectile
 native LoadFrameHandle									takes hashtable table, integer parentKey, integer childKey returns framehandle
+native LoadHandleList									takes hashtable table, integer parentKey, integer childKey returns handlelist
 //
 
 //============================================================================
@@ -5588,6 +5621,7 @@ native GetCSimpleFontStringByName						takes string frameName, integer createCon
 native GetCSimpleTextureByName							takes string frameName, integer createContext returns framehandle
 native GetCSimpleFrameByName							takes string frameName, integer createContext returns framehandle
 native GetFrameUnderMouse								takes nothing returns framehandle
+native GetFrameTypeName									takes framehandle whichFrame returns string
 native GetFrameName										takes framehandle whichFrame returns string
 native SetFrameName										takes framehandle whichFrame, string contextName returns nothing
 native GetFrameContext									takes framehandle whichFrame returns integer
@@ -5619,7 +5653,8 @@ native SetFrameAlphaEx									takes framehandle whichFrame, integer textureId, 
 native GetFrameAlpha									takes framehandle whichFrame returns integer
 native SetFrameAlpha									takes framehandle whichFrame, integer alpha returns nothing
 native GetFrameTexture									takes framehandle whichFrame, integer textureId returns string
-native SetFrameTextureEx								takes framehandle whichFrame, string backgroundTextureFile, string borderTextureFile, integer textureId, boolean blend returns nothing
+native SetFrameBackdropTexture							takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean allowTransparency, boolean blend, string borderTextureFile, integer borderFlags, boolean isControlBackdrop returns nothing
+native SetFrameTextureEx								takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean blend, string borderTextureFile, integer borderFlags returns nothing
 native SetFrameTexture									takes framehandle whichFrame, string textureFile, integer textureId, boolean blend returns nothing
 native SetFrameScale									takes framehandle whichFrame, real scale returns nothing
 native SetFrameTooltip									takes framehandle whichFrame, framehandle tooltipFrame returns nothing
@@ -5650,6 +5685,41 @@ native SetFrameCheckState								takes framehandle whichFrame, boolean isCheck r
 //
 
 native SetMiniMapTexture								takes string texturePath returns boolean
+
+// CListBox API
+native GetFrameItemsBorder 								takes framehandle listBox returns real
+native SetFrameItemsBorder 								takes framehandle listBox, real value returns nothing
+native GetFrameItemsHeight 								takes framehandle listBox returns real
+native SetFrameItemsHeight 								takes framehandle listBox, real value returns nothing
+
+// These functions return CListBoxItem frames.
+native AddFrameListItem									takes framehandle listBox, string text, framehandle whichFrame returns framehandle
+native GetFrameListItemCount							takes framehandle listBox returns integer
+native GetFrameListItemById								takes framehandle listBox, integer id returns framehandle
+native SetFrameListItemById								takes framehandle listBox, integer id, framehandle whichFrame returns nothing
+native GetFrameListItemByFrame							takes framehandle listBox, framehandle frameToFind returns framehandle
+native SetFrameListItemByFrame							takes framehandle listBox, framehandle frameToFind, framehandle whichFrame returns nothing
+native RemoveFrameListItem								takes framehandle listBox, framehandle whichFrame returns nothing // this uses CListBoxItem
+native RemoveFrameListItemById							takes framehandle listBox, integer id returns nothing
+native RemoveFrameListItemByFrame						takes framehandle listBox, framehandle whichFrame returns nothing
+//
+
+// CListBoxItem API
+native GetFrameItemOwner								takes framehandle listBoxItem returns framehandle
+native SetFrameItemOwner								takes framehandle listBoxItem, framehandle whichFrame returns nothing
+//
+
+// CBackdropFrame API | For corner flags refer to CORNER_FLAG. For CBackdropFrame and its children, backdropId has to be always 0.
+native GetFrameCornerFlags 								takes framehandle whichFrame, integer backdropId returns integer
+native SetFrameCornerFlags 								takes framehandle whichFrame, integer backdropId, integer cornerFlag returns nothing
+native GetFrameCornerSize 								takes framehandle whichFrame, integer backdropId returns real
+native SetFrameCornerSize 								takes framehandle whichFrame, integer backdropId, real value returns nothing
+native GetFrameBackgroundSize 							takes framehandle whichFrame, integer backdropId returns real
+native SetFrameBackgroundSize 							takes framehandle whichFrame, integer backdropId, real value returns nothing
+native GetFrameBackgroundInsetById 						takes framehandle whichFrame, integer backdropId, integer insetId returns real
+native SetFrameBackgroundInsetById 						takes framehandle whichFrame, integer backdropId, integer insetId, real value returns nothing
+native SetFrameBackgroundInsets 						takes framehandle whichFrame, integer backdropId, real minX, real minY, real maxX, real maxY returns nothing
+//
 
 // Trigger Frame API
 native GetTriggerFrame									takes nothing returns framehandle
