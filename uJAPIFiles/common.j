@@ -267,6 +267,9 @@ constant native GetBJMaxPlayerSlots						takes nothing returns integer
 constant native GetPlayerNeutralPassive					takes nothing returns integer
 constant native GetPlayerNeutralAggressive				takes nothing returns integer
 
+constant native GetJassArrayLimit						takes nothing returns integer
+constant native GetTextTagLimit							takes nothing returns integer
+
 globals
 
 	//===================================================
@@ -275,7 +278,8 @@ globals
 
 	constant boolean					FALSE														= false
 	constant boolean					TRUE														= true
-	constant integer					JASS_MAX_ARRAY_SIZE											= 262144
+	constant integer					JASS_MAX_ARRAY_SIZE											= GetJassArrayLimit( ) // Previosuly was hardcoded 262144, this is subject to change if needed.
+	constant integer					TEXT_TAG_MAX_SIZE											= GetTextTagLimit( )  // Original 100 limit raised to 1024, this is subject to change if needed.
 
 	constant integer					PLAYER_NEUTRAL_PASSIVE										= GetPlayerNeutralPassive( )
 	constant integer					PLAYER_NEUTRAL_AGGRESSIVE									= GetPlayerNeutralAggressive( )
@@ -4310,6 +4314,7 @@ native SetJassGlobalBoolean								takes jassthread thread, string variableName,
 // Jass Operations
 native IsOperationLimitEnabled							takes nothing returns boolean
 native EnableOperationLimit								takes boolean enable returns nothing
+native GetCodeByName									takes string funcName returns code
 native ExecuteCode										takes code c returns nothing
 native ExecuteFuncEx									takes string funcName returns nothing
 //
@@ -4563,8 +4568,10 @@ native HandleListAddHandle								takes handlelist whichHandleList, handle which
 native HandleListRemoveHandle							takes handlelist whichHandleList, handle whichHandle returns nothing
 native HandleListAddList								takes handlelist destHandleList, handlelist sourceHandleList returns integer
 native HandleListRemoveList								takes handlelist destHandleList, handlelist sourceHandleList returns integer
+native HandleListRemoveEmpty							takes handlelist whichHandleList returns integer
 native HandleListClear									takes handlelist whichHandleList returns nothing
 native HandleListContainsHandle							takes handlelist whichHandleList, handle whichHandle returns boolean
+native HandleListContainsTypeId							takes handlelist whichHandleList, integer typeId returns boolean
 
 native HandleListGetCount								takes handlelist whichHandleList returns integer
 native HandleListGetCountEx								takes handlelist whichHandleList, integer handleTypeId returns integer
@@ -4582,6 +4589,7 @@ native HandleListGetFrameCount							takes handlelist whichHandleList returns in
 
 native HandleListGetHandleByIndex						takes handlelist whichHandleList, integer index returns handle
 native HandleListGetHandleByIndexEx						takes handlelist whichHandleList, integer handleTypeId, integer index returns handle
+native HandleListGetHandleByTypeId						takes handlelist whichHandleList, integer typeId, integer index returns handle
 
 native HandleListGetAgentByIndex						takes handlelist whichHandleList, integer index returns agent
 native HandleListGetWidgetByIndex						takes handlelist whichHandleList, integer index returns widget
@@ -4671,6 +4679,8 @@ native GetTextTagY										takes texttag whichTextTag returns real
 native SetTextTagY										takes texttag whichTextTag, real y returns nothing
 native GetTextTagZ										takes texttag whichTextTag returns real
 native SetTextTagZ										takes texttag whichTextTag, real z returns nothing
+native GetTextTagScreenX								takes texttag whichTextTag returns real
+native GetTextTagScreenY								takes texttag whichTextTag returns real
 native GetTextTagHeight									takes texttag whichTextTag returns real
 native SetTextTagHeight									takes texttag whichTextTag, real height returns nothing
 native GetTextTagPositionLocation						takes texttag whichTextTag returns location
@@ -4695,6 +4705,40 @@ native GetTextTagText									takes texttag whichTextTag returns string
 //
 
 //============================================================================
+// Lightning API
+//
+native GetLightningSourceX 								takes lightning whichBolt returns real
+native SetLightningSourceX 								takes lightning whichBolt, real value returns nothing
+native GetLightningSourceY 								takes lightning whichBolt returns real
+native SetLightningSourceY 								takes lightning whichBolt, real value returns nothing
+native GetLightningSourceZ 								takes lightning whichBolt returns real
+native SetLightningSourceZ 								takes lightning whichBolt, real value returns nothing
+native GetLightningSourcePositionLocation 				takes lightning whichBolt returns location
+native SetLightningSourcePositionLocation 				takes lightning whichBolt, location whichLocation returns nothing
+native GetLightningTargetX 								takes lightning whichBolt returns real
+native SetLightningTargetX 								takes lightning whichBolt, real value returns nothing
+native GetLightningTargetY 								takes lightning whichBolt returns real
+native SetLightningTargetY 								takes lightning whichBolt, real value returns nothing
+native GetLightningTargetZ 								takes lightning whichBolt returns real
+native SetLightningTargetZ 								takes lightning whichBolt, real value returns nothing
+native GetLightningTargetPositionLocation 				takes lightning whichBolt returns location
+native SetLightningTargetPositionLocation 				takes lightning whichBolt, location whichLocation returns nothing
+native GetLightningScreenX								takes lightning whichBolt returns real
+native GetLightningScreenY								takes lightning whichBolt returns real
+native GetLightningColour 								takes lightning whichBolt returns integer
+native GetLightningLength 								takes lightning whichBolt returns real
+native SetLightningLength 								takes lightning whichBolt, real value returns nothing
+native GetLightningNoiseScaling 						takes lightning whichBolt returns real
+native SetLightningNoiseScaling 						takes lightning whichBolt, real value returns nothing
+native GetLightningTextureCoordinates 					takes lightning whichBolt returns real
+native SetLightningTextureCoordinates 					takes lightning whichBolt, real value returns nothing
+native GetLightningDuration 							takes lightning whichBolt returns real
+native SetLightningDuration 							takes lightning whichBolt, real value returns nothing
+native GetLightningTexture 								takes lightning whichBolt returns string
+native SetLightningTexture 								takes lightning whichBolt, string textureName returns nothing
+//
+
+//============================================================================
 // Image API
 //
 native CreateImageSimple								takes string file, real sizeX, real sizeY, real posX, real posY, real posZ, integer imageType returns image
@@ -4707,6 +4751,8 @@ native GetImageZ										takes image whichImage returns real
 native SetImageZ										takes image whichImage, real sizeZ returns nothing
 native GetImagePositionLocation							takes image whichImage returns location
 native SetImagePositionLocation							takes image whichImage, location whichLocation returns nothing
+native GetImageScreenX									takes image whichImage returns real
+native GetImageScreenY									takes image whichImage returns real
 native GetImageOriginX									takes image whichImage returns real
 native SetImageOriginX									takes image whichImage, real originX returns nothing
 native GetImageOriginY									takes image whichImage returns real
@@ -4730,11 +4776,29 @@ native SetImageTexture									takes image whichImage, string imagePath returns 
 //
 
 //============================================================================
+// Timer API
+//
+native TimerIsPaused 									takes timer whichTimer returns boolean
+native TimerRestart 									takes timer whichTimer returns nothing
+native TimerIsPeriodic 									takes timer whichTimer returns boolean
+native TimerSetPeriodic 								takes timer whichTimer, boolean isPeriodic returns nothing
+native TimerSetRemaining 								takes timer whichTimer, real remaining returns nothing
+native TimerSetTimeout 									takes timer whichTimer, real timeout returns nothing
+native TimerGetCallback 								takes timer whichTimer returns code
+native TimerSetCallback 								takes timer whichTimer, code whichFunction returns nothing
+//
+
+//============================================================================
 // Doodad API
 //
 native GetDoodadCount									takes nothing returns integer
 native GetDoodadByIndex									takes integer index returns doodad
 native GetDoodadIndex									takes doodad whichDoodad returns integer
+
+native GetDoodadModel									takes doodad whichDoodad returns string
+native SetDoodadModel									takes doodad whichDoodad, string whichModel returns nothing
+native IsDoodadVisible									takes doodad whichDoodad returns boolean
+native ShowDoodad										takes doodad whichDoodad, boolean isShow returns nothing
 
 native SetDoodadAnimationWithRarityByIndex				takes doodad whichDoodad, integer animIndex, raritycontrol rarity returns nothing
 native SetDoodadAnimationWithRarity						takes doodad whichDoodad, string animationName, raritycontrol rarity returns nothing
@@ -4946,6 +5010,8 @@ native SetSpecialEffectX								takes effect whichEffect, real x returns nothing
 native SetSpecialEffectY								takes effect whichEffect, real y returns nothing
 native SetSpecialEffectZ								takes effect whichEffect, real z returns nothing
 native SetSpecialEffectHeight							takes effect whichEffect, real height returns nothing
+native GetSpecialEffectScreenX							takes effect whichEffect returns real
+native GetSpecialEffectScreenY							takes effect whichEffect returns real
 native GetSpecialEffectScale							takes effect whichEffect returns real
 native SetSpecialEffectScale							takes effect whichEffect, real scale returns nothing
 native GetSpecialEffectTimeScale						takes effect whichEffect returns real
@@ -5012,6 +5078,8 @@ native SetTrackableX									takes trackable whichTrackable, real x returns noth
 native SetTrackableY									takes trackable whichTrackable, real y returns nothing
 native SetTrackableZ									takes trackable whichTrackable, real z returns nothing
 native SetTrackableHeight								takes trackable whichTrackable, real height returns nothing
+native GetTrackableScreenX								takes trackable whichTrackable returns real
+native GetTrackableScreenY								takes trackable whichTrackable returns real
 native GetTrackableScale								takes trackable whichTrackable returns real
 native SetTrackableScale								takes trackable whichTrackable, real scale returns nothing
 native GetTrackableTimeScale							takes trackable whichTrackable returns real
@@ -5075,6 +5143,8 @@ native SetWidgetPosition								takes widget whichWidget, real x, real y returns
 native SetWidgetPositionLocation						takes widget whichWidget, location whichLocation returns nothing
 native SetWidgetX										takes widget whichWidget, real x returns nothing
 native SetWidgetY										takes widget whichWidget, real y returns nothing
+native GetWidgetScreenX									takes widget whichWidget returns real
+native GetWidgetScreenY									takes widget whichWidget returns real
 native GetWidgetVertexColour							takes widget whichWidget returns integer
 native SetWidgetVertexColour							takes widget whichWidget, integer red, integer green, integer blue, integer alpha returns nothing
 native GetWidgetTimeScale								takes widget whichWidget returns real
@@ -5122,6 +5192,8 @@ native SetDestructablePosition							takes destructable whichDestructable, real 
 native SetDestructablePositionLocation					takes destructable whichDestructable, location whichLocation returns nothing
 native SetDestructableX									takes destructable whichDestructable, real x returns nothing
 native SetDestructableY									takes destructable whichDestructable, real y returns nothing
+native GetDestructableScreenX							takes destructable whichDestructable returns real
+native GetDestructableScreenY							takes destructable whichDestructable returns real
 native GetDestructableVertexColour						takes destructable whichDestructable returns integer
 native SetDestructableVertexColour						takes destructable whichDestructable, integer red, integer green, integer blue, integer alpha returns nothing
 native GetDestructableTimeScale							takes destructable whichDestructable returns real
@@ -5191,6 +5263,8 @@ native SetItemStringField								takes item whichItem, itemstringfield whichFiel
 //
 
 // Normal API
+native GetItemScreenX									takes item whichItem returns real
+native GetItemScreenY									takes item whichItem returns real
 native GetItemLife										takes item whichItem returns real
 native SetItemLife										takes item whichItem, real life returns nothing
 native GetItemMaxLife									takes item whichItem returns real
@@ -5302,6 +5376,8 @@ native SetUnitWeaponStringField							takes unit whichUnit, unitweaponstringfiel
 //
 
 // Normal API
+native GetUnitScreenX									takes unit whichUnit returns real
+native GetUnitScreenY									takes unit whichUnit returns real
 native SetUnitTypeId									takes unit whichUnit, integer newId returns nothing
 native GetUnitLocustFlag								takes unit whichUnit returns integer
 native GetUnitUnderCursor								takes nothing returns unit
@@ -5499,6 +5575,8 @@ native GetProjectileY									takes projectile whichProjectile returns real
 native SetProjectileY									takes projectile whichProjectile, real y returns nothing
 native GetProjectileZ									takes projectile whichProjectile returns real
 native SetProjectileZ									takes projectile whichProjectile, real z returns nothing
+native GetProjectileScreenX								takes projectile whichProjectile returns real
+native GetProjectileScreenY								takes projectile whichProjectile returns real
 native GetProjectileHeight								takes projectile whichProjectile returns real
 native SetProjectileHeight								takes projectile whichProjectile, real height returns nothing
 native GetProjectilePositionLocation					takes projectile whichProjectile returns location
