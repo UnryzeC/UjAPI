@@ -1988,6 +1988,8 @@ native ConsolePause										takes string s returns nothing
 // Text File API
 native TextFileOpen										takes string filePath returns textfilehandle
 native TextFileExists									takes string filePath returns boolean
+native TextFileGetSizeByPath							takes string filePath returns integer
+native TextFileGetSize									takes textfilehandle whichTextFile returns integer
 native TextFileGetPath									takes textfilehandle whichTextFile returns string
 native TextFileClose									takes textfilehandle whichTextFile returns nothing
 native TextFileClear									takes textfilehandle whichTextFile returns nothing
@@ -2000,6 +2002,7 @@ native TextFileWriteLine								takes textfilehandle whichTextFile, string text 
 
 // Misc API
 native GetUjAPIVersion									takes nothing returns string
+native GetLocale										takes nothing returns string
 
 native GetMiscDataString								takes string sectionName, string optionName, integer index returns string
 native SetMiscDataString								takes string sectionName, string optionName, integer index, string value returns nothing
@@ -2085,8 +2088,12 @@ native GetMouseWorldZ									takes nothing returns real
 //
 
 // Chat API
+native DisplayWarningMessage							takes player toPlayer, string message returns nothing
+native DisplayTimedWarningMessage						takes player toPlayer, real duration, string message returns nothing
 native DisplayChatMessage								takes player whichPlayer, integer recipient, string message returns nothing
 native DisplayTimedChatMessage							takes player whichPlayer, integer recipient, real duration, string message returns nothing
+native DisplayTopMessage								takes player toPlayer, string message returns nothing
+native DisplayTimedTopMessage							takes player toPlayer, real duration, string message returns nothing
 //
 
 // Handle API
@@ -2326,6 +2333,11 @@ native SetLightningTargetPositionLocation 				takes lightning whichBolt, locatio
 native GetLightningScreenX								takes lightning whichBolt returns real
 native GetLightningScreenY								takes lightning whichBolt returns real
 native GetLightningColour 								takes lightning whichBolt returns integer
+native GetLightningColourA								takes lightning whichBolt returns integer
+native GetLightningColourR								takes lightning whichBolt returns integer
+native GetLightningColourG								takes lightning whichBolt returns integer
+native GetLightningColourB								takes lightning whichBolt returns integer
+native SetLightningColour								takes lightning whichBolt, integer red, integer green, integer blue, integer alpha returns boolean
 native GetLightningLength 								takes lightning whichBolt returns real
 native SetLightningLength 								takes lightning whichBolt, real value returns nothing
 native GetLightningNoiseScaling 						takes lightning whichBolt returns real
@@ -2391,15 +2403,45 @@ native TimerSetCallback 								takes timer whichTimer, code whichFunction retur
 //============================================================================
 // Doodad API
 //
+native CreateDoodad										takes integer objectid, real x, real y, real face, real scale, integer variation returns doodad
+native CreateDoodadZ									takes integer objectid, real x, real y, real z, real face, real scale, integer variation returns doodad
+native RemoveDoodad										takes doodad whichDoodad returns nothing
 native GetDoodadCount									takes nothing returns integer
 native GetDoodadByIndex									takes integer index returns doodad
 native GetDoodadIndex									takes doodad whichDoodad returns integer
-
+native GetDoodadColour									takes doodad whichDoodad returns integer
+native SetDoodadColour									takes doodad whichDoodad, integer colour returns nothing
+native SetDoodadVertexColour							takes doodad whichDoodad, integer red, integer green, integer blue, integer alpha returns nothing
+native GetDoodadScale									takes doodad whichDoodad returns real
+native SetDoodadScale									takes doodad whichDoodad, real facing returns nothing
+native GetDoodadX										takes doodad whichDoodad returns real
+native SetDoodadX										takes doodad whichDoodad, real x returns nothing
+native GetDoodadY										takes doodad whichDoodad returns real
+native SetDoodadY										takes doodad whichDoodad, real y returns nothing
+native GetDoodadZ										takes doodad whichDoodad returns real
+native SetDoodadZ										takes doodad whichDoodad, real z returns nothing
+native SetDoodadPosition								takes doodad whichDoodad, real x, real y returns nothing
+native SetDoodadPositionEx								takes doodad whichDoodad, real x, real y, real z returns nothing
+native GetDoodadPositionLocation						takes doodad whichDoodad returns location
+native SetDoodadPositionLocation						takes doodad whichDoodad, location whichLocation returns nothing
+native GetDoodadScreenX									takes doodad whichDoodad returns real
+native GetDoodadScreenY									takes doodad whichDoodad returns real
+native SetDoodadMatrixScale								takes doodad whichDoodad, real x, real y, real z returns nothing		
+native ResetDoodadMatrix								takes doodad whichDoodad returns nothing		
+native SetDoodadOrientationEx							takes doodad whichDoodad, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+native GetDoodadYaw										takes doodad whichDoodad returns real		
+native SetDoodadYaw										takes doodad whichDoodad, real yaw returns nothing		
+native GetDoodadFacing									takes doodad whichDoodad returns real		
+native SetDoodadFacing									takes doodad whichDoodad, real facing returns nothing		
+native GetDoodadPitch									takes doodad whichDoodad returns real		
+native SetDoodadPitch									takes doodad whichDoodad, real pitch returns nothing		
+native GetDoodadRoll									takes doodad whichDoodad returns real		
+native SetDoodadRoll									takes doodad whichDoodad, real roll returns nothing		
+native SetDoodadOrientation								takes doodad whichDoodad, real yaw, real pitch, real roll returns nothing		
 native GetDoodadModel									takes doodad whichDoodad returns string
 native SetDoodadModel									takes doodad whichDoodad, string whichModel returns nothing
 native IsDoodadVisible									takes doodad whichDoodad returns boolean
 native ShowDoodad										takes doodad whichDoodad, boolean isShow returns nothing
-
 native SetDoodadAnimationWithRarityByIndex				takes doodad whichDoodad, integer animIndex, raritycontrol rarity returns nothing
 native SetDoodadAnimationWithRarity						takes doodad whichDoodad, string animationName, raritycontrol rarity returns nothing
 native SetDoodadAnimationByIndex						takes doodad whichDoodad, integer animIndex returns nothing
@@ -2622,7 +2664,7 @@ native SetSpecialEffectColour							takes effect whichEffect, integer colour ret
 native SetSpecialEffectAlpha							takes effect whichEffect, integer alpha returns boolean
 native SetSpecialEffectVertexColour						takes effect whichEffect, integer red, integer green, integer blue, integer alpha returns boolean
 native SetSpecialEffectMatrixScale						takes effect whichEffect, real x, real y, real z returns nothing
-native ResetSpecialEffectetMatrix						takes effect whichEffect returns nothing
+native ResetSpecialEffectMatrix							takes effect whichEffect returns nothing
 native SetSpecialEffectOrientationEx					takes effect whichEffect, real yaw, real pitch, real roll, integer eulerOrder returns boolean // XYZ = 0, YZX = 1, ZXY = 2, ZYX = 3, YXZ = 4, XZY = 5
 native GetSpecialEffectYaw								takes effect whichEffect returns real // X
 native SetSpecialEffectYaw								takes effect whichEffect, real yaw returns boolean // X
@@ -2730,9 +2772,9 @@ native EnumTrackablesInRange							takes real x, real y, real radius, boolexpr f
 //============================================================================
 // Widget API
 //
+native GetWidgetTypeId									takes widget whichWidget returns integer
 native IsWidgetTipEnabled								takes nothing returns boolean // Internally this is called CUnitTip, but used for all widgets.
 native SetWidgetTipEnabled								takes boolean enable returns nothing
-
 native IsWidgetVisible									takes widget whichWidget returns boolean
 native SetWidgetVisible									takes widget whichWidget, boolean visible returns nothing
 native IsWidgetInvulnerable								takes widget whichWidget returns boolean
@@ -3022,6 +3064,9 @@ native IsUnitAbilityVisible								takes unit whichUnit, integer abilityId retur
 native ShowUnitAbility									takes unit whichUnit, integer abilityId, boolean show returns nothing
 native DisableUnitAbility								takes unit whichUnit, integer abilityId, boolean hide, boolean disable returns nothing
 native EnableUnitAbility								takes unit whichUnit, integer abilityId, boolean show, boolean enable returns nothing
+native UnitCancelTimedLife								takes unit whichUnit returns nothing
+native GetUnitRemainingTimedLife						takes unit whichUnit returns real
+native SetUnitRemainingTimedLife						takes unit whichUnit, real duration returns nothing
 native IsUnitSelectable									takes unit whichUnit returns boolean
 native SetUnitSelectable								takes unit whichUnit, boolean selectable returns nothing
 native SetUnitControl									takes unit whichUnit, integer flagValue, boolean isSetFlagValue, boolean ismove, boolean isattack, boolean isinventory returns nothing // flagValue = 0x200 and isSetFlagValue = true to emulate pause 
@@ -3043,8 +3088,14 @@ native GetUnitAttackRemainingDamagePoint				takes unit whichUnit returns real
 native SetUnitAttackRemainingDamagePoint				takes unit whichUnit, real time returns nothing
 native GetUnitAttackRemainingBackswing					takes unit whichUnit returns real
 native SetUnitAttackRemainingBackswing					takes unit whichUnit, real time returns nothing
-native UnitResetAttack									takes unit whichUnit returns boolean
-native UnitFinishAttack									takes unit whichUnit returns boolean
+// ignoreDistance only works if isInstant is set to true.
+native UnitAttackTarget									takes unit whichUnit, widget whichTarget, boolean ignoreDistance, boolean isInstant returns nothing
+native UnitAttackTargetPointZ							takes unit whichUnit, real x, real y, real z, boolean ignoreDistance, boolean isInstant returns nothing
+native UnitAttackTargetPoint							takes unit whichUnit, real x, real y, boolean ignoreDistance, boolean isInstant returns nothing
+native UnitAttackTargetPointLoc							takes unit whichUnit, location whichLocation, boolean ignoreDistance, boolean isInstant returns nothing
+native UnitAttackCancel									takes unit whichUnit returns boolean
+native UnitAttackRestart								takes unit whichUnit returns boolean
+native UnitAttackFinish									takes unit whichUnit returns boolean
 native GetUnitAttackTypeByIndex							takes unit whichUnit, integer attackIndex returns attacktype
 native SetUnitAttackTypeByIndex							takes unit whichUnit, integer attackIndex, attacktype whichAttackType returns nothing
 native GetUnitWeaponTypeByIndex							takes unit whichUnit, integer attackIndex returns weapontype
@@ -3118,14 +3169,18 @@ native GetUnitRallyPointX								takes unit whichUnit returns real
 native GetUnitRallyPointY								takes unit whichUnit returns real
 native GetHeroMaxLevelExperienceNeeded					takes unit whichUnit returns integer
 native GetHeroExperienceNeeded							takes unit whichUnit, integer forLevel returns integer
-native UnitApplySilence									takes unit whichUnit, boolean state returns nothing
-native UnitDisableAbilities								takes unit whichUnit, boolean state returns nothing
+native UnitApplySilence									takes unit whichUnit, boolean state returns nothing // Does not hide abilities
+native UnitDisableAbilities								takes unit whichUnit, boolean state returns nothing // Also hides abilities
 native PauseUnitEx										takes unit whichUnit, boolean flag returns nothing // this is pretty much a copy of SetUnitStunned, added for compatibility.
 native SetUnitStunned									takes unit whichUnit, boolean state returns nothing
 native GetUnitStunCounter								takes unit whichUnit returns integer
 native SetUnitStunCounter								takes unit whichUnit, integer stunCounter returns nothing
 native SetUnitKiller									takes unit whichUnit, unit killer returns nothing
 native KillUnitEx										takes unit whichUnit, unit killer returns nothing
+native GetUnitTarget									takes unit whichUnit returns widget
+native GetUnitTargetUnit								takes unit whichUnit returns unit
+native GetUnitTargetItem								takes unit whichUnit returns item
+native GetUnitTargetDestructable						takes unit whichUnit returns destructable
 native MorphUnitToTypeIdEx								takes unit whichUnit, integer uid, integer unitFlags, boolean updateHealthState, boolean updateManaState, integer healthStateId, integer manaStateId, boolean updateScale, boolean replaceAbilities, ability whichAbility, boolean resetBuildingAnimation returns nothing
 native MorphUnitToTypeId								takes unit whichUnit, integer uid returns nothing
 native GetUnitModelObjectPositionX						takes unit whichUnit, string whichObject returns real
@@ -3135,6 +3190,20 @@ native GetUnitModelObjectPositionLoc					takes unit whichUnit, string whichObjec
 native GetUnitCurrentAnimationId						takes unit whichUnit returns integer
 native GetUnitCurrentAnimationName						takes unit whichUnit returns string
 native SetUnitAnimationOffsetPercent					takes unit whichUnit, real percent returns boolean
+//
+
+// Illusion API
+
+// All created illusions are created without timed life, this can and should be handled by the mapmaker.
+native CreateIllusion									takes player whichPlayer, integer unitTypeId, real x, real y, real facing returns unit
+native CreateIllusionAtLoc								takes player whichPlayer, integer unitTypeId, location whichLocation, real facing returns unit
+native CreateIllusionFromUnit							takes unit whichUnit returns unit
+
+// Damage Dealt and Received are multipliers, not direct values. These will only work on illusions created by abilities/items or by: CreateUnitIllusion, CreateUnitIllusionAtLoc and CloneUnit.
+native GetIllusionDamageDealt							takes unit whichUnit returns real
+native SetIllusionDamageDealt							takes unit whichUnit, real multiplier returns nothing
+native GetIllusionDamageReceived						takes unit whichUnit returns real
+native SetIllusionDamageReceived						takes unit whichUnit, real multiplier returns nothing
 //
 
 // Order API
@@ -3337,9 +3406,11 @@ native SetFrameTexture									takes framehandle whichFrame, string textureFile,
 native SetFrameScale									takes framehandle whichFrame, real scale returns nothing
 native SetFrameTooltip									takes framehandle whichFrame, framehandle tooltipFrame returns nothing
 native SetFrameMouseCaged								takes framehandle whichFrame, boolean enable returns nothing
-native SetFrameValue									takes framehandle whichFrame, real value returns nothing
 native GetFrameValue									takes framehandle whichFrame returns real
+native SetFrameValue									takes framehandle whichFrame, real value returns nothing // fires event by default
+native SetFrameValueEx									takes framehandle whichFrame, real value, boolean isFireEvent returns nothing
 native SetFrameMinMaxValues								takes framehandle whichFrame, real minVal, real maxVal returns nothing
+native GetFrameStepSize									takes framehandle whichFrame returns real
 native SetFrameStepSize									takes framehandle whichFrame, real stepSize returns nothing
 native GetFrameWidth									takes framehandle whichFrame returns real
 native SetFrameWidth									takes framehandle whichFrame, real width returns nothing
