@@ -111,31 +111,31 @@ type textaligntype										extends handle
 type frameeventtype										extends handle
 type oskeytype											extends handle
 type mousebuttontype									extends handle
-type abilityintegerfield								extends handle
-type abilityrealfield									extends handle
-type abilitybooleanfield								extends handle
-type abilitystringfield									extends handle
-type abilityintegerlevelfield							extends handle
-type abilityreallevelfield								extends handle
-type abilitybooleanlevelfield							extends handle
-type abilitystringlevelfield							extends handle
-type abilityintegerlevelarrayfield						extends handle
-type abilityreallevelarrayfield							extends handle
-type abilitybooleanlevelarrayfield						extends handle
-type abilitystringlevelarrayfield						extends handle
-type buffstringfield									extends handle
-type unitintegerfield									extends handle
-type unitrealfield										extends handle
-type unitbooleanfield									extends handle
-type unitstringfield									extends handle
-type unitweaponintegerfield								extends handle
-type unitweaponrealfield								extends handle
-type unitweaponbooleanfield								extends handle
-type unitweaponstringfield								extends handle
-type itemintegerfield									extends handle
-type itemrealfield										extends handle
-type itembooleanfield									extends handle
-type itemstringfield									extends handle
+type agentdatafield										extends handle
+type abilityintegerfield								extends agentdatafield
+type abilityrealfield									extends agentdatafield
+type abilitybooleanfield								extends agentdatafield
+type abilitystringfield									extends agentdatafield
+type abilityintegerlevelfield							extends abilityintegerfield
+type abilityreallevelfield								extends abilityrealfield
+type abilitybooleanlevelfield							extends abilitybooleanfield
+type abilitystringlevelfield							extends abilitystringfield
+type abilityintegerlevelarrayfield						extends abilityintegerlevelfield
+type abilityreallevelarrayfield							extends abilityreallevelfield
+type abilitybooleanlevelarrayfield						extends abilitybooleanlevelfield
+type abilitystringlevelarrayfield						extends abilitystringlevelfield
+type unitintegerfield									extends agentdatafield
+type unitrealfield										extends agentdatafield
+type unitbooleanfield									extends agentdatafield
+type unitstringfield									extends agentdatafield
+type unitweaponintegerfield								extends agentdatafield
+type unitweaponrealfield								extends agentdatafield
+type unitweaponbooleanfield								extends agentdatafield
+type unitweaponstringfield								extends agentdatafield
+type itemintegerfield									extends agentdatafield
+type itemrealfield										extends agentdatafield
+type itembooleanfield									extends agentdatafield
+type itemstringfield									extends agentdatafield
 type movetype											extends handle
 type pathingaitype										extends handle
 type collisiontype										extends handle
@@ -222,7 +222,6 @@ constant native ConvertAbilityIntegerLevelArrayField	takes integer i returns abi
 constant native ConvertAbilityRealLevelArrayField		takes integer i returns abilityreallevelarrayfield
 constant native ConvertAbilityBooleanLevelArrayField	takes integer i returns abilitybooleanlevelarrayfield
 constant native ConvertAbilityStringLevelArrayField		takes integer i returns abilitystringlevelarrayfield
-constant native ConvertBuffStringField					takes integer i returns buffstringfield
 constant native ConvertUnitIntegerField					takes integer i returns unitintegerfield
 constant native ConvertUnitRealField					takes integer i returns unitrealfield
 constant native ConvertUnitBooleanField					takes integer i returns unitbooleanfield
@@ -2159,9 +2158,9 @@ globals
 	constant abilitystringlevelfield	ABILITY_SLF_SPAWN_UNIT_ID_NSY2								= ConvertAbilityStringLevelField('Nsy2')
 
 	// Buff
-	constant buffstringfield			BUFF_SF_ICON_NORMAL											= ConvertBuffStringField('fart')
-	constant buffstringfield			BUFF_SF_TOOLTIP_NORMAL										= ConvertBuffStringField('ftip')
-	constant buffstringfield			BUFF_SF_TOOLTIP_NORMAL_EXTENDED								= ConvertBuffStringField('fube')
+	constant abilitystringfield			BUFF_SF_ICON_NORMAL											= ConvertAbilityStringField('fart')
+	constant abilitystringfield			BUFF_SF_TOOLTIP_NORMAL										= ConvertAbilityStringField('ftip')
+	constant abilitystringfield			BUFF_SF_TOOLTIP_NORMAL_EXTENDED								= ConvertAbilityStringField('fube')
 
 	// Item
 	constant itemintegerfield			ITEM_IF_TINTING_COLOR										= ConvertItemIntegerField('iclt')
@@ -4588,6 +4587,7 @@ native HandleListGetWidgetCount							takes handlelist whichHandleList returns i
 native HandleListGetUnitCount							takes handlelist whichHandleList returns integer
 native HandleListGetItemCount							takes handlelist whichHandleList returns integer
 native HandleListGetDestructableCount					takes handlelist whichHandleList returns integer
+native HandleListGetDoodadCount							takes handlelist whichHandleList returns integer
 native HandleListGetAbilityCount						takes handlelist whichHandleList returns integer
 native HandleListGetBuffCount							takes handlelist whichHandleList returns integer
 native HandleListGetEffectCount							takes handlelist whichHandleList returns integer
@@ -4603,6 +4603,7 @@ native HandleListGetWidgetByIndex						takes handlelist whichHandleList, integer
 native HandleListGetUnitByIndex							takes handlelist whichHandleList, integer index returns unit
 native HandleListGetItemByIndex							takes handlelist whichHandleList, integer index returns item
 native HandleListGetDestructableByIndex					takes handlelist whichHandleList, integer index returns destructable
+native HandleListGetDoodadByIndex						takes handlelist whichHandleList, integer index returns doodad
 native HandleListGetAbilityByIndex						takes handlelist whichHandleList, integer index returns ability
 native HandleListGetBuffByIndex							takes handlelist whichHandleList, integer index returns buff
 native HandleListGetEffectByIndex						takes handlelist whichHandleList, integer index returns effect
@@ -4615,6 +4616,7 @@ native HandleListGetFilterWidget						takes nothing returns widget
 native HandleListGetFilterUnit							takes nothing returns unit
 native HandleListGetFilterItem							takes nothing returns item
 native HandleListGetFilterDestructable					takes nothing returns destructable
+native HandleListGetFilterDoodad						takes nothing returns doodad
 native HandleListGetFilterAbility						takes nothing returns ability
 native HandleListGetFilterBuff							takes nothing returns buff
 native HandleListGetFilterEffect						takes nothing returns effect
@@ -4627,6 +4629,7 @@ native HandleListGetEnumWidget							takes nothing returns widget
 native HandleListGetEnumUnit							takes nothing returns unit
 native HandleListGetEnumItem							takes nothing returns item
 native HandleListGetEnumDestructable					takes nothing returns destructable
+native HandleListGetEnumDoodad							takes nothing returns doodad
 native HandleListGetEnumAbility							takes nothing returns ability
 native HandleListGetEnumBuff							takes nothing returns buff
 native HandleListGetEnumEffect							takes nothing returns effect
@@ -4641,6 +4644,7 @@ native HandleListEnumWidgetsInRange						takes handlelist whichHandleList, real 
 native HandleListEnumUnitsInRange						takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
 native HandleListEnumItemsInRange						takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
 native HandleListEnumDestructablesInRange				takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+native HandleListEnumDoodadsInRange						takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
 native HandleListEnumEffectsInRange						takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
 native HandleListEnumProjectilesInRange					takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
 
@@ -4652,6 +4656,7 @@ native HandleListEnumWidgetsInRangeOfLoc				takes handlelist whichHandleList, lo
 native HandleListEnumUnitsInRangeOfLoc					takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
 native HandleListEnumItemsInRangeOfLoc					takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
 native HandleListEnumDestructablesInRangeOfLoc			takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+native HandleListEnumDoodadsInRangeOfLoc				takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
 native HandleListEnumEffectsInRangeOfLoc				takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
 native HandleListEnumProjectilesInRangeOfLoc			takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
 
@@ -4663,11 +4668,15 @@ native HandleListEnumWidgetsInRect						takes handlelist whichHandleList, rect w
 native HandleListEnumUnitsInRect						takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 native HandleListEnumItemsInRect						takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 native HandleListEnumDestructablesInRect				takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+native HandleListEnumDoodadsInRect						takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 native HandleListEnumEffectsInRect						takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 native HandleListEnumProjectilesInRect					takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 
 native HandleListEnumByTypeId							takes handlelist whichHandleList, integer handleTypeId, boolexpr filter returns nothing
 native HandleListEnumByTypeIdEx							takes handlelist whichHandleList, integer handleTypeId, integer typeId, boolexpr filter returns nothing
+
+native HandleListEnumUnitAbilities						takes handlelist whichHandleList, unit whichUnit, boolexpr filter returns nothing
+native HandleListEnumUnitBuffs							takes handlelist whichHandleList, unit whichUnit, boolexpr filter returns nothing
 
 native HandleListForEach								takes handlelist whichHandleList, code c returns nothing
 native HandleListForEachByTypeId						takes handlelist whichHandleList, integer handleTypeId, code c returns nothing
@@ -4961,7 +4970,9 @@ native ResetAbilityFieldData							takes ability whichAbility returns boolean //
 native IsAbilityBaseTargetAllowed						takes integer abilityId, widget source, widget target returns boolean // source can be null
 
 // Normal API
+native CreateAbility									takes integer abilityId returns ability
 native GetAbilityOwner									takes ability whichAbility returns unit
+native SetAbilityOwner									takes ability whichAbility, unit whichUnit returns nothing
 native GetAbilityOrderId								takes ability whichAbility returns integer
 native SetAbilityOrderId								takes ability whichAbility, integer orderId returns boolean // Highly experimental, may be removed if proven unstable.
 native GetAbilityLevel									takes ability whichAbility returns integer
@@ -5005,19 +5016,33 @@ native EnumUnitAbilities								takes unit whichUnit, boolexpr whichBoolexpr, co
 //
 
 // Base Field API
-native GetBuffBaseStringFieldById						takes integer aid, buffstringfield whichField returns string
-native SetBuffBaseStringFieldById						takes integer aid, buffstringfield whichField, string value returns boolean
+native GetBuffBaseStringFieldById						takes integer buffId, abilitystringfield whichField returns string
+native SetBuffBaseStringFieldById						takes integer buffId, abilitystringfield whichField, string value returns boolean
 //
 
 // Field API
-native GetBuffStringField								takes buff whichBuff, buffstringfield whichField returns string
-native SetBuffStringField								takes buff whichBuff, buffstringfield whichField, string value returns boolean
+native GetBuffIntegerField								takes buff whichBuff, abilityintegerfield whichField returns integer
+native SetBuffIntegerField								takes buff whichBuff, abilityintegerfield whichField, integer value returns boolean
+
+native GetBuffBooleanField								takes buff whichBuff, abilitybooleanfield whichField returns boolean
+native SetBuffBooleanField								takes buff whichBuff, abilitybooleanfield whichField, boolean value returns boolean
+
+native GetBuffRealField									takes buff whichBuff, abilityrealfield whichField returns real
+native SetBuffRealField									takes buff whichBuff, abilityrealfield whichField, real value returns boolean
+
+native GetBuffStringField								takes buff whichBuff, abilitystringfield whichField returns string
+native SetBuffStringField								takes buff whichBuff, abilitystringfield whichField, string value returns boolean
+
+native ResetBuffFieldData								takes buff whichBuff returns boolean // Acts same as ResetAbilityFieldData, but for buffs.
 //
 
 // Normal API
+native CreateBuff										takes integer buffId returns buff
+
 native GetBuffTypeId									takes buff whichBuff returns integer
 native GetBuffBaseTypeId								takes buff whichBuff returns integer
 native GetBuffOwner										takes buff whichbuff returns unit
+native SetBuffOwner										takes buff whichBuff, unit whichUnit returns nothing
 native GetBuffLevel										takes buff whichBuff returns integer
 native SetBuffLevel										takes buff whichBuff, integer level returns nothing
 native GetBuffRemainingDuration							takes buff whichBuff returns real
@@ -5437,40 +5462,47 @@ native IsUnitHero										takes unit whichUnit returns boolean
 native IsUnitTower										takes unit whichUnit returns boolean
 native IsUnitShop										takes unit whichUnit returns boolean
 native IsUnitInventoryEnabled							takes unit whichUnit returns boolean
-native EnableUnitInventory								takes unit whichUnit, boolean enable returns nothing
-native IsUnitInventoryEnabledEx							takes unit whichUnit returns boolean
-native EnableUnitInventoryEx							takes unit whichUnit, boolean enable returns nothing
+native UnitEnableInventory								takes unit whichUnit, boolean enable, boolean ignoreErrorMessages returns nothing // ignoreErrorMessages simply causes the game not to print errors such as "unable to drop/unable to pick up" messages, etc.
 native IsUnitMovementEnabled							takes unit whichUnit returns boolean
-native EnableUnitMovement								takes unit whichUnit, boolean enable returns nothing
-native IsUnitMovementEnabledEx							takes unit whichUnit returns boolean
-native EnableUnitMovementEx								takes unit whichUnit, boolean enable returns nothing
+native UnitEnableMovement								takes unit whichUnit, boolean enable, boolean fullDisable returns nothing // fullDisable will also block unit from being able to rotate.
 native IsUnitAttackEnabled								takes unit whichUnit returns boolean
-native EnableUnitAttack									takes unit whichUnit, boolean enable returns nothing
-native IsUnitAttackEnabledEx							takes unit whichUnit returns boolean
-native EnableUnitAttackEx								takes unit whichUnit, boolean enable returns nothing
+native UnitEnableAttack									takes unit whichUnit, boolean enable, boolean extraFlag returns nothing // extraFlag - sets internal flag, but no real changes were noticed... 
 native IsUnitStateNormal								takes unit whichUnit, boolean additionalCheck returns boolean
 native RedrawUnit										takes unit whichUnit returns nothing
 native UpdateUnitInfoBar								takes unit whichUnit returns integer
 native UnitUnapplyUpgrades								takes unit whichUnit returns integer
 native UnitApplyUpgrades								takes unit whichUnit returns integer
+
+// Unit Ability API
 native GetUnitAbility									takes unit whichUnit, integer aid returns ability
 native GetUnitAbilityByIndex							takes unit whichUnit, integer index returns ability
-native GetUnitBuff										takes unit whichUnit, integer buffId returns buff
-native GetUnitBuffByIndex								takes unit whichUnit, integer index returns buff
-native GetUnitBuffLevel									takes unit whichUnit, integer buffId returns integer
 native UnitAddAbilityEx									takes unit whichUnit, integer abilityId, boolean checkForDuplicates returns boolean
 native UnitRemoveAbilityEx								takes unit whichUnit, integer abilityId, boolean removeDuplicates returns boolean
 native IsUnitAbilityVisible								takes unit whichUnit, integer abilityId returns boolean
 native ShowUnitAbility									takes unit whichUnit, integer abilityId, boolean show returns nothing
 native DisableUnitAbility								takes unit whichUnit, integer abilityId, boolean hide, boolean disable returns nothing
 native EnableUnitAbility								takes unit whichUnit, integer abilityId, boolean show, boolean enable returns nothing
+//
+
+// Unit Buff API
+// In very early stages of development, may be unstable for now.
+native UnitAddBuff										takes unit whichUnit, buff whichBuff returns boolean // Does not add duplicates!
+native UnitAddBuffEx									takes unit whichUnit, buff whichBuff, boolean checkForDuplicates returns boolean
+
+native UnitAddBuffById									takes unit whichUnit, integer buffId returns boolean // Does not add duplicates!
+native UnitAddBuffByIdEx								takes unit whichUnit, integer buffId, boolean checkForDuplicates returns boolean
+//
+native GetUnitBuff										takes unit whichUnit, integer buffId returns buff
+native GetUnitBuffByIndex								takes unit whichUnit, integer index returns buff
+native GetUnitBuffLevel									takes unit whichUnit, integer buffId returns integer
+//
+
 native UnitCancelTimedLife								takes unit whichUnit returns nothing
 native GetUnitRemainingTimedLife						takes unit whichUnit returns real
 native SetUnitRemainingTimedLife						takes unit whichUnit, real duration returns nothing
 native IsUnitSelectable									takes unit whichUnit returns boolean
 native SetUnitSelectable								takes unit whichUnit, boolean selectable returns nothing
-native SetUnitControl									takes unit whichUnit, integer flagValue, boolean isSetFlagValue, boolean ismove, boolean isattack, boolean isinventory returns nothing // flagValue = 0x200 and isSetFlagValue = true to emulate pause 
-native SetUnitLocustFlag								takes unit whichUnit, integer flag, integer mode returns nothing
+native IsUnitTruesightImmune							takes unit whichUnit returns boolean
 native SetUnitTruesightImmuneState						takes unit whichUnit, boolean state returns nothing
 native GetUnitZ											takes unit whichUnit returns real
 native GetUnitDamageReduction							takes unit whichUnit returns real
@@ -5592,8 +5624,23 @@ native GetUnitCurrentAnimationName						takes unit whichUnit returns string
 native SetUnitAnimationOffsetPercent					takes unit whichUnit, real percent returns boolean
 //
 
-// Illusion API
+// Building API
+native CreateBuilding									takes player whichPlayer, integer unitTypeId, real x, real y, real facing returns unit
+native CreateBuildingEx									takes player whichPlayer, integer unitTypeId, real x, real y, real facing, boolean isAutoBuild, boolean workersCanAssist returns unit
 
+// Construction API
+native UnitGetConstructionProgress						takes unit whichUnit returns real
+native UnitGetConstructionRemainingTime					takes unit whichUnit returns real
+native UnitSetConstructionRemainingTime					takes unit whichUnit, real time returns nothing
+//
+
+// Upgrade API
+native UnitGetUpgradeProgress							takes unit whichUnit returns real
+native UnitGetUpgradeRemainingTime						takes unit whichUnit returns real
+native UnitSetUpgradeRemainingTime						takes unit whichUnit, real time returns nothing
+//
+
+// Illusion API
 // All created illusions are created without timed life, this can and should be handled by the mapmaker.
 native CreateIllusion									takes player whichPlayer, integer unitTypeId, real x, real y, real facing returns unit
 native CreateIllusionAtLoc								takes player whichPlayer, integer unitTypeId, location whichLocation, real facing returns unit
