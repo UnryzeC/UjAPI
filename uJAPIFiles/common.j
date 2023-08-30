@@ -2289,10 +2289,12 @@ globals
 	constant unitrealfield				UNIT_RF_CAST_POINT											= ConvertUnitRealField('ucpt')
 	constant unitrealfield				UNIT_RF_MINIMUM_ATTACK_RANGE								= ConvertUnitRealField('uamn')
 	constant unitrealfield				UNIT_RF_COLLISION_SIZE										= ConvertUnitRealField('ucol')
-	constant unitrealfield				UNIT_RF_HEALTH_FROM_BONUS_STRENGTH							= ConvertUnitRealField('uhs+') // Get Only
-	constant unitrealfield				UNIT_RF_MANA_FROM_BONUS_INTELLIGENCE						= ConvertUnitRealField('umi+') // Get Only
-	constant unitrealfield				UNIT_RF_DEFENSE_BONUS										= ConvertUnitRealField('udf+') // Get Only
-	constant unitrealfield				UNIT_RF_SPEED_BONUS											= ConvertUnitRealField('umv+') // Get Only
+	// Get Only Fields
+	constant unitrealfield				UNIT_RF_HEALTH_FROM_BONUS_STRENGTH							= ConvertUnitRealField('uhs+')
+	constant unitrealfield				UNIT_RF_MANA_FROM_BONUS_INTELLIGENCE						= ConvertUnitRealField('umi+')
+	constant unitrealfield				UNIT_RF_DEFENSE_BONUS										= ConvertUnitRealField('udf+')
+	constant unitrealfield				UNIT_RF_DEFENSE_BASE										= ConvertUnitRealField('udfb')
+	constant unitrealfield				UNIT_RF_SPEED_BONUS											= ConvertUnitRealField('umv+')
 
 	constant unitbooleanfield			UNIT_BF_RAISABLE											= ConvertUnitBooleanField('urai')
 	constant unitbooleanfield			UNIT_BF_DECAYABLE											= ConvertUnitBooleanField('udec')
@@ -2335,7 +2337,10 @@ globals
 	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_WEAPON_SOUND							= ConvertUnitWeaponIntegerField('ucs1')
 	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_AREA_OF_EFFECT_TARGETS				= ConvertUnitWeaponIntegerField('ua1p')
 	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_TARGETS_ALLOWED						= ConvertUnitWeaponIntegerField('ua1g')
-	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_DAMAGE_BONUS							= ConvertUnitWeaponIntegerField('ud1+') // Get Only | this is the + (Green) or - (Red) value next to attack.
+	// Get Only Fields
+	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_DAMAGE_BASE_MINIMUM					= ConvertUnitWeaponIntegerField('udm1')
+	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_DAMAGE_BASE_MAXIMUM					= ConvertUnitWeaponIntegerField('udh1')
+	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_DAMAGE_BONUS							= ConvertUnitWeaponIntegerField('ud1+') // This is the + (Green) or - (Red) value next to attack.
 
 	constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_BACKSWING_POINT						= ConvertUnitWeaponRealField('ubs1')
 	constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT							= ConvertUnitWeaponRealField('udp1')
@@ -5603,7 +5608,7 @@ native GetHeroMaxLevelExperienceNeeded					takes unit whichUnit returns integer
 native GetHeroExperienceNeeded							takes unit whichUnit, integer forLevel returns integer
 native UnitApplySilence									takes unit whichUnit, boolean state returns nothing // Does not hide abilities
 native UnitDisableAbilities								takes unit whichUnit, boolean state returns nothing // Also hides abilities
-native PauseUnitEx										takes unit whichUnit, boolean flag returns nothing // this is pretty much a copy of SetUnitStunned, added for compatibility.
+native PauseUnitEx										takes unit whichUnit, boolean pause returns nothing
 native SetUnitStunned									takes unit whichUnit, boolean state returns nothing
 native GetUnitStunCounter								takes unit whichUnit returns integer
 native SetUnitStunCounter								takes unit whichUnit, integer stunCounter returns nothing
