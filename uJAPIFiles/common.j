@@ -2341,6 +2341,7 @@ globals
 	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_DAMAGE_BASE_MINIMUM					= ConvertUnitWeaponIntegerField('udm1')
 	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_DAMAGE_BASE_MAXIMUM					= ConvertUnitWeaponIntegerField('udh1')
 	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_DAMAGE_BONUS							= ConvertUnitWeaponIntegerField('ud1+') // This is the + (Green) or - (Red) value next to attack.
+	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_DAMAGE_BONUS_FROM_STATS				= ConvertUnitWeaponIntegerField('udbs') // Only gets how much attack is gained from str or agi or intelligence.
 
 	constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_BACKSWING_POINT						= ConvertUnitWeaponRealField('ubs1')
 	constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_DAMAGE_POINT							= ConvertUnitWeaponRealField('udp1')
@@ -4978,6 +4979,7 @@ native IsAbilityBaseTargetAllowed						takes integer abilityId, widget source, w
 native CreateAbility									takes integer abilityId returns ability
 native GetAbilityOwner									takes ability whichAbility returns unit
 native SetAbilityOwner									takes ability whichAbility, unit whichUnit returns nothing
+native GetAbilityOwningItem								takes ability whichAbility returns item
 native GetAbilityOrderId								takes ability whichAbility returns integer
 native SetAbilityOrderId								takes ability whichAbility, integer orderId returns boolean // Highly experimental, may be removed if proven unstable.
 native GetAbilityLevel									takes ability whichAbility returns integer
@@ -5474,9 +5476,9 @@ native IsUnitAttackEnabled								takes unit whichUnit returns boolean
 native UnitEnableAttack									takes unit whichUnit, boolean enable, boolean extraFlag returns nothing // extraFlag - sets internal flag, but no real changes were noticed... 
 native IsUnitStateNormal								takes unit whichUnit, boolean additionalCheck returns boolean
 native RedrawUnit										takes unit whichUnit returns nothing
-native UpdateUnitInfoBar								takes unit whichUnit returns integer
-native UnitUnapplyUpgrades								takes unit whichUnit returns integer
-native UnitApplyUpgrades								takes unit whichUnit returns integer
+native UpdateUnitInfoBar								takes unit whichUnit returns nothing
+native UnitUnapplyUpgrades								takes unit whichUnit returns nothing
+native UnitApplyUpgrades								takes unit whichUnit returns nothing
 
 // Unit Ability API
 native GetUnitAbility									takes unit whichUnit, integer aid returns ability
@@ -5485,8 +5487,11 @@ native UnitAddAbilityEx									takes unit whichUnit, integer abilityId, boolean
 native UnitRemoveAbilityEx								takes unit whichUnit, integer abilityId, boolean removeDuplicates returns boolean
 native IsUnitAbilityVisible								takes unit whichUnit, integer abilityId returns boolean
 native ShowUnitAbility									takes unit whichUnit, integer abilityId, boolean show returns nothing
+native ShowUnitAbilityEx								takes unit whichUnit, integer abilityId, boolean show, boolean checkDuplicates returns nothing
 native DisableUnitAbility								takes unit whichUnit, integer abilityId, boolean hide, boolean disable returns nothing
+native DisableUnitAbilityEx								takes unit whichUnit, integer abilityId, boolean hide, boolean disable, boolean checkDuplicates returns nothing
 native EnableUnitAbility								takes unit whichUnit, integer abilityId, boolean show, boolean enable returns nothing
+native EnableUnitAbilityEx								takes unit whichUnit, integer abilityId, boolean show, boolean enable, boolean checkDuplicates returns nothing
 //
 
 // Unit Buff API
@@ -5650,6 +5655,7 @@ native UnitSetUpgradeRemainingTime						takes unit whichUnit, real time returns 
 native CreateIllusion									takes player whichPlayer, integer unitTypeId, real x, real y, real facing returns unit
 native CreateIllusionAtLoc								takes player whichPlayer, integer unitTypeId, location whichLocation, real facing returns unit
 native CreateIllusionFromUnit							takes unit whichUnit returns unit
+native CreateIllusionFromUnitEx							takes unit whichUnit, boolean copyPassives returns unit
 
 // Damage Dealt and Received are multipliers, not direct values. These will only work on illusions created by abilities/items or by: CreateUnitIllusion, CreateUnitIllusionAtLoc and CloneUnit.
 native GetIllusionDamageDealt							takes unit whichUnit returns real
