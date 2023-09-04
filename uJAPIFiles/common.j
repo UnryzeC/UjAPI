@@ -4520,7 +4520,10 @@ native EnumHandlesOfType								takes integer handleBaseTypeId, boolexpr filter,
 //
 
 // AntiHack API
-native EnableAntiHack									takes boolean enable returns nothing
+native AntiHackEnable									takes boolean enable returns nothing // by default only checks addresses.
+native AntiHackEnableEx									takes boolean enable, boolean isModuleCheck, boolean isProcessCheck returns nothing
+native AntiHackEnableModuleCheck						takes boolean enable returns nothing
+native AntiHackEnableProcessCheck						takes boolean enable returns nothing
 //
 
 //============================================================================
