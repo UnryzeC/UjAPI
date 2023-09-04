@@ -366,6 +366,10 @@ globals
 	constant originframetype			ORIGIN_FRAME_CURSOR_FRAME									= ConvertOriginFrameType(44)
 	constant originframetype			ORIGIN_FRAME_INVENTORY_COVER_FRAME							= ConvertOriginFrameType(45)
 	constant originframetype			ORIGIN_FRAME_UNIT_TIP										= ConvertOriginFrameType(46)
+	constant originframetype			ORIGIN_FRAME_ITEM_BUTTON_COOLDOWN_INDICATOR					= ConvertOriginFrameType(47)
+	constant originframetype			ORIGIN_FRAME_ITEM_BUTTON_AUTOCAST_FRAME						= ConvertOriginFrameType(48)
+	constant originframetype			ORIGIN_FRAME_ITEM_BUTTON_CHARGES_FRAME						= ConvertOriginFrameType(49)
+	constant originframetype			ORIGIN_FRAME_ITEM_BUTTON_CHARGES_TEXT						= ConvertOriginFrameType(50)
 
 	constant framepointtype				FRAMEPOINT_TOPLEFT											= ConvertFramePointType(0)
 	constant framepointtype				FRAMEPOINT_TOP												= ConvertFramePointType(1)
@@ -2050,10 +2054,12 @@ native GetTimeStamp										takes boolean isLocalTime, integer isMiliseconds re
 native GetTickCount										takes nothing returns integer
 //
 
-// Screen/Window API
+// Screen API
 native SetScreenFieldOfView								takes real fov returns nothing
 native SetWidescreenState								takes boolean flag returns nothing
+//
 
+// Window API
 native IsWindowActive									takes nothing returns boolean
 native GetWindowWidth									takes nothing returns integer
 native GetWindowHeight									takes nothing returns integer
@@ -2442,18 +2448,18 @@ native GetDoodadPositionLocation						takes doodad whichDoodad returns location
 native SetDoodadPositionLocation						takes doodad whichDoodad, location whichLocation returns nothing
 native GetDoodadScreenX									takes doodad whichDoodad returns real
 native GetDoodadScreenY									takes doodad whichDoodad returns real
-native SetDoodadMatrixScale								takes doodad whichDoodad, real x, real y, real z returns nothing		
-native ResetDoodadMatrix								takes doodad whichDoodad returns nothing		
+native SetDoodadMatrixScale								takes doodad whichDoodad, real x, real y, real z returns nothing
+native ResetDoodadMatrix								takes doodad whichDoodad returns nothing
 native SetDoodadOrientationEx							takes doodad whichDoodad, real yaw, real pitch, real roll, integer eulerOrder returns nothing
 native GetDoodadYaw										takes doodad whichDoodad returns real		
-native SetDoodadYaw										takes doodad whichDoodad, real yaw returns nothing		
-native GetDoodadFacing									takes doodad whichDoodad returns real		
-native SetDoodadFacing									takes doodad whichDoodad, real facing returns nothing		
-native GetDoodadPitch									takes doodad whichDoodad returns real		
-native SetDoodadPitch									takes doodad whichDoodad, real pitch returns nothing		
-native GetDoodadRoll									takes doodad whichDoodad returns real		
-native SetDoodadRoll									takes doodad whichDoodad, real roll returns nothing		
-native SetDoodadOrientation								takes doodad whichDoodad, real yaw, real pitch, real roll returns nothing		
+native SetDoodadYaw										takes doodad whichDoodad, real yaw returns nothing
+native GetDoodadFacing									takes doodad whichDoodad returns real
+native SetDoodadFacing									takes doodad whichDoodad, real facing returns nothing
+native GetDoodadPitch									takes doodad whichDoodad returns real
+native SetDoodadPitch									takes doodad whichDoodad, real pitch returns nothing
+native GetDoodadRoll									takes doodad whichDoodad returns real
+native SetDoodadRoll									takes doodad whichDoodad, real roll returns nothing
+native SetDoodadOrientation								takes doodad whichDoodad, real yaw, real pitch, real roll returns nothing
 native GetDoodadModel									takes doodad whichDoodad returns string
 native SetDoodadModel									takes doodad whichDoodad, string whichModel returns nothing
 native IsDoodadVisible									takes doodad whichDoodad returns boolean
@@ -2707,7 +2713,7 @@ native GetSpecialEffectPitch							takes effect whichEffect returns real // Y
 native SetSpecialEffectPitch							takes effect whichEffect, real pitch returns boolean // Y
 native GetSpecialEffectRoll								takes effect whichEffect returns real // Z
 native SetSpecialEffectRoll								takes effect whichEffect, real roll returns boolean // Z
-native SetSpecialEffectOrientation						takes effect whichEffect, real yaw, real pitch, real roll returns nothing // uses SetSpecialEffectSpaceRotation with XYZ orientation as default
+native SetSpecialEffectOrientation						takes effect whichEffect, real yaw, real pitch, real roll returns nothing // uses SetSpecialEffectOrientationEx with XYZ orientation as default
 native SetSpecialEffectMaterialTexture					takes effect whichEffect, string textureName, integer materialId, integer textureIndex returns nothing
 native SetSpecialEffectTexture							takes effect whichEffect, string textureName, integer textureIndex returns nothing
 native SetSpecialEffectReplaceableTexture				takes effect whichEffect, string textureName, integer textureIndex returns nothing
@@ -2765,7 +2771,7 @@ native SetTrackableColour								takes trackable whichTrackable, integer colour 
 native SetTrackableAlpha								takes trackable whichTrackable, integer alpha returns boolean
 native SetTrackableVertexColour							takes trackable whichTrackable, integer red, integer green, integer blue, integer alpha returns boolean
 native SetTrackableEffectMatrixScale					takes trackable whichTrackable, real x, real y, real z returns nothing
-native ResetTrackableetMatrix							takes trackable whichTrackable returns nothing
+native ResetTrackableMatrix								takes trackable whichTrackable returns nothing
 native SetTrackableOrientationEx						takes trackable whichTrackable, real yaw, real pitch, real roll, integer eulerOrder returns boolean
 native GetTrackableYaw									takes trackable whichTrackable returns real
 native SetTrackableYaw									takes trackable whichTrackable, real yaw returns boolean
@@ -2828,7 +2834,9 @@ native GetWidgetScale									takes widget whichWidget returns real
 native SetWidgetScale									takes widget whichWidget, real scale returns nothing
 native GetWidgetFacing									takes widget whichWidget returns real
 native SetWidgetFacing									takes widget whichWidget, real facing, boolean isInstant returns nothing
-native SetWidgetSpaceRotation							takes widget whichWidget, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+native SetWidgetMatrixScale								takes widget whichWidget, real x, real y, real z returns nothing
+native ResetWidgetMatrix								takes widget whichWidget returns nothing
+native SetWidgetOrientationEx							takes widget whichWidget, real yaw, real pitch, real roll, integer eulerOrder returns nothing
 native SetWidgetOrientation								takes widget whichWidget, real yaw, real pitch, real roll returns nothing
 native GetWidgetYaw										takes widget whichWidget returns real
 native SetWidgetYaw										takes widget whichWidget, real yaw returns nothing
@@ -2877,7 +2885,9 @@ native GetDestructableScale								takes destructable whichDestructable returns 
 native SetDestructableScale								takes destructable whichDestructable, real scale returns nothing
 native GetDestructableFacing							takes destructable whichDestructable returns real
 native SetDestructableFacing							takes destructable whichDestructable, real facing, boolean isInstant returns nothing
-native SetDestructableSpaceRotation						takes destructable whichDestructable, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+native SetDestructableMatrixScale						takes destructable whichDestructable, real x, real y, real z returns nothing
+native ResetDestructableMatrix							takes destructable whichDestructable returns nothing
+native SetDestructableOrientationEx						takes destructable whichDestructable, real yaw, real pitch, real roll, integer eulerOrder returns nothing
 native SetDestructableOrientation						takes destructable whichDestructable, real yaw, real pitch, real roll returns nothing
 native GetDestructableYaw								takes destructable whichDestructable returns real
 native SetDestructableYaw								takes destructable whichDestructable, real yaw returns nothing
@@ -2959,7 +2969,9 @@ native GetItemScale										takes item whichItem returns real
 native SetItemScale										takes item whichItem, real scale returns nothing
 native GetItemFacing									takes item whichItem returns real
 native SetItemFacing									takes item whichItem, real facing, boolean isInstant returns nothing
-native SetItemSpaceRotation								takes item whichItem, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+native SetItemMatrixScale								takes item whichItem, real x, real y, real z returns nothing
+native ResetItemMatrix									takes item whichItem returns nothing
+native SetItemOrientationEx								takes item whichItem, real yaw, real pitch, real roll, integer eulerOrder returns nothing
 native SetItemOrientation								takes item whichItem, real yaw, real pitch, real roll returns nothing
 native GetItemYaw										takes item whichItem returns real
 native SetItemYaw										takes item whichItem, real yaw returns nothing
@@ -3233,6 +3245,19 @@ native GetUnitModelObjectPositionLoc					takes unit whichUnit, string whichObjec
 native GetUnitCurrentAnimationId						takes unit whichUnit returns integer
 native GetUnitCurrentAnimationName						takes unit whichUnit returns string
 native SetUnitAnimationOffsetPercent					takes unit whichUnit, real percent returns boolean
+// Unit Orientation API, these only work if AutoOrientation is set to false. Note, this will disable auto yaw/pitch/roll updates as well, you will have to do them manually.
+native IsUnitAutoOrientationEnabled						takes unit whichUnit returns boolean
+native UnitEnableAutoOrientation						takes unit whichUnit, boolean enable returns nothing
+native GetUnitYaw										takes unit whichUnit returns real
+native SetUnitYaw										takes unit whichUnit, real yaw returns nothing
+native GetUnitPitch										takes unit whichUnit returns real
+native SetUnitPitch										takes unit whichUnit, real pitch returns nothing
+native GetUnitRoll										takes unit whichUnit returns real
+native SetUnitRoll										takes unit whichUnit, real roll returns nothing
+native SetUnitMatrixScale								takes unit whichUnit, real x, real y, real z returns nothing
+native ResetUnitMatrix									takes unit whichUnit returns nothing
+native SetUnitOrientationEx								takes unit whichUnit, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+native SetUnitOrientation								takes unit whichUnit, real yaw, real pitch, real roll returns nothing
 //
 
 // Building API
@@ -3320,6 +3345,7 @@ native GetProjectileColour								takes projectile whichProjectile returns integ
 native SetProjectileColour								takes projectile whichProjectile, integer colour returns boolean
 native SetProjectileAlpha								takes projectile whichProjectile, integer alpha returns boolean
 native SetProjectileVertexColour						takes projectile whichProjectile, integer red, integer green, integer blue, integer alpha returns boolean
+native SetProjectileMatrixScale							takes projectile whichProjectile, real x, real y, real z returns nothing
 native ResetProjectileMatrix							takes projectile whichProjectile returns nothing
 native SetProjectileOrientationEx						takes projectile whichProjectile, real yaw, real pitch, real roll, integer eulerOrder returns boolean
 native GetProjectileYaw									takes projectile whichProjectile returns real
@@ -3568,7 +3594,8 @@ native GetFrameSpriteRoll								takes framehandle whichFrame returns real
 native SetFrameSpriteRoll								takes framehandle whichFrame, real roll returns boolean
 native SetFrameSpriteOrientation						takes framehandle whichFrame, real yaw, real pitch, real roll returns nothing
 native SetFrameSpriteMaterialTexture					takes framehandle whichFrame, string textureName, integer materialId, integer textureIndex returns nothing
-native SetFrameSpriteMaterialScale						takes framehandle whichFrame, real sizeX, real sizeY, real sizeZ returns nothing
+native SetFrameSpriteMatrixScale						takes framehandle whichFrame, real sizeX, real sizeY, real sizeZ returns nothing
+native ResetFrameSpriteMatrix							takes framehandle whichFrame returns nothing
 native SetFrameSpriteTexture							takes framehandle whichFrame, string textureName, integer textureIndex returns nothing
 native SetFrameSpriteReplaceableTexture					takes framehandle whichFrame, string textureName, integer textureIndex returns nothing
 native SetFrameSpriteModel								takes framehandle whichFrame, string modelName returns nothing
