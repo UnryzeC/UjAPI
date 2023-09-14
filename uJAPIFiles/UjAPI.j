@@ -370,6 +370,9 @@ globals
 	constant originframetype			ORIGIN_FRAME_ITEM_BUTTON_AUTOCAST_FRAME						= ConvertOriginFrameType(48)
 	constant originframetype			ORIGIN_FRAME_ITEM_BUTTON_CHARGES_FRAME						= ConvertOriginFrameType(49)
 	constant originframetype			ORIGIN_FRAME_ITEM_BUTTON_CHARGES_TEXT						= ConvertOriginFrameType(50)
+	constant originframetype			ORIGIN_FRAME_TRAINABLE_BUTTON								= ConvertOriginFrameType(51)
+	constant originframetype			ORIGIN_FRAME_CARGO_BUTTON									= ConvertOriginFrameType(52)
+	constant originframetype			ORIGIN_FRAME_GROUP_BUTTON									= ConvertOriginFrameType(53)	
 
 	constant framepointtype				FRAMEPOINT_TOPLEFT											= ConvertFramePointType(0)
 	constant framepointtype				FRAMEPOINT_TOP												= ConvertFramePointType(1)
@@ -3318,6 +3321,7 @@ native CreateProjectile									takes integer projectileTypeId returns projectil
 native CreateProjectileEx								takes unit owner, integer projectileTypeId, integer attackIndex returns projectile
 native SetProjectileUnitData							takes projectile whichProjectile, unit owner, integer attackIndex returns nothing
 native KillProjectile									takes projectile whichProjectile returns nothing
+native RemoveProjectile									takes projectile whichProjectile returns nothing
 native LaunchTargetProjectile							takes projectile whichProjectile, widget whichWidget returns nothing
 native LaunchProjectile									takes projectile whichProjectile returns nothing
 
