@@ -72,7 +72,7 @@ Reserved for in-depth explanation...
 
 ## Contacts
 
-- Discord: Unryze#4087
+- Discord: unryze
 - VK: https://vk.com/unryze/
 - VK Group: https://vk.com/unryzeworkshop/
 
