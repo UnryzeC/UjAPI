@@ -1893,6 +1893,7 @@ native HandleToSubAnimType								takes handle h returns subanimtype
 //
 native GetHandleCount									takes nothing returns integer
 native GetNextHandleIndex								takes nothing returns integer
+native GetStringCount									takes nothing returns integer
 //
 
 //============================================================================
@@ -3131,6 +3132,8 @@ native GetUnitRemainingTimedLife						takes unit whichUnit returns real
 native SetUnitRemainingTimedLife						takes unit whichUnit, real duration returns nothing
 native IsUnitSelectable									takes unit whichUnit returns boolean
 native SetUnitSelectable								takes unit whichUnit, boolean selectable returns nothing
+native IsUnitTargetable									takes unit whichUnit returns boolean
+native SetUnitTargetable								takes unit whichUnit, boolean targetable returns nothing
 native IsUnitTruesightImmune							takes unit whichUnit returns boolean
 native SetUnitTruesightImmuneState						takes unit whichUnit, boolean state returns nothing
 native GetUnitZ											takes unit whichUnit returns real
@@ -3473,6 +3476,9 @@ native GetFrameText										takes framehandle whichFrame returns string
 native AddFrameText										takes framehandle whichFrame, string text returns nothing
 native SetFrameTextSizeLimit							takes framehandle whichFrame, integer textSize returns nothing
 native GetFrameTextSizeLimit							takes framehandle whichFrame returns integer
+native GetFrameTextColourEx								takes framehandle whichFrame, integer stateId returns integer // 0 = font | 1 = highlighted | 2 = disabled | 3 = shadow
+native GetFrameTextColour								takes framehandle whichFrame returns integer
+native SetFrameTextColourEx								takes framehandle whichFrame, integer stateId, integer colour returns nothing
 native SetFrameTextColour								takes framehandle whichFrame, integer colour returns nothing
 native SetFrameFocus									takes framehandle whichFrame, boolean isFocus returns boolean
 native GetFrameModel									takes framehandle whichFrame returns string

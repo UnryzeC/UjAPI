@@ -4292,6 +4292,7 @@ native HandleToSubAnimType								takes handle h returns subanimtype
 //
 native GetHandleCount									takes nothing returns integer
 native GetNextHandleIndex								takes nothing returns integer
+native GetStringCount									takes nothing returns integer
 //
 
 //============================================================================
@@ -4360,7 +4361,7 @@ native MathIntegerClamp									takes integer value, integer min, integer max re
 
 // Angle / Axis / Point API | All natives operate in Degrees!
 
-// These natives act identical to basic Sinc/Cos/Tan/etc. but they take degrees instead of radians, so you won't need to do Ded2Rad or Rad2Deg in multiple functions.
+// These natives act identical to basic Sin/Cos/Tan/etc. but they take degrees instead of radians, so you won't need to do Deg2Rad or Rad2Deg in multiple functions.
 native MathSinDeg										takes real r returns real
 native MathCosDeg										takes real r returns real
 native MathTanDeg										takes real r returns real
@@ -4392,7 +4393,7 @@ native StringInsert										takes string s, string whichString, integer whichPo
 //
 
 // Debug API
-native ConsoleEnable									takes boolean flag returns nothing
+native ConsoleEnable									takes boolean enable returns nothing
 native ConsolePrint										takes string s returns nothing
 native ConsolePause										takes string s returns nothing
 //
@@ -5530,6 +5531,8 @@ native GetUnitRemainingTimedLife						takes unit whichUnit returns real
 native SetUnitRemainingTimedLife						takes unit whichUnit, real duration returns nothing
 native IsUnitSelectable									takes unit whichUnit returns boolean
 native SetUnitSelectable								takes unit whichUnit, boolean selectable returns nothing
+native IsUnitTargetable									takes unit whichUnit returns boolean
+native SetUnitTargetable								takes unit whichUnit, boolean targetable returns nothing
 native IsUnitTruesightImmune							takes unit whichUnit returns boolean
 native SetUnitTruesightImmuneState						takes unit whichUnit, boolean state returns nothing
 native GetUnitZ											takes unit whichUnit returns real
@@ -5872,6 +5875,9 @@ native GetFrameText										takes framehandle whichFrame returns string
 native AddFrameText										takes framehandle whichFrame, string text returns nothing
 native SetFrameTextSizeLimit							takes framehandle whichFrame, integer textSize returns nothing
 native GetFrameTextSizeLimit							takes framehandle whichFrame returns integer
+native GetFrameTextColourEx								takes framehandle whichFrame, integer stateId returns integer // 0 = font | 1 = highlighted | 2 = disabled | 3 = shadow
+native SetFrameTextColourEx								takes framehandle whichFrame, integer stateId, integer colour returns nothing
+native GetFrameTextColour								takes framehandle whichFrame returns integer
 native SetFrameTextColour								takes framehandle whichFrame, integer colour returns nothing
 native SetFrameFocus									takes framehandle whichFrame, boolean isFocus returns boolean
 native GetFrameModel									takes framehandle whichFrame returns string
@@ -5894,7 +5900,6 @@ native GetFrameTexture									takes framehandle whichFrame, integer textureId r
 native SetFrameBackdropTexture							takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean allowTransparency, boolean blend, string borderTextureFile, integer borderFlags, boolean isControlBackdrop returns nothing
 native SetFrameTextureEx								takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean blend, string borderTextureFile, integer borderFlags returns nothing
 native SetFrameTexture									takes framehandle whichFrame, string textureFile, integer textureId, boolean blend returns nothing
-native SetFrameScale									takes framehandle whichFrame, real scale returns nothing
 native SetFrameTooltip									takes framehandle whichFrame, framehandle tooltipFrame returns nothing
 native SetFrameMouseCaged								takes framehandle whichFrame, boolean enable returns nothing
 native GetFrameValue									takes framehandle whichFrame returns real
@@ -5908,6 +5913,7 @@ native SetFrameWidth									takes framehandle whichFrame, real width returns no
 native GetFrameHeight									takes framehandle whichFrame returns real
 native SetFrameHeight									takes framehandle whichFrame, real height returns nothing
 native SetFrameSize										takes framehandle whichFrame, real width, real height returns nothing
+native SetFrameScale									takes framehandle whichFrame, real scale returns nothing
 native SetFrameVertexColourEx							takes framehandle whichFrame, integer alpha, integer red, integer blue, integer green returns nothing
 native SetFrameVertexColour								takes framehandle whichFrame, integer colour returns nothing
 native GetFramePriority									takes framehandle whichFrame returns integer
