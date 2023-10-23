@@ -11,6 +11,7 @@ type bonetype											extends attachmenttype
 type animtype											extends mapdatatype
 type subanimtype										extends animtype
 type cursoranimtype										extends mapdatatype
+type sprite												extends agent
 type projectile											extends agent
 type doodad												extends agent
 type framehandle										extends handle
@@ -314,6 +315,14 @@ globals
 	
 	constant projectiletype				PROJECTILE_TYPE_VISIBLE										= ConvertProjectileType(4)
 	constant projectiletype				PROJECTILE_TYPE_DEAD										= ConvertProjectileType(5)
+
+	//===================================================
+	// Animatable Camera Fields
+	//===================================================
+	constant camerafield 				CAMERA_FIELD_NEARZ											= ConvertCameraField(7)
+	constant camerafield 				CAMERA_FIELD_LOCAL_PITCH									= ConvertCameraField(8)
+	constant camerafield 				CAMERA_FIELD_LOCAL_YAW										= ConvertCameraField(9)
+	constant camerafield 				CAMERA_FIELD_LOCAL_ROLL										= ConvertCameraField(10) // not implemented yet...
 
 	//===================================================
 	// Custom UI API constants
@@ -1739,15 +1748,15 @@ globals
 	constant variabletype				VARIABLE_TYPE_HANDLE_ARRAY									= ConvertVariableType(12)
 	constant variabletype				VARIABLE_TYPE_BOOLEAN_ARRAY									= ConvertVariableType(13)
 
-	constant integer 					CORNER_FLAG_UPPER_LEFT 										= 1
-	constant integer 					CORNER_FLAG_UPPER_RIGHT 									= 2
-	constant integer 					CORNER_FLAG_BOTTOM_LEFT 									= 4
-	constant integer 					CORNER_FLAG_BOTTOM_RIGHT 									= 8
-	constant integer 					CORNER_FLAG_TOP 											= 16
-	constant integer 					CORNER_FLAG_LEFT 											= 32
-	constant integer 					CORNER_FLAG_BOTTOM 											= 64
-	constant integer 					CORNER_FLAG_RIGHT 											= 128
-	constant integer 					CORNER_FLAG_ALL 											= 255
+	constant integer 					BORDER_FLAG_UPPER_LEFT 										= 1
+	constant integer 					BORDER_FLAG_UPPER_RIGHT 									= 2
+	constant integer 					BORDER_FLAG_BOTTOM_LEFT 									= 4
+	constant integer 					BORDER_FLAG_BOTTOM_RIGHT 									= 8
+	constant integer 					BORDER_FLAG_TOP 											= 16
+	constant integer 					BORDER_FLAG_LEFT 											= 32
+	constant integer 					BORDER_FLAG_BOTTOM 											= 64
+	constant integer 					BORDER_FLAG_RIGHT 											= 128
+	constant integer 					BORDER_FLAG_ALL 											= 255
 endglobals
 
 //================Custom natives=====================
@@ -1962,7 +1971,7 @@ native MathIntegerClamp									takes integer value, integer min, integer max re
 
 // Angle / Axis / Point API | All natives operate in Degrees!
 
-// These natives act identical to basic Sinc/Cos/Tan/etc. but they take degrees instead of radians, so you won't need to do Ded2Rad or Rad2Deg in multiple functions.
+// These natives act identical to basic Sin/Cos/Tan/etc. but they take degrees instead of radians, so you won't need to do Deg2Rad or Rad2Deg in multiple functions.
 native MathSinDeg										takes real r returns real
 native MathCosDeg										takes real r returns real
 native MathTanDeg										takes real r returns real
@@ -1994,7 +2003,7 @@ native StringInsert										takes string s, string whichString, integer whichPo
 //
 
 // Debug API
-native ConsoleEnable									takes boolean flag returns nothing
+native ConsoleEnable									takes boolean enable returns nothing
 native ConsolePrint										takes string s returns nothing
 native ConsolePause										takes string s returns nothing
 //
@@ -2477,6 +2486,7 @@ native SetDoodadAnimationByIndex						takes doodad whichDoodad, integer animInde
 native SetDoodadAnimationEx								takes doodad whichDoodad, string animationName returns nothing
 native QueueDoodadAnimationByIndex						takes doodad whichDoodad, integer animIndex returns nothing
 native QueueDoodadAnimation								takes doodad whichDoodad, string animationName returns nothing
+native GetDoodadAnimationOffsetPercent					takes doodad whichDoodad returns real
 native SetDoodadAnimationOffsetPercent					takes doodad whichDoodad, real percent returns nothing
 
 native GetFilterDoodad									takes nothing returns doodad
@@ -2682,8 +2692,80 @@ native GetTriggerBuffTarget								takes nothing returns unit
 //
 
 //============================================================================
+// Sprite API
+//
+// Note: any axis setter is ignored by sprites created via AddSpriteToTarget, since they inherit nearly all data from sprite they are attached to.
+
+native CreateSprite										takes boolean isUber returns sprite // axis do not matter, as sprites MUST be attached to something.
+native AttachSpriteToTarget								takes sprite whichSprite, sprite targetSprite, string attachPointName returns sprite
+native AddSpriteToTarget								takes string modelName, sprite targetSprite, string attachPointName returns sprite // always creates CSpriteUber
+native GetSpriteChildrenCount							takes sprite whichSprite returns integer
+native GetSpriteChildById								takes sprite whichSprite, integer index returns sprite
+
+native DetachSprite										takes sprite whichSprite returns nothing
+native RemoveSprite										takes sprite whichSprite returns nothing
+native IsSpriteUber										takes sprite whichSprite returns boolean
+native GetSpriteX										takes sprite whichSprite returns real
+native GetSpriteY										takes sprite whichSprite returns real
+native GetSpriteZ										takes sprite whichSprite returns real
+native GetSpriteHeight									takes sprite whichSprite returns real
+native GetSpritePositionLocation						takes sprite whichSprite returns location
+native SetSpritePositionEx								takes sprite whichSprite, real x, real y, real z returns nothing
+native SetSpritePosition								takes sprite whichSprite, real x, real y returns nothing
+native SetSpritePositionLocation						takes sprite whichSprite, location loc returns nothing
+native SetSpriteX										takes sprite whichSprite, real x returns nothing
+native SetSpriteY										takes sprite whichSprite, real y returns nothing
+native SetSpriteZ										takes sprite whichSprite, real z returns nothing
+native SetSpriteHeight									takes sprite whichSprite, real height returns nothing
+native GetSpriteScreenX									takes sprite whichSprite returns real
+native GetSpriteScreenY									takes sprite whichSprite returns real
+native GetSpriteScale									takes sprite whichSprite returns real
+native SetSpriteScale									takes sprite whichSprite, real scale returns nothing
+native GetSpriteTimeScale								takes sprite whichSprite returns real
+native SetSpriteTimeScale								takes sprite whichSprite, real timescale returns nothing
+native SetSpritePlayerColour							takes sprite whichSprite, playercolor color returns nothing
+native GetSpriteColour									takes sprite whichSprite returns integer
+native SetSpriteColour									takes sprite whichSprite, integer colour returns nothing
+native SetSpriteAlpha									takes sprite whichSprite, integer alpha returns nothing
+native SetSpriteVertexColour							takes sprite whichSprite, integer red, integer green, integer blue, integer alpha returns nothing
+native SetSpriteMatrixScale								takes sprite whichSprite, real x, real y, real z returns nothing
+native ResetSpriteMatrix								takes sprite whichSprite returns nothing
+native SetSpriteOrientationEx							takes sprite whichSprite, real yaw, real pitch, real roll, integer eulerOrder returns nothing // XYZ = 0, YZX = 1, ZXY = 2, ZYX = 3, YXZ = 4, XZY = 5
+native GetSpriteYaw										takes sprite whichSprite returns real // X
+native SetSpriteYaw										takes sprite whichSprite, real yaw returns nothing // X
+native GetSpriteFacing									takes sprite whichSprite returns real // X same as Yaw
+native SetSpriteFacing									takes sprite whichSprite, real facing returns nothing // X same as Yaw
+native GetSpritePitch									takes sprite whichSprite returns real // Y
+native SetSpritePitch									takes sprite whichSprite, real pitch returns nothing // Y
+native GetSpriteRoll									takes sprite whichSprite returns real // Z
+native SetSpriteRoll									takes sprite whichSprite, real roll returns nothing // Z
+native SetSpriteOrientation								takes sprite whichSprite, real yaw, real pitch, real roll returns nothing // uses SetSpriteOrientationEx with XYZ orientation as default
+native SetSpriteMaterialTexture							takes sprite whichSprite, string textureName, integer materialId, integer textureIndex returns nothing
+native SetSpriteTexture									takes sprite whichSprite, string textureName, integer textureIndex returns nothing
+native SetSpriteReplaceableTexture						takes sprite whichSprite, string textureName, integer textureIndex returns nothing
+native SetSpriteModel									takes sprite whichSprite, string modelName returns nothing
+native SetSpriteModelEx									takes sprite whichSprite, string modelName, integer playerColour returns nothing // 0-15, -1 to ignore the colour.
+// whichObject can be bone, reference, sound, aka any object of a model
+native GetSpriteModelObjectPositionX					takes sprite whichSprite, string whichObject returns real
+native GetSpriteModelObjectPositionY					takes sprite whichSprite, string whichObject returns real
+native GetSpriteModelObjectPositionZ					takes sprite whichSprite, string whichObject returns real
+native GetSpriteModelObjectPositionLoc					takes sprite whichSprite, string whichObject returns location
+native GetSpriteCurrentAnimationId						takes sprite whichSprite returns integer
+native GetSpriteCurrentAnimationName					takes sprite whichSprite returns string
+native SetSpriteAnimationWithRarityByIndex				takes sprite whichSprite, integer animIndex, raritycontrol rarity returns nothing
+native SetSpriteAnimationWithRarity						takes sprite whichSprite, string animationName, raritycontrol rarity returns nothing
+native SetSpriteAnimationByIndex						takes sprite whichSprite, integer animIndex returns nothing
+native SetSpriteAnimation								takes sprite whichSprite, string animationName returns nothing
+native QueueSpriteAnimationByIndex						takes sprite whichSprite, integer animIndex returns nothing
+native QueueSpriteAnimation								takes sprite whichSprite, string animationName returns nothing
+native GetSpriteAnimationOffsetPercent					takes sprite whichSprite returns real
+native SetSpriteAnimationOffsetPercent					takes sprite whichSprite, real percent returns nothing
+//
+
+//============================================================================
 // SpecialEffect API
 //
+native GetSpecialEffectSprite							takes effect whichEffect returns sprite
 native IsSpecialEffectVisible							takes effect whichEffect returns boolean
 native SetSpecialEffectVisibility						takes effect whichEffect, boolean visibility returns nothing
 native GetSpecialEffectX								takes effect whichEffect returns real
@@ -2706,27 +2788,26 @@ native GetSpecialEffectTimeScale						takes effect whichEffect returns real
 native SetSpecialEffectTimeScale						takes effect whichEffect, real timescale returns nothing
 native SetSpecialEffectPlayerColour						takes effect whichEffect, playercolor color returns nothing
 native GetSpecialEffectColour							takes effect whichEffect returns integer
-native SetSpecialEffectColour							takes effect whichEffect, integer colour returns boolean
-native SetSpecialEffectAlpha							takes effect whichEffect, integer alpha returns boolean
-native SetSpecialEffectVertexColour						takes effect whichEffect, integer red, integer green, integer blue, integer alpha returns boolean
+native SetSpecialEffectColour							takes effect whichEffect, integer colour returns nothing
+native SetSpecialEffectAlpha							takes effect whichEffect, integer alpha returns nothing
+native SetSpecialEffectVertexColour						takes effect whichEffect, integer red, integer green, integer blue, integer alpha returns nothing
 native SetSpecialEffectMatrixScale						takes effect whichEffect, real x, real y, real z returns nothing
 native ResetSpecialEffectMatrix							takes effect whichEffect returns nothing
-native SetSpecialEffectOrientationEx					takes effect whichEffect, real yaw, real pitch, real roll, integer eulerOrder returns boolean // XYZ = 0, YZX = 1, ZXY = 2, ZYX = 3, YXZ = 4, XZY = 5
-native GetSpecialEffectYaw								takes effect whichEffect returns real // X
-native SetSpecialEffectYaw								takes effect whichEffect, real yaw returns boolean // X
-native GetSpecialEffectFacing							takes effect whichEffect returns real // X same as Yaw
-native SetSpecialEffectFacing							takes effect whichEffect, real facing returns boolean // X same as Yaw
-native GetSpecialEffectPitch							takes effect whichEffect returns real // Y
-native SetSpecialEffectPitch							takes effect whichEffect, real pitch returns boolean // Y
-native GetSpecialEffectRoll								takes effect whichEffect returns real // Z
-native SetSpecialEffectRoll								takes effect whichEffect, real roll returns boolean // Z
-native SetSpecialEffectOrientation						takes effect whichEffect, real yaw, real pitch, real roll returns nothing // uses SetSpecialEffectOrientationEx with XYZ orientation as default
+native SetSpecialEffectOrientationEx					takes effect whichEffect, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+native GetSpecialEffectYaw								takes effect whichEffect returns real
+native SetSpecialEffectYaw								takes effect whichEffect, real yaw returns nothing
+native GetSpecialEffectFacing							takes effect whichEffect returns real
+native SetSpecialEffectFacing							takes effect whichEffect, real facing returns nothing
+native GetSpecialEffectPitch							takes effect whichEffect returns real
+native SetSpecialEffectPitch							takes effect whichEffect, real pitch returns nothing
+native GetSpecialEffectRoll								takes effect whichEffect returns real
+native SetSpecialEffectRoll								takes effect whichEffect, real roll returns nothing
+native SetSpecialEffectOrientation						takes effect whichEffect, real yaw, real pitch, real roll returns nothing
 native SetSpecialEffectMaterialTexture					takes effect whichEffect, string textureName, integer materialId, integer textureIndex returns nothing
 native SetSpecialEffectTexture							takes effect whichEffect, string textureName, integer textureIndex returns nothing
 native SetSpecialEffectReplaceableTexture				takes effect whichEffect, string textureName, integer textureIndex returns nothing
 native SetSpecialEffectModel							takes effect whichEffect, string modelName returns nothing
-native SetSpecialEffectModelEx							takes effect whichEffect, string modelName, integer playerColour returns nothing // 0-15, -1 to ignore the colour.
-// whichObject can be bone, reference, sound, aka any object of a model
+native SetSpecialEffectModelEx							takes effect whichEffect, string modelName, integer playerColour returns nothing
 native GetSpecialEffectModelObjectPositionX				takes effect whichEffect, string whichObject returns real
 native GetSpecialEffectModelObjectPositionY				takes effect whichEffect, string whichObject returns real
 native GetSpecialEffectModelObjectPositionZ				takes effect whichEffect, string whichObject returns real
@@ -2739,7 +2820,8 @@ native SetSpecialEffectAnimationByIndex					takes effect whichEffect, integer an
 native SetSpecialEffectAnimation						takes effect whichEffect, string animationName returns nothing
 native QueueSpecialEffectAnimationByIndex				takes effect whichEffect, integer animIndex returns nothing
 native QueueSpecialEffectAnimation						takes effect whichEffect, string animationName returns nothing
-native SetSpecialEffectAnimationOffsetPercent			takes effect whichEffect, real percent returns boolean
+native GetSpecialEffectAnimationOffsetPercent			takes effect whichEffect returns real
+native SetSpecialEffectAnimationOffsetPercent			takes effect whichEffect, real percent returns nothing
 
 native GetTriggerSpecialEffect							takes nothing returns effect
 native GetFilterSpecialEffect							takes nothing returns effect
@@ -2752,6 +2834,7 @@ native EnumSpecialEffectsInRange						takes real x, real y, real radius, boolexp
 // Trackable API
 // Since trackables are extension of effects, all the functions do exactly the same thing.
 //
+native GetTrackableSprite								takes trackable whichTrackable returns sprite
 native IsTrackableVisible								takes trackable whichTrackable returns boolean
 native SetTrackableVisibility							takes trackable whichTrackable, boolean visibility returns nothing
 native GetTrackableX									takes trackable whichTrackable returns real
@@ -2774,20 +2857,20 @@ native GetTrackableTimeScale							takes trackable whichTrackable returns real
 native SetTrackableTimeScale							takes trackable whichTrackable, real timescale returns nothing
 native SetTrackablePlayerColour							takes trackable whichTrackable, playercolor color returns nothing
 native GetTrackableColour								takes trackable whichTrackable returns integer
-native SetTrackableColour								takes trackable whichTrackable, integer colour returns boolean
-native SetTrackableAlpha								takes trackable whichTrackable, integer alpha returns boolean
-native SetTrackableVertexColour							takes trackable whichTrackable, integer red, integer green, integer blue, integer alpha returns boolean
+native SetTrackableColour								takes trackable whichTrackable, integer colour returns nothing
+native SetTrackableAlpha								takes trackable whichTrackable, integer alpha returns nothing
+native SetTrackableVertexColour							takes trackable whichTrackable, integer red, integer green, integer blue, integer alpha returns nothing
 native SetTrackableEffectMatrixScale					takes trackable whichTrackable, real x, real y, real z returns nothing
 native ResetTrackableMatrix								takes trackable whichTrackable returns nothing
-native SetTrackableOrientationEx						takes trackable whichTrackable, real yaw, real pitch, real roll, integer eulerOrder returns boolean
+native SetTrackableOrientationEx						takes trackable whichTrackable, real yaw, real pitch, real roll, integer eulerOrder returns nothing
 native GetTrackableYaw									takes trackable whichTrackable returns real
-native SetTrackableYaw									takes trackable whichTrackable, real yaw returns boolean
+native SetTrackableYaw									takes trackable whichTrackable, real yaw returns nothing
 native GetTrackableFacing								takes trackable whichTrackable returns real
-native SetTrackableFacing								takes trackable whichTrackable, real facing returns boolean
+native SetTrackableFacing								takes trackable whichTrackable, real facing returns nothing
 native GetTrackablePitch								takes trackable whichTrackable returns real
-native SetTrackablePitch								takes trackable whichTrackable, real pitch returns boolean
+native SetTrackablePitch								takes trackable whichTrackable, real pitch returns nothing
 native GetTrackableRoll									takes trackable whichTrackable returns real
-native SetTrackableRoll									takes trackable whichTrackable, real roll returns boolean
+native SetTrackableRoll									takes trackable whichTrackable, real roll returns nothing
 native SetTrackableOrientation							takes trackable whichTrackable, real yaw, real pitch, real roll returns nothing
 native SetTrackableMaterialTexture						takes trackable whichTrackable, string textureName, integer materialId, integer textureIndex returns nothing
 native SetTrackableTexture								takes trackable whichTrackable, string textureName, integer textureIndex returns nothing
@@ -2806,7 +2889,8 @@ native SetTrackableAnimationByIndex						takes trackable whichTrackable, integer
 native SetTrackableAnimation							takes trackable whichTrackable, string animationName returns nothing
 native QueueTrackableAnimationByIndex					takes trackable whichTrackable, integer animIndex returns nothing
 native QueueTrackableAnimation							takes trackable whichTrackable, string animationName returns nothing
-native SetTrackableAnimationOffsetPercent				takes trackable whichTrackable, real percent returns boolean
+native GetTrackableAnimationOffsetPercent				takes trackable whichTrackable returns real
+native SetTrackableAnimationOffsetPercent				takes trackable whichTrackable, real percent returns nothing
 
 native GetTriggerTrackable								takes nothing returns trackable
 native GetFilterTrackable								takes nothing returns trackable
@@ -2818,6 +2902,7 @@ native EnumTrackablesInRange							takes real x, real y, real radius, boolexpr f
 //============================================================================
 // Widget API
 //
+native GetWidgetSprite									takes widget whichWidget returns sprite
 native GetWidgetTypeId									takes widget whichWidget returns integer
 native IsWidgetTipEnabled								takes nothing returns boolean // Internally this is called CUnitTip, but used for all widgets.
 native SetWidgetTipEnabled								takes boolean enable returns nothing
@@ -2869,7 +2954,8 @@ native SetWidgetAnimationByIndex						takes widget whichWidget, integer animInde
 native SetWidgetAnimation								takes widget whichWidget, string animationName returns nothing
 native QueueWidgetAnimationByIndex						takes widget whichWidget, integer animIndex returns nothing
 native QueueWidgetAnimation								takes widget whichWidget, string animationName returns nothing
-native SetWidgetAnimationOffsetPercent					takes widget whichWidget, real percent returns boolean
+native GetWidgetAnimationOffsetPercent					takes widget whichWidget returns real
+native SetWidgetAnimationOffsetPercent					takes widget whichWidget, real percent returns nothing
 
 native TriggerRegisterWidgetEvent						takes trigger whichTrigger, widget whichWidget, widgetevent whichWidgetEvent returns event
 //
@@ -2877,6 +2963,7 @@ native TriggerRegisterWidgetEvent						takes trigger whichTrigger, widget whichW
 //============================================================================
 // Destructable API
 //
+native GetDestructableSprite							takes destructable whichDestructable returns sprite
 native GetDestructablePositionLocation					takes destructable whichDestructable returns location
 native SetDestructablePosition							takes destructable whichDestructable, real x, real y returns nothing
 native SetDestructablePositionLocation					takes destructable whichDestructable, location whichLocation returns nothing
@@ -2917,7 +3004,8 @@ native SetDestructableAnimationWithRarityByIndex		takes destructable whichDestru
 native SetDestructableAnimationWithRarity				takes destructable whichDestructable, string animationName, raritycontrol rarity returns nothing
 native SetDestructableAnimationByIndex					takes destructable whichDestructable, integer animIndex returns nothing
 native QueueDestructableAnimationByIndex				takes destructable whichDestructable, integer animIndex returns nothing
-native SetDestructableAnimationOffsetPercent			takes destructable whichDestructable, real percent returns boolean
+native GetDestructableAnimationOffsetPercent			takes destructable whichDestructable returns real
+native SetDestructableAnimationOffsetPercent			takes destructable whichDestructable, real percent returns nothing
 
 native EnumDestructablesInRange							takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
 //
@@ -2955,6 +3043,7 @@ native SetItemStringField								takes item whichItem, itemstringfield whichFiel
 //
 
 // Normal API
+native GetItemSprite									takes item whichItem returns sprite
 native GetItemScreenX									takes item whichItem returns real
 native GetItemScreenY									takes item whichItem returns real
 native GetItemLife										takes item whichItem returns real
@@ -3003,7 +3092,8 @@ native SetItemAnimationByIndex							takes item whichItem, integer animIndex ret
 native SetItemAnimation									takes item whichItem, string animationName returns nothing
 native QueueItemAnimationByIndex						takes item whichItem, integer animIndex returns nothing
 native QueueItemAnimation								takes item whichItem, string animationName returns nothing
-native SetItemAnimationOffsetPercent					takes item whichItem, real percent returns boolean
+native GetItemAnimationOffsetPercent					takes item whichItem returns real
+native SetItemAnimationOffsetPercent					takes item whichItem, real percent returns nothing
 
 native EnumItemsInRange									takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
 //
@@ -3070,6 +3160,7 @@ native SetUnitWeaponStringField							takes unit whichUnit, unitweaponstringfiel
 //
 
 // Normal API
+native GetUnitSprite									takes unit whichUnit returns sprite
 native GetUnitScreenX									takes unit whichUnit returns real
 native GetUnitScreenY									takes unit whichUnit returns real
 native SetUnitTypeId									takes unit whichUnit, integer newId returns nothing
@@ -3238,7 +3329,7 @@ native UnitDisableAbilities								takes unit whichUnit, boolean state returns n
 native PauseUnitEx										takes unit whichUnit, boolean pause returns nothing
 native SetUnitStunned									takes unit whichUnit, boolean state returns nothing
 native GetUnitStunCounter								takes unit whichUnit returns integer
-native SetUnitStunCounter								takes unit whichUnit, integer stunCounter returns nothing
+native SetUnitStunCounter								takes unit whichUnit, integer stunCounter returns nothing // by default is 0. When set to anything more than 0, unit will only accept one order and ignore the rest until current order is finished.
 native SetUnitKiller									takes unit whichUnit, unit killer returns nothing
 native KillUnitEx										takes unit whichUnit, unit killer returns nothing
 native GetUnitTarget									takes unit whichUnit returns widget
@@ -3253,7 +3344,8 @@ native GetUnitModelObjectPositionZ						takes unit whichUnit, string whichObject
 native GetUnitModelObjectPositionLoc					takes unit whichUnit, string whichObject returns location
 native GetUnitCurrentAnimationId						takes unit whichUnit returns integer
 native GetUnitCurrentAnimationName						takes unit whichUnit returns string
-native SetUnitAnimationOffsetPercent					takes unit whichUnit, real percent returns boolean
+native GetUnitAnimationOffsetPercent					takes unit whichUnit returns real
+native SetUnitAnimationOffsetPercent					takes unit whichUnit, real percent returns nothing
 // Unit Orientation API, these only work if AutoOrientation is set to false. Note, this will disable auto yaw/pitch/roll updates as well, you will have to do them manually.
 native IsUnitAutoOrientationEnabled						takes unit whichUnit returns boolean
 native UnitEnableAutoOrientation						takes unit whichUnit, boolean enable returns nothing
@@ -3318,7 +3410,7 @@ native UnitForceStopOrder								takes unit whichUnit, boolean clearQueue return
 
 //============================================================================
 // Projectile API
-// For Projectile Type Ids: https://github.com/UnryzeC/UjAPI/blob/main/TypeData/ in there check out these files: WC3BulletList.txt / WC3ProjectileList.txt / WC3ArtilleryList.txt
+// For Projectile Type Ids: https://github.com/UnryzeC/UjAPI/blob/main/TypeData/ in there check out these files: WC3BulletList.txt / WC3MissileList.txt / WC3ArtilleryList.txt
 //
 native CreateProjectile									takes integer projectileTypeId returns projectile
 native CreateProjectileEx								takes unit owner, integer projectileTypeId, integer attackIndex returns projectile
@@ -3328,6 +3420,7 @@ native RemoveProjectile									takes projectile whichProjectile returns nothing
 native LaunchTargetProjectile							takes projectile whichProjectile, widget whichWidget returns nothing
 native LaunchProjectile									takes projectile whichProjectile returns nothing
 
+native GetProjectileSprite								takes projectile whichProjectile returns sprite
 native IsProjectileType									takes projectile whichProjectile, projectiletype whichType returns boolean
 native IsProjectileAlive								takes projectile whichProjectile returns boolean
 native IsProjectileVisible								takes projectile whichProjectile returns boolean
@@ -3352,20 +3445,20 @@ native GetProjectileTimeScale							takes projectile whichProjectile returns rea
 native SetProjectileTimeScale							takes projectile whichProjectile, real timescale returns nothing
 native SetProjectilePlayerColour						takes projectile whichProjectile, playercolor color returns nothing
 native GetProjectileColour								takes projectile whichProjectile returns integer
-native SetProjectileColour								takes projectile whichProjectile, integer colour returns boolean
-native SetProjectileAlpha								takes projectile whichProjectile, integer alpha returns boolean
-native SetProjectileVertexColour						takes projectile whichProjectile, integer red, integer green, integer blue, integer alpha returns boolean
+native SetProjectileColour								takes projectile whichProjectile, integer colour returns nothing
+native SetProjectileAlpha								takes projectile whichProjectile, integer alpha returns nothing
+native SetProjectileVertexColour						takes projectile whichProjectile, integer red, integer green, integer blue, integer alpha returns nothing
 native SetProjectileMatrixScale							takes projectile whichProjectile, real x, real y, real z returns nothing
 native ResetProjectileMatrix							takes projectile whichProjectile returns nothing
-native SetProjectileOrientationEx						takes projectile whichProjectile, real yaw, real pitch, real roll, integer eulerOrder returns boolean
+native SetProjectileOrientationEx						takes projectile whichProjectile, real yaw, real pitch, real roll, integer eulerOrder returns nothing
 native GetProjectileYaw									takes projectile whichProjectile returns real
-native SetProjectileYaw									takes projectile whichProjectile, real yaw returns boolean
+native SetProjectileYaw									takes projectile whichProjectile, real yaw returns nothing
 native GetProjectileFacing								takes projectile whichProjectile returns real
-native SetProjectileFacing								takes projectile whichProjectile, real facing returns boolean
+native SetProjectileFacing								takes projectile whichProjectile, real facing returns nothing
 native GetProjectilePitch								takes projectile whichProjectile returns real
-native SetProjectilePitch								takes projectile whichProjectile, real pitch returns boolean
+native SetProjectilePitch								takes projectile whichProjectile, real pitch returns nothing
 native GetProjectileRoll								takes projectile whichProjectile returns real
-native SetProjectileRoll								takes projectile whichProjectile, real roll returns boolean
+native SetProjectileRoll								takes projectile whichProjectile, real roll returns nothing
 native SetProjectileOrientation							takes projectile whichProjectile, real yaw, real pitch, real roll returns nothing
 native SetProjectileMaterialTexture						takes projectile whichProjectile, string textureName, integer materialId, integer textureIndex returns nothing
 native SetProjectileTexture								takes projectile whichProjectile, string textureName, integer textureIndex returns nothing
@@ -3384,7 +3477,8 @@ native SetProjectileAnimationByIndex					takes projectile whichProjectile, integ
 native SetProjectileAnimation							takes projectile whichProjectile, string animationName returns nothing
 native QueueProjectileAnimationByIndex					takes projectile whichProjectile, integer animIndex returns nothing
 native QueueProjectileAnimation							takes projectile whichProjectile, string animationName returns nothing
-native SetProjectileAnimationOffsetPercent				takes projectile whichProjectile, real percent returns boolean
+native GetProjectileAnimationOffsetPercent				takes projectile whichProjectile returns real
+native SetProjectileAnimationOffsetPercent				takes projectile whichProjectile, real percent returns nothing
 
 native GetProjectileSource								takes projectile whichProjectile returns unit
 native SetProjectileSource								takes projectile whichProjectile, unit whichUnit returns nothing
@@ -3462,7 +3556,7 @@ native GetCFrameByName									takes string frameName, integer createContext ret
 native GetCSimpleFontStringByName						takes string frameName, integer createContext returns framehandle
 native GetCSimpleTextureByName							takes string frameName, integer createContext returns framehandle
 native GetCSimpleFrameByName							takes string frameName, integer createContext returns framehandle
-native GetFrameUnderMouse								takes nothing returns framehandle
+native GetFrameUnderCursor								takes nothing returns framehandle
 native GetFrameTypeName									takes framehandle whichFrame returns string
 native GetFrameName										takes framehandle whichFrame returns string
 native SetFrameName										takes framehandle whichFrame, string contextName returns nothing
@@ -3477,8 +3571,8 @@ native AddFrameText										takes framehandle whichFrame, string text returns n
 native SetFrameTextSizeLimit							takes framehandle whichFrame, integer textSize returns nothing
 native GetFrameTextSizeLimit							takes framehandle whichFrame returns integer
 native GetFrameTextColourEx								takes framehandle whichFrame, integer stateId returns integer // 0 = font | 1 = highlighted | 2 = disabled | 3 = shadow
-native GetFrameTextColour								takes framehandle whichFrame returns integer
 native SetFrameTextColourEx								takes framehandle whichFrame, integer stateId, integer colour returns nothing
+native GetFrameTextColour								takes framehandle whichFrame returns integer
 native SetFrameTextColour								takes framehandle whichFrame, integer colour returns nothing
 native SetFrameFocus									takes framehandle whichFrame, boolean isFocus returns boolean
 native GetFrameModel									takes framehandle whichFrame returns string
@@ -3501,7 +3595,6 @@ native GetFrameTexture									takes framehandle whichFrame, integer textureId r
 native SetFrameBackdropTexture							takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean allowTransparency, boolean blend, string borderTextureFile, integer borderFlags, boolean isControlBackdrop returns nothing
 native SetFrameTextureEx								takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean blend, string borderTextureFile, integer borderFlags returns nothing
 native SetFrameTexture									takes framehandle whichFrame, string textureFile, integer textureId, boolean blend returns nothing
-native SetFrameScale									takes framehandle whichFrame, real scale returns nothing
 native SetFrameTooltip									takes framehandle whichFrame, framehandle tooltipFrame returns nothing
 native SetFrameMouseCaged								takes framehandle whichFrame, boolean enable returns nothing
 native GetFrameValue									takes framehandle whichFrame returns real
@@ -3515,6 +3608,7 @@ native SetFrameWidth									takes framehandle whichFrame, real width returns no
 native GetFrameHeight									takes framehandle whichFrame returns real
 native SetFrameHeight									takes framehandle whichFrame, real height returns nothing
 native SetFrameSize										takes framehandle whichFrame, real width, real height returns nothing
+native SetFrameScale									takes framehandle whichFrame, real scale returns nothing
 native SetFrameVertexColourEx							takes framehandle whichFrame, integer alpha, integer red, integer blue, integer green returns nothing
 native SetFrameVertexColour								takes framehandle whichFrame, integer colour returns nothing
 native GetFramePriority									takes framehandle whichFrame returns integer
@@ -3556,11 +3650,11 @@ native GetFrameItemOwner								takes framehandle listBoxItem returns framehandl
 native SetFrameItemOwner								takes framehandle listBoxItem, framehandle whichFrame returns nothing
 //
 
-// CBackdropFrame API | For corner flags refer to CORNER_FLAG. For CBackdropFrame and its children, backdropId has to be always 0.
-native GetFrameCornerFlags 								takes framehandle whichFrame, integer backdropId returns integer
-native SetFrameCornerFlags 								takes framehandle whichFrame, integer backdropId, integer cornerFlag returns nothing
-native GetFrameCornerSize 								takes framehandle whichFrame, integer backdropId returns real
-native SetFrameCornerSize 								takes framehandle whichFrame, integer backdropId, real value returns nothing
+// CBackdropFrame API | For corner flags refer to BORDER_FLAG. For CBackdropFrame and its children, backdropId has to be always 0.
+native GetFrameBorderFlags 								takes framehandle whichFrame, integer backdropId returns integer
+native SetFrameBorderFlags 								takes framehandle whichFrame, integer backdropId, integer cornerFlag returns nothing
+native GetFrameBorderSize 								takes framehandle whichFrame, integer backdropId returns real
+native SetFrameBorderSize 								takes framehandle whichFrame, integer backdropId, real value returns nothing
 native GetFrameBackgroundSize 							takes framehandle whichFrame, integer backdropId returns real
 native SetFrameBackgroundSize 							takes framehandle whichFrame, integer backdropId, real value returns nothing
 native GetFrameBackgroundInsetById 						takes framehandle whichFrame, integer backdropId, integer insetId returns real
@@ -3586,6 +3680,7 @@ native RegisterFrameMouseButton							takes framehandle whichFrame, mousebuttont
 // Copies the logic of Effect API / Trackable API | works only on CSpriteFrame | CStatusBar | CCursorFrame | CTimeOfDayIndicator
 // For Cursor animations refer to: https://github.com/UnryzeC/UjAPI/blob/main/TypeData/WC3CursorAnimations.txt
 
+native GetFrameSprite									takes framehandle whichFrame returns sprite
 native GetFrameSpriteScale								takes framehandle whichFrame returns real
 native SetFrameSpriteScale								takes framehandle whichFrame, real scale returns nothing
 native GetFrameSpriteTimeScale							takes framehandle whichFrame returns real
@@ -3621,7 +3716,8 @@ native QueueFrameSpriteAnimationByIndex					takes framehandle whichFrame, intege
 native SetFrameSpriteAnimationWithRarity				takes framehandle whichFrame, string animationName, raritycontrol rarity returns nothing
 native SetFrameSpriteAnimation							takes framehandle whichFrame, string animationName returns nothing
 native QueueFrameSpriteAnimation						takes framehandle whichFrame, string animationName returns nothing
-native SetFrameSpriteAnimationOffsetPercent				takes framehandle whichFrame, real percent returns boolean
+native GetFrameSpriteAnimationOffsetPercent				takes framehandle whichFrame returns real
+native SetFrameSpriteAnimationOffsetPercent				takes framehandle whichFrame, real percent returns nothing
 //
 
 //============================================================================
