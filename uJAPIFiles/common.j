@@ -150,6 +150,7 @@ type pathingflag										extends handle
 type commandbuttoneffect								extends handle
 type timetype											extends handle
 type variabletype										extends handle
+type renderstage										extends handle
 type jassthread											extends handle
 type handlelist											extends handle
 type textfilehandle										extends handle
@@ -247,6 +248,7 @@ constant native ConvertUnitCategory						takes integer i returns unitcategory
 constant native ConvertPathingFlag						takes integer i returns pathingflag
 constant native ConvertTimeType							takes integer i returns timetype
 constant native ConvertVariableType						takes integer i returns variabletype
+constant native ConvertRenderStage						takes integer i returns renderstage
 
 constant native OrderId									takes string orderIdString returns integer
 constant native OrderId2String							takes integer orderId returns string
@@ -2516,6 +2518,29 @@ globals
 	constant variabletype				VARIABLE_TYPE_HANDLE_ARRAY									= ConvertVariableType(12)
 	constant variabletype				VARIABLE_TYPE_BOOLEAN_ARRAY									= ConvertVariableType(13)
 
+	constant renderstage				RENDER_STAGE_SKYBOX											= ConvertRenderStage(0)
+	constant renderstage				RENDER_STAGE_TERRAIN										= ConvertRenderStage(1)
+	constant renderstage				RENDER_STAGE_FOG_OF_WAR										= ConvertRenderStage(2)
+	constant renderstage				RENDER_STAGE_TERRAIN_SHADOW									= ConvertRenderStage(3)
+	constant renderstage				RENDER_STAGE_WATER_SHADOW									= ConvertRenderStage(4)
+	constant renderstage				RENDER_STAGE_BLIGHT											= ConvertRenderStage(5)
+	constant renderstage				RENDER_STAGE_WEATHER										= ConvertRenderStage(6)
+	constant renderstage				RENDER_STAGE_SELECTION_CIRCLE								= ConvertRenderStage(7)
+	constant renderstage				RENDER_STAGE_INDICATOR										= ConvertRenderStage(8)
+	constant renderstage				RENDER_STAGE_FOOTPRINT										= ConvertRenderStage(9)
+	constant renderstage				RENDER_STAGE_DOODAD											= ConvertRenderStage(10)
+	constant renderstage				RENDER_STAGE_SPRITE											= ConvertRenderStage(11)
+	constant renderstage				RENDER_STAGE_SELECTION_SPRITE								= ConvertRenderStage(12)
+	constant renderstage				RENDER_STAGE_DECORATION										= ConvertRenderStage(13)
+	constant renderstage				RENDER_STAGE_WATER											= ConvertRenderStage(14)
+	constant renderstage				RENDER_STAGE_SELECTION_BOX									= ConvertRenderStage(15)
+	constant renderstage				RENDER_STAGE_TEXTURE										= ConvertRenderStage(16)
+	constant renderstage				RENDER_STAGE_OCCLUSION_MASK									= ConvertRenderStage(17)
+	constant renderstage				RENDER_STAGE_BUILDING										= ConvertRenderStage(18)
+	constant renderstage				RENDER_STAGE_UBERSPLAT										= ConvertRenderStage(19)
+	constant renderstage				RENDER_STAGE_LIGHTNING										= ConvertRenderStage(20)
+	constant renderstage				RENDER_STAGE_TEXTTAG										= ConvertRenderStage(21)
+
 	constant integer 					BORDER_FLAG_UPPER_LEFT 										= 1
 	constant integer 					BORDER_FLAG_UPPER_RIGHT 									= 2
 	constant integer 					BORDER_FLAG_BOTTOM_LEFT 									= 4
@@ -4433,7 +4458,31 @@ native SetSkinDataString								takes string raceName, string sectionName, strin
 native GetFDFDataString									takes string sectionName returns string
 native SetFDFDataString									takes string sectionName, string value returns nothing
 
+native GetFPS											takes nothing returns real
+
+native GetAttackSpeedMinBonus 							takes nothing returns real
+native SetAttackSpeedMinBonus 							takes real value returns nothing
+native GetAttackSpeedMaxBonus 							takes nothing returns real
+native SetAttackSpeedMaxBonus 							takes real value returns nothing
+native GetMoveSpeedMinAllowed 							takes nothing returns real
+native SetMoveSpeedMinAllowed 							takes real value returns nothing
+native GetMoveSpeedMaxAllowed 							takes nothing returns real
+native SetMoveSpeedMaxAllowed 							takes real value returns nothing
+
 native GetMappedTypeName								takes mappedfield whichField, mappedtype whichMapType returns string
+//
+
+// UI API
+native IsSelectionEnabled 								takes nothing returns boolean
+native EnableSelection 									takes boolean enable returns nothing
+native IsSelectionCircleEnabled 						takes nothing returns boolean
+native EnableSelectionCircle 							takes boolean enable returns nothing
+native IsTargetIndicatorEnabled 						takes nothing returns boolean
+native EnableTargetIndicator 							takes boolean enable returns nothing
+native IsRenderStage 									takes renderstage renderStage returns boolean
+native EnableRenderStage 								takes renderstage renderStage, boolean enable returns nothing
+native IsStatbarEnabled 								takes nothing returns boolean
+native EnableStatbar 									takes boolean enable returns nothing
 //
 
 // Trigger API
@@ -4545,6 +4594,9 @@ native SaveCode											takes hashtable table, integer parentKey, integer chil
 native SaveAttackTypeHandle								takes hashtable table, integer parentKey, integer childKey, attacktype whichAttackType returns boolean
 native SaveDamageTypeHandle								takes hashtable table, integer parentKey, integer childKey, damagetype whichDamageType returns boolean
 native SaveWeaponTypeHandle								takes hashtable table, integer parentKey, integer childKey, weapontype whichWeaponType returns boolean
+native SaveSpriteHandle									takes hashtable table, integer parentKey, integer childKey, sprite whichsprite returns boolean
+native SaveDoodadHandle									takes hashtable table, integer parentKey, integer childKey, doodad whichDoodad returns boolean
+native SaveTextFileHandle								takes hashtable table, integer parentKey, integer childKey, textfilehandle whichFile returns boolean
 native SaveProjectileHandle								takes hashtable table, integer parentKey, integer childKey, projectile whichProjectile returns boolean
 native SaveFrameHandle									takes hashtable table, integer parentKey, integer childKey, framehandle whichFrame returns boolean
 native SaveHandleList									takes hashtable table, integer parentKey, integer childKey, handlelist whichHandleList returns boolean
@@ -4554,6 +4606,9 @@ native LoadCode											takes hashtable table, integer parentKey, integer chil
 native LoadAttackTypeHandle								takes hashtable table, integer parentKey, integer childKey returns attacktype
 native LoadDamageTypeHandle								takes hashtable table, integer parentKey, integer childKey returns damagetype
 native LoadWeaponTypeHandle								takes hashtable table, integer parentKey, integer childKey returns weapontype
+native LoadSpriteHandle									takes hashtable table, integer parentKey, integer childKey returns sprite
+native LoadDoodadHandle									takes hashtable table, integer parentKey, integer childKey returns doodad
+native LoadTextFileHandle								takes hashtable table, integer parentKey, integer childKey returns textfilehandle
 native LoadProjectileHandle								takes hashtable table, integer parentKey, integer childKey returns projectile
 native LoadFrameHandle									takes hashtable table, integer parentKey, integer childKey returns framehandle
 native LoadHandleList									takes hashtable table, integer parentKey, integer childKey returns handlelist
@@ -4592,7 +4647,7 @@ native GroupRemoveGroupEx								takes group destGroup, group sourceGroup return
 // Handle Type Id List:
 // Handle = 0 (NULL) | Agent = '+w3a' (for any agent) | Widget = '+w3w' | Unit = '+w3u' | Item = 'item' | Destructable = '+w3d' | Ability = 'abil' | Buff = 'buff' | Effect = 'efct' | Projectile = 'proj' | Frame = '+frm'
 // For any handleTypeId that is not present here, you can use GetHandleBaseTypeId on any handle to get its handleTypeId.
-// Note: Ability = 'abil', Buff = 'buff' and Projectile = 'proj' are custom, meaning they do not exist internally.
+// Note: Projectile = 'proj' is custom, it does not exist internally.
 
 native HandleListCreate									takes nothing returns handlelist
 native HandleListDestroy								takes handlelist whichHandleList returns nothing
@@ -4616,6 +4671,7 @@ native HandleListGetDestructableCount					takes handlelist whichHandleList retur
 native HandleListGetDoodadCount							takes handlelist whichHandleList returns integer
 native HandleListGetAbilityCount						takes handlelist whichHandleList returns integer
 native HandleListGetBuffCount							takes handlelist whichHandleList returns integer
+native HandleListGetSpriteCount							takes handlelist whichHandleList returns integer
 native HandleListGetEffectCount							takes handlelist whichHandleList returns integer
 native HandleListGetProjectileCount						takes handlelist whichHandleList returns integer
 native HandleListGetFrameCount							takes handlelist whichHandleList returns integer
@@ -4632,6 +4688,7 @@ native HandleListGetDestructableByIndex					takes handlelist whichHandleList, in
 native HandleListGetDoodadByIndex						takes handlelist whichHandleList, integer index returns doodad
 native HandleListGetAbilityByIndex						takes handlelist whichHandleList, integer index returns ability
 native HandleListGetBuffByIndex							takes handlelist whichHandleList, integer index returns buff
+native HandleListGetSpriteByIndex						takes handlelist whichHandleList, integer index returns sprite
 native HandleListGetEffectByIndex						takes handlelist whichHandleList, integer index returns effect
 native HandleListGetProjectileByIndex					takes handlelist whichHandleList, integer index returns projectile
 native HandleListGetFrameByIndex						takes handlelist whichHandleList, integer index returns framehandle
@@ -4645,6 +4702,7 @@ native HandleListGetFilterDestructable					takes nothing returns destructable
 native HandleListGetFilterDoodad						takes nothing returns doodad
 native HandleListGetFilterAbility						takes nothing returns ability
 native HandleListGetFilterBuff							takes nothing returns buff
+native HandleListGetFilterSprite						takes nothing returns sprite
 native HandleListGetFilterEffect						takes nothing returns effect
 native HandleListGetFilterProjectile					takes nothing returns projectile
 native HandleListGetFilterFrame							takes nothing returns framehandle
@@ -4658,6 +4716,7 @@ native HandleListGetEnumDestructable					takes nothing returns destructable
 native HandleListGetEnumDoodad							takes nothing returns doodad
 native HandleListGetEnumAbility							takes nothing returns ability
 native HandleListGetEnumBuff							takes nothing returns buff
+native HandleListGetEnumSprite							takes nothing returns sprite
 native HandleListGetEnumEffect							takes nothing returns effect
 native HandleListGetEnumProjectile						takes nothing returns projectile
 native HandleListGetEnumFrame							takes nothing returns framehandle
