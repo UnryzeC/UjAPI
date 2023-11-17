@@ -1,0 +1,21 @@
+name: Run unsafe update action
+
+on:
+    workflow_dispatch:
+    push:
+        branches:
+            - "main"
+jobs:
+  notify-wa3js-unfafe:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Call Github API"
+        uses: indiesdev/curl@v1.1
+        with:
+          url: https://api.github.com/repos/kirill-782/war3js_unsafe/actions/workflows/update_jass.yml/dispatches
+          method: "POST"
+          accept: 200,201,204
+          headers: '{ "Content-Type": "application/json", "X-GitHub-Api-Version": "2022-11-28" }'
+          body: '{"ref": "main"}'
+          timeout: 5000
+          bearer-token: ${{ secrets.WAR3JS_UNSAFE_SECRET_TOKEN }}
