@@ -4458,8 +4458,11 @@ native SetSkinDataString								takes string raceName, string sectionName, strin
 native GetFDFDataString									takes string sectionName returns string
 native SetFDFDataString									takes string sectionName, string value returns nothing
 
+native GetWheelDelta									takes nothing returns integer
 native GetFPS											takes nothing returns real
 
+native GetVisionMax 									takes nothing returns real
+native SetVisionMax 									takes real value returns nothing
 native GetAttackSpeedMinBonus 							takes nothing returns real
 native SetAttackSpeedMinBonus 							takes real value returns nothing
 native GetAttackSpeedMaxBonus 							takes nothing returns real

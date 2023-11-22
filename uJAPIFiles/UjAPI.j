@@ -2064,8 +2064,11 @@ native SetSkinDataString								takes string raceName, string sectionName, strin
 native GetFDFDataString									takes string sectionName returns string
 native SetFDFDataString									takes string sectionName, string value returns nothing
 
+native GetWheelDelta									takes nothing returns integer
 native GetFPS											takes nothing returns real
 
+native GetVisionMax 									takes nothing returns real
+native SetVisionMax 									takes real value returns nothing
 native GetAttackSpeedMinBonus 							takes nothing returns real
 native SetAttackSpeedMinBonus 							takes real value returns nothing
 native GetAttackSpeedMaxBonus 							takes nothing returns real
@@ -2251,7 +2254,7 @@ native GroupRemoveGroupEx								takes group destGroup, group sourceGroup return
 // Handle Type Id List:
 // Handle = 0 (NULL) | Agent = '+w3a' (for any agent) | Widget = '+w3w' | Unit = '+w3u' | Item = 'item' | Destructable = '+w3d' | Ability = 'abil' | Buff = 'buff' | Effect = 'efct' | Projectile = 'proj' | Frame = '+frm'
 // For any handleTypeId that is not present here, you can use GetHandleBaseTypeId on any handle to get its handleTypeId.
-// Note: Ability = 'abil', Buff = 'buff' and Projectile = 'proj' are custom, meaning they do not exist internally.
+// Note: Projectile = 'proj' is custom, meaning it does not exist internally.
 
 native HandleListCreate									takes nothing returns handlelist
 native HandleListDestroy								takes handlelist whichHandleList returns nothing
