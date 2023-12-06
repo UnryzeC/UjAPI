@@ -34,6 +34,11 @@ type abilityintegerlevelarrayfield						extends abilityintegerlevelfield
 type abilityreallevelarrayfield							extends abilityreallevelfield
 type abilitybooleanlevelarrayfield						extends abilitybooleanlevelfield
 type abilitystringlevelarrayfield						extends abilitystringlevelfield
+type destructablestringfield							extends agentdatafield
+type itemintegerfield									extends agentdatafield
+type itemrealfield										extends agentdatafield
+type itembooleanfield									extends agentdatafield
+type itemstringfield									extends agentdatafield
 type unitintegerfield									extends agentdatafield
 type unitrealfield										extends agentdatafield
 type unitbooleanfield									extends agentdatafield
@@ -42,10 +47,6 @@ type unitweaponintegerfield								extends agentdatafield
 type unitweaponrealfield								extends agentdatafield
 type unitweaponbooleanfield								extends agentdatafield
 type unitweaponstringfield								extends agentdatafield
-type itemintegerfield									extends agentdatafield
-type itemrealfield										extends agentdatafield
-type itembooleanfield									extends agentdatafield
-type itemstringfield									extends agentdatafield
 type movetype											extends handle
 type pathingaitype										extends handle
 type collisiontype										extends handle
@@ -89,6 +90,11 @@ constant native ConvertAbilityIntegerLevelArrayField	takes integer i returns abi
 constant native ConvertAbilityRealLevelArrayField		takes integer i returns abilityreallevelarrayfield
 constant native ConvertAbilityBooleanLevelArrayField	takes integer i returns abilitybooleanlevelarrayfield
 constant native ConvertAbilityStringLevelArrayField		takes integer i returns abilitystringlevelarrayfield
+constant native ConvertDestructableStringField			takes integer i returns destructablestringfield
+constant native ConvertItemIntegerField					takes integer i returns itemintegerfield
+constant native ConvertItemRealField					takes integer i returns itemrealfield
+constant native ConvertItemBooleanField					takes integer i returns itembooleanfield
+constant native ConvertItemStringField					takes integer i returns itemstringfield
 constant native ConvertUnitIntegerField					takes integer i returns unitintegerfield
 constant native ConvertUnitRealField					takes integer i returns unitrealfield
 constant native ConvertUnitBooleanField					takes integer i returns unitbooleanfield
@@ -97,10 +103,6 @@ constant native ConvertUnitWeaponIntegerField			takes integer i returns unitweap
 constant native ConvertUnitWeaponRealField				takes integer i returns unitweaponrealfield
 constant native ConvertUnitWeaponBooleanField			takes integer i returns unitweaponbooleanfield
 constant native ConvertUnitWeaponStringField			takes integer i returns unitweaponstringfield
-constant native ConvertItemIntegerField					takes integer i returns itemintegerfield
-constant native ConvertItemRealField					takes integer i returns itemrealfield
-constant native ConvertItemBooleanField					takes integer i returns itembooleanfield
-constant native ConvertItemStringField					takes integer i returns itemstringfield
 constant native ConvertMoveType							takes integer i returns movetype
 constant native ConvertPathingAIType					takes integer i returns pathingaitype
 constant native ConvertCollisionType					takes integer i returns collisiontype
@@ -1408,6 +1410,10 @@ globals
 	constant abilitystringfield			BUFF_SF_TOOLTIP_NORMAL										= ConvertAbilityStringField('ftip')
 	constant abilitystringfield			BUFF_SF_TOOLTIP_NORMAL_EXTENDED								= ConvertAbilityStringField('fube')
 
+	// Destructable
+	constant destructablestringfield	DESTRUCTABLE_SF_NAME										= ConvertDestructableStringField('bnam')
+	constant destructablestringfield	DESTRUCTABLE_SF_MODEL										= ConvertDestructableStringField('bfil')
+
 	// Item
 	constant itemintegerfield			ITEM_IF_TINTING_COLOR										= ConvertItemIntegerField('iclt')
 	constant itemintegerfield			ITEM_IF_TINTING_COLOR_RED									= ConvertItemIntegerField('iclr')
@@ -2053,6 +2059,7 @@ native TextFileWriteLine								takes textfilehandle whichTextFile, string text 
 
 // Misc API
 native GetUjAPIVersion									takes nothing returns string
+native GetGameVersion									takes nothing returns string
 native GetLocale										takes nothing returns string
 
 native GetMiscDataString								takes string sectionName, string optionName, integer index returns string
@@ -2090,6 +2097,8 @@ native IsTargetIndicatorEnabled 						takes nothing returns boolean
 native EnableTargetIndicator 							takes boolean enable returns nothing
 native IsRenderStage 									takes renderstage renderStage returns boolean
 native EnableRenderStage 								takes renderstage renderStage, boolean enable returns nothing
+native IsStatbarEnabled 								takes nothing returns boolean
+native EnableStatbar 									takes boolean enable returns nothing
 //
 
 // Trigger API
@@ -2254,7 +2263,7 @@ native GroupRemoveGroupEx								takes group destGroup, group sourceGroup return
 // Handle Type Id List:
 // Handle = 0 (NULL) | Agent = '+w3a' (for any agent) | Widget = '+w3w' | Unit = '+w3u' | Item = 'item' | Destructable = '+w3d' | Ability = 'abil' | Buff = 'buff' | Effect = 'efct' | Projectile = 'proj' | Frame = '+frm'
 // For any handleTypeId that is not present here, you can use GetHandleBaseTypeId on any handle to get its handleTypeId.
-// Note: Projectile = 'proj' is custom, meaning it does not exist internally.
+// Note: Projectile = 'proj' is custom, it does not exist internally.
 
 native HandleListCreate									takes nothing returns handlelist
 native HandleListDestroy								takes handlelist whichHandleList returns nothing
@@ -2278,13 +2287,14 @@ native HandleListGetDestructableCount					takes handlelist whichHandleList retur
 native HandleListGetDoodadCount							takes handlelist whichHandleList returns integer
 native HandleListGetAbilityCount						takes handlelist whichHandleList returns integer
 native HandleListGetBuffCount							takes handlelist whichHandleList returns integer
+native HandleListGetSpriteCount							takes handlelist whichHandleList returns integer
 native HandleListGetEffectCount							takes handlelist whichHandleList returns integer
 native HandleListGetProjectileCount						takes handlelist whichHandleList returns integer
 native HandleListGetFrameCount							takes handlelist whichHandleList returns integer
 
 native HandleListGetHandleByIndex						takes handlelist whichHandleList, integer index returns handle
 native HandleListGetHandleByIndexEx						takes handlelist whichHandleList, integer handleTypeId, integer index returns handle
-native HandleListGetHandleByTypeId						takes handlelist whichHandleList, integer typeId, integer index returns handle
+native HandleListGetHandleById							takes handlelist whichHandleList, integer typeId, integer index returns handle
 
 native HandleListGetAgentByIndex						takes handlelist whichHandleList, integer index returns agent
 native HandleListGetWidgetByIndex						takes handlelist whichHandleList, integer index returns widget
@@ -2294,6 +2304,7 @@ native HandleListGetDestructableByIndex					takes handlelist whichHandleList, in
 native HandleListGetDoodadByIndex						takes handlelist whichHandleList, integer index returns doodad
 native HandleListGetAbilityByIndex						takes handlelist whichHandleList, integer index returns ability
 native HandleListGetBuffByIndex							takes handlelist whichHandleList, integer index returns buff
+native HandleListGetSpriteByIndex						takes handlelist whichHandleList, integer index returns sprite
 native HandleListGetEffectByIndex						takes handlelist whichHandleList, integer index returns effect
 native HandleListGetProjectileByIndex					takes handlelist whichHandleList, integer index returns projectile
 native HandleListGetFrameByIndex						takes handlelist whichHandleList, integer index returns framehandle
@@ -2307,6 +2318,7 @@ native HandleListGetFilterDestructable					takes nothing returns destructable
 native HandleListGetFilterDoodad						takes nothing returns doodad
 native HandleListGetFilterAbility						takes nothing returns ability
 native HandleListGetFilterBuff							takes nothing returns buff
+native HandleListGetFilterSprite						takes nothing returns sprite
 native HandleListGetFilterEffect						takes nothing returns effect
 native HandleListGetFilterProjectile					takes nothing returns projectile
 native HandleListGetFilterFrame							takes nothing returns framehandle
@@ -2320,6 +2332,7 @@ native HandleListGetEnumDestructable					takes nothing returns destructable
 native HandleListGetEnumDoodad							takes nothing returns doodad
 native HandleListGetEnumAbility							takes nothing returns ability
 native HandleListGetEnumBuff							takes nothing returns buff
+native HandleListGetEnumSprite							takes nothing returns sprite
 native HandleListGetEnumEffect							takes nothing returns effect
 native HandleListGetEnumProjectile						takes nothing returns projectile
 native HandleListGetEnumFrame							takes nothing returns framehandle
@@ -2360,15 +2373,15 @@ native HandleListEnumDoodadsInRect						takes handlelist whichHandleList, rect w
 native HandleListEnumEffectsInRect						takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 native HandleListEnumProjectilesInRect					takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 
-native HandleListEnumByTypeId							takes handlelist whichHandleList, integer handleTypeId, boolexpr filter returns nothing
-native HandleListEnumByTypeIdEx							takes handlelist whichHandleList, integer handleTypeId, integer typeId, boolexpr filter returns nothing
+native HandleListEnumById								takes handlelist whichHandleList, integer handleTypeId, boolexpr filter returns nothing
+native HandleListEnumByIdEx								takes handlelist whichHandleList, integer handleTypeId, integer typeId, boolexpr filter returns nothing
 
 native HandleListEnumUnitAbilities						takes handlelist whichHandleList, unit whichUnit, boolexpr filter returns nothing
 native HandleListEnumUnitBuffs							takes handlelist whichHandleList, unit whichUnit, boolexpr filter returns nothing
 
 native HandleListForEach								takes handlelist whichHandleList, code c returns nothing
-native HandleListForEachByTypeId						takes handlelist whichHandleList, integer handleTypeId, code c returns nothing
-native HandleListForEachByTypeIdEx						takes handlelist whichHandleList, integer handleTypeId, integer typeId, code c returns nothing
+native HandleListForEachById							takes handlelist whichHandleList, integer handleTypeId, code c returns nothing
+native HandleListForEachByIdEx							takes handlelist whichHandleList, integer handleTypeId, integer typeId, code c returns nothing
 //
 
 //============================================================================
@@ -2656,10 +2669,10 @@ native RemoveAbilityStringLevelArrayField				takes ability whichAbility, ability
 
 native ResetAbilityFieldData							takes ability whichAbility returns boolean // Restores original ability data, meaning it reverts any and all changes made by Field API. Returns true if reset was successful.
 
-native IsAbilityBaseTargetAllowed						takes integer abilityId, widget source, widget target returns boolean // source can be null
+native IsAbilityBaseTargetAllowed						takes integer abilCode, widget source, widget target returns boolean // source can be null
 
 // Normal API
-native CreateAbility									takes integer abilityId returns ability
+native CreateAbility									takes integer abilCode returns ability
 native GetAbilityOwner									takes ability whichAbility returns unit
 native SetAbilityOwner									takes ability whichAbility, unit whichUnit returns nothing
 native GetAbilityOwningItem								takes ability whichAbility returns item
@@ -2966,6 +2979,7 @@ native EnumTrackablesInRange							takes real x, real y, real radius, boolexpr f
 //
 native GetWidgetSprite									takes widget whichWidget returns sprite
 native GetWidgetTypeId									takes widget whichWidget returns integer
+native GetWidgetName									takes widget whichWidget returns string
 native IsWidgetTipEnabled								takes nothing returns boolean // Internally this is called CUnitTip, but used for all widgets.
 native SetWidgetTipEnabled								takes boolean enable returns nothing
 native IsWidgetVisible									takes widget whichWidget returns boolean
@@ -3025,6 +3039,12 @@ native TriggerRegisterWidgetEvent						takes trigger whichTrigger, widget whichW
 //============================================================================
 // Destructable API
 //
+
+// Field API
+native GetDestructableStringField						takes destructable whichDestructable, destructablestringfield whichField returns string
+native SetDestructableStringField						takes destructable whichDestructable, destructablestringfield whichField, string value returns boolean
+//
+
 native GetDestructableVariation							takes destructable whichDestructable returns integer
 native SetDestructableVariation							takes destructable whichDestructable, integer variation returns nothing
 native SetDestructableVariationEx						takes destructable whichDestructable, integer variation, boolean ignoreStateCheck returns nothing // ignoreStateCheck will skip checking for dead/alive variations of the model.
@@ -3120,8 +3140,12 @@ native GetItemLife										takes item whichItem returns real
 native SetItemLife										takes item whichItem, real life returns nothing
 native GetItemMaxLife									takes item whichItem returns real
 native SetItemMaxLife									takes item whichItem, real maxLife returns nothing
-native GetItemAbility									takes item whichItem, integer abilityId returns ability
-native GetItemAbilityByIndex							takes item whichItem, integer abilityIndex returns ability
+native GetItemAbilityById								takes item whichItem, integer abilCode returns ability
+native GetItemAbilityByIndex							takes item whichItem, integer index returns ability
+native ItemAddAbility									takes item whichItem, ability whichAbility returns boolean
+native ItemRemoveAbility								takes item whichItem, ability whichAbility returns boolean
+native ItemAddAbilityById								takes item whichItem, integer abilCode returns boolean
+native ItemRemoveAbilityById							takes item whichItem, integer abilCode returns boolean
 native GetItemCooldown									takes item whichItem returns real
 native SetItemCooldown									takes item whichItem, real cooldown returns nothing
 native StartItemCooldown								takes unit whichUnit, item whichItem, real cooldown returns nothing
@@ -3264,15 +3288,15 @@ native UnitApplyUpgrades								takes unit whichUnit returns nothing
 // Unit Ability API
 native GetUnitAbility									takes unit whichUnit, integer aid returns ability
 native GetUnitAbilityByIndex							takes unit whichUnit, integer index returns ability
-native UnitAddAbilityEx									takes unit whichUnit, integer abilityId, boolean checkForDuplicates returns boolean
-native UnitRemoveAbilityEx								takes unit whichUnit, integer abilityId, boolean removeDuplicates returns boolean
-native IsUnitAbilityVisible								takes unit whichUnit, integer abilityId returns boolean
-native ShowUnitAbility									takes unit whichUnit, integer abilityId, boolean show returns nothing
-native ShowUnitAbilityEx								takes unit whichUnit, integer abilityId, boolean show, boolean checkDuplicates returns nothing
-native DisableUnitAbility								takes unit whichUnit, integer abilityId, boolean hide, boolean disable returns nothing
-native DisableUnitAbilityEx								takes unit whichUnit, integer abilityId, boolean hide, boolean disable, boolean checkDuplicates returns nothing
-native EnableUnitAbility								takes unit whichUnit, integer abilityId, boolean show, boolean enable returns nothing
-native EnableUnitAbilityEx								takes unit whichUnit, integer abilityId, boolean show, boolean enable, boolean checkDuplicates returns nothing
+native UnitAddAbilityEx									takes unit whichUnit, integer abilCode, boolean checkForDuplicates returns boolean
+native UnitRemoveAbilityEx								takes unit whichUnit, integer abilCode, boolean removeDuplicates returns boolean
+native IsUnitAbilityVisible								takes unit whichUnit, integer abilCode returns boolean
+native ShowUnitAbility									takes unit whichUnit, integer abilCode, boolean show returns nothing
+native ShowUnitAbilityEx								takes unit whichUnit, integer abilCode, boolean show, boolean checkDuplicates returns nothing
+native DisableUnitAbility								takes unit whichUnit, integer abilCode, boolean hide, boolean disable returns nothing
+native DisableUnitAbilityEx								takes unit whichUnit, integer abilCode, boolean hide, boolean disable, boolean checkDuplicates returns nothing
+native EnableUnitAbility								takes unit whichUnit, integer abilCode, boolean show, boolean enable returns nothing
+native EnableUnitAbilityEx								takes unit whichUnit, integer abilCode, boolean show, boolean enable, boolean checkDuplicates returns nothing
 //
 
 // Unit Buff API
@@ -3373,8 +3397,8 @@ native GetUnitMaxMana									takes unit whichUnit returns real
 native SetUnitMaxMana									takes unit whichUnit, real maxMana returns nothing
 native GetUnitManaRegen									takes unit whichUnit returns real
 native SetUnitManaRegen									takes unit whichUnit, real manaRegen returns nothing
-native GetUnitPrimaryStat								takes unit whichUnit returns heroattribute
-native SetUnitPrimaryStat								takes unit whichUnit, heroattribute whichHeroAttribute returns nothing
+native GetHeroPrimaryAttribute							takes unit whichUnit returns heroattribute
+native SetHeroPrimaryAttribute							takes unit whichUnit, heroattribute whichHeroAttribute returns nothing
 native GetUnitModel										takes unit whichUnit returns string
 native SetUnitModel										takes unit whichUnit, string modelName returns nothing
 native SetUnitModelEx									takes unit whichUnit, string modelName, integer playercolourId returns nothing
@@ -3457,7 +3481,7 @@ native CreateIllusionAtLoc								takes player whichPlayer, integer unitTypeId, 
 native CreateIllusionFromUnit							takes unit whichUnit returns unit
 native CreateIllusionFromUnitEx							takes unit whichUnit, boolean copyPassives returns unit
 
-// Damage Dealt and Received are multipliers, not direct values. These will only work on illusions created by abilities/items or by: CreateUnitIllusion, CreateUnitIllusionAtLoc and CloneUnit.
+// Damage Dealt and Received are multipliers, not direct values. These will only work on illusions created by abilities/items or by: CreateUnitIllusion, CreateUnitIllusionAtLoc and CreateIllusionFromUnit.
 native GetIllusionDamageDealt							takes unit whichUnit returns real
 native SetIllusionDamageDealt							takes unit whichUnit, real multiplier returns nothing
 native GetIllusionDamageReceived						takes unit whichUnit returns real
@@ -3557,6 +3581,7 @@ native SetProjectileAnimationOffsetPercent				takes projectile whichProjectile, 
 
 native GetProjectileSource								takes projectile whichProjectile returns unit
 native SetProjectileSource								takes projectile whichProjectile, unit whichUnit returns nothing
+native GetProjectileSourceAbility						takes projectile whichProjectile returns ability
 native GetProjectileTargetX								takes projectile whichProjectile returns real
 native SetProjectileTargetX								takes projectile whichProjectile, real x returns nothing
 native GetProjectileTargetY								takes projectile whichProjectile returns real
@@ -3877,7 +3902,6 @@ native GetTriggerPlayerMouseScreenY						takes nothing returns real
 native GetEventDamageFlags								takes nothing returns integer
 native SetEventDamageFlags								takes integer flags returns boolean
 
-native GetEventDamageAbilityId							takes nothing returns integer
 native GetEventDamageTarget								takes nothing returns unit
 
 native GetEventAttackType								takes nothing returns attacktype
