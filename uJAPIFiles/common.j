@@ -934,6 +934,11 @@ globals
 	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_REFRESHED							= ConvertPlayerUnitEvent(501)
 	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_ENDED								= ConvertPlayerUnitEvent(502)
 
+	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_ADDED								= ConvertPlayerUnitEvent(503)
+	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_REMOVED							= ConvertPlayerUnitEvent(504)
+	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_AUTOCAST_ON						= ConvertPlayerUnitEvent(505)
+	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_AUTOCAST_OFF						= ConvertPlayerUnitEvent(506)
+
 	constant playerunitevent			EVENT_PLAYER_UNIT_PROJECTILE_LAUNCH							= ConvertPlayerUnitEvent(600)
 	constant playerunitevent			EVENT_PLAYER_UNIT_PROJECTILE_HIT							= ConvertPlayerUnitEvent(601)
 
@@ -954,6 +959,11 @@ globals
 	constant unitevent					EVENT_UNIT_BUFF_RECEIVED									= ConvertUnitEvent(510)
 	constant unitevent					EVENT_UNIT_BUFF_REFRESHED									= ConvertUnitEvent(511)
 	constant unitevent					EVENT_UNIT_BUFF_ENDED										= ConvertUnitEvent(512)
+
+	constant unitevent					EVENT_UNIT_ABILITY_ADDED									= ConvertUnitEvent(513)
+	constant unitevent					EVENT_UNIT_ABILITY_REMOVED									= ConvertUnitEvent(514)
+	constant unitevent					EVENT_UNIT_ABILITY_AUTOCAST_ON								= ConvertUnitEvent(515)
+	constant unitevent					EVENT_UNIT_ABILITY_AUTOCAST_OFF								= ConvertUnitEvent(516)
 
 	constant unitevent					EVENT_UNIT_PROJECTILE_LAUNCH								= ConvertUnitEvent(610)
 	constant unitevent					EVENT_UNIT_PROJECTILE_HIT									= ConvertUnitEvent(611)
@@ -1155,6 +1165,8 @@ globals
 	constant originframetype			ORIGIN_FRAME_TRAINABLE_BUTTON								= ConvertOriginFrameType(51)
 	constant originframetype			ORIGIN_FRAME_CARGO_BUTTON									= ConvertOriginFrameType(52)
 	constant originframetype			ORIGIN_FRAME_GROUP_BUTTON									= ConvertOriginFrameType(53)
+	constant originframetype			ORIGIN_FRAME_FPS_TEXT										= ConvertOriginFrameType(54)
+	constant originframetype			ORIGIN_FRAME_MEMORY_TEXT									= ConvertOriginFrameType(55)
 
 	constant framepointtype				FRAMEPOINT_TOPLEFT											= ConvertFramePointType(0)
 	constant framepointtype				FRAMEPOINT_TOP												= ConvertFramePointType(1)
@@ -4495,6 +4507,13 @@ native IsStatbarEnabled 								takes nothing returns boolean
 native EnableStatbar 									takes boolean enable returns nothing
 //
 
+// Map API
+native GetMapFogZ										takes nothing returns real
+native SetMapFogZ										takes real z returns nothing
+native GetMapFogColour									takes nothing returns integer
+native SetMapFogColour									takes integer colour returns nothing
+//
+
 // Trigger API
 native TriggerCountEvents								takes trigger whichTrigger returns integer
 native TriggerCountConditions							takes trigger whichTrigger returns integer
@@ -5085,6 +5104,7 @@ native ShowAbility										takes ability whichAbility, boolean show returns not
 native IsAbilityEnabledEx								takes ability whichAbility returns boolean
 native SetAbilityEnabledEx								takes ability whichAbility, boolean enable returns nothing
 native IsAbilityUsable									takes ability whichAbility returns boolean
+native IsAbilityAutocastEnabled							takes ability whichAbility returns boolean
 native GetAbilityCastTime								takes ability whichAbility returns real
 native SetAbilityCastTime								takes ability whichAbility, real castTime returns nothing
 native GetAbilityCastPoint								takes ability whichAbility returns real
@@ -5773,9 +5793,9 @@ native SetUnitArmourType								takes unit whichUnit, defensetype whichArmour re
 native GetUnitArmour									takes unit whichUnit returns real
 native SetUnitArmour									takes unit whichUnit, real armour returns nothing
 native GetUnitTimeScale									takes unit whichUnit returns real
+native GetUnitTotalMoveSpeed							takes unit whichUnit returns real
 native GetUnitBaseMoveSpeed								takes unit whichUnit returns real
 native SetUnitBaseMoveSpeed								takes unit whichUnit, real baseMoveSpeed returns nothing
-native GetUnitTotalMoveSpeed							takes unit whichUnit returns real
 native GetUnitBonusMoveSpeedPercent						takes unit whichUnit returns real
 native SetUnitBonusMoveSpeedPercent						takes unit whichUnit, real bonusMoveSpeedPercent returns nothing
 native GetUnitVertexColour								takes unit whichUnit returns integer
