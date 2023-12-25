@@ -4459,7 +4459,8 @@ native TextFileClear									takes textfilehandle whichTextFile returns nothing
 native TextFileDelete									takes textfilehandle whichTextFile returns nothing
 native TextFileCountLines								takes textfilehandle whichTextFile returns integer
 native TextFileReadLine									takes textfilehandle whichTextFile, integer lineNumber returns string
-native TextFileReadAll									takes textfilehandle whichTextFile returns string
+native TextFileReadAllLines								takes textfilehandle whichTextFile returns string
+native TextFileRead										takes textfilehandle whichTextFile returns string
 native TextFileWriteLine								takes textfilehandle whichTextFile, string text returns nothing
 //
 
@@ -5799,6 +5800,9 @@ native SetUnitBaseMoveSpeed								takes unit whichUnit, real baseMoveSpeed retu
 native GetUnitBonusMoveSpeedPercent						takes unit whichUnit returns real
 native SetUnitBonusMoveSpeedPercent						takes unit whichUnit, real bonusMoveSpeedPercent returns nothing
 native GetUnitVertexColour								takes unit whichUnit returns integer
+native UnitAddItemToSlot								takes unit whichUnit, item whichItem, integer itemSlot returns boolean
+native ReviveUnit										takes unit whichUnit, real x, real y returns boolean
+native ReviveUnitLoc									takes unit whichUnit, location loc returns boolean
 native GetUnitCurrentLife								takes unit whichUnit returns real
 native SetUnitCurrentLife								takes unit whichUnit, real life returns nothing
 native GetUnitMaxLife									takes unit whichUnit returns real
@@ -6170,7 +6174,8 @@ native GetFrameItemOwner								takes framehandle listBoxItem returns framehandl
 native SetFrameItemOwner								takes framehandle listBoxItem, framehandle whichFrame returns nothing
 //
 
-// CBackdropFrame API | For corner flags refer to BORDER_FLAG. For CBackdropFrame and its children, backdropId has to be always 0.
+// Border API | For corner flags refer to BORDER_FLAG. For CBackdropFrame and its children and for CSimpleFrame, backdropId has to be always 0.
+// For CFrames that contain backdrops, use ids to differentiate between them, this is similar to CSimpleButton states, etc.
 native GetFrameBorderFlags 								takes framehandle whichFrame, integer backdropId returns integer
 native SetFrameBorderFlags 								takes framehandle whichFrame, integer backdropId, integer cornerFlag returns nothing
 native GetFrameBorderSize 								takes framehandle whichFrame, integer backdropId returns real
