@@ -61,6 +61,7 @@ type commandbuttoneffect								extends handle
 type timetype											extends handle
 type variabletype										extends handle
 type renderstage										extends handle
+type connectiontype										extends handle
 type jassthread											extends handle
 type handlelist											extends handle
 type textfilehandle										extends handle
@@ -116,6 +117,7 @@ constant native ConvertPathingFlag						takes integer i returns pathingflag
 constant native ConvertTimeType							takes integer i returns timetype
 constant native ConvertVariableType						takes integer i returns variabletype
 constant native ConvertRenderStage						takes integer i returns renderstage
+constant native ConvertConnectionType					takes integer i returns connectiontype
 
 constant native GetJassArrayLimit						takes nothing returns integer
 constant native GetTextTagLimit							takes nothing returns integer
@@ -1801,6 +1803,11 @@ globals
 	constant integer 					BORDER_FLAG_BOTTOM 											= 64
 	constant integer 					BORDER_FLAG_RIGHT 											= 128
 	constant integer 					BORDER_FLAG_ALL 											= 255
+
+	constant connectiontype				CONNECTION_TYPE_SINGLE_PLAYER								= ConvertConnectionType(0)
+	constant connectiontype				CONNECTION_TYPE_LOCAL_GAME									= ConvertConnectionType(1)
+	constant connectiontype				CONNECTION_TYPE_BATTLE_NET									= ConvertConnectionType(2)
+	constant connectiontype				CONNECTION_TYPE_REPLAY										= ConvertConnectionType(3)
 endglobals
 
 //================Custom natives=====================
@@ -2258,12 +2265,10 @@ native ForceCountPlayers								takes force whichForce returns integer
 //
 
 //============================================================================
-// Player API
+// Game API
 //
 native GetHostPlayer									takes nothing returns player
-//
-
-// Game API
+native GetConnectionType								takes nothing returns connectiontype
 native IsReplay											takes nothing returns boolean
 //
 
