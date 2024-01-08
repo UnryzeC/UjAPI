@@ -11,10 +11,12 @@ type bonetype											extends attachmenttype
 type animtype											extends mapdatatype
 type subanimtype										extends animtype
 type cursoranimtype										extends mapdatatype
-type sprite												extends agent
-type projectile											extends agent
-type doodad												extends agent
+type war3image											extends agent
+type sprite												extends war3image
+type projectile											extends war3image
+type doodad												extends war3image
 type framehandle										extends handle
+type commandbuttoneffect								extends handle
 type originframetype									extends handle
 type framepointtype										extends handle
 type textaligntype										extends handle
@@ -47,17 +49,19 @@ type unitweaponintegerfield								extends agentdatafield
 type unitweaponrealfield								extends agentdatafield
 type unitweaponbooleanfield								extends agentdatafield
 type unitweaponstringfield								extends agentdatafield
-type movetype											extends handle
-type pathingaitype										extends handle
-type collisiontype										extends handle
-type targetflag											extends handle
+type flagtype											extends handle
+type layerstyleflag										extends flagtype
+type controlstyleflag									extends flagtype
+type movetype											extends flagtype
+type pathingaitype										extends flagtype
+type collisiontype										extends flagtype
+type targetflag											extends flagtype
+type pathingflag										extends flagtype
 type armortype											extends handle
 type heroattribute										extends handle
 type defensetype										extends handle
 type regentype											extends handle
 type unitcategory										extends handle
-type pathingflag										extends handle
-type commandbuttoneffect								extends handle
 type timetype											extends handle
 type variabletype										extends handle
 type renderstage										extends handle
@@ -117,6 +121,8 @@ constant native ConvertPathingFlag						takes integer i returns pathingflag
 constant native ConvertTimeType							takes integer i returns timetype
 constant native ConvertVariableType						takes integer i returns variabletype
 constant native ConvertRenderStage						takes integer i returns renderstage
+constant native ConvertLayerStyleFlag					takes integer i returns layerstyleflag
+constant native ConvertControlStyleFlag					takes integer i returns controlstyleflag
 constant native ConvertConnectionType					takes integer i returns connectiontype
 
 constant native GetJassArrayLimit						takes nothing returns integer
@@ -2573,8 +2579,14 @@ native SetDoodadPitch									takes doodad whichDoodad, real pitch returns nothi
 native GetDoodadRoll									takes doodad whichDoodad returns real
 native SetDoodadRoll									takes doodad whichDoodad, real roll returns nothing
 native SetDoodadOrientation								takes doodad whichDoodad, real yaw, real pitch, real roll returns nothing
+native GetDoodadPlayerColour							takes doodad whichDoodad returns playercolor
+native SetDoodadPlayerColour							takes doodad whichDoodad, playercolor color returns nothing
 native GetDoodadModel									takes doodad whichDoodad returns string
-native SetDoodadModel									takes doodad whichDoodad, string whichModel returns nothing
+native SetDoodadModel									takes doodad whichDoodad, string modelFile returns nothing
+native SetDoodadModelEx									takes doodad whichDoodad, string modelFile, integer playerId returns nothing
+native SetDoodadMaterialTexture							takes doodad whichDoodad, string textureName, integer materialId, integer textureIndex returns nothing
+native SetDoodadTexture									takes doodad whichDoodad, string textureName, integer textureIndex returns nothing
+native SetDoodadReplaceableTexture						takes doodad whichDoodad, string textureName, integer textureIndex returns nothing
 native IsDoodadVisible									takes doodad whichDoodad returns boolean
 native ShowDoodad										takes doodad whichDoodad, boolean isShow returns nothing
 native SetDoodadAnimationWithRarityByIndex				takes doodad whichDoodad, integer animIndex, raritycontrol rarity returns nothing
@@ -2790,6 +2802,20 @@ native GetTriggerBuffTarget								takes nothing returns unit
 //
 
 //============================================================================
+// War3 Image API
+//
+// This is API for the "lowest" in terms of hierarchy object type for any and all widgets. Sprites and doodads are exception, however this API can distinguish between them and handle accordingly.
+native GetWar3ImagePlayerColour							takes war3image whichWar3Image returns playercolor // This gets glow/team colour.
+native SetWar3ImagePlayerColour							takes war3image whichWar3Image, playercolor color returns nothing // This sets Glow and Team Colour. Mimics the SetUnitColor.
+native SetWar3ImageMaterialTexture						takes war3image whichWar3Image, string textureName, integer materialId, integer textureIndex returns nothing
+native SetWar3ImageTexture								takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing
+native SetWar3ImageReplaceableTexture					takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing // 1 - TeamColour | 2 - TeamGlow | 11 - Cliff0/1 |  21 - "grabbed texture" for CCursorFrame | 31-37 trees.
+native GetWar3ImageModel								takes war3image whichWar3Image returns string
+native SetWar3ImageModel								takes war3image whichWar3Image, string modelName returns nothing
+native SetWar3ImageModelEx								takes war3image whichWar3Image, string modelName, integer playerColour returns nothing // 0-15, -1 to ignore the colour.
+//
+
+//============================================================================
 // Sprite API
 //
 // Note: any axis setter is ignored by sprites created via AddSpriteToTarget, since they inherit nearly all data from sprite they are attached to.
@@ -2821,6 +2847,7 @@ native GetSpriteScale									takes sprite whichSprite returns real
 native SetSpriteScale									takes sprite whichSprite, real scale returns nothing
 native GetSpriteTimeScale								takes sprite whichSprite returns real
 native SetSpriteTimeScale								takes sprite whichSprite, real timescale returns nothing
+native GetSpritePlayerColour							takes sprite whichSprite returns playercolor
 native SetSpritePlayerColour							takes sprite whichSprite, playercolor color returns nothing
 native GetSpriteColour									takes sprite whichSprite returns integer
 native SetSpriteColour									takes sprite whichSprite, integer colour returns nothing
@@ -2866,7 +2893,7 @@ native SetSpriteAnimationOffsetPercent					takes sprite whichSprite, real percen
 //
 native GetSpecialEffectSprite							takes effect whichEffect returns sprite
 native IsSpecialEffectVisible							takes effect whichEffect returns boolean
-native SetSpecialEffectVisibility						takes effect whichEffect, boolean visibility returns nothing
+native SetSpecialEffectVisible							takes effect whichEffect, boolean visibility returns nothing
 native GetSpecialEffectX								takes effect whichEffect returns real
 native GetSpecialEffectY								takes effect whichEffect returns real
 native GetSpecialEffectZ								takes effect whichEffect returns real
@@ -2885,6 +2912,7 @@ native GetSpecialEffectScale							takes effect whichEffect returns real
 native SetSpecialEffectScale							takes effect whichEffect, real scale returns nothing
 native GetSpecialEffectTimeScale						takes effect whichEffect returns real
 native SetSpecialEffectTimeScale						takes effect whichEffect, real timescale returns nothing
+native GetSpecialEffectPlayerColour						takes effect whichEffect returns playercolor
 native SetSpecialEffectPlayerColour						takes effect whichEffect, playercolor color returns nothing
 native GetSpecialEffectColour							takes effect whichEffect returns integer
 native SetSpecialEffectColour							takes effect whichEffect, integer colour returns nothing
@@ -2936,7 +2964,7 @@ native EnumSpecialEffectsInRange						takes real x, real y, real radius, boolexp
 //
 native GetTrackableSprite								takes trackable whichTrackable returns sprite
 native IsTrackableVisible								takes trackable whichTrackable returns boolean
-native SetTrackableVisibility							takes trackable whichTrackable, boolean visibility returns nothing
+native SetTrackableVisible								takes trackable whichTrackable, boolean visibility returns nothing
 native GetTrackableX									takes trackable whichTrackable returns real
 native GetTrackableY									takes trackable whichTrackable returns real
 native GetTrackableZ									takes trackable whichTrackable returns real
@@ -2955,6 +2983,7 @@ native GetTrackableScale								takes trackable whichTrackable returns real
 native SetTrackableScale								takes trackable whichTrackable, real scale returns nothing
 native GetTrackableTimeScale							takes trackable whichTrackable returns real
 native SetTrackableTimeScale							takes trackable whichTrackable, real timescale returns nothing
+native GetTrackablePlayerColour							takes trackable whichTrackable returns playercolor
 native SetTrackablePlayerColour							takes trackable whichTrackable, playercolor color returns nothing
 native GetTrackableColour								takes trackable whichTrackable returns integer
 native SetTrackableColour								takes trackable whichTrackable, integer colour returns nothing
@@ -3003,6 +3032,7 @@ native EnumTrackablesInRange							takes real x, real y, real radius, boolexpr f
 //============================================================================
 // Widget API
 //
+native GetWidgetUnderCursor								takes nothing returns widget // Async
 native GetWidgetSprite									takes widget whichWidget returns sprite
 native GetWidgetTypeId									takes widget whichWidget returns integer
 native GetWidgetName									takes widget whichWidget returns string
@@ -3020,6 +3050,8 @@ native SetWidgetX										takes widget whichWidget, real x returns nothing
 native SetWidgetY										takes widget whichWidget, real y returns nothing
 native GetWidgetScreenX									takes widget whichWidget returns real
 native GetWidgetScreenY									takes widget whichWidget returns real
+native GetWidgetPlayerColour							takes widget whichWidget returns playercolor
+native SetWidgetPlayerColour							takes widget whichWidget, playercolor color returns nothing
 native GetWidgetVertexColour							takes widget whichWidget returns integer
 native SetWidgetVertexColour							takes widget whichWidget, integer red, integer green, integer blue, integer alpha returns nothing
 native GetWidgetTimeScale								takes widget whichWidget returns real
@@ -3066,6 +3098,8 @@ native TriggerRegisterWidgetEvent						takes trigger whichTrigger, widget whichW
 // Destructable API
 //
 
+native GetDestructableUnderCursor						takes nothing returns destructable // Async
+
 // Field API
 native GetDestructableStringField						takes destructable whichDestructable, destructablestringfield whichField returns string
 native SetDestructableStringField						takes destructable whichDestructable, destructablestringfield whichField, string value returns boolean
@@ -3086,6 +3120,8 @@ native SetDestructableY									takes destructable whichDestructable, real y ret
 native SetDestructableZ									takes destructable whichDestructable, real z returns nothing
 native GetDestructableScreenX							takes destructable whichDestructable returns real
 native GetDestructableScreenY							takes destructable whichDestructable returns real
+native GetDestructablePlayerColour						takes destructable whichDestructable returns playercolor
+native SetDestructablePlayerColour						takes destructable whichDestructable, playercolor color returns nothing
 native GetDestructableVertexColour						takes destructable whichDestructable returns integer
 native SetDestructableVertexColour						takes destructable whichDestructable, integer red, integer green, integer blue, integer alpha returns nothing
 native GetDestructableTimeScale							takes destructable whichDestructable returns real
@@ -3159,6 +3195,8 @@ native SetItemStringField								takes item whichItem, itemstringfield whichFiel
 //
 
 // Normal API
+native GetItemUnderCursor								takes nothing returns item // Async
+native IsItemDroppable									takes item whichItem returns boolean
 native GetItemSprite									takes item whichItem returns sprite
 native GetItemScreenX									takes item whichItem returns real
 native GetItemScreenY									takes item whichItem returns real
@@ -3177,6 +3215,8 @@ native SetItemCooldown									takes item whichItem, real cooldown returns nothi
 native StartItemCooldown								takes unit whichUnit, item whichItem, real cooldown returns nothing
 native GetItemRemainingCooldown							takes item whichItem returns real
 native SetItemRemainingCooldown							takes item whichItem, real cooldown returns nothing
+native GetItemPlayerColour								takes item whichItem returns playercolor
+native SetItemPlayerColour								takes item whichItem, playercolor color returns nothing
 native GetItemVertexColour								takes item whichItem returns integer
 native SetItemVertexColour								takes item whichItem, integer red, integer green, integer blue, integer alpha returns nothing
 native GetItemTimeScale									takes item whichItem returns real
@@ -3281,11 +3321,11 @@ native SetUnitWeaponStringField							takes unit whichUnit, unitweaponstringfiel
 //
 
 // Normal API
+native GetUnitUnderCursor								takes nothing returns unit // Async
 native GetUnitSprite									takes unit whichUnit returns sprite
 native GetUnitScreenX									takes unit whichUnit returns real
 native GetUnitScreenY									takes unit whichUnit returns real
 native SetUnitTypeId									takes unit whichUnit, integer newId returns nothing
-native GetUnitUnderCursor								takes nothing returns unit
 native GetUnitSelectedCountByPlayer						takes player whichPlayer returns integer
 native GetUnitSelected									takes player whichPlayer returns unit // Always returns Active unit, aka the "main" one whose UI is drawn.
 native GetUnitInSelectionByIndex						takes player whichPlayer, integer index returns unit
@@ -3341,14 +3381,16 @@ native GetUnitBuffLevel									takes unit whichUnit, integer buffId returns int
 native UnitCancelTimedLife								takes unit whichUnit returns nothing
 native GetUnitRemainingTimedLife						takes unit whichUnit returns real
 native SetUnitRemainingTimedLife						takes unit whichUnit, real duration returns nothing
+native IsUnitGhosted									takes unit whichUnit returns boolean
+native SetUnitGhosted									takes unit whichUnit, boolean state, real transitionTime returns nothing // This is similar to Invisibility, but uses Ghost (Agho) as base logic, just like windwalk. Attacking from this state does not cause the unit to exit Ghost state.
 native IsUnitSelectable									takes unit whichUnit returns boolean
 native SetUnitSelectable								takes unit whichUnit, boolean selectable returns nothing
 native IsUnitTargetable									takes unit whichUnit returns boolean
 native SetUnitTargetable								takes unit whichUnit, boolean targetable returns nothing
 native IsUnitTruesightImmune							takes unit whichUnit returns boolean
 native SetUnitTruesightImmuneState						takes unit whichUnit, boolean state returns nothing
-native SetUnitVisibleByPlayer							takes unit whichUnit, player whichPlayer, boolean flag returns nothing // experimental
-native SetUnitDetectableByPlayer						takes unit whichUnit, player whichPlayer, boolean flag returns nothing // experimental
+native SetUnitVisibleByPlayer							takes unit whichUnit, player whichPlayer, boolean flag returns nothing // These are supposed to be used in EVENT_PLAYER_UNIT_DETECTED и EVENT_UNIT_DETECTED events.
+native SetUnitDetectableByPlayer						takes unit whichUnit, player whichPlayer, boolean flag returns nothing // They are supposed to suppress the vision processing, but it's quite annoying to test/verify.
 native GetUnitZ											takes unit whichUnit returns real
 native GetUnitDamageReduction							takes unit whichUnit returns real
 native GetUnitMagicResistByType							takes unit whichUnit, integer resistType returns real
@@ -3410,6 +3452,8 @@ native GetUnitBaseMoveSpeed								takes unit whichUnit returns real
 native SetUnitBaseMoveSpeed								takes unit whichUnit, real baseMoveSpeed returns nothing
 native GetUnitBonusMoveSpeedPercent						takes unit whichUnit returns real
 native SetUnitBonusMoveSpeedPercent						takes unit whichUnit, real bonusMoveSpeedPercent returns nothing
+native GetUnitPlayerColour								takes unit whichUnit returns playercolor
+native SetUnitPlayerColour								takes unit whichUnit, playercolor color returns nothing
 native GetUnitVertexColour								takes unit whichUnit returns integer
 native UnitAddItemToSlot								takes unit whichUnit, item whichItem, integer itemSlot returns boolean
 native ReviveUnit										takes unit whichUnit, real x, real y returns boolean
@@ -3570,6 +3614,7 @@ native GetProjectileScale								takes projectile whichProjectile returns real
 native SetProjectileScale								takes projectile whichProjectile, real scale returns nothing
 native GetProjectileTimeScale							takes projectile whichProjectile returns real
 native SetProjectileTimeScale							takes projectile whichProjectile, real timescale returns nothing
+native GetProjectilePlayerColour						takes projectile whichProjectile returns playercolor
 native SetProjectilePlayerColour						takes projectile whichProjectile, playercolor color returns nothing
 native GetProjectileColour								takes projectile whichProjectile returns integer
 native SetProjectileColour								takes projectile whichProjectile, integer colour returns nothing
@@ -3714,10 +3759,10 @@ native GetFrameModel									takes framehandle whichFrame returns string
 native SetFrameModel									takes framehandle whichFrame, string model, integer cameraIndex returns nothing
 native IsFrameEnabled									takes framehandle whichFrame returns boolean
 native SetFrameEnabled									takes framehandle whichFrame, boolean enabled returns nothing
-native IsFrameDraggable									takes framehandle whichFrame returns boolean
-native SetFrameDraggable								takes framehandle whichFrame, boolean enabled returns nothing
-native GetFrameTrackState								takes framehandle whichFrame returns integer
-native SetFrameTrackState								takes framehandle whichFrame, integer trackState returns nothing // 0 - NONE | 1 - Track | 2 - Ignore Track
+native IsFrameLayerFlag									takes framehandle whichFrame, layerstyleflag whichLayerStyle returns boolean
+native SetFrameLayerFlag								takes framehandle whichFrame, layerstyleflag whichLayerStyle, boolean isSet returns nothing
+native IsFrameControlFlag								takes framehandle whichFrame, controlstyleflag whichControlStyle returns boolean
+native SetFrameControlFlag								takes framehandle whichFrame, controlstyleflag whichControlStyle, boolean isSet returns nothing
 native GetFrameColourEx									takes framehandle whichFrame, integer textureId returns integer
 native SetFrameColourEx									takes framehandle whichFrame, integer textureId, integer colour returns nothing
 native GetFrameColour									takes framehandle whichFrame returns integer
@@ -3726,7 +3771,7 @@ native GetFrameAlphaEx									takes framehandle whichFrame, integer textureId r
 native SetFrameAlphaEx									takes framehandle whichFrame, integer textureId, integer alpha returns nothing
 native GetFrameAlpha									takes framehandle whichFrame returns integer
 native SetFrameAlpha									takes framehandle whichFrame, integer alpha returns nothing
-native GetFrameTexture									takes framehandle whichFrame, integer textureId returns string // 0 - Disabled | 1 - Enabled | 2 - Pushed | 3 = Current
+native GetFrameTexture									takes framehandle whichFrame, integer textureId returns string // 0 - Current | 1 - Enabled | 2 - Pushed | 3 - Disabled | 4 - ? | 5 - Check Enabled | 6 - Check Disabled
 native SetFrameBackdropTexture							takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean allowTransparency, boolean blend, string borderTextureFile, integer borderFlags, boolean isControlBackdrop returns nothing
 native SetFrameTextureEx								takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean blend, string borderTextureFile, integer borderFlags returns nothing
 native SetFrameTexture									takes framehandle whichFrame, string textureFile, integer textureId, boolean blend returns nothing
@@ -3735,6 +3780,7 @@ native SetFrameMouseCaged								takes framehandle whichFrame, boolean enable re
 native GetFrameValue									takes framehandle whichFrame returns real
 native SetFrameValue									takes framehandle whichFrame, real value returns nothing // fires event by default
 native SetFrameValueEx									takes framehandle whichFrame, real value, boolean isFireEvent returns nothing
+native GetFrameMinMaxValues								takes framehandle whichFrame, integer valueId returns real // 0 = min | 1 = max
 native SetFrameMinMaxValues								takes framehandle whichFrame, real minVal, real maxVal returns nothing
 native GetFrameStepSize									takes framehandle whichFrame returns real
 native SetFrameStepSize									takes framehandle whichFrame, real stepSize returns nothing
@@ -3821,6 +3867,7 @@ native GetFrameSpriteScale								takes framehandle whichFrame returns real
 native SetFrameSpriteScale								takes framehandle whichFrame, real scale returns nothing
 native GetFrameSpriteTimeScale							takes framehandle whichFrame returns real
 native SetFrameSpriteTimeScale							takes framehandle whichFrame, real timescale returns nothing
+native GetFrameSpritePlayerColour						takes framehandle whichFrame returns playercolor
 native SetFrameSpritePlayerColour						takes framehandle whichFrame, playercolor color returns nothing
 native GetFrameSpriteAlpha								takes framehandle whichFrame returns integer
 native SetFrameSpriteAlpha								takes framehandle whichFrame, integer alpha returns boolean
