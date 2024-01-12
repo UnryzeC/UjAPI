@@ -4399,11 +4399,25 @@ native SetJassGlobalReal								takes jassthread thread, string variableName, re
 native SetJassGlobalString								takes jassthread thread, string variableName, string value returns boolean
 native SetJassGlobalHandle								takes jassthread thread, string variableName, handle value returns boolean
 native SetJassGlobalBoolean								takes jassthread thread, string variableName, boolean value returns boolean
+
+native GetJassLocalInteger								takes string variableName returns integer
+native GetJassLocalReal									takes string variableName returns real
+native GetJassLocalString								takes string variableName returns string
+native GetJassLocalHandle								takes string variableName returns handle
+native GetJassLocalBoolean								takes string variableName returns boolean
+
+native SetJassLocalInteger								takes string variableName, integer value returns boolean
+native SetJassLocalReal									takes string variableName, real value returns boolean
+native SetJassLocalString								takes string variableName, string value returns boolean
+native SetJassLocalHandle								takes string variableName, handle value returns boolean
+native SetJassLocalBoolean								takes string variableName, boolean value returns boolean
 //
 
 // Jass Operations
 native IsOperationLimitEnabled							takes nothing returns boolean
 native EnableOperationLimit								takes boolean enable returns nothing
+native GetOperationLimit								takes nothing returns integer
+native SetOperationLimit								takes integer opLimit returns nothing
 native GetCodeByName									takes string funcName returns code
 native ExecuteCode										takes code c returns nothing
 native ExecuteFuncEx									takes string funcName returns nothing
@@ -5122,6 +5136,7 @@ native IsAbilityBaseTargetAllowed						takes integer abilCode, widget source, wi
 native CreateAbility									takes integer abilCode returns ability
 native GetAbilityOwner									takes ability whichAbility returns unit
 native SetAbilityOwner									takes ability whichAbility, unit whichUnit returns nothing
+native GetAbilityOwningAbility							takes ability whichAbility returns ability // if it belongs to Spellbook (Aspb) and so on.
 native GetAbilityOwningItem								takes ability whichAbility returns item
 native GetAbilityOrderId								takes ability whichAbility returns integer
 native SetAbilityOrderId								takes ability whichAbility, integer orderId returns boolean // Highly experimental, may be removed if proven unstable.
@@ -5188,6 +5203,7 @@ native ResetBuffFieldData								takes buff whichBuff returns boolean // Acts sa
 //
 
 // Normal API
+// Supported buffs are available here: https://github.com/UnryzeC/UjAPI/blob/main/TypeData/WC3BuffListSupportedInBuffAPI.txt
 native CreateBuff										takes integer buffId returns buff
 
 native GetBuffTypeId									takes buff whichBuff returns integer
