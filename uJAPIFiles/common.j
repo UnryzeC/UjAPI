@@ -2278,6 +2278,8 @@ globals
 	constant unitintegerfield			UNIT_IF_ORIENTATION_INTERPOLATION							= ConvertUnitIntegerField('uori')
 	constant unitintegerfield			UNIT_IF_ELEVATION_SAMPLE_POINTS								= ConvertUnitIntegerField('uept')
 	constant unitintegerfield			UNIT_IF_PROPER_NAMES_COUNT									= ConvertUnitIntegerField('upru') // Get Only
+	constant unitintegerfield			UNIT_IF_PROPER_NAME_INDEX									= ConvertUnitIntegerField('uprd') // Gets/Sets currently active name from the list | Instance Unit Only.
+	constant unitintegerfield			UNIT_IF_PROPER_NAME_GENERATION								= ConvertUnitIntegerField('uprg') // This sets the Roman numeration of the unit, a number is contained. | Instance Unit Only.
 	constant unitintegerfield			UNIT_IF_HOTKEY												= ConvertUnitIntegerField('uhot')
 	constant unitintegerfield			UNIT_IF_TINTING_COLOR										= ConvertUnitIntegerField('uclt')
 	constant unitintegerfield			UNIT_IF_TINTING_COLOR_RED									= ConvertUnitIntegerField('uclr')
@@ -4251,6 +4253,7 @@ native Id2String										takes integer i returns string
 native String2Id										takes string idString returns integer
 native IntToHex											takes integer i returns string
 native IntToChar										takes integer i returns string
+native IntToRoman										takes integer i returns string
 native ConvertColour									takes integer alpha, integer red, integer green, integer blue returns integer
 
 //===================================================
