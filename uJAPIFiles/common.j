@@ -160,6 +160,7 @@ type connectiontype										extends handle
 type jassthread											extends handle
 type handlelist											extends handle
 type textfilehandle										extends handle
+type orderhandle										extends agent
 
 constant native ConvertRace								takes integer i returns race
 constant native ConvertAllianceType						takes integer i returns alliancetype
@@ -4749,6 +4750,7 @@ native HandleListGetSpriteCount							takes handlelist whichHandleList returns i
 native HandleListGetEffectCount							takes handlelist whichHandleList returns integer
 native HandleListGetProjectileCount						takes handlelist whichHandleList returns integer
 native HandleListGetFrameCount							takes handlelist whichHandleList returns integer
+native HandleListGetOrderCount							takes handlelist whichHandleList returns integer
 
 native HandleListGetHandleByIndex						takes handlelist whichHandleList, integer index returns handle
 native HandleListGetHandleByIndexEx						takes handlelist whichHandleList, integer handleTypeId, integer index returns handle
@@ -4766,6 +4768,7 @@ native HandleListGetSpriteByIndex						takes handlelist whichHandleList, integer
 native HandleListGetEffectByIndex						takes handlelist whichHandleList, integer index returns effect
 native HandleListGetProjectileByIndex					takes handlelist whichHandleList, integer index returns projectile
 native HandleListGetFrameByIndex						takes handlelist whichHandleList, integer index returns framehandle
+native HandleListGetOrderByIndex						takes handlelist whichHandleList, integer index returns orderhandle
 
 native HandleListGetFilterHandle						takes nothing returns handle
 native HandleListGetFilterAgent							takes nothing returns agent
@@ -4780,6 +4783,7 @@ native HandleListGetFilterSprite						takes nothing returns sprite
 native HandleListGetFilterEffect						takes nothing returns effect
 native HandleListGetFilterProjectile					takes nothing returns projectile
 native HandleListGetFilterFrame							takes nothing returns framehandle
+native HandleListGetFilterOrder							takes nothing returns orderhandle
 
 native HandleListGetEnumHandle							takes nothing returns handle
 native HandleListGetEnumAgent							takes nothing returns agent
@@ -4794,6 +4798,7 @@ native HandleListGetEnumSprite							takes nothing returns sprite
 native HandleListGetEnumEffect							takes nothing returns effect
 native HandleListGetEnumProjectile						takes nothing returns projectile
 native HandleListGetEnumFrame							takes nothing returns framehandle
+native HandleListGetEnumOrder							takes nothing returns orderhandle
 
 native HandleListEnumInRange							takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
 native HandleListEnumInRangeEx							takes handlelist whichHandleList, real x, real y, real radius, integer handleTypeId, boolexpr filter returns nothing
@@ -4836,6 +4841,7 @@ native HandleListEnumByIdEx								takes handlelist whichHandleList, integer han
 
 native HandleListEnumUnitAbilities						takes handlelist whichHandleList, unit whichUnit, boolexpr filter returns nothing
 native HandleListEnumUnitBuffs							takes handlelist whichHandleList, unit whichUnit, boolexpr filter returns nothing
+native HandleListEnumUnitOrders							takes handlelist whichHandleList, unit whichUnit, boolexpr filter returns nothing
 
 native HandleListForEach								takes handlelist whichHandleList, code c returns nothing
 native HandleListForEachById							takes handlelist whichHandleList, integer handleTypeId, code c returns nothing
@@ -4908,6 +4914,8 @@ native GetLightningColourB								takes lightning whichBolt returns integer
 native SetLightningColour								takes lightning whichBolt, integer red, integer green, integer blue, integer alpha returns boolean
 native GetLightningLength 								takes lightning whichBolt returns real
 native SetLightningLength 								takes lightning whichBolt, real value returns nothing
+native GetLightningWidth 								takes lightning whichBolt returns real
+native SetLightningWidth 								takes lightning whichBolt, real value returns nothing
 native GetLightningNoiseScaling 						takes lightning whichBolt returns real
 native SetLightningNoiseScaling 						takes lightning whichBolt, real value returns nothing
 native GetLightningTextureCoordinates 					takes lightning whichBolt returns real
@@ -5990,7 +5998,7 @@ native GetIllusionDamageReceived						takes unit whichUnit returns real
 native SetIllusionDamageReceived						takes unit whichUnit, real multiplier returns nothing
 //
 
-// Order API
+// Unit Order API
 native QueueImmediateOrderById							takes unit whichUnit, integer order returns boolean
 native QueuePointOrderById								takes unit whichUnit, integer order, real x, real y returns boolean
 native QueueTargetOrderById								takes unit whichUnit, integer order, widget targetWidget returns boolean
@@ -6001,10 +6009,36 @@ native QueueNeutralImmediateOrderById					takes player forWhichPlayer, unit neut
 native QueueNeutralPointOrderById						takes player forWhichPlayer, unit neutralStructure, integer unitId, real x, real y returns boolean
 native QueueNeutralTargetOrderById						takes player forWhichPlayer, unit neutralStructure, integer unitId, widget target returns boolean
 native GetUnitOrderCount								takes unit whichUnit returns integer
+native GetUnitOrderByIndex								takes unit whichUnit, integer index returns orderhandle
+native GetUnitOrderByOrderId							takes unit whichUnit, integer orderId, integer index returns orderhandle // since units can queue same orders, this allows to differentiate between them.
 native GetUnitOrderIdByIndex							takes unit whichUnit, integer index returns integer
+native UnitRemoveOrderByIndex							takes unit whichUnit, integer index returns boolean
+native UnitRemoveOrderByOrderId							takes unit whichUnit, integer orderId, boolean eraseAllSimilar returns boolean
+native UnitReverseOrders								takes unit whichUnit returns nothing
 native UnitClearOrders									takes unit whichUnit, boolean onlyQueued returns nothing
 native UnitForceStopOrder								takes unit whichUnit, boolean clearQueue returns nothing
 //
+//
+
+//============================================================================
+// Order API
+// Naming is reversed to avoid clashes with GetOrderTarget and so on.
+//
+native GetTriggerOrder									takes nothing returns orderhandle
+native OrderGetNext										takes orderhandle whichOrder returns orderhandle
+native OrderGetId										takes orderhandle whichOrder returns integer // returns actual order id, "move" as 851986.
+native OrderGetTargetX									takes orderhandle whichOrder returns real
+native OrderGetTargetY									takes orderhandle whichOrder returns real
+native OrderGetTargetLoc								takes orderhandle whichOrder returns location
+// Patrol orders only?
+native OrderGetSourceX									takes orderhandle whichOrder returns real
+native OrderGetSourceY									takes orderhandle whichOrder returns real
+native OrderGetSourceLoc								takes orderhandle whichOrder returns location
+//
+native OrderGetTarget									takes orderhandle whichOrder returns widget
+native OrderGetTargetDestructable						takes orderhandle whichOrder returns destructable
+native OrderGetTargetItem								takes orderhandle whichOrder returns item
+native OrderGetTargetUnit								takes orderhandle whichOrder returns unit
 //
 
 //============================================================================
