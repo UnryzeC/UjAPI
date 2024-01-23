@@ -147,8 +147,11 @@ type collisiontype										extends flagtype
 type targetflag											extends flagtype
 type unitcategory										extends flagtype
 type pathingflag										extends flagtype
+type layoutstyleflag									extends flagtype
+type gridstyleflag										extends flagtype
 type layerstyleflag										extends flagtype
 type controlstyleflag									extends flagtype
+type abilitytype										extends flagtype
 type armortype											extends handle
 type heroattribute										extends handle
 type defensetype										extends handle
@@ -257,8 +260,11 @@ constant native ConvertPathingFlag						takes integer i returns pathingflag
 constant native ConvertTimeType							takes integer i returns timetype
 constant native ConvertVariableType						takes integer i returns variabletype
 constant native ConvertRenderStage						takes integer i returns renderstage
+constant native ConvertLayoutStyleFlag					takes integer i returns layoutstyleflag
+constant native ConvertGridStyleFlag					takes integer i returns gridstyleflag
 constant native ConvertLayerStyleFlag					takes integer i returns layerstyleflag
 constant native ConvertControlStyleFlag					takes integer i returns controlstyleflag
+constant native ConvertAbilityType						takes integer i returns abilitytype
 constant native ConvertConnectionType					takes integer i returns connectiontype
 
 constant native OrderId									takes string orderIdString returns integer
@@ -2469,6 +2475,16 @@ globals
 	constant targetflag					TARGET_FLAG_ANCIENT											= ConvertTargetFlag(2147483648)
 	constant targetflag					TARGET_FLAG_EMPTY											= ConvertTargetFlag(4294967295)
 
+	// ability types
+	constant abilitytype				ABILITY_TYPE_POSITIVE										= ConvertAbilityType(0)
+	constant abilitytype				ABILITY_TYPE_NEGATIVE										= ConvertAbilityType(1)
+	constant abilitytype				ABILITY_TYPE_AURA											= ConvertAbilityType(2)
+	constant abilitytype				ABILITY_TYPE_BUFF											= ConvertAbilityType(3)
+	constant abilitytype				ABILITY_TYPE_TIMED_LIFE										= ConvertAbilityType(4)
+	constant abilitytype				ABILITY_TYPE_PHYSICAL										= ConvertAbilityType(5)
+	constant abilitytype				ABILITY_TYPE_MAGICAL										= ConvertAbilityType(6)
+	constant abilitytype				ABILITY_TYPE_AUTODISPEL										= ConvertAbilityType(7)
+
 	// defense type
 	constant defensetype				DEFENSE_TYPE_LIGHT											= ConvertDefenseType(0)
 	constant defensetype				DEFENSE_TYPE_MEDIUM											= ConvertDefenseType(1)
@@ -2570,9 +2586,22 @@ globals
 	constant renderstage				RENDER_STAGE_LIGHTNING										= ConvertRenderStage(20)
 	constant renderstage				RENDER_STAGE_TEXTTAG										= ConvertRenderStage(21)
 
+	constant layoutstyleflag			LAYOUT_STYLE_BOUNDING_FRAME_POSITION						= ConvertLayoutStyleFlag(1)
+	constant layoutstyleflag			LAYOUT_STYLE_ALWAYS_TRACK									= ConvertLayoutStyleFlag(2)
+	constant layoutstyleflag			LAYOUT_STYLE_NO_ENV											= ConvertLayoutStyleFlag(4)
+
+	constant gridstyleflag				GRID_STYLE_JUSTIFY_LEFT										= ConvertGridStyleFlag(8)
+	constant gridstyleflag				GRID_STYLE_JUSTIFY_RIGHT									= ConvertGridStyleFlag(16)
+	constant gridstyleflag				GRID_STYLE_JUSTIFY_TOP										= ConvertGridStyleFlag(32)
+	constant gridstyleflag				GRID_STYLE_JUSTIFY_BOTTOM									= ConvertGridStyleFlag(64)
+	constant gridstyleflag				GRID_STYLE_JUSTIFY_MIDDLE									= ConvertGridStyleFlag(128)
+	constant gridstyleflag				GRID_STYLE_JUSTIFY_CENTER									= ConvertGridStyleFlag(256)
+	constant gridstyleflag				GRID_STYLE_PACK_ITEMS										= ConvertGridStyleFlag(512)
+
 	constant layerstyleflag				LAYER_STYLE_SVIEWPOINT										= ConvertLayerStyleFlag(1)
 	constant layerstyleflag				LAYER_STYLE_IGNORE_TRACK_EVENTS								= ConvertLayerStyleFlag(2)
 	constant layerstyleflag				LAYER_STYLE_SHADING											= ConvertLayerStyleFlag(4)
+	constant layerstyleflag				LAYER_STYLE_SCROLL											= ConvertLayerStyleFlag(8)
 	constant layerstyleflag				LAYER_STYLE_NO_DEPTH_SET									= ConvertLayerStyleFlag(16)
 	constant layerstyleflag				LAYER_STYLE_NO_DEPTH_TEST									= ConvertLayerStyleFlag(32)
 
@@ -2580,10 +2609,12 @@ globals
 	constant controlstyleflag 			CONTROL_STYLE_CLICK_MOUSE_DOWN								= ConvertControlStyleFlag(2)
 	constant controlstyleflag 			CONTROL_STYLE_RELEASE_NOTIFY								= ConvertControlStyleFlag(4)
 	constant controlstyleflag 			CONTROL_STYLE_DRAG											= ConvertControlStyleFlag(8)
+	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT_ON_FOCUS							= ConvertControlStyleFlag(16)
 	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT_FOCUS								= ConvertControlStyleFlag(32)
-	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT_HOVER								= ConvertControlStyleFlag(64)
+	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT_ON_MOUSE_OVER						= ConvertControlStyleFlag(64)
 	constant controlstyleflag 			CONTROL_STYLE_SLIDER_STEP									= ConvertControlStyleFlag(128)
-	constant controlstyleflag 			CONTROL_STYLE_EXCLUSIVE										= ConvertControlStyleFlag(512)
+	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT										= ConvertControlStyleFlag(256)
+	constant controlstyleflag 			CONTROL_STYLE_EXCLUSIVE										= ConvertControlStyleFlag(512) // Seems to be the same as SHIFTDESELECT and AUTODOWN
 	constant controlstyleflag 			CONTROL_STYLE_AT_LEAST_ONE									= ConvertControlStyleFlag(1024)
 
 	constant integer 					BORDER_FLAG_UPPER_LEFT 										= 1
@@ -5145,6 +5176,7 @@ native IsAbilityBaseTargetAllowed						takes integer abilCode, widget source, wi
 
 // Normal API
 native CreateAbility									takes integer abilCode returns ability
+native IsAbilityType									takes ability whichAbility, abilitytype whichAbilityType returns boolean
 native GetAbilityOwner									takes ability whichAbility returns unit
 native SetAbilityOwner									takes ability whichAbility, unit whichUnit returns nothing
 native GetAbilityOwningAbility							takes ability whichAbility returns ability // if it belongs to Spellbook (Aspb) and so on.
@@ -5221,11 +5253,14 @@ native GetBuffTypeId									takes buff whichBuff returns integer
 native GetBuffBaseTypeId								takes buff whichBuff returns integer
 native GetBuffOwner										takes buff whichbuff returns unit
 native SetBuffOwner										takes buff whichBuff, unit whichUnit returns nothing
+native IsBuffDispellable								takes buff whichBuff returns boolean
+native SetBuffDispellable								takes buff whichBuff, boolean isSet returns nothing
 native GetBuffLevel										takes buff whichBuff returns integer
 native SetBuffLevel										takes buff whichBuff, integer level returns nothing
 native GetBuffRemainingDuration							takes buff whichBuff returns real
-native SetBuffRemainingDuration							takes buff whichBuff, real duration returns boolean
-native RefreshBuff										takes buff whichBuff returns boolean
+native SetBuffRemainingDuration							takes buff whichBuff, real duration returns nothing
+native PauseBuff										takes buff whichBuff, boolean pause returns nothing
+native RefreshBuff										takes buff whichBuff returns nothing
 
 native GetFilterBuff									takes nothing returns buff
 native GetEnumBuff										takes nothing returns buff
@@ -5790,6 +5825,7 @@ native UnitApplyUpgrades								takes unit whichUnit returns nothing
 
 // Unit Ability API
 native GetUnitAbility									takes unit whichUnit, integer aid returns ability
+native GetUnitAbilityEx									takes unit whichUnit, integer aid, integer id returns ability  // Allows you to search through duplicates.
 native GetUnitAbilityByIndex							takes unit whichUnit, integer index returns ability
 native UnitAddAbilityEx									takes unit whichUnit, integer abilCode, boolean checkForDuplicates returns boolean
 native UnitRemoveAbilityEx								takes unit whichUnit, integer abilCode, boolean removeDuplicates returns boolean
@@ -5811,6 +5847,7 @@ native UnitAddBuffById									takes unit whichUnit, integer buffId returns bool
 native UnitAddBuffByIdEx								takes unit whichUnit, integer buffId, boolean checkForDuplicates returns boolean
 //
 native GetUnitBuff										takes unit whichUnit, integer buffId returns buff
+native GetUnitBuffEx									takes unit whichUnit, integer buffId, integer id returns buff // Allows you to search through duplicates.
 native GetUnitBuffByIndex								takes unit whichUnit, integer index returns buff
 native GetUnitBuffLevel									takes unit whichUnit, integer buffId returns integer
 //
@@ -6222,6 +6259,10 @@ native GetFrameModel									takes framehandle whichFrame returns string
 native SetFrameModel									takes framehandle whichFrame, string model, integer cameraIndex returns nothing
 native IsFrameEnabled									takes framehandle whichFrame returns boolean
 native SetFrameEnabled									takes framehandle whichFrame, boolean enabled returns nothing
+native IsFrameLayoutFlag								takes framehandle whichFrame, layoutstyleflag whichLayoutStyle returns boolean
+native SetFrameLayoutFlag								takes framehandle whichFrame, layoutstyleflag whichLayoutStyle, boolean isSet returns nothing
+native IsFrameGridFlag									takes framehandle whichFrame, gridstyleflag whichGridStyle returns boolean
+native SetFrameGridFlag									takes framehandle whichFrame, gridstyleflag whichGridStyle, boolean isSet returns nothing
 native IsFrameLayerFlag									takes framehandle whichFrame, layerstyleflag whichLayerStyle returns boolean
 native SetFrameLayerFlag								takes framehandle whichFrame, layerstyleflag whichLayerStyle, boolean isSet returns nothing
 native IsFrameControlFlag								takes framehandle whichFrame, controlstyleflag whichControlStyle returns boolean
@@ -6294,7 +6335,7 @@ native GetFrameItemOwner								takes framehandle listBoxItem returns framehandl
 native SetFrameItemOwner								takes framehandle listBoxItem, framehandle whichFrame returns nothing
 //
 
-// Border API | For corner flags refer to BORDER_FLAG. For CBackdropFrame and its children and for CSimpleFrame, backdropId has to be always 0.
+// Backdrop API | Border API | For corner flags refer to BORDER_FLAG. For CBackdropFrame and its children and for CSimpleFrame, backdropId has to be always 0.
 // For CFrames that contain backdrops, use ids to differentiate between them, this is similar to CSimpleButton states, etc.
 native GetFrameBorderFlags 								takes framehandle whichFrame, integer backdropId returns integer
 native SetFrameBorderFlags 								takes framehandle whichFrame, integer backdropId, integer cornerFlag returns nothing
@@ -6305,6 +6346,17 @@ native SetFrameBackgroundSize 							takes framehandle whichFrame, integer backd
 native GetFrameBackgroundInsetById 						takes framehandle whichFrame, integer backdropId, integer insetId returns real
 native SetFrameBackgroundInsetById 						takes framehandle whichFrame, integer backdropId, integer insetId, real value returns nothing
 native SetFrameBackgroundInsets 						takes framehandle whichFrame, integer backdropId, real minX, real minY, real maxX, real maxY returns nothing
+//
+
+// Grid API
+native GetFrameGridRows 								takes framehandle grid returns integer
+native GetFrameGridColumns 								takes framehandle grid returns integer
+native SetFrameGridSize 								takes framehandle grid, integer row, integer column returns nothing
+native GetFrameGridFrame 								takes framehandle grid, integer row, integer column returns framehandle
+native GetFrameGridFrameById 							takes framehandle grid, integer id returns framehandle
+native SetFrameGridFrame 								takes framehandle grid, integer row, integer column, framehandle whichFrame returns nothing
+native IsBuffBarRenderDuplicates 						takes nothing returns boolean
+native SetBuffBarRenderDuplicates 						takes boolean allow returns nothing // this will allow the rendering (drawing) of duplicate (similar) buffs. By default is off.
 //
 
 // Trigger Frame API
