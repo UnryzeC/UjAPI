@@ -151,6 +151,7 @@ type layoutstyleflag									extends flagtype
 type gridstyleflag										extends flagtype
 type layerstyleflag										extends flagtype
 type controlstyleflag									extends flagtype
+type framestate 										extends flagtype
 type abilitytype										extends flagtype
 type armortype											extends handle
 type heroattribute										extends handle
@@ -264,6 +265,7 @@ constant native ConvertLayoutStyleFlag					takes integer i returns layoutstylefl
 constant native ConvertGridStyleFlag					takes integer i returns gridstyleflag
 constant native ConvertLayerStyleFlag					takes integer i returns layerstyleflag
 constant native ConvertControlStyleFlag					takes integer i returns controlstyleflag
+constant native ConvertFrameState						takes integer i returns framestate
 constant native ConvertAbilityType						takes integer i returns abilitytype
 constant native ConvertConnectionType					takes integer i returns connectiontype
 
@@ -2228,6 +2230,7 @@ globals
 	constant itemintegerfield			ITEM_IF_STOCK_REPLENISH_INTERVAL							= ConvertItemIntegerField('istr')
 	constant itemintegerfield			ITEM_IF_STOCK_START_DELAY									= ConvertItemIntegerField('isst')
 	constant itemintegerfield			ITEM_IF_MAX_HIT_POINTS										= ConvertItemIntegerField('ihtp')
+	constant itemintegerfield			ITEM_IF_HOTKEY												= ConvertItemIntegerField('ihot')
 
 	constant itemrealfield				ITEM_RF_SCALING_VALUE										= ConvertItemRealField('isca')
 	constant itemrealfield				ITEM_RF_SELECTION_SIZE										= ConvertItemRealField('issc')
@@ -2616,6 +2619,18 @@ globals
 	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT										= ConvertControlStyleFlag(256)
 	constant controlstyleflag 			CONTROL_STYLE_EXCLUSIVE										= ConvertControlStyleFlag(512) // Seems to be the same as SHIFTDESELECT and AUTODOWN
 	constant controlstyleflag 			CONTROL_STYLE_AT_LEAST_ONE									= ConvertControlStyleFlag(1024)
+
+	constant framestate					FRAME_STATE_SIMPLE_BUTTON_DISABLED							= ConvertFrameState(0)
+	constant framestate					FRAME_STATE_SIMPLE_BUTTON_ENABLED							= ConvertFrameState(1)
+	constant framestate					FRAME_STATE_SIMPLE_BUTTON_PUSHED							= ConvertFrameState(2)
+	constant framestate					FRAME_STATE_SIMPLE_BUTTON_CURRENT							= ConvertFrameState(3)
+
+	constant framestate					FRAME_STATE_CONTROL_CURRENT									= ConvertFrameState(0)
+	constant framestate					FRAME_STATE_CONTROL_ENABLED									= ConvertFrameState(1)
+	constant framestate					FRAME_STATE_CONTROL_PUSHED									= ConvertFrameState(2)
+	constant framestate					FRAME_STATE_CONTROL_DISABLED								= ConvertFrameState(3)
+	constant framestate					FRAME_STATE_CONTROL_CHECK_ENABLED							= ConvertFrameState(5)
+	constant framestate					FRAME_STATE_CONTROL_CHECK_DISABLED							= ConvertFrameState(6)
 
 	constant integer 					BORDER_FLAG_UPPER_LEFT 										= 1
 	constant integer 					BORDER_FLAG_UPPER_RIGHT 									= 2
@@ -5225,8 +5240,37 @@ native EnumUnitAbilities								takes unit whichUnit, boolexpr whichBoolexpr, co
 //
 
 // Base Field API
-native GetBuffBaseStringFieldById						takes integer buffId, abilitystringfield whichField returns string
-native SetBuffBaseStringFieldById						takes integer buffId, abilitystringfield whichField, string value returns boolean
+native GetBuffBaseIntegerFieldById						takes integer bid, abilityintegerfield whichField returns integer
+native SetBuffBaseIntegerFieldById						takes integer bid, abilityintegerfield whichField, integer value returns boolean
+
+native GetBuffBaseBooleanFieldById						takes integer bid, abilitybooleanfield whichField returns boolean
+native SetBuffBaseBooleanFieldById						takes integer bid, abilitybooleanfield whichField, boolean value returns boolean
+
+native GetBuffBaseRealFieldById							takes integer bid, abilityrealfield whichField returns real
+native SetBuffBaseRealFieldById							takes integer bid, abilityrealfield whichField, real value returns boolean
+
+native GetBuffBaseStringFieldById						takes integer bid, abilitystringfield whichField returns string
+native SetBuffBaseStringFieldById						takes integer bid, abilitystringfield whichField, string value returns boolean
+
+native GetBuffBaseIntegerArrayFieldById					takes integer bid, abilityintegerfield whichField, integer index returns integer
+native SetBuffBaseIntegerArrayFieldById					takes integer bid, abilityintegerfield whichField, integer index, integer value returns boolean
+native AddBuffBaseIntegerArrayFieldById					takes integer bid, abilityintegerfield whichField, integer value returns boolean
+native RemoveBuffBaseIntegerArrayFieldById				takes integer bid, abilityintegerfield whichField, integer value returns boolean
+
+native GetBuffBaseBooleanArrayFieldById					takes integer bid, abilitybooleanfield whichField, integer index returns boolean
+native SetBuffBaseBooleanArrayFieldById					takes integer bid, abilitybooleanfield whichField, integer index, boolean value returns boolean
+native AddBuffBaseBooleanArrayFieldById					takes integer bid, abilitybooleanfield whichField, boolean value returns boolean
+native RemoveBuffBaseBooleanArrayFieldById				takes integer bid, abilitybooleanfield whichField, boolean value returns boolean
+
+native GetBuffBaseRealArrayFieldById					takes integer bid, abilityrealfield whichField, integer index returns real
+native SetBuffBaseRealArrayFieldById					takes integer bid, abilityrealfield whichField, integer index, real value returns boolean
+native AddBuffBaseRealArrayFieldById					takes integer bid, abilityrealfield whichField, real value returns boolean
+native RemoveBuffBaseRealArrayFieldById					takes integer bid, abilityrealfield whichField, real value returns boolean
+
+native GetBuffBaseStringArrayFieldById					takes integer bid, abilitystringfield whichField, integer index returns string
+native SetBuffBaseStringArrayFieldById					takes integer bid, abilitystringfield whichField, integer index, string value returns boolean
+native AddBuffBaseStringArrayFieldById					takes integer bid, abilitystringfield whichField, string value returns boolean
+native RemoveBuffBaseStringArrayFieldById				takes integer bid, abilitystringfield whichField, string value returns boolean
 //
 
 // Field API
@@ -5242,8 +5286,28 @@ native SetBuffRealField									takes buff whichBuff, abilityrealfield whichFiel
 native GetBuffStringField								takes buff whichBuff, abilitystringfield whichField returns string
 native SetBuffStringField								takes buff whichBuff, abilitystringfield whichField, string value returns boolean
 
-native ResetBuffFieldData								takes buff whichBuff returns boolean // Acts same as ResetAbilityFieldData, but for buffs.
+native GetBuffIntegerArrayField							takes buff whichBuff, abilityintegerfield whichField, integer index returns integer
+native SetBuffIntegerArrayField							takes buff whichBuff, abilityintegerfield whichField, integer index, integer value returns boolean
+native AddBuffIntegerArrayField							takes buff whichBuff, abilityintegerfield whichField, integer value returns boolean
+native RemoveBuffIntegerArrayField						takes buff whichBuff, abilityintegerfield whichField, integer value returns boolean
+
+native GetBuffBooleanArrayField							takes buff whichBuff, abilitybooleanfield whichField, integer index returns boolean
+native SetBuffBooleanArrayField							takes buff whichBuff, abilitybooleanfield whichField, integer index, boolean value returns boolean
+native AddBuffBooleanArrayField							takes buff whichBuff, abilitybooleanfield whichField, boolean value returns boolean
+native RemoveBuffBooleanArrayField						takes buff whichBuff, abilitybooleanfield whichField, boolean value returns boolean
+
+native GetBuffRealArrayField							takes buff whichBuff, abilityrealfield whichField, integer index returns real
+native SetBuffRealArrayField							takes buff whichBuff, abilityrealfield whichField, integer index, real value returns boolean
+native AddBuffRealArrayField							takes buff whichBuff, abilityrealfield whichField, real value returns boolean
+native RemoveBuffRealArrayField							takes buff whichBuff, abilityrealfield whichField, real value returns boolean
+
+native GetBuffStringArrayField							takes buff whichBuff, abilitystringfield whichField, integer index returns string
+native SetBuffStringArrayField							takes buff whichBuff, abilitystringfield whichField, integer index, string value returns boolean
+native AddBuffStringArrayField							takes buff whichBuff, abilitystringfield whichField, string value returns boolean
+native RemoveBuffStringArrayField						takes buff whichBuff, abilitystringfield whichField, string value returns boolean
 //
+
+native ResetBuffFieldData								takes buff whichBuff returns boolean // Acts same as ResetAbilityFieldData, but for buffs.
 
 // Normal API
 // Supported buffs are available here: https://github.com/UnryzeC/UjAPI/blob/main/TypeData/WC3BuffListSupportedInBuffAPI.txt
@@ -6257,6 +6321,8 @@ native SetFrameTextColour								takes framehandle whichFrame, integer colour re
 native SetFrameFocus									takes framehandle whichFrame, boolean isFocus returns boolean
 native GetFrameModel									takes framehandle whichFrame returns string
 native SetFrameModel									takes framehandle whichFrame, string model, integer cameraIndex returns nothing
+native GetFrameState									takes framehandle whichFrame returns framestate
+native SetFrameState									takes framehandle whichFrame, framestate whichFrameState returns nothing
 native IsFrameEnabled									takes framehandle whichFrame returns boolean
 native SetFrameEnabled									takes framehandle whichFrame, boolean enabled returns nothing
 native IsFrameLayoutFlag								takes framehandle whichFrame, layoutstyleflag whichLayoutStyle returns boolean
@@ -6275,7 +6341,7 @@ native GetFrameAlphaEx									takes framehandle whichFrame, integer textureId r
 native SetFrameAlphaEx									takes framehandle whichFrame, integer textureId, integer alpha returns nothing
 native GetFrameAlpha									takes framehandle whichFrame returns integer
 native SetFrameAlpha									takes framehandle whichFrame, integer alpha returns nothing
-native GetFrameTexture									takes framehandle whichFrame, integer textureId returns string // 0 - Current | 1 - Enabled | 2 - Pushed | 3 - Disabled | 4 - ? | 5 - Check Enabled | 6 - Check Disabled
+native GetFrameTexture									takes framehandle whichFrame, integer textureId returns string
 native SetFrameBackdropTexture							takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean allowTransparency, boolean blend, string borderTextureFile, integer borderFlags, boolean isControlBackdrop returns nothing
 native SetFrameTextureEx								takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean blend, string borderTextureFile, integer borderFlags returns nothing
 native SetFrameTexture									takes framehandle whichFrame, string textureFile, integer textureId, boolean blend returns nothing
