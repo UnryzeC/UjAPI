@@ -158,3 +158,5 @@ CBuffPossessionCaster
 CBuffSoulTrapVision
 CBuffPolymorph
 CBuffHex
+CBuffAcidBomb
+CBuffSlowPoison
