@@ -43,6 +43,9 @@ Reserved for in-depth explanation...
 ### Creator/Developer:
 * Unryze (me) - creating and maintaining UjAPI.
 
+### Contributors:
+* GPSProlapse - for helping me embed AngelScript.
+
 ### Additonal Thanks To:
 * Ev3nt
 * Symmetra
