@@ -1464,6 +1464,8 @@ globals
 	constant integer					CHAT_RECIPIENT_REFEREES										= 2
 	constant integer					CHAT_RECIPIENT_OBSERVERS									= 2
 	constant integer					CHAT_RECIPIENT_PRIVATE										= 3
+	constant integer					CHAT_RECIPIENT_UNKNOWN										= 4
+	// use CHAT_RECIPIENT_UNKNOWN to ignore text stating to which recipient the text was sent.
 
 	//===================================================
 	// Instanced Object Operation API constants
@@ -3135,8 +3137,7 @@ native TriggerRegisterPlayerChatEvent					takes trigger whichTrigger, player whi
 
 // EVENT_PLAYER_CHAT
 
-// returns the actual string they typed in ( same as what you registered for
-// if you required exact match )
+// returns the actual string they typed in ( same as what you registered for if you required exact match )
 constant native GetEventPlayerChatString				takes nothing returns string
 
 // returns the string that you registered for
@@ -4651,6 +4652,13 @@ native GetTimeStamp										takes boolean isLocalTime, integer isMiliseconds re
 native GetTickCount										takes nothing returns integer
 //
 
+// Benchmark API
+native BenchmarkStart									takes nothing returns nothing
+native BenchmarkEnd										takes nothing returns nothing
+native BenchmarkReset									takes nothing returns nothing
+native BenchmarkGetElapsed								takes integer benchType returns string // 0 for nanoseconds, 1 for microseconds, 2 for milliseconds
+//
+
 // Screen API
 native SetScreenFieldOfView								takes real fov returns nothing
 native SetWidescreenState								takes boolean flag returns nothing
@@ -4699,8 +4707,11 @@ native GetMouseWorldZ									takes nothing returns real
 // Chat API
 native DisplayWarningMessage							takes player toPlayer, string message returns nothing
 native DisplayTimedWarningMessage						takes player toPlayer, real duration, string message returns nothing
+// if whichPlayer is null, then players name text will be omitted, set recipient to CHAT_RECIPIENT_UNKNOWN to omit associated text.
+native DisplayChatMessageEx								takes player whichPlayer, integer recipient, real duration, boolean addToLog, string message returns nothing
 native DisplayChatMessage								takes player whichPlayer, integer recipient, string message returns nothing
 native DisplayTimedChatMessage							takes player whichPlayer, integer recipient, real duration, string message returns nothing
+//
 native DisplayTopMessage								takes player toPlayer, string message returns nothing
 native DisplayTimedTopMessage							takes player toPlayer, real duration, string message returns nothing
 //
@@ -6139,6 +6150,26 @@ native UnitGetUpgradeRemainingTime						takes unit whichUnit returns real
 native UnitSetUpgradeRemainingTime						takes unit whichUnit, real time returns nothing
 //
 
+// Unit Training API
+native UnitGetTrainingProgress 							takes unit whichUnit returns real
+native UnitSetTrainingProgress 							takes unit whichUnit, integer trainingPercentage returns nothing
+native UnitGetTrainingRemainingTime						takes unit whichUnit returns real
+native UnitSetTrainingRemainingTime						takes unit whichUnit, real time returns nothing
+native UnitGetTrainingTypeIdAt 							takes unit whichUnit, integer index returns integer
+native UnitCancelTrainingAt 							takes unit whichUnit, integer index returns nothing
+native UnitSetTrainingTypeIdAt 							takes unit whichUnit, integer index, integer typeId returns nothing
+//
+
+// Unit Research API
+native UnitGetResearchProgress 							takes unit whichUnit returns real
+native UnitSetResearchProgress 							takes unit whichUnit, integer trainingPercentage returns nothing
+native UnitGetResearchRemainingTime						takes unit whichUnit returns real
+native UnitSetResearchRemainingTime						takes unit whichUnit, real time returns nothing
+native UnitGetResearchTypeIdAt 							takes unit whichUnit, integer index returns integer
+native UnitCancelResearchAt 							takes unit whichUnit, integer index returns nothing
+native UnitSetResearchTypeIdAt 							takes unit whichUnit, integer index, integer typeId returns nothing
+//
+
 // Illusion API
 // All created illusions are created without timed life, this can and should be handled by the mapmaker.
 native CreateIllusion									takes player whichPlayer, integer unitTypeId, real x, real y, real facing returns unit
@@ -6343,7 +6374,15 @@ native IsFrameRegion									takes framehandle whichFrame returns boolean
 native IsFrameSimple									takes framehandle whichFrame returns boolean
 native IsFrameComplex									takes framehandle whichFrame returns boolean
 native DestroyFrame										takes framehandle whichFrame returns nothing
+native GetFrameScreenX									takes framehandle whichFrame returns real
+native GetFrameScreenY									takes framehandle whichFrame returns real
+native GetFrameRelativePointParent						takes framehandle whichFrame, framepointtype point returns framehandle
+native GetFrameRelativePointType						takes framehandle whichFrame, framepointtype point returns framepointtype
+native GetFrameRelativePointX							takes framehandle whichFrame, framepointtype point returns real
+native GetFrameRelativePointY							takes framehandle whichFrame, framepointtype point returns real
 native SetFrameRelativePoint							takes framehandle whichFrame, framepointtype point, framehandle relativeFrame, framepointtype relativePoint, real x, real y returns nothing
+native GetFrameAbsolutePointX							takes framehandle whichFrame, framepointtype point returns real
+native GetFrameAbsolutePointY							takes framehandle whichFrame, framepointtype point returns real
 native SetFrameAbsolutePoint							takes framehandle whichFrame, framepointtype point, real x, real y returns nothing
 native ClearFrameAllPoints								takes framehandle whichFrame returns nothing
 native SetFrameAllPoints								takes framehandle whichFrame, framehandle relativeFrame returns boolean
@@ -6432,6 +6471,11 @@ native SetFrameCheckState								takes framehandle whichFrame, boolean isCheck r
 
 native SetMiniMapTexture								takes string texturePath returns boolean
 
+// CSlider / CScollBar API | Scrollbar extends slider, so both use the same logic.
+native GetFrameSlider 									takes framehandle whichFrame returns framehandle
+native AddFrameSlider 									takes framehandle whichFrame returns framehandle
+//
+
 // CListBox API
 native GetFrameItemsBorder 								takes framehandle listBox returns real
 native SetFrameItemsBorder 								takes framehandle listBox, real value returns nothing
@@ -6457,6 +6501,9 @@ native SetFrameItemOwner								takes framehandle listBoxItem, framehandle which
 
 // Backdrop API | Border API | For corner flags refer to BORDER_FLAG. For CBackdropFrame and its children and for CSimpleFrame, backdropId has to be always 0.
 // For CFrames that contain backdrops, use ids to differentiate between them, this is similar to CSimpleButton states, etc.
+native GetFrameBackdrop									takes framehandle whichFrame, integer backdropId returns framehandle // will return itself if frame is CBackdropFrame or CSimpleFrame.
+native IsFrameBorderEnabled 							takes framehandle whichFrame, integer backdropId returns boolean
+native SetFrameBorderEnabled 							takes framehandle whichFrame, integer backdropId, boolean isEnable returns nothing
 native GetFrameBorderFlags 								takes framehandle whichFrame, integer backdropId returns integer
 native SetFrameBorderFlags 								takes framehandle whichFrame, integer backdropId, integer cornerFlag returns nothing
 native GetFrameBorderSize 								takes framehandle whichFrame, integer backdropId returns real
