@@ -36,9 +36,9 @@
 "EDITBOX" // Extends CONTROL, contains multiple TEXT frames, mainly used to "send" written text or utilise it in some way.
 "GLUEEDITBOX" // Extends EDITBOX, allows this frame to be "glued" to SIMPLEFRAME and its children, the rest is fully equal to EDITBOX.
 "SLASHCHATBOX" // Extends EDITBOX, has an additional event tied to it and its structure is slightly bigger than EDITBOX, the rest is fully equal to EDITBOX.
-"LISTBUTTON" // Extends CONTROL, TBD...
+"LISTBUTTON" // Extends CONTROL, seems like a way to contain BUTTONs in a "top-down list".
 "RADIOGROUP" // Extends CONTROL, facilitates CHECKBOX, only 1 CHECKBOX can be active at a time, used in chat frame, where you decide to whom chat message is supposed to be sent, i.e. "all/allies/private".
-"MESSAGEFRAME" // Extends CFrame (no base name), TBD
+"MESSAGE" // Extends FRAME, facilitates TEXT, example would be CChatDialog or CLodDialog.
 
 "SIMPLETOP" // Frame that facilitates all CSimpleRegion and CSimpleFrame based frames.
 "SIMPLEFRAME" // Base for all SimpleFrames apart from SIMPLETEXT and SIMPLETEXTURE neither is available via default API, UjAPI got you covered.
@@ -46,7 +46,7 @@
 "SIMPLESTATUSBAR" // Used for HP/MB bars.
 "SIMPLEBUTTON" // Extends SIMPLEFRAME. Logically same as CONTROL, but based on SIMPLEFRAME.
 "SIMPLECHECKBOX" // Extends SIMPLEBUTTON. Logically same as CHECKBOX, but based on SIPLEFRAME.
-"SIMPLEMESSAGEFRAME" // Used for basic DisplayTextToPlayer, etc.
+"SIMPLEMESSAGEFRAME" // Extends SIMPLEFRAME, a simpler version of MESSAGE. Used for basic DisplayTextToPlayer, etc.
 
 // UjAPI BASE FRAME TYPES
 
