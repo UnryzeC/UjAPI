@@ -1,0 +1,46 @@
+// DEFAULT BASE FRAME TYPES
+
+"BASE" // Crashes, probably not handled correctly, or not suitable for usage on its own.
+"COMPLEXFRAME" // Does nothing, probably is handled incorrectly.
+
+"MODEL" // Extends CFrame (no base name), facilitates models, not really used on its own.
+"BACKDROP" // Extends MODEL, serves as "base" to facilitate textures, the rest copies logic of MODEL.
+
+"HIGHLIGHT" // Extends CFrame (no base name), facilitates texture and is used to "highlight" another frame, frames that support highlighting usually have 2 of them, one for HOVER and one for FOCUS.
+
+"SPRITE" // Extends CFrame (no base name), which is used mainly for displaying models, such as Cooldown or even portrait (Portrait in fact extends BUTTON, which extends CONTROL).
+"STATUSBAR" // Extends SPRITE, which is used for cooldown drawing, this allows for easier control of current animation percent, whereas SPRITE doesn't.
+"CONTROL" // Extends SPRITE, serves as a base frame type for most of the internal frames.
+
+"TEXT" // Extends CONTROL, this contans texts which can be multi-line.
+"BUTTON" // Extends CONTROL, serves as a "container" for multiple BACKDROPs, these serve as states (i.e. textures).
+"TEXTBUTTON" // Extends BUTTON, simply adds TEXT as a child frame, the rest is fully equal to BUTTON.
+"CHECKBOX" // Extends BUTTON, adds CHECKED/UNCHECKED states over default, the rest is fully equal to BUTTON.
+"LISTBOXITEM" // Extends TEXT and serves as a basic frame, this can actually contain a frame inside of itself.
+"LISTBOX" // Facilitates LISTBOXITEMs, in a SCROLLFRAME with a SCROLLBAR.
+"MENU" // Facilitates LISTBOXITEMs, similar to LISTBOX, but has no SCROLLBAR, used in POPUPMENU.
+"POPUPMENU" // Facilitates TEXT inside of itself and creates child MENU.
+
+"SCROLL" // Extends CFrame (no base name), facilitates frames on itself and allows SLIDER/SCROLLBAR to navigate through it.
+"SLIDER" // Extends CONTROL, serves as percentage navigation on SCROLL when BUTTON frame is moved.
+"SCROLLBAR" // Extends SLIDER, copies the logic of SLIDER but also adds "arrows" up and down for additional way of navigation.
+"DIALOG" // Extends CFrame (no base name), serves as a base for frames like TimerDialog and even LeaderBoard.
+"CHATDISPLAY" // Probably used in Battle.net/Local Game lobbies.
+"TEXTAREA" // Extends CONTROL, facilitates TEXT frames, additionally can have a SCROLLBAR.
+"EDITBOX" // Extends CONTROL, contains multiple TEXT frames, mainly used to "send" written text or utilise it in some way.
+"LISTBUTTON" // Extends CONTROL, TBD...
+"RADIOGROUP" // Extends CONTROL, facilitates CHECKBOX, only 1 CHECKBOX can be active at a time, used in chat frame, where you decide to whom chat message is supposed to be sent, i.e. "all/allies/private".
+"MESSAGEFRAME" // Extends CFrame (no base name), TBD
+
+"SIMPLETOP" // Frame that facilitates all CSimpleRegion and CSimpleFrame based frames.
+"SIMPLEFRAME" // Base for all SimpleFrames apart from SIMPLETEXT and SIMPLETEXTURE neither is available via default API, UjAPI got you covered.
+"SIMPLEGRID" // Extends SIMPLEFRAME. Allows to create actual "grid", this simply controls the placement of items based on rows/columns and total width/height.
+"SIMPLESTATUSBAR" // Used for HP/MB bars.
+"SIMPLEBUTTON" // Extends SIMPLEFRAME. Logically same as CONTROL, but based on SIMPLEFRAME.
+"SIMPLECHECKBOX" // Extends SIMPLEBUTTON. Logically same as CHECKBOX, but based on SIPLEFRAME.
+"SIMPLEMESSAGEFRAME" // Used for basic DisplayTextToPlayer, etc.
+
+// UjAPI BASE FRAME TYPES
+
+"SIMPLETEXT" // Extends CSimpleRegion (no base name). Logically similar to TEXT, but based on CSimpleRegion.
+"SIMPLETEXTURE" // Extends CSimpleRegion (no base name). Logically similar to BACKDROP, but based on CSimpleRegion.
