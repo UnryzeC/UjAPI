@@ -1,5 +1,4 @@
 // DEFAULT BASE FRAME TYPES
-
 "BASE",					// Crashes, probably not handled correctly, or not suitable for usage on its own.
 "LAYER",				// Not a real type, but is used in FRAME as its base structure.
 "FRAME",				// Extends LAYER, serves as base for any and all frames. Internal name COMPLEXFRAME.
@@ -41,7 +40,9 @@
 "MESSAGE",				// Extends FRAME, facilitates TEXT, example would be CChatDialog or CLodDialog.
 
 "SIMPLETOP",			// Extends FRAME, facilitates all CSimpleRegion and CSimpleFrame based frames.
-"SIMPLEFRAME",			// Base for all SimpleFrames apart from SIMPLETEXT and SIMPLETEXTURE neither is available via default API, UjAPI got you covered.
+
+"LAYOUT"				// Not a real type, but is used in SIMPLEFRAME and SIMPLEREGION as its base structure.
+"SIMPLEFRAME",			// Extends LAYOUT, serves as base for all SimpleFrames apart from SIMPLETEXT and SIMPLETEXTURE neither is available via default API, UjAPI got you covered.
 "SIMPLEGRID",			// Extends SIMPLEFRAME. Allows to create actual "grid", this simply controls the placement of items based on rows/columns and total width/height.
 "SIMPLESTATUSBAR",		// Extends SIMPLEFRAME. Used for HP/MB bars.
 "SIMPLEBUTTON",			// Extends SIMPLEFRAME. Logically same as CONTROL, but based on SIMPLEFRAME.
@@ -50,5 +51,6 @@
 
 // UjAPI BASE FRAME TYPES
 
-"SIMPLETEXT",			// Extends CSimpleRegion (no base name). Logically similar to TEXT, but based on CSimpleRegion.
-"SIMPLETEXTURE", 		// Extends CSimpleRegion (no base name). Logically similar to BACKDROP, but based on CSimpleRegion.
+"SIMPLEREGION",			// Not a real type, but is used in SIMPLETEXT and SIMPLETEXTURE as its base structure.
+"SIMPLETEXT",			// Extends SIMPLEREGION. Logically similar to TEXT, but based on CSimpleRegion.
+"SIMPLETEXTURE", 		// Extends SIMPLEREGION. Logically similar to BACKDROP, but based on CSimpleRegion.
