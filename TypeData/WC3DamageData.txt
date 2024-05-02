@@ -31,7 +31,7 @@ enum class DAMAGE_FLAG : uint32_t
 	UNK_27		= 1U << 27,
 	UNK_28		= 1U << 28,
 	UNK_29		= 1U << 29,
-	ACTUAL_ATTACK	= 1U << 30,
+	ACTUAL_ATTACK	= 1U << 30, // UjAPI flag
 	UNK_31		= 1U << 31,
 };
 
