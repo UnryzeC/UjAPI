@@ -1224,7 +1224,8 @@ globals
 	constant frameeventtype				FRAMEEVENT_CHECKBOX_CHECKED									= ConvertFrameEventType(7)
 	constant frameeventtype				FRAMEEVENT_CHECKBOX_UNCHECKED								= ConvertFrameEventType(8)
 	constant frameeventtype				FRAMEEVENT_EDITBOX_TEXT_CHANGED								= ConvertFrameEventType(9)
-	constant frameeventtype				FRAMEEVENT_POPUPMENU_ITEM_CHANGED							= ConvertFrameEventType(10)
+	constant frameeventtype				FRAMEEVENT_POPUPMENU_ITEM_CHANGED							= ConvertFrameEventType(10) // This also works with CListBox and CMenu
+	constant frameeventtype				FRAMEEVENT_FRAME_ITEM_CHANGED								= ConvertFrameEventType(10) // More streamlined version, as not only CPopupMenu can have ITEM_CHANGED events.
 	constant frameeventtype				FRAMEEVENT_MOUSE_DOUBLECLICK								= ConvertFrameEventType(11)
 	constant frameeventtype				FRAMEEVENT_SPRITE_ANIM_UPDATE								= ConvertFrameEventType(12)
 	constant frameeventtype				FRAMEEVENT_SLIDER_VALUE_CHANGED								= ConvertFrameEventType(13)
@@ -2630,7 +2631,8 @@ globals
 	constant controlstyleflag 			CONTROL_STYLE_RELEASE_NOTIFY								= ConvertControlStyleFlag(4)
 	constant controlstyleflag 			CONTROL_STYLE_DRAG											= ConvertControlStyleFlag(8)
 	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT_ON_FOCUS							= ConvertControlStyleFlag(16)
-	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT_FOCUS								= ConvertControlStyleFlag(32)
+	constant controlstyleflag 			CONTROL_STYLE_DRAW											= ConvertControlStyleFlag(32)
+	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT_FOCUS								= ConvertControlStyleFlag(32) // For compat
 	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT_ON_MOUSE_OVER						= ConvertControlStyleFlag(64)
 	constant controlstyleflag 			CONTROL_STYLE_SLIDER_STEP									= ConvertControlStyleFlag(128)
 	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT										= ConvertControlStyleFlag(256)
@@ -4309,7 +4311,9 @@ native BitwiseAND										takes integer bit1, integer bit2 returns integer
 native BitwiseOR										takes integer bit1, integer bit2 returns integer
 native BitwiseXOR										takes integer bit1, integer bit2 returns integer
 native BitwiseShiftLeft									takes integer i, integer bitsToShift returns integer
+native BitwiseShiftLeftLogical							takes integer i, integer bitsToShift returns integer
 native BitwiseShiftRight								takes integer i, integer bitsToShift returns integer
+native BitwiseShiftRightLogical							takes integer i, integer bitsToShift returns integer
 native BitwiseToInteger									takes integer byte1, integer byte2, integer byte3, integer byte4 returns integer
 
 native Id2String										takes integer i returns string
@@ -5354,6 +5358,8 @@ native GetBuffTypeId									takes buff whichBuff returns integer
 native GetBuffBaseTypeId								takes buff whichBuff returns integer
 native GetBuffOwner										takes buff whichbuff returns unit
 native SetBuffOwner										takes buff whichBuff, unit whichUnit returns nothing
+native GetBuffOwningAbility								takes buff whichbuff returns ability // experimental
+native SetBuffOwningAbility								takes buff whichBuff, ability whichAbility returns nothing // experimental
 native IsBuffDispellable								takes buff whichBuff returns boolean
 native SetBuffDispellable								takes buff whichBuff, boolean isSet returns nothing
 native GetBuffLevel										takes buff whichBuff returns integer
@@ -6003,11 +6009,13 @@ native UnitUnapplyUpgrades								takes unit whichUnit returns nothing
 native UnitApplyUpgrades								takes unit whichUnit returns nothing
 
 // Unit Ability API
+native UnitAddAbilityEx									takes unit whichUnit, integer abilCode, boolean checkForDuplicates returns boolean
+native UnitRemoveAbilityEx								takes unit whichUnit, integer abilCode, boolean removeDuplicates returns boolean
+
+native CountUnitAbilities								takes unit whichUnit, boolean alsoCountBuffs returns integer
 native GetUnitAbility									takes unit whichUnit, integer aid returns ability
 native GetUnitAbilityEx									takes unit whichUnit, integer aid, integer id returns ability  // Allows you to search through duplicates.
 native GetUnitAbilityByIndex							takes unit whichUnit, integer index returns ability
-native UnitAddAbilityEx									takes unit whichUnit, integer abilCode, boolean checkForDuplicates returns boolean
-native UnitRemoveAbilityEx								takes unit whichUnit, integer abilCode, boolean removeDuplicates returns boolean
 native IsUnitAbilityVisible								takes unit whichUnit, integer abilCode returns boolean
 native ShowUnitAbility									takes unit whichUnit, integer abilCode, boolean show returns nothing
 native ShowUnitAbilityEx								takes unit whichUnit, integer abilCode, boolean show, boolean checkDuplicates returns nothing
@@ -6018,13 +6026,12 @@ native EnableUnitAbilityEx								takes unit whichUnit, integer abilCode, boolea
 //
 
 // Unit Buff API
-// In very early stages of development, may be unstable for now.
 native UnitAddBuff										takes unit whichUnit, buff whichBuff returns boolean // Does not add duplicates!
 native UnitAddBuffEx									takes unit whichUnit, buff whichBuff, boolean checkForDuplicates returns boolean
-
 native UnitAddBuffById									takes unit whichUnit, integer buffId returns boolean // Does not add duplicates!
 native UnitAddBuffByIdEx								takes unit whichUnit, integer buffId, boolean checkForDuplicates returns boolean
-//
+
+native CountUnitBuffs									takes unit whichUnit returns integer
 native GetUnitBuff										takes unit whichUnit, integer buffId returns buff
 native GetUnitBuffEx									takes unit whichUnit, integer buffId, integer id returns buff // Allows you to search through duplicates.
 native GetUnitBuffByIndex								takes unit whichUnit, integer index returns buff
@@ -6362,6 +6369,7 @@ native SetProjectileAnimationOffsetPercent				takes projectile whichProjectile, 
 native GetProjectileSource								takes projectile whichProjectile returns unit
 native SetProjectileSource								takes projectile whichProjectile, unit whichUnit returns nothing
 native GetProjectileSourceAbility						takes projectile whichProjectile returns ability
+native SetProjectileSourceAbility						takes projectile whichProjectile, ability whichAbility returns nothing
 native GetProjectileTargetX								takes projectile whichProjectile returns real
 native SetProjectileTargetX								takes projectile whichProjectile, real x returns nothing
 native GetProjectileTargetY								takes projectile whichProjectile returns real
@@ -6451,6 +6459,10 @@ native GetCSimpleFontStringByName						takes string frameName, integer createCon
 native GetCSimpleTextureByName							takes string frameName, integer createContext returns framehandle
 native GetCSimpleFrameByName							takes string frameName, integer createContext returns framehandle
 native GetFrameUnderCursor								takes nothing returns framehandle
+native GetFrameChildrenCountEx							takes framehandle whichFrame, integer listId returns integer // listId: CFrames: 0 for default | 1 for layouts (will return CLayer) | CSimpleFrames 0 - 6 | CSimpleRegions any number, as they only have 1 child node.
+native GetFrameChildrenCount							takes framehandle whichFrame returns integer
+native GetFrameChildEx									takes framehandle whichFrame, integer listId, integer index returns framehandle
+native GetFrameChild									takes framehandle whichFrame, integer index returns framehandle
 native GetFrameTypeName									takes framehandle whichFrame returns string
 native GetFrameName										takes framehandle whichFrame returns string
 native SetFrameName										takes framehandle whichFrame, string contextName returns nothing
@@ -6464,7 +6476,7 @@ native GetFrameText										takes framehandle whichFrame returns string
 native AddFrameText										takes framehandle whichFrame, string text returns nothing
 native SetFrameTextSizeLimit							takes framehandle whichFrame, integer textSize returns nothing
 native GetFrameTextSizeLimit							takes framehandle whichFrame returns integer
-native GetFrameTextColourEx								takes framehandle whichFrame, integer stateId returns integer // 0 = font | 1 = highlighted | 2 = disabled | 3 = shadow
+native GetFrameTextColourEx								takes framehandle whichFrame, integer stateId returns integer // CSimpleFontString: 0 - normal, 1 - shadow | CTextFrame: 0 = font | 1 = highlighted | 2 = disabled | 3 = shadow
 native SetFrameTextColourEx								takes framehandle whichFrame, integer stateId, integer colour returns nothing
 native GetFrameTextColour								takes framehandle whichFrame returns integer
 native SetFrameTextColour								takes framehandle whichFrame, integer colour returns nothing
@@ -6519,11 +6531,12 @@ native SetFramePriority									takes framehandle whichFrame, integer priority r
 native SetFrameParent									takes framehandle whichFrame, framehandle whichParent returns nothing
 native GetFrameParent									takes framehandle whichFrame returns framehandle
 native SetFrameFont										takes framehandle whichFrame, string fontName, real size, integer flags returns nothing
+// CSimpleFontString: 0 - x Scale, 1 - y Scale, 2 - x Shadow, 3 - y Shadow | CTextFrame: 0 - x, 1 - y, 2 - x Shadow, 3 - y Shadow, 4 = FontJustificationOffset | CEditBox: 0 - x | 1 - y | 2 - text scale "Border Scale"
+native GetFrameTextAlignmentValue						takes framehandle whichFrame, integer id returns real
+native SetFrameTextAlignmentValue						takes framehandle whichFrame, integer id, real offset returns nothing
 native SetFrameTextAlignment							takes framehandle whichFrame, textaligntype verticalAlign, textaligntype horizontalAlign returns nothing
 native SetFrameTextVerticalAlignment					takes framehandle whichFrame, textaligntype verticalAlign returns nothing
 native SetFrameTextHorizontalAlignment					takes framehandle whichFrame, textaligntype horizontalAlign returns nothing
-native GetFrameChildrenCount							takes framehandle whichFrame returns integer
-native GetFrameChild									takes framehandle whichFrame, integer index returns framehandle
 native GetFrameCheckState								takes framehandle whichFrame returns boolean
 native SetFrameCheckState								takes framehandle whichFrame, boolean isCheck returns nothing
 //
@@ -6535,22 +6548,22 @@ native GetFrameSlider 									takes framehandle whichFrame returns framehandle
 native AddFrameSlider 									takes framehandle whichFrame returns framehandle
 //
 
-// CListBox API
-native GetFrameItemsBorder 								takes framehandle listBox returns real
-native SetFrameItemsBorder 								takes framehandle listBox, real value returns nothing
-native GetFrameItemsHeight 								takes framehandle listBox returns real
-native SetFrameItemsHeight 								takes framehandle listBox, real value returns nothing
+// CListBox / CMenu / CPopupMenu / CRadioGroup API
+native GetFrameItemsBorder 								takes framehandle whichFrame returns real
+native SetFrameItemsBorder 								takes framehandle whichFrame, real value returns nothing
+native GetFrameItemsHeight 								takes framehandle whichFrame returns real
+native SetFrameItemsHeight 								takes framehandle whichFrame, real value returns nothing
 
-// These functions return CListBoxItem frames.
-native AddFrameListItem									takes framehandle listBox, string text, framehandle whichFrame returns framehandle
-native GetFrameListItemCount							takes framehandle listBox returns integer
-native GetFrameListItemById								takes framehandle listBox, integer id returns framehandle
-native SetFrameListItemById								takes framehandle listBox, integer id, framehandle whichFrame returns nothing
-native GetFrameListItemByFrame							takes framehandle listBox, framehandle frameToFind returns framehandle
-native SetFrameListItemByFrame							takes framehandle listBox, framehandle frameToFind, framehandle whichFrame returns nothing
-native RemoveFrameListItem								takes framehandle listBox, framehandle whichFrame returns nothing // this uses CListBoxItem
-native RemoveFrameListItemById							takes framehandle listBox, integer id returns nothing
-native RemoveFrameListItemByFrame						takes framehandle listBox, framehandle whichFrame returns nothing
+// These functions return CListBoxItem frames for CListBox / CMenu / CPopupMenu and CCheckBox/CGlueCheckBox for CRadioGroup.
+native AddFrameListItem									takes framehandle whichFrame, string text, framehandle frameToAdd returns framehandle
+native GetFrameListItemCount							takes framehandle whichFrame returns integer
+native GetFrameListItemById								takes framehandle whichFrame, integer id returns framehandle
+native SetFrameListItemById								takes framehandle whichFrame, integer id, framehandle listBoxItem returns nothing
+native GetFrameListItemByFrame							takes framehandle whichFrame, framehandle frameToFind returns framehandle
+native SetFrameListItemByFrame							takes framehandle whichFrame, framehandle frameToFind, framehandle listBoxItem returns nothing
+native RemoveFrameListItem								takes framehandle whichFrame, framehandle listBoxItem returns nothing // this uses CListBoxItem
+native RemoveFrameListItemById							takes framehandle whichFrame, integer id returns nothing
+native RemoveFrameListItemByFrame						takes framehandle whichFrame, framehandle listBoxItem returns nothing
 //
 
 // CListBoxItem API
@@ -6564,13 +6577,13 @@ native GetFrameHighlightTexture							takes framehandle whichFrame, integer high
 native SetFrameHighlightTexture							takes framehandle whichFrame, integer highlightId, string texturePath, blendmode blendMode returns nothing // 0 - FOCUS | 1 - ON HOVER
 //
 
-// Backdrop API | Border API | For corner flags refer to BORDER_FLAG. For CBackdropFrame and its children and for CSimpleFrame, backdropId has to be always 0.
+// Backdrop API | Border API | For border flags refer to BORDER_FLAG. For CBackdropFrame and its children and for CSimpleFrame, backdropId has to be always 0.
 // For CFrames that contain backdrops, use ids to differentiate between them, this is similar to CSimpleButton states, etc.
 native GetFrameBackdrop									takes framehandle whichFrame, integer backdropId returns framehandle // will return itself if frame is CBackdropFrame or CSimpleFrame.
 native IsFrameBorderEnabled 							takes framehandle whichFrame, integer backdropId returns boolean
 native SetFrameBorderEnabled 							takes framehandle whichFrame, integer backdropId, boolean isEnable returns nothing
 native GetFrameBorderFlags 								takes framehandle whichFrame, integer backdropId returns integer
-native SetFrameBorderFlags 								takes framehandle whichFrame, integer backdropId, integer cornerFlag returns nothing
+native SetFrameBorderFlags 								takes framehandle whichFrame, integer backdropId, integer borderFlag returns nothing
 native GetFrameBorderSize 								takes framehandle whichFrame, integer backdropId returns real
 native SetFrameBorderSize 								takes framehandle whichFrame, integer backdropId, real value returns nothing
 native GetFrameBackgroundSize 							takes framehandle whichFrame, integer backdropId returns real
@@ -6600,6 +6613,7 @@ native GetTriggerFrameReal								takes nothing returns real // aka GetTriggerFr
 native GetTriggerFrameBoolean							takes nothing returns boolean
 native GetTriggerFrameString							takes nothing returns string // aka GetTriggerFrameText
 native GetTriggerFrameMouseButton						takes nothing returns mousebuttontype
+native GetTriggerFrameTargetFrame						takes nothing returns framehandle
 
 native TriggerRegisterFrameEvent						takes trigger whichTrigger, framehandle whichFrame, frameeventtype frameEvent returns event
 native RegisterFrameMouseButton							takes framehandle whichFrame, mousebuttontype whichButton, boolean isAdd returns nothing // Add/Remove for event handling on Left/Middle/Right Mouse buttons, works for any CSimpleButton / CControl and whichever frame extends them.
