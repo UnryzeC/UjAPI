@@ -15,7 +15,7 @@ type war3image											extends agent
 type sprite												extends war3image
 type projectile											extends war3image
 type doodad												extends war3image
-type framehandle										extends handle
+type framehandle										extends agent
 type commandbuttoneffect								extends handle
 type originframetype									extends handle
 type framepointtype										extends handle
@@ -71,9 +71,10 @@ type variabletype										extends handle
 type renderstage										extends handle
 type connectiontype										extends handle
 type jassthread											extends handle
-type handlelist											extends handle
-type textfilehandle										extends handle
+type handlelist											extends agent
+type textfilehandle										extends agent
 type orderhandle										extends agent
+type tradestate											extends handle
 
 constant native ConvertProjectileType					takes integer i returns projectiletype
 constant native ConvertMappedField						takes integer i returns mappedfield
@@ -133,6 +134,7 @@ constant native ConvertControlStyleFlag					takes integer i returns controlstyle
 constant native ConvertFrameState						takes integer i returns framestate
 constant native ConvertAbilityType						takes integer i returns abilitytype
 constant native ConvertConnectionType					takes integer i returns connectiontype
+constant native ConvertTradeState						takes integer i returns tradestate
 
 constant native GetJassArrayLimit						takes nothing returns integer
 constant native GetTextTagLimit							takes nothing returns integer
@@ -289,6 +291,7 @@ globals
 	constant gameevent					EVENT_GAME_WIDGET_DAMAGED									= ConvertGameEvent(806)
 	constant gameevent					EVENT_GAME_WIDGET_DEATH										= ConvertGameEvent(807)
 
+	constant gameevent					EVENT_GAME_HACK_DETECTED									= ConvertGameEvent(850)
 	//===================================================
 	// For use with TriggerRegisterPlayerEvent
 	//===================================================
@@ -306,6 +309,8 @@ globals
 	constant playerevent				EVENT_PLAYER_WIDGET_CLICK									= ConvertPlayerEvent(322)
 	constant playerevent				EVENT_PLAYER_WIDGET_GHOST_CLICK								= ConvertPlayerEvent(323)
 	constant playerevent				EVENT_PLAYER_TERRAIN_CLICK									= ConvertPlayerEvent(324)
+
+	constant playerevent				EVENT_PLAYER_TRADE_RESOURCE									= ConvertPlayerEvent(350)
 	//===================================================
 	// For use with TriggerRegisterPlayerUnitEvent
 	//===================================================
@@ -314,6 +319,10 @@ globals
 	constant playerunitevent			EVENT_PLAYER_UNIT_DAMAGING									= ConvertPlayerUnitEvent(315)
 	constant playerunitevent			EVENT_PLAYER_UNIT_ATTACK_FINISHED							= ConvertPlayerUnitEvent(317)
 	constant playerunitevent			EVENT_PLAYER_UNIT_DECAY_FINISHED							= ConvertPlayerUnitEvent(319)
+ 
+	constant playerunitevent			EVENT_PLAYER_UNIT_REINCARNATION_START						= ConvertPlayerUnitEvent(325)
+	constant playerunitevent			EVENT_PLAYER_UNIT_REINCARNATION_END							= ConvertPlayerUnitEvent(327)
+	constant playerunitevent			EVENT_PLAYER_UNIT_REVIVED									= ConvertPlayerUnitEvent(329)
 
 	//===================================================
 	// For use with TriggerRegisterUnitEvent
@@ -322,6 +331,10 @@ globals
 	constant unitevent					EVENT_UNIT_DAMAGING											= ConvertUnitEvent(314)
 	constant unitevent					EVENT_UNIT_ATTACK_FINISHED									= ConvertUnitEvent(316)
 	constant unitevent					EVENT_UNIT_DECAY_FINISHED									= ConvertUnitEvent(318)
+
+	constant unitevent					EVENT_UNIT_REINCARNATION_START								= ConvertUnitEvent(326)
+	constant unitevent					EVENT_UNIT_REINCARNATION_END								= ConvertUnitEvent(328)
+	constant unitevent					EVENT_UNIT_REVIVED											= ConvertUnitEvent(330)
 
 	//===================================================
 	// For use with TriggerRegisterPlayerUnitEvent
@@ -1560,6 +1573,9 @@ globals
 	constant unitintegerfield			UNIT_IF_COLLISION_TYPE										= ConvertUnitIntegerField('ucot')
 	constant unitintegerfield			UNIT_IF_PATHING_AI											= ConvertUnitIntegerField('upai')
 	constant unitintegerfield			UNIT_IF_PATHING_TYPE										= ConvertUnitIntegerField('upat')
+	constant unitintegerfield			UNIT_IF_SEPARATION_GROUP_NUMBER								= ConvertUnitIntegerField('urpg')
+	constant unitintegerfield			UNIT_IF_SEPARATION_PARAMETER								= ConvertUnitIntegerField('urpp')
+	constant unitintegerfield			UNIT_IF_SEPARATION_PRIORITY									= ConvertUnitIntegerField('urpr')
 
 	constant unitrealfield				UNIT_RF_STRENGTH_PER_LEVEL									= ConvertUnitRealField('ustp')
 	constant unitrealfield				UNIT_RF_AGILITY_PER_LEVEL									= ConvertUnitRealField('uagp')
@@ -1596,6 +1612,11 @@ globals
 	constant unitrealfield				UNIT_RF_CAST_POINT											= ConvertUnitRealField('ucpt')
 	constant unitrealfield				UNIT_RF_MINIMUM_ATTACK_RANGE								= ConvertUnitRealField('uamn')
 	constant unitrealfield				UNIT_RF_COLLISION_SIZE										= ConvertUnitRealField('ucol')
+	constant unitrealfield				UNIT_RF_HEIGHT												= ConvertUnitRealField('umvh')
+	constant unitrealfield				UNIT_RF_HEIGHT_MINIMUM										= ConvertUnitRealField('umvf')
+	constant unitrealfield				UNIT_RF_SPEED_BASE											= ConvertUnitRealField('umvs')
+	constant unitrealfield				UNIT_RF_SPEED_MINIMUM										= ConvertUnitRealField('umis')
+	constant unitrealfield				UNIT_RF_SPEED_MAXIMUM										= ConvertUnitRealField('umas')
 	// Get Only Fields
 	constant unitrealfield				UNIT_RF_HEALTH_FROM_BONUS_STRENGTH							= ConvertUnitRealField('uhs+')
 	constant unitrealfield				UNIT_RF_MANA_FROM_BONUS_INTELLIGENCE						= ConvertUnitRealField('umi+')
@@ -1616,6 +1637,7 @@ globals
 	constant unitbooleanfield			UNIT_BF_SCALE_PROJECTILES									= ConvertUnitBooleanField('uscb')
 	constant unitbooleanfield			UNIT_BF_SELECTION_CIRCLE_ON_WATER							= ConvertUnitBooleanField('usew')
 	constant unitbooleanfield			UNIT_BF_HAS_WATER_SHADOW									= ConvertUnitBooleanField('ushr')
+	constant unitbooleanfield			UNIT_BF_SEPARATION_ENABLED									= ConvertUnitBooleanField('urpo')
 
 	constant unitstringfield			UNIT_SF_HERO_ABILITY_LIST									= ConvertUnitStringField('uhab')
 	constant unitstringfield			UNIT_SF_ABILITY_LIST										= ConvertUnitStringField('uabi')
@@ -1903,6 +1925,17 @@ globals
 	constant connectiontype				CONNECTION_TYPE_LOCAL_GAME									= ConvertConnectionType(1)
 	constant connectiontype				CONNECTION_TYPE_BATTLE_NET									= ConvertConnectionType(2)
 	constant connectiontype				CONNECTION_TYPE_REPLAY										= ConvertConnectionType(3)
+
+	constant tradestate					TRADE_STATE_CANCELLED										= ConvertTradeState(1) // Blocks resource trading. Default: Off.
+	constant tradestate					TRADE_STATE_IGNORE_TRADING_LOCK								= ConvertTradeState(2) // Ignores MAP_LOCK_RESOURCE_TRADING. Default: Off.
+	constant tradestate					TRADE_STATE_IGNORE_TRADING_ALLIES_ONLY						= ConvertTradeState(4) // Ignores MAP_RESOURCE_TRADING_ALLIES_ONLY. Default: Off.
+	constant tradestate					TRADE_STATE_IGNORE_SOURCE_UPKEEP							= ConvertTradeState(8) // Ignores sent resource reduction based on upkeep %. Default: On.
+	constant tradestate					TRADE_STATE_IGNORE_SOURCE_TAX								= ConvertTradeState(16) // Ignores sent resource tax calculation. Default: On.
+	constant tradestate					TRADE_STATE_IGNORE_SOURCE_LOSS								= ConvertTradeState(32) // Ignores sent resource lost calculation, usually used by pilfer(ing). Default: On.
+	constant tradestate					TRADE_STATE_IGNORE_TARGET_UPKEEP							= ConvertTradeState(64) // Ignores received resource reduction based on upkeep %. Default: Off.
+	constant tradestate					TRADE_STATE_IGNORE_TARGET_TAX								= ConvertTradeState(128) // Ignores received resource tax calculation. Default: On.
+	constant tradestate					TRADE_STATE_IGNORE_TARGET_LOSS								= ConvertTradeState(256) // Ignores received resource lost calculation, usually used by pilfer(ing). Default: On.
+	constant tradestate					TRADE_STATE_IGNORE_NOTIFICATION								= ConvertTradeState(512) // Ignores default notification of resource trading. Default: Off.
 endglobals
 
 //================Custom natives=====================
@@ -2347,11 +2380,19 @@ native GetEnumHandle									takes nothing returns handle
 native EnumHandlesOfType								takes integer handleBaseTypeId, boolexpr filter, code handlerFunc returns nothing
 //
 
+native DestroyQuestItem									takes questitem whichQuestItem returns nothing
+
 // AntiHack API
 native AntiHackEnable									takes boolean enable returns nothing // by default only checks addresses.
-native AntiHackEnableEx									takes boolean enable, boolean isModuleCheck, boolean isProcessCheck returns nothing
-native AntiHackEnableModuleCheck						takes boolean enable returns nothing
 native AntiHackEnableProcessCheck						takes boolean enable returns nothing
+native AntiHackEnableModuleCheck						takes boolean enable returns nothing
+native AntiHackEnableKick								takes boolean enable returns nothing // default: on, this is reset, whenever AntiHack is enabled.
+native AntiHackEnableEx									takes boolean enable, boolean isModuleCheck, boolean isProcessCheck returns nothing
+
+// Trigger API
+native GetTriggerHackId									takes nothing returns integer // returns -1 for Processes/Module detections.
+native GetTriggerHackType								takes nothing returns integer // 1 - Normal | 2 - vtable | 3 - worldframe | 4 - process | 5 - window
+native GetTriggerHackLine								takes nothing returns integer // returns line number from the AntiHack.cpp.
 //
 
 //============================================================================
@@ -2387,6 +2428,12 @@ native LoadHandleList									takes hashtable table, integer parentKey, integer 
 //
 
 //============================================================================
+// Player API
+//
+native GetHostPlayer									takes nothing returns player
+//
+
+//============================================================================
 // Force API
 //
 native ForceHasPlayer									takes force whichForce, player whichPlayer returns boolean
@@ -2396,7 +2443,6 @@ native ForceCountPlayers								takes force whichForce returns integer
 //============================================================================
 // Game API
 //
-native GetHostPlayer									takes nothing returns player
 native GetConnectionType								takes nothing returns connectiontype
 native IsReplay											takes nothing returns boolean
 //
@@ -2409,6 +2455,21 @@ native GroupGetUnitByIndex								takes group whichGroup, integer index returns 
 native GroupForEachUnit									takes group whichGroup returns unit	// this mimics FristOfGroup, but each consecutive call will pick next unit. DO NOT USE this with GroupRemoveUnit, as it will break it.
 native GroupAddGroupEx									takes group destGroup, group sourceGroup returns integer
 native GroupRemoveGroupEx								takes group destGroup, group sourceGroup returns integer
+//
+
+//============================================================================
+// Player Trade Event API | EVENT_PLAYER_TRADE_RESOURCE
+native GetTradeSource									takes nothing returns player
+native SetTradeSource									takes player whichPlayer returns nothing
+native GetTradeTarget									takes nothing returns player
+native SetTradeTarget									takes player whichPlayer returns nothing
+native GetTradeGold										takes nothing returns integer
+native SetTradeGold										takes integer amount returns nothing
+native GetTradeLumber									takes nothing returns integer
+native SetTradeLumber									takes integer amount returns nothing
+native IsTradeState										takes tradestate whichTradeState returns boolean
+native SetTradeState									takes tradestate whichTradeState, boolean isSet returns nothing
+native TradePlayerResources								takes player fromPlayer, player toPlayer, integer gold, integer lumber returns nothing // This fires EVENT_PLAYER_TRADE_RESOURCE event.
 //
 
 //============================================================================
@@ -3669,6 +3730,9 @@ native GetUnitMagicResistByType							takes unit whichUnit, integer resistType r
 native GetUnitEluneMagicResist							takes unit whichUnit returns real
 native GetUnitRunicMagicResist							takes unit whichUnit returns real
 native GetUnitTotalMagicResist							takes unit whichUnit returns real
+native IsUnitFlyHeightEnabled 							takes unit whichUnit returns boolean
+native SetUnitFlyHeightEnabled 							takes unit whichUnit, boolean enable returns nothing // This is used to bypass the need to add/remove Amrf ability.
+// Gathering API
 native IsUnitGatherer									takes unit whichUnit returns boolean
 native GetUnitResourceCurrent							takes unit whichUnit returns integer
 native SetUnitResourceCurrent							takes unit whichUnit, integer amount returns nothing // only works on units that can "keep" gathered resources.
@@ -3678,6 +3742,7 @@ native GetUnitResourcePerGather							takes unit whichUnit, integer resourceType
 native SetUnitResourcePerGather							takes unit whichUnit, integer resourceType, integer amount returns nothing // for gold simply changes capacity
 native GetUnitResourceGatherInterval					takes unit whichUnit returns real // wisp only
 native SetUnitResourceGatherInterval					takes unit whichUnit, real interval returns nothing
+//
 native GetUnitCurrentSight								takes unit whichUnit returns real
 native SetUnitCurrentSight								takes unit whichUnit, real realValue returns nothing
 native GetUnitAttackRemainingCooldown					takes unit whichUnit returns real
