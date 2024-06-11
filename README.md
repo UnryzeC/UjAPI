@@ -1,5 +1,5 @@
 # UjAPI
-[GitHub Page](unryzec.github.io/UjAPI/)
+[GitHub Page](https://unryzec.github.io/UjAPI/ujapi.html)
 
 ### Personal Contacts
 - [Discord](https://discordapp.com/users/unryze)
