@@ -1,5 +1,9 @@
 # Contacts
 
-- Discord: unryze
-- VK: https://vk.com/unryze/
-- VK Group: https://vk.com/unryzeworkshop/
+### Personal
+- [Discord](https://discordapp.com/users/unryze)
+- [VK](https://vk.com/unryze/)
+
+### Groups/Channels
+- [Discord](https://discord.gg/mpvASEcujC)
+- [VK](https://vk.com/unryzeworkshop/)

@@ -1,17 +1,19 @@
 # Credits
 
-## Creator/Developer:
+## Contributors
+
+### Creator/Developer:
 * Unryze (me) - creating and maintaining UjAPI.
 
-## Contributors:
-* GPSProlapse - for helping me embed AngelScript.
+### Collaborators
+* GPSProlapse - AngelScript embedding support.
+* nazarpunk - Jass parser/AngelScript parser and other stuff.
 
-## Additional Thanks To:
-* Ev3nt
-* Symmetra
-
-## Testers:
+#### Testers
 * Daichi
 * N1ghtSiren
-* nazarpunk
 * rsfghd
+
+#### Additional Thanks to
+* Ev3nt - war3lua
+* Symmtetra - Irinabot
