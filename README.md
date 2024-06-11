@@ -1,16 +1,16 @@
 # UjAPI
-[Page](unryzec.github.io/UjAPI/)
+[GitHub Page](unryzec.github.io/UjAPI/)
 
 ## Contacts
 
-### Personal
+### Personal Contacts
 - [Discord](https://discordapp.com/users/unryze)
 - [VK](https://vk.com/unryze/)
 
-### Groups/Channels
+### Groups/Channels Contacts
 - [Discord](https://discord.gg/mpvASEcujC)
 - [VK](https://vk.com/unryzeworkshop/)
 
-## Want to donate?
+### Want to donate?
 
 [Paypal](https://paypal.me/Unryze/)
