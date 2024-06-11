@@ -12,6 +12,8 @@
             <download-title>Download</download-title>
             <download-page>https://github.com/UnryzeC/UjAPI</download-page>
             <showDownloadButton>true</showDownloadButton>
+
+            <include-after-body>include-after-body.html</include-after-body>
         </variables>
         <footer>
             <link href="https://discord.com/invite/mpvASEcujC">Discord</link>
