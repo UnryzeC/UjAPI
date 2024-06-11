@@ -2250,14 +2250,14 @@ native GetFPS											takes nothing returns real
 
 native GetVisionMax 									takes nothing returns real
 native SetVisionMax 									takes real value returns nothing
-native GetAttackSpeedMinBonus 							takes nothing returns real
-native SetAttackSpeedMinBonus 							takes real value returns nothing
-native GetAttackSpeedMaxBonus 							takes nothing returns real
-native SetAttackSpeedMaxBonus 							takes real value returns nothing
-native GetMoveSpeedMinAllowed 							takes nothing returns real
-native SetMoveSpeedMinAllowed 							takes real value returns nothing
-native GetMoveSpeedMaxAllowed 							takes nothing returns real
-native SetMoveSpeedMaxAllowed 							takes real value returns nothing
+native GetAttackSpeedMinBonus							takes nothing returns real
+native SetAttackSpeedMinBonus							takes real value returns nothing
+native GetAttackSpeedMaxBonus							takes nothing returns real
+native SetAttackSpeedMaxBonus							takes real value returns nothing
+native GetMoveSpeedMinAllowed							takes nothing returns real
+native SetMoveSpeedMinAllowed							takes real value returns nothing
+native GetMoveSpeedMaxAllowed							takes nothing returns real
+native SetMoveSpeedMaxAllowed							takes real value returns nothing
 
 native GetMappedTypeName								takes mappedfield whichField, mappedtype whichMapType returns string
 //
@@ -2779,7 +2779,9 @@ native GetDoodadColour									takes doodad whichDoodad returns integer
 native SetDoodadColour									takes doodad whichDoodad, integer colour returns nothing
 native SetDoodadVertexColour							takes doodad whichDoodad, integer red, integer green, integer blue, integer alpha returns nothing
 native GetDoodadScale									takes doodad whichDoodad returns real
-native SetDoodadScale									takes doodad whichDoodad, real facing returns nothing
+native SetDoodadScale									takes doodad whichDoodad, real scale returns nothing
+native GetDoodadTimeScale								takes doodad whichDoodad returns real
+native SetDoodadTimeScale								takes doodad whichDoodad, real timeScale returns nothing
 native GetDoodadX										takes doodad whichDoodad returns real
 native SetDoodadX										takes doodad whichDoodad, real x returns nothing
 native GetDoodadY										takes doodad whichDoodad returns real
@@ -4191,6 +4193,7 @@ native GetFrameTextColourEx								takes framehandle whichFrame, integer stateId
 native SetFrameTextColourEx								takes framehandle whichFrame, integer stateId, integer colour returns nothing
 native GetFrameTextColour								takes framehandle whichFrame returns integer
 native SetFrameTextColour								takes framehandle whichFrame, integer colour returns nothing
+native IsFrameFocused									takes framehandle whichFrame returns boolean
 native SetFrameFocus									takes framehandle whichFrame, boolean isFocus returns boolean
 native GetFrameModel									takes framehandle whichFrame returns string
 native SetFrameModel									takes framehandle whichFrame, string model, integer cameraIndex returns nothing
@@ -4473,7 +4476,12 @@ native GetTriggerPlayerMouseScreenY						takes nothing returns real
 
 // Refer to https://github.com/UnryzeC/UjAPI/blob/main/TypeData/WC3DamageData.txt
 native GetEventDamageFlags								takes nothing returns integer
-native SetEventDamageFlags								takes integer flags returns boolean
+native GetEventDamageIsFlag								takes integer flag returns boolean
+native SetEventDamageFlag								takes integer flag, boolean isSet returns boolean
+
+native GetEventDamageExtraFlags							takes nothing returns integer
+native GetEventDamageIsExtraFlag						takes integer flag returns boolean
+native SetEventDamageExtraFlag							takes integer flag, boolean isSet returns boolean
 
 native GetEventDamageTarget								takes nothing returns unit
 
@@ -4491,6 +4499,7 @@ native SetEventWeaponType								takes weapontype weaponType returns boolean
 
 native GetEventIsAttack									takes nothing returns boolean
 native GetEventIsRanged									takes nothing returns boolean
+native GetEventIsCritical								takes nothing returns boolean
 
 native GetEventPreDamage								takes nothing returns real
 
