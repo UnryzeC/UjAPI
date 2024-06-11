@@ -59,6 +59,7 @@
             </toc-element>
             <toc-element topic="Modules.md"/>
         </toc-element>
+        <toc-element topic="Command-Line-Interface.md"/>
         <toc-element topic="Setup.md">
             <toc-element topic="Requirements.md"/>
             <toc-element topic="how-to-use.md"/>

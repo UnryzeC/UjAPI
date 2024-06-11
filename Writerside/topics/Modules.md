@@ -12,17 +12,17 @@
         <td>Allows multi-instance launch of Warcraft.</td>
     </tr>
     <tr>
-        <td>FastMenu.dll</td>
+        <td><a href="https://github.com/UnryzeC/WC3_FastMenu">FastMenu.dll</a></td>
         <td>Unryze</td>
         <td>Makes menu UI animations faster.</td>
     </tr>
     <tr>
-        <td>UnlockMapSize.dll</td>
+        <td><a href="https://github.com/UnryzeC/WC3_FastMenu">UnlockMapSize.dll</a></td>
         <td>Unryze</td>
         <td>Removes 1/4/8/256MB map size limit.</td>
     </tr>
     <tr>
-        <td>AngelScript.dll</td>
+        <td><a href="https://github.com/UnryzeC/WC3_AngelScript">AngelScript.dll</a></td>
         <td>Unryze</td>
         <td>Adds C++ syntax-like scripting language to Warcraft.</td>
     </tr>
