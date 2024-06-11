@@ -2,11 +2,23 @@
 <buildprofiles xsi:noNamespaceSchemaLocation="https://resources.jetbrains.com/writerside/1.0/build-profiles.xsd"
                xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
-    <variables></variables>
     <build-profile instance="UjAPI">
         <variables>
+            <offline-docs>true</offline-docs>
+            <primary-color>ruby</primary-color>
+            <color-preset>contrast</color-preset>
             <noindex-content>false</noindex-content>
+
+            <download-title>Download</download-title>
+            <download-page>https://github.com/UnryzeC/UjAPI</download-page>
+            <showDownloadButton>true</showDownloadButton>
         </variables>
+        <footer>
+            <link href="https://discord.com/invite/mpvASEcujC">Discord</link>
+            <link href="https://vk.com/unryzeworkshop">VK</link>
+
+            <copyright>2024 UjAPI</copyright>
+        </footer>
     </build-profile>
 
 </buildprofiles>

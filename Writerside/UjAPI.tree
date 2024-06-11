@@ -6,5 +6,14 @@
                  name="UjAPI"
                  start-page="UjAPI.md">
 
-    <toc-element topic="UjAPI.md"/>
+    <toc-element topic="UjAPI.md">
+        <toc-element topic="about.md"/>
+        <toc-element topic="patches.md"/>
+        <toc-element topic="features.md"/>
+        <toc-element topic="how-to-use.md"/>
+        <toc-element topic="credits.md"/>
+        <toc-element topic="faq.md"/>
+        <toc-element topic="contacts.md"/>
+        <toc-element topic="donate.md"/>
+    </toc-element>
 </instance-profile>
