@@ -23,7 +23,7 @@
     </tr>
     <tr>
         <td>-launch</td>
-        <td>Warcraft 3, Editor</td>
+        <td>Warcraft, Editor</td>
         <td>Allows redifinition of launchable application, which by default is Warcraft 3. exaple: -launch "Editor" will force launch World Editor instead of Warcraft III</td>
     </tr>
     <tr>
