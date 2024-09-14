@@ -9,8 +9,8 @@ enum class DAMAGE_FLAG : uint32_t
 	UNK_5			= 1U << 5,
 	MAGIC			= 1U << 6,
 	ORB_EFFECT		= 1U << 7,
-	PROC_ON_HIT		= 1U << 8, // spell
-	SPELL			= PROC_ON_HIT,
+	PROC_ON_HIT		= 1U << 8,
+	ATTACK_FLAG		= PROC_ON_HIT, // flag set in UnitDamageTarget.
 	UNK_9			= 1U << 9,
 	//CRITICAL		= 1U << 10,
 	NEVER_MISS		= 1U << 10,
