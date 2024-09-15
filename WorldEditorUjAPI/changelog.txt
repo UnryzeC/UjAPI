@@ -1,0 +1,13 @@
+UjAPI World Editor 1.0.1.4
+
+1. Fixed UjAPI folder destination incorrectly pointing from WE to Warcraft III.
+	Note: this means both Patches / MPQ folders will now work with World Editor.
+2. Added "Dark Mode" option.
+	Note: this is unfinished and highly experimental.
+
+UjAPI World Editor 1.0.2.9
+
+1. Fixed UjAPI Dark Mode messing up the colour scheme for some other buttons.
+2. Added more things to Dark Mode handling.
+	Note: TESH's Menubar is broken because of this, this will be resolved someday, to use it disable Dark Mode and re-launch.
+3. Fixed Console Logging for loaded .mix/mpqs now it's a straight list along with timestamps.
