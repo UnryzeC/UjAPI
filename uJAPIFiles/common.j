@@ -976,11 +976,13 @@ globals
 	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_RECEIVED								= ConvertPlayerUnitEvent(500)
 	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_REFRESHED							= ConvertPlayerUnitEvent(501)
 	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_ENDED								= ConvertPlayerUnitEvent(502)
+	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_REMOVED								= ConvertPlayerUnitEvent(508)
 
 	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_ADDED								= ConvertPlayerUnitEvent(503)
 	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_REMOVED							= ConvertPlayerUnitEvent(504)
 	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_AUTOCAST_ON						= ConvertPlayerUnitEvent(505)
 	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_AUTOCAST_OFF						= ConvertPlayerUnitEvent(506)
+	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_LEVEL_CHANGED						= ConvertPlayerUnitEvent(507)
 
 	constant playerunitevent			EVENT_PLAYER_UNIT_PROJECTILE_LAUNCH							= ConvertPlayerUnitEvent(600)
 	constant playerunitevent			EVENT_PLAYER_UNIT_PROJECTILE_HIT							= ConvertPlayerUnitEvent(601)
@@ -1002,11 +1004,13 @@ globals
 	constant unitevent					EVENT_UNIT_BUFF_RECEIVED									= ConvertUnitEvent(510)
 	constant unitevent					EVENT_UNIT_BUFF_REFRESHED									= ConvertUnitEvent(511)
 	constant unitevent					EVENT_UNIT_BUFF_ENDED										= ConvertUnitEvent(512)
+	constant unitevent					EVENT_UNIT_BUFF_REMOVED										= ConvertUnitEvent(518)
 
 	constant unitevent					EVENT_UNIT_ABILITY_ADDED									= ConvertUnitEvent(513)
 	constant unitevent					EVENT_UNIT_ABILITY_REMOVED									= ConvertUnitEvent(514)
 	constant unitevent					EVENT_UNIT_ABILITY_AUTOCAST_ON								= ConvertUnitEvent(515)
 	constant unitevent					EVENT_UNIT_ABILITY_AUTOCAST_OFF								= ConvertUnitEvent(516)
+	constant unitevent					EVENT_UNIT_ABILITY_LEVEL_CHANGED							= ConvertUnitEvent(517)
 
 	constant unitevent					EVENT_UNIT_PROJECTILE_LAUNCH								= ConvertUnitEvent(610)
 	constant unitevent					EVENT_UNIT_PROJECTILE_HIT									= ConvertUnitEvent(611)
@@ -4718,6 +4722,7 @@ native SetWidescreenState								takes boolean flag returns nothing
 
 // Window API
 native IsWindowActive									takes nothing returns boolean
+native IsWindowMode										takes nothing returns boolean
 native GetWindowWidth									takes nothing returns integer
 native GetWindowHeight									takes nothing returns integer
 native GetClientWidth									takes nothing returns integer
@@ -4737,12 +4742,17 @@ native SetCursorAnimationLocked							takes boolean isLock returns nothing
 //
 
 // Mouse API
-native GetMouseScreenX									takes nothing returns real
-native GetMouseScreenY									takes nothing returns real
+native GetMouseScreenRelativeX							takes nothing returns real
+native GetMouseScreenRelativeY							takes nothing returns real
+native GetMouseScreenAbsoluteX							takes nothing returns real
+native GetMouseScreenAbsoluteY							takes nothing returns real
 
-native SetMouseScreenX									takes real x returns nothing
-native SetMouseScreenY									takes real y returns nothing
-native SetMouseScreenPosition							takes real x, real y returns nothing
+native SetMouseScreenRelativeX							takes real x returns nothing
+native SetMouseScreenRelativeY							takes real y returns nothing
+native SetMouseScreenRelativePosition					takes real x, real y returns nothing
+native SetMouseScreenAbsoluteX							takes real x returns nothing
+native SetMouseScreenAbsoluteY							takes real y returns nothing
+native SetMouseScreenAbsolutePosition					takes real x, real y returns nothing
 
 native GetMouseScreenPixelX								takes nothing returns integer
 native GetMouseScreenPixelY								takes nothing returns integer
@@ -4784,15 +4794,18 @@ native EnumHandlesOfType								takes integer handleBaseTypeId, boolexpr filter,
 native DestroyQuestItem									takes questitem whichQuestItem returns nothing
 
 // AntiHack API
-native AntiHackEnable									takes boolean enable returns nothing // by default only checks addresses.
+native AntiHackEnable									takes boolean enable returns nothing // by default does nothing.
+native AntiHackEnableAddressCheck						takes boolean enable returns nothing
+native AntiHackEnableBreakpointCheck					takes boolean enable returns nothing
 native AntiHackEnableProcessCheck						takes boolean enable returns nothing
 native AntiHackEnableModuleCheck						takes boolean enable returns nothing
-native AntiHackEnableKick								takes boolean enable returns nothing // default: on, this is reset, whenever AntiHack is enabled.
-native AntiHackEnableEx									takes boolean enable, boolean isModuleCheck, boolean isProcessCheck returns nothing
+native AntiHackEnableKick								takes boolean enable returns nothing // default: on, this is reset, whenever AntiHack state is toggled.
 
 // Trigger API
+
+// EVENT_GAME_HACK_DETECTED
 native GetTriggerHackId									takes nothing returns integer // returns 65535 for Processes/Module detections.
-native GetTriggerHackType								takes nothing returns integer // 1 - Normal | 2 - vtable | 3 - worldframe | 4 - process | 5 - window
+native GetTriggerHackType								takes nothing returns integer // 1 - Normal | 2 - vtable | 3 - worldframe | 4 - process | 5 - window | 6 - breakpoint
 native GetTriggerHackLine								takes nothing returns integer // returns line number from the AntiHack.cpp.
 //
 
@@ -4993,7 +5006,7 @@ native HandleListEnumUnitsInRange						takes handlelist whichHandleList, real x,
 native HandleListEnumItemsInRange						takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
 native HandleListEnumDestructablesInRange				takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
 native HandleListEnumDoodadsInRange						takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
-native HandleListEnumEffectsInRange						takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+native HandleListEnumSpecialEffectsInRange				takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
 native HandleListEnumProjectilesInRange					takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
 
 native HandleListEnumInRangeOfLoc						takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
@@ -5005,7 +5018,7 @@ native HandleListEnumUnitsInRangeOfLoc					takes handlelist whichHandleList, loc
 native HandleListEnumItemsInRangeOfLoc					takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
 native HandleListEnumDestructablesInRangeOfLoc			takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
 native HandleListEnumDoodadsInRangeOfLoc				takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
-native HandleListEnumEffectsInRangeOfLoc				takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+native HandleListEnumSpecialEffectsInRangeOfLoc			takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
 native HandleListEnumProjectilesInRangeOfLoc			takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
 
 native HandleListEnumInRect								takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
@@ -5017,7 +5030,7 @@ native HandleListEnumUnitsInRect						takes handlelist whichHandleList, rect whi
 native HandleListEnumItemsInRect						takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 native HandleListEnumDestructablesInRect				takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 native HandleListEnumDoodadsInRect						takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
-native HandleListEnumEffectsInRect						takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+native HandleListEnumSpecialEffectsInRect				takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 native HandleListEnumProjectilesInRect					takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
 
 native HandleListEnumById								takes handlelist whichHandleList, integer handleTypeId, boolexpr filter returns nothing
@@ -5161,75 +5174,6 @@ native TimerSetCallback 								takes timer whichTimer, code whichFunction retur
 //
 
 //============================================================================
-// Doodad API
-//
-native CreateDoodad										takes integer objectTypeId, real x, real y, real facing, real scale, integer variation returns doodad
-native CreateDoodadZ									takes integer objectTypeId, real x, real y, real z, real facing, real scale, integer variation returns doodad
-native RemoveDoodad										takes doodad whichDoodad returns nothing
-native GetDoodadCount									takes nothing returns integer
-native GetDoodadByIndex									takes integer index returns doodad
-native GetDoodadIndex									takes doodad whichDoodad returns integer
-native GetDoodadColour									takes doodad whichDoodad returns integer
-native SetDoodadColour									takes doodad whichDoodad, integer colour returns nothing
-native SetDoodadVertexColour							takes doodad whichDoodad, integer red, integer green, integer blue, integer alpha returns nothing
-native GetDoodadScale									takes doodad whichDoodad returns real
-native SetDoodadScale									takes doodad whichDoodad, real scale returns nothing
-native GetDoodadTimeScale								takes doodad whichDoodad returns real
-native SetDoodadTimeScale								takes doodad whichDoodad, real timeScale returns nothing
-native GetDoodadX										takes doodad whichDoodad returns real
-native SetDoodadX										takes doodad whichDoodad, real x returns nothing
-native GetDoodadY										takes doodad whichDoodad returns real
-native SetDoodadY										takes doodad whichDoodad, real y returns nothing
-native GetDoodadZ										takes doodad whichDoodad returns real
-native SetDoodadZ										takes doodad whichDoodad, real z returns nothing
-native SetDoodadPosition								takes doodad whichDoodad, real x, real y returns nothing
-native SetDoodadPositionWithZ							takes doodad whichDoodad, real x, real y, real z returns nothing
-native GetDoodadPositionLoc								takes doodad whichDoodad returns location
-native SetDoodadPositionLoc								takes doodad whichDoodad, location whichLocation returns nothing
-native GetDoodadScreenX									takes doodad whichDoodad returns real
-native GetDoodadScreenY									takes doodad whichDoodad returns real
-native SetDoodadMatrixScale								takes doodad whichDoodad, real x, real y, real z returns nothing
-native ResetDoodadMatrix								takes doodad whichDoodad returns nothing
-native SetDoodadOrientationEx							takes doodad whichDoodad, real yaw, real pitch, real roll, integer eulerOrder returns nothing
-native GetDoodadYaw										takes doodad whichDoodad returns real
-native SetDoodadYaw										takes doodad whichDoodad, real yaw returns nothing
-native GetDoodadFacing									takes doodad whichDoodad returns real
-native SetDoodadFacing									takes doodad whichDoodad, real facing returns nothing
-native GetDoodadPitch									takes doodad whichDoodad returns real
-native SetDoodadPitch									takes doodad whichDoodad, real pitch returns nothing
-native GetDoodadRoll									takes doodad whichDoodad returns real
-native SetDoodadRoll									takes doodad whichDoodad, real roll returns nothing
-native SetDoodadOrientation								takes doodad whichDoodad, real yaw, real pitch, real roll returns nothing
-native GetDoodadPlayerColour							takes doodad whichDoodad returns playercolor
-native SetDoodadPlayerColour							takes doodad whichDoodad, playercolor color returns nothing
-native GetDoodadModel									takes doodad whichDoodad returns string
-native SetDoodadModel									takes doodad whichDoodad, string modelFile returns nothing
-native SetDoodadModelEx									takes doodad whichDoodad, string modelFile, integer playerId returns nothing
-native SetDoodadMaterialTexture							takes doodad whichDoodad, string textureName, integer materialId, integer textureIndex returns nothing
-native SetDoodadTexture									takes doodad whichDoodad, string textureName, integer textureIndex returns nothing
-native SetDoodadReplaceableTexture						takes doodad whichDoodad, string textureName, integer textureIndex returns nothing
-native IsDoodadVisible									takes doodad whichDoodad returns boolean
-native ShowDoodad										takes doodad whichDoodad, boolean isShow returns nothing
-native SetDoodadAnimationWithRarityByIndex				takes doodad whichDoodad, integer animIndex, raritycontrol rarity returns nothing
-native SetDoodadAnimationWithRarity						takes doodad whichDoodad, string animationName, raritycontrol rarity returns nothing
-native SetDoodadAnimationByIndex						takes doodad whichDoodad, integer animIndex returns nothing
-native SetDoodadAnimationEx								takes doodad whichDoodad, string animationName returns nothing
-native QueueDoodadAnimationByIndex						takes doodad whichDoodad, integer animIndex returns nothing
-native QueueDoodadAnimation								takes doodad whichDoodad, string animationName returns nothing
-native GetDoodadAnimationOffsetPercent					takes doodad whichDoodad returns real
-native SetDoodadAnimationOffsetPercent					takes doodad whichDoodad, real percent returns nothing
-
-native GetFilterDoodad									takes nothing returns doodad
-native GetEnumDoodad									takes nothing returns doodad
-
-native EnumDoodadsInRange								takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
-native EnumDoodadsInRangeEx								takes real x, real y, real radius, integer typeId, boolean nearestOnly, boolexpr filter, code handlerFunc returns nothing
-
-native EnumDoodadsInRect								takes rect whichRect, boolexpr filter, code handlerFunc returns nothing
-native EnumDoodadsInRectEx								takes rect whichRect, integer typeId, boolean nearestOnly, boolexpr filter, code handlerFunc returns nothing
-//
-
-//============================================================================
 // Ability API
 //
 
@@ -5334,6 +5278,7 @@ native CreateAbility									takes integer abilityTypeId returns ability
 native RemoveAbility									takes ability whichAbility returns nothing
 
 native GetTriggerAbility								takes nothing returns ability // mimics GetSpellAbility
+native GetTriggerAbilityPreviousLevel					takes nothing returns integer
 native IsAbilityType									takes ability whichAbility, abilitytype whichAbilityType returns boolean
 native GetAbilityOwner									takes ability whichAbility returns unit
 native SetAbilityOwner									takes ability whichAbility, unit whichUnit returns nothing
@@ -5460,6 +5405,7 @@ native ResetBuffFieldData								takes buff whichBuff returns boolean // Acts sa
 native CreateBuff										takes integer buffTypeId returns buff
 native RemoveBuff										takes buff whichBuff returns nothing
 
+native IsBuffType										takes buff whichBuff, abilitytype whichAbilityType returns boolean
 native GetBuffTypeId									takes buff whichBuff returns integer
 native GetBuffBaseTypeId								takes buff whichBuff returns integer
 native GetBuffOwner										takes buff whichbuff returns unit
@@ -5520,6 +5466,9 @@ native GetWar3ImageScale								takes war3image whichWar3Image returns real
 native SetWar3ImageScale								takes war3image whichWar3Image, real scale returns nothing
 native GetWar3ImageFacing								takes war3image whichWar3Image returns real
 native SetWar3ImageFacing								takes war3image whichWar3Image, real facing, boolean isInstant returns nothing
+native GetWar3ImageMatrixScaleX							takes war3image whichWar3Image returns real
+native GetWar3ImageMatrixScaleY							takes war3image whichWar3Image returns real
+native GetWar3ImageMatrixScaleZ							takes war3image whichWar3Image returns real
 native SetWar3ImageMatrixScale							takes war3image whichWar3Image, real x, real y, real z returns nothing
 native ResetWar3ImageMatrix								takes war3image whichWar3Image returns nothing
 native SetWar3ImageOrientationEx						takes war3image whichWar3Image, real yaw, real pitch, real roll, integer eulerOrder returns nothing
@@ -5590,6 +5539,9 @@ native GetSpriteColour									takes sprite whichSprite returns integer
 native SetSpriteColour									takes sprite whichSprite, integer colour returns nothing
 native SetSpriteAlpha									takes sprite whichSprite, integer alpha returns nothing
 native SetSpriteVertexColour							takes sprite whichSprite, integer red, integer green, integer blue, integer alpha returns nothing
+native GetSpriteMatrixScaleX							takes sprite whichSprite returns real
+native GetSpriteMatrixScaleY							takes sprite whichSprite returns real
+native GetSpriteMatrixScaleZ							takes sprite whichSprite returns real
 native SetSpriteMatrixScale								takes sprite whichSprite, real x, real y, real z returns nothing
 native ResetSpriteMatrix								takes sprite whichSprite returns nothing
 native SetSpriteOrientationEx							takes sprite whichSprite, real yaw, real pitch, real roll, integer eulerOrder returns nothing // XYZ = 0, YZX = 1, ZXY = 2, ZYX = 3, YXZ = 4, XZY = 5
@@ -5626,6 +5578,78 @@ native SetSpriteAnimationOffsetPercent					takes sprite whichSprite, real percen
 //
 
 //============================================================================
+// Doodad API
+//
+native CreateDoodad										takes integer objectTypeId, real x, real y, real facing, real scale, integer variation returns doodad
+native CreateDoodadZ									takes integer objectTypeId, real x, real y, real z, real facing, real scale, integer variation returns doodad
+native RemoveDoodad										takes doodad whichDoodad returns nothing
+native GetDoodadCount									takes nothing returns integer
+native GetDoodadByIndex									takes integer index returns doodad
+native GetDoodadIndex									takes doodad whichDoodad returns integer
+native GetDoodadColour									takes doodad whichDoodad returns integer
+native SetDoodadColour									takes doodad whichDoodad, integer colour returns nothing
+native SetDoodadVertexColour							takes doodad whichDoodad, integer red, integer green, integer blue, integer alpha returns nothing
+native GetDoodadScale									takes doodad whichDoodad returns real
+native SetDoodadScale									takes doodad whichDoodad, real scale returns nothing
+native GetDoodadTimeScale								takes doodad whichDoodad returns real
+native SetDoodadTimeScale								takes doodad whichDoodad, real timeScale returns nothing
+native GetDoodadX										takes doodad whichDoodad returns real
+native SetDoodadX										takes doodad whichDoodad, real x returns nothing
+native GetDoodadY										takes doodad whichDoodad returns real
+native SetDoodadY										takes doodad whichDoodad, real y returns nothing
+native GetDoodadZ										takes doodad whichDoodad returns real
+native SetDoodadZ										takes doodad whichDoodad, real z returns nothing
+native SetDoodadPosition								takes doodad whichDoodad, real x, real y returns nothing
+native SetDoodadPositionWithZ							takes doodad whichDoodad, real x, real y, real z returns nothing
+native GetDoodadPositionLoc								takes doodad whichDoodad returns location
+native SetDoodadPositionLoc								takes doodad whichDoodad, location whichLocation returns nothing
+native GetDoodadScreenX									takes doodad whichDoodad returns real
+native GetDoodadScreenY									takes doodad whichDoodad returns real
+native GetDoodadMatrixScaleX							takes doodad whichDoodad returns real
+native GetDoodadMatrixScaleY							takes doodad whichDoodad returns real
+native GetDoodadMatrixScaleZ							takes doodad whichDoodad returns real
+native SetDoodadMatrixScale								takes doodad whichDoodad, real x, real y, real z returns nothing
+native ResetDoodadMatrix								takes doodad whichDoodad returns nothing
+native SetDoodadOrientationEx							takes doodad whichDoodad, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+native GetDoodadYaw										takes doodad whichDoodad returns real
+native SetDoodadYaw										takes doodad whichDoodad, real yaw returns nothing
+native GetDoodadFacing									takes doodad whichDoodad returns real
+native SetDoodadFacing									takes doodad whichDoodad, real facing returns nothing
+native GetDoodadPitch									takes doodad whichDoodad returns real
+native SetDoodadPitch									takes doodad whichDoodad, real pitch returns nothing
+native GetDoodadRoll									takes doodad whichDoodad returns real
+native SetDoodadRoll									takes doodad whichDoodad, real roll returns nothing
+native SetDoodadOrientation								takes doodad whichDoodad, real yaw, real pitch, real roll returns nothing
+native GetDoodadPlayerColour							takes doodad whichDoodad returns playercolor
+native SetDoodadPlayerColour							takes doodad whichDoodad, playercolor color returns nothing
+native GetDoodadModel									takes doodad whichDoodad returns string
+native SetDoodadModel									takes doodad whichDoodad, string modelFile returns nothing
+native SetDoodadModelEx									takes doodad whichDoodad, string modelFile, integer playerId returns nothing
+native SetDoodadMaterialTexture							takes doodad whichDoodad, string textureName, integer materialId, integer textureIndex returns nothing
+native SetDoodadTexture									takes doodad whichDoodad, string textureName, integer textureIndex returns nothing
+native SetDoodadReplaceableTexture						takes doodad whichDoodad, string textureName, integer textureIndex returns nothing
+native IsDoodadVisible									takes doodad whichDoodad returns boolean
+native ShowDoodad										takes doodad whichDoodad, boolean isShow returns nothing
+native SetDoodadAnimationWithRarityByIndex				takes doodad whichDoodad, integer animIndex, raritycontrol rarity returns nothing
+native SetDoodadAnimationWithRarity						takes doodad whichDoodad, string animationName, raritycontrol rarity returns nothing
+native SetDoodadAnimationByIndex						takes doodad whichDoodad, integer animIndex returns nothing
+native SetDoodadAnimationEx								takes doodad whichDoodad, string animationName returns nothing
+native QueueDoodadAnimationByIndex						takes doodad whichDoodad, integer animIndex returns nothing
+native QueueDoodadAnimation								takes doodad whichDoodad, string animationName returns nothing
+native GetDoodadAnimationOffsetPercent					takes doodad whichDoodad returns real
+native SetDoodadAnimationOffsetPercent					takes doodad whichDoodad, real percent returns nothing
+
+native GetFilterDoodad									takes nothing returns doodad
+native GetEnumDoodad									takes nothing returns doodad
+
+native EnumDoodadsInRange								takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
+native EnumDoodadsInRangeEx								takes real x, real y, real radius, integer typeId, boolean nearestOnly, boolexpr filter, code handlerFunc returns nothing
+
+native EnumDoodadsInRect								takes rect whichRect, boolexpr filter, code handlerFunc returns nothing
+native EnumDoodadsInRectEx								takes rect whichRect, integer typeId, boolean nearestOnly, boolexpr filter, code handlerFunc returns nothing
+//
+
+//============================================================================
 // SpecialEffect API
 //
 native GetSpecialEffectSprite							takes effect whichEffect returns sprite
@@ -5655,6 +5679,9 @@ native GetSpecialEffectColour							takes effect whichEffect returns integer
 native SetSpecialEffectColour							takes effect whichEffect, integer colour returns nothing
 native SetSpecialEffectAlpha							takes effect whichEffect, integer alpha returns nothing
 native SetSpecialEffectVertexColour						takes effect whichEffect, integer red, integer green, integer blue, integer alpha returns nothing
+native GetSpecialEffectMatrixScaleX						takes effect whichEffect returns real
+native GetSpecialEffectMatrixScaleY						takes effect whichEffect returns real
+native GetSpecialEffectMatrixScaleZ						takes effect whichEffect returns real
 native SetSpecialEffectMatrixScale						takes effect whichEffect, real x, real y, real z returns nothing
 native ResetSpecialEffectMatrix							takes effect whichEffect returns nothing
 native SetSpecialEffectOrientationEx					takes effect whichEffect, real yaw, real pitch, real roll, integer eulerOrder returns nothing
@@ -5726,7 +5753,10 @@ native GetTrackableColour								takes trackable whichTrackable returns integer
 native SetTrackableColour								takes trackable whichTrackable, integer colour returns nothing
 native SetTrackableAlpha								takes trackable whichTrackable, integer alpha returns nothing
 native SetTrackableVertexColour							takes trackable whichTrackable, integer red, integer green, integer blue, integer alpha returns nothing
-native SetTrackableEffectMatrixScale					takes trackable whichTrackable, real x, real y, real z returns nothing
+native GetTrackableMatrixScaleX							takes trackable whichTrackable returns real
+native GetTrackableMatrixScaleY							takes trackable whichTrackable returns real
+native GetTrackableMatrixScaleZ							takes trackable whichTrackable returns real
+native SetTrackableMatrixScale							takes trackable whichTrackable, real x, real y, real z returns nothing
 native ResetTrackableMatrix								takes trackable whichTrackable returns nothing
 native SetTrackableOrientationEx						takes trackable whichTrackable, real yaw, real pitch, real roll, integer eulerOrder returns nothing
 native GetTrackableYaw									takes trackable whichTrackable returns real
@@ -5803,6 +5833,9 @@ native GetWidgetScale									takes widget whichWidget returns real
 native SetWidgetScale									takes widget whichWidget, real scale returns nothing
 native GetWidgetFacing									takes widget whichWidget returns real
 native SetWidgetFacing									takes widget whichWidget, real facing, boolean isInstant returns nothing
+native GetWidgetMatrixScaleX							takes widget whichWidget returns real
+native GetWidgetMatrixScaleY							takes widget whichWidget returns real
+native GetWidgetMatrixScaleZ							takes widget whichWidget returns real
 native SetWidgetMatrixScale								takes widget whichWidget, real x, real y, real z returns nothing
 native ResetWidgetMatrix								takes widget whichWidget returns nothing
 native SetWidgetOrientationEx							takes widget whichWidget, real yaw, real pitch, real roll, integer eulerOrder returns nothing
@@ -5877,6 +5910,9 @@ native GetDestructableScale								takes destructable whichDestructable returns 
 native SetDestructableScale								takes destructable whichDestructable, real scale returns nothing
 native GetDestructableFacing							takes destructable whichDestructable returns real
 native SetDestructableFacing							takes destructable whichDestructable, real facing, boolean isInstant returns nothing
+native GetDestructableMatrixScaleX						takes destructable whichDestructable returns real
+native GetDestructableMatrixScaleY						takes destructable whichDestructable returns real
+native GetDestructableMatrixScaleZ						takes destructable whichDestructable returns real
 native SetDestructableMatrixScale						takes destructable whichDestructable, real x, real y, real z returns nothing
 native ResetDestructableMatrix							takes destructable whichDestructable returns nothing
 native SetDestructableOrientationEx						takes destructable whichDestructable, real yaw, real pitch, real roll, integer eulerOrder returns nothing
@@ -5982,6 +6018,9 @@ native GetItemScale										takes item whichItem returns real
 native SetItemScale										takes item whichItem, real scale returns nothing
 native GetItemFacing									takes item whichItem returns real
 native SetItemFacing									takes item whichItem, real facing, boolean isInstant returns nothing
+native GetItemMatrixScaleX								takes item whichItem returns real
+native GetItemMatrixScaleY								takes item whichItem returns real
+native GetItemMatrixScaleZ								takes item whichItem returns real
 native SetItemMatrixScale								takes item whichItem, real x, real y, real z returns nothing
 native ResetItemMatrix									takes item whichItem returns nothing
 native SetItemOrientationEx								takes item whichItem, real yaw, real pitch, real roll, integer eulerOrder returns nothing
@@ -6084,8 +6123,11 @@ native SetUnitPositionEx								takes unit whichUnit, boolean breakOrder, boolea
 native SetUnitPositionWithZ								takes unit whichUnit, real x, real y, real z returns nothing
 native SetUnitZ											takes unit whichUnit, real z returns nothing
 native ResetUnitZ										takes unit whichUnit returns nothing // returns Z control to game.
+native GetUnitScale										takes unit whichUnit returns real
 native GetUnitHeight									takes unit whichUnit returns real // this is separate from SetUnitFlyHeight
 native SetUnitHeight									takes unit whichUnit, real height returns nothing
+native GetUnitStatbarHeight								takes unit whichUnit returns real
+native SetUnitStatbarHeight								takes unit whichUnit, real height returns nothing
 native GetUnitScreenX									takes unit whichUnit returns real
 native GetUnitScreenY									takes unit whichUnit returns real
 native SetUnitTypeId									takes unit whichUnit, integer newId returns nothing
@@ -6269,8 +6311,8 @@ native GetUnitMinimapX									takes unit whichUnit returns real
 native GetUnitMinimapY									takes unit whichUnit returns real
 native GetUnitRallyPointX								takes unit whichUnit returns real
 native GetUnitRallyPointY								takes unit whichUnit returns real
-native GetHeroMaxLevelExperienceNeeded					takes unit whichUnit returns integer
-native GetHeroExperienceNeeded							takes unit whichUnit, integer forLevel returns integer
+native GetHeroExperienceCurrent							takes unit whichUnit returns integer
+native GetHeroExperienceRequiredAt						takes unit whichUnit, integer level returns integer
 native UnitApplySilence									takes unit whichUnit, boolean state returns nothing // Does not hide abilities
 native UnitDisableAbilities								takes unit whichUnit, boolean state returns nothing // Also hides abilities
 native PauseUnitEx										takes unit whichUnit, boolean pause returns nothing
@@ -6289,6 +6331,8 @@ native GetUnitModelObjectX								takes unit whichUnit, string whichObject retur
 native GetUnitModelObjectY								takes unit whichUnit, string whichObject returns real
 native GetUnitModelObjectZ								takes unit whichUnit, string whichObject returns real
 native GetUnitModelObjectPositionLoc					takes unit whichUnit, string whichObject returns location
+native SetUnitAnimationWithRarityByIndex				takes unit whichUnit, integer animIndex, raritycontrol rarity returns nothing
+native QueueUnitAnimationByIndex						takes unit whichUnit, integer animIndex returns nothing
 native GetUnitCurrentAnimationId						takes unit whichUnit returns integer
 native GetUnitCurrentAnimationName						takes unit whichUnit returns string
 native GetUnitAnimationOffsetPercent					takes unit whichUnit returns real
@@ -6302,6 +6346,9 @@ native GetUnitPitch										takes unit whichUnit returns real
 native SetUnitPitch										takes unit whichUnit, real pitch returns nothing
 native GetUnitRoll										takes unit whichUnit returns real
 native SetUnitRoll										takes unit whichUnit, real roll returns nothing
+native GetUnitMatrixScaleX								takes unit whichUnit returns real
+native GetUnitMatrixScaleY								takes unit whichUnit returns real
+native GetUnitMatrixScaleZ								takes unit whichUnit returns real
 native SetUnitMatrixScale								takes unit whichUnit, real x, real y, real z returns nothing
 native ResetUnitMatrix									takes unit whichUnit returns nothing
 native SetUnitOrientationEx								takes unit whichUnit, real yaw, real pitch, real roll, integer eulerOrder returns nothing
@@ -6443,6 +6490,9 @@ native GetProjectileColour								takes projectile whichProjectile returns integ
 native SetProjectileColour								takes projectile whichProjectile, integer colour returns nothing
 native SetProjectileAlpha								takes projectile whichProjectile, integer alpha returns nothing
 native SetProjectileVertexColour						takes projectile whichProjectile, integer red, integer green, integer blue, integer alpha returns nothing
+native GetProjectileMatrixScaleX						takes projectile whichProjectile returns real
+native GetProjectileMatrixScaleY						takes projectile whichProjectile returns real
+native GetProjectileMatrixScaleZ						takes projectile whichProjectile returns real
 native SetProjectileMatrixScale							takes projectile whichProjectile, real x, real y, real z returns nothing
 native ResetProjectileMatrix							takes projectile whichProjectile returns nothing
 native SetProjectileOrientationEx						takes projectile whichProjectile, real yaw, real pitch, real roll, integer eulerOrder returns nothing
@@ -6757,6 +6807,9 @@ native GetFrameSpriteRoll								takes framehandle whichFrame returns real
 native SetFrameSpriteRoll								takes framehandle whichFrame, real roll returns boolean
 native SetFrameSpriteOrientation						takes framehandle whichFrame, real yaw, real pitch, real roll returns nothing
 native SetFrameSpriteMaterialTexture					takes framehandle whichFrame, string textureName, integer materialId, integer textureIndex returns nothing
+native GetFrameSpriteMatrixScaleX						takes framehandle whichFrame returns real
+native GetFrameSpriteMatrixScaleY						takes framehandle whichFrame returns real
+native GetFrameSpriteMatrixScaleZ						takes framehandle whichFrame returns real
 native SetFrameSpriteMatrixScale						takes framehandle whichFrame, real sizeX, real sizeY, real sizeZ returns nothing
 native ResetFrameSpriteMatrix							takes framehandle whichFrame returns nothing
 native SetFrameSpriteTexture							takes framehandle whichFrame, string textureName, integer textureIndex returns nothing
