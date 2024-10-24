@@ -1,0 +1,179 @@
+v1.0.20.84
+
+1. UjAPI.exe no longer "forces" to be launched with admin rights on subsequent launches (since this method simply sends launch arguments to the main app). This should make "launch templates" easier to manage and launch.
+2. Missile API is now Projectile API.
+3. Removed natives:
+	native GetAbilityCooldownEx 							takes ability whichAbility returns real
+	native TriggerRegisterPlayerProjectileEvent				takes trigger whichTrigger, player whichPlayer, playermissileevent whichEvent returns event
+		Note: events now can be registered to specific units via TriggerRegisterPlayerUnitEvent and TriggerRegisterUnitEvent.
+4. New Types:
+	type doodad												extends agent
+5. New Convertors:
+	constant native ConvertProjectileType					takes integer i returns projectiletype
+6. New constants:
+	constant playerunitevent		EVENT_PLAYER_UNIT_BUFF_RECEIVED								= ConvertPlayerUnitEvent(500)
+	constant playerunitevent		EVENT_PLAYER_UNIT_BUFF_REFRESHED							= ConvertPlayerUnitEvent(501)
+	constant playerunitevent		EVENT_PLAYER_UNIT_BUFF_ENDED								= ConvertPlayerUnitEvent(502)
+	constant playerunitevent		EVENT_PLAYER_UNIT_PROJECTILE_LAUNCH							= ConvertPlayerUnitEvent(600)
+	constant playerunitevent		EVENT_PLAYER_UNIT_PROJECTILE_HIT							= ConvertPlayerUnitEvent(601)
+	constant unitevent				EVENT_UNIT_BUFF_RECEIVED									= ConvertUnitEvent(510)
+	constant unitevent				EVENT_UNIT_BUFF_REFRESHED									= ConvertUnitEvent(511)
+	constant unitevent				EVENT_UNIT_BUFF_ENDED										= ConvertUnitEvent(512)
+	constant unitevent				EVENT_UNIT_PROJECTILE_LAUNCH								= ConvertUnitEvent(610)
+	constant unitevent				EVENT_UNIT_PROJECTILE_HIT									= ConvertUnitEvent(611)
+	constant projectiletype 		PROJECTILE_TYPE_BULLET										= ConvertProjectileType(0)
+	constant projectiletype 		PROJECTILE_TYPE_MISSILE										= ConvertProjectileType(1)
+	constant projectiletype 		PROJECTILE_TYPE_ARTILLERY				   					= ConvertProjectileType(2)
+	constant projectiletype 		PROJECTILE_TYPE_VISIBLE				   						= ConvertProjectileType(4)
+	constant projectiletype 		PROJECTILE_TYPE_DEAD				   						= ConvertProjectileType(5)
+7. New natives:
+	native IsProjectileType					   				takes projectile whichProjectile, projectiletype whichType returns boolean
+	native GetProjectileTargetPointX						takes projectile whichProjectile returns real
+	native GetProjectileTargetPointY						takes projectile whichProjectile returns real
+	native GetProjectileTargetPointZ						takes projectile whichProjectile returns real
+	native GetProjectileTargetPoint							takes projectile whichProjectile returns location
+	native GetProjectileAreaOfEffectFullDamage              takes projectile whichProjectile returns real
+	native SetProjectileAreaOfEffectFullDamage              takes projectile whichProjectile, real area returns nothing
+	native GetProjectileAreaOfEffectMediumDamage            takes projectile whichProjectile returns real
+	native SetProjectileAreaOfEffectMediumDamage            takes projectile whichProjectile, real area returns nothing
+	native GetProjectileAreaOfEffectSmallDamage             takes projectile whichProjectile returns real
+	native SetProjectileAreaOfEffectSmallDamage             takes projectile whichProjectile, real area returns nothing
+	native GetProjectileAreaOfEffectMediumDamageFactor      takes projectile whichProjectile returns real
+	native SetProjectileAreaOfEffectMediumDamageFactor      takes projectile whichProjectile, real factor returns nothing
+	native GetProjectileAreaOfEffectSmallDamageFactor       takes projectile whichProjectile returns real
+	native SetProjectileAreaOfEffectSmallDamageFactor       takes projectile whichProjectile, real factor returns nothing
+	native EnumProjectilesInRect							takes rect whichRect, boolexpr filter, code handlerFunc returns nothing
+	native GetUnitRallyPointX 								takes unit whichUnit returns real
+	native GetUnitRallyPointY 								takes unit whichUnit returns real
+	native SetUnitKiller									takes unit whichUnit, unit killer returns nothing
+	native KillUnitEx										takes unit whichUnit, unit killer returns nothing
+	native GetAbilityOwner									takes ability whichAbility returns unit
+	native GetFilterAbility									takes nothing returns ability
+	native GetEnumAbility									takes nothing returns ability
+	native EnumUnitAbilities								takes unit whichUnit, boolexpr whichBoolexpr, code whichCode returns boolean
+	native GetBuffTypeId									takes buff whichBuff returns integer
+	native GetBuffBaseTypeId								takes buff whichBuff returns integer
+	native GetBuffOwner										takes buff whichbuff returns unit
+	native SetBuffLevel										takes buff whichBuff, integer level returns nothing
+	native GetFilterBuff									takes nothing returns buff
+	native GetEnumBuff										takes nothing returns buff
+	native EnumUnitBuffs									takes unit whichUnit, boolexpr whichBoolexpr, code whichCode returns boolean
+	native GetTriggerBuff									takes nothing returns buff
+	native GetTriggerBuffSourceAbility						takes nothing returns ability
+	native GetTriggerBuffSourceUnit							takes nothing returns unit
+	native GetTriggerBuffTarget								takes nothing returns unit
+	// Doodad API
+	native GetDoodadCount									takes nothing returns integer
+	native GetDoodadByIndex									takes integer index returns doodad
+	native GetDoodadIndex									takes doodad whichDoodad returns integer
+	native SetDoodadAnimationWithRarityByIndex 				takes doodad whichDoodad, integer animIndex, raritycontrol rarity returns nothing
+	native SetDoodadAnimationWithRarity 					takes doodad whichDoodad, string animationName, raritycontrol rarity returns nothing
+	native SetDoodadAnimationByIndex 						takes doodad whichDoodad, integer animIndex returns nothing
+	native SetDoodadAnimationEx 							takes doodad whichDoodad, string animationName returns nothing
+	native QueueDoodadAnimationByIndex 						takes doodad whichDoodad, integer animIndex returns nothing
+	native QueueDoodadAnimation 							takes doodad whichDoodad, string animationName returns nothing
+	native SetDoodadAnimationOffsetPercent 					takes doodad whichDoodad, real percent returns nothing
+	native GetFilterDoodad									takes nothing returns doodad
+	native GetEnumDoodad									takes nothing returns doodad
+	native EnumDoodadsInRange								takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
+	native EnumDoodadsInRangeEx								takes real x, real y, real radius, integer typeId, boolean nearestOnly, boolexpr filter, code handlerFunc returns nothing
+	native EnumDoodadsInRect								takes rect whichRect, boolexpr filter, code handlerFunc returns nothing
+	native EnumDoodadsInRectEx								takes rect whichRect, integer typeId, boolean nearestOnly, boolexpr filter, code handlerFunc returns nothing
+	// Handle List API
+	native HandleListCreate									takes nothing returns handlelist
+	native HandleListDestroy								takes handlelist whichHandleList returns nothing
+	native HandleListAddHandle						 		takes handlelist whichHandleList, handle whichHandle returns nothing
+	native HandleListRemoveHandle					  		takes handlelist whichHandleList, handle whichHandle returns nothing
+	native HandleListAddList					  			takes handlelist destHandleList, handlelist sourceHandleList returns integer
+	native HandleListRemoveList				   				takes handlelist destHandleList, handlelist sourceHandleList returns integer
+	native HandleListClear						   			takes handlelist whichHandleList returns nothing
+	native HandleListContainsHandle							takes handlelist whichHandleList, handle whichHandle returns boolean
+	native HandleListGetCount								takes handlelist whichHandleList returns integer
+	native HandleListGetCountEx								takes handlelist whichHandleList, integer handleTypeId returns integer
+	native HandleListGetAgentCount                          takes handlelist whichHandleList returns integer
+	native HandleListGetWidgetCount                         takes handlelist whichHandleList returns integer
+	native HandleListGetUnitCount                           takes handlelist whichHandleList returns integer
+	native HandleListGetItemCount                           takes handlelist whichHandleList returns integer
+	native HandleListGetDestructableCount                   takes handlelist whichHandleList returns integer
+	native HandleListGetAbilityCount                        takes handlelist whichHandleList returns integer
+	native HandleListGetBuffCount                           takes handlelist whichHandleList returns integer
+	native HandleListGetEffectCount                         takes handlelist whichHandleList returns integer
+	native HandleListGetMissileCount                        takes handlelist whichHandleList returns integer
+	native HandleListGetFrameCount                          takes handlelist whichHandleList returns integer
+	native HandleListGetHandleByIndex				  		takes handlelist whichHandleList, integer index returns handle
+	native HandleListGetHandleByIndexEx				  		takes handlelist whichHandleList, integer handleTypeId, integer index returns handle
+	native HandleListGetAgentByIndex				  		takes handlelist whichHandleList, integer index returns agent
+	native HandleListGetWidgetByIndex				  		takes handlelist whichHandleList, integer index returns widget
+	native HandleListGetUnitByIndex				  			takes handlelist whichHandleList, integer index returns unit
+	native HandleListGetItemByIndex				  			takes handlelist whichHandleList, integer index returns item
+	native HandleListGetDestructableByIndex				  	takes handlelist whichHandleList, integer index returns destructable
+	native HandleListGetAbilityByIndex				  		takes handlelist whichHandleList, integer index returns ability
+	native HandleListGetBuffByIndex				  			takes handlelist whichHandleList, integer index returns buff
+	native HandleListGetEffectByIndex				  		takes handlelist whichHandleList, integer index returns effect
+	native HandleListGetMissileByIndex				  		takes handlelist whichHandleList, integer index returns missile
+	native HandleListGetFrameByIndex				  		takes handlelist whichHandleList, integer index returns framehandle
+	native HandleListGetFilterHandle				  		takes nothing returns handle
+	native HandleListGetFilterAgent				  			takes nothing returns agent
+	native HandleListGetFilterWidget				  		takes nothing returns widget
+	native HandleListGetFilterUnit				  			takes nothing returns unit
+	native HandleListGetFilterItem				  			takes nothing returns item
+	native HandleListGetFilterDestructable					takes nothing returns destructable
+	native HandleListGetFilterAbility				  		takes nothing returns ability
+	native HandleListGetFilterBuff				  			takes nothing returns buff
+	native HandleListGetFilterEffect				  		takes nothing returns effect
+	native HandleListGetFilterMissile				  		takes nothing returns missile
+	native HandleListGetFilterFrame				  			takes nothing returns framehandle
+	native HandleListGetEnumHandle				  			takes nothing returns handle
+	native HandleListGetEnumAgent				  			takes nothing returns agent
+	native HandleListGetEnumWidget				  			takes nothing returns widget
+	native HandleListGetEnumUnit				  			takes nothing returns unit
+	native HandleListGetEnumItem				  			takes nothing returns item
+	native HandleListGetEnumDestructable					takes nothing returns destructable
+	native HandleListGetEnumAbility				  			takes nothing returns ability
+	native HandleListGetEnumBuff				  			takes nothing returns buff
+	native HandleListGetEnumEffect				  			takes nothing returns effect
+	native HandleListGetEnumMissile				  			takes nothing returns missile
+	native HandleListGetEnumFrame				  			takes nothing returns framehandle
+	native HandleListEnumInRange							takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+	native HandleListEnumInRangeEx							takes handlelist whichHandleList, real x, real y, real radius, integer handleTypeId, boolexpr filter returns nothing
+	native HandleListEnumAgentsInRange				  		takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+	native HandleListEnumWidgetsInRange				  		takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+	native HandleListEnumUnitsInRange				  		takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+	native HandleListEnumItemsInRange				  		takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+	native HandleListEnumDestructablesInRange				takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+	native HandleListEnumEffectsInRange				  		takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+	native HandleListEnumMissilesInRange				  	takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+	native HandleListEnumInRangeOfLoc						takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+	native HandleListEnumInRangeOfLocEx						takes handlelist whichHandleList, location whichLocation, real radius, integer handleTypeId, boolexpr filter returns nothing
+	native HandleListEnumAgentsInRangeOfLoc				  	takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+	native HandleListEnumWidgetsInRangeOfLoc				takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+	native HandleListEnumUnitsInRangeOfLoc				  	takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+	native HandleListEnumItemsInRangeOfLoc				  	takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+	native HandleListEnumDestructablesInRangeOfLoc			takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+	native HandleListEnumEffectsInRangeOfLoc				takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+	native HandleListEnumMissilesInRangeOfLoc				takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+	native HandleListEnumInRect								takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+	native HandleListEnumInRectEx							takes handlelist whichHandleList, rect whichRect, integer handleTypeId, boolexpr filter returns nothing
+	native HandleListEnumAgentsInRect				  		takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+	native HandleListEnumWidgetsInRect				  		takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+	native HandleListEnumUnitsInRect				  		takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+	native HandleListEnumItemsInRect				  		takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+	native HandleListEnumDestructablesInRect				takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+	native HandleListEnumEffectsInRect				  		takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+	native HandleListEnumMissilesInRect				  		takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing	
+	native HandleListEnumByTypeId							takes handlelist whichHandleList, integer typeId, boolexpr filter returns nothing
+	native HandleListEnumByTypeIdEx							takes handlelist whichHandleList, integer handleTypeId, integer typeId, boolexpr filter returns nothing
+	native HandleListForEach								takes handlelist whichHandleList, code c returns nothing
+	native HandleListForEachByType							takes handlelist whichHandleList, integer typeId, code c returns nothing
+	native HandleListForEachByTypeEx						takes handlelist whichHandleList, integer handleTypeId, integer typeId, code c returns nothing
+8. Fixed typo (additional word "unit") in Get/SetUnitBaseMoveSpeed.
+9. Fixed fatal error from GetFrameText if no text was initialised in the targeted frame.
+10. Fixed fatal error from SetUnitBonusMoveSpeedPercent.
+11. Fixed fatal error on launch on 1.27b.
+12. Fixed fatal error on changing menu pages on 1.28f.
+13. Added experimental support for maps that do NOT have W3MH header, meaning maps from Reforged that only have MPQ header, should appear in the list and their w3i should get parsed.
+14. Fixed SetAbilityField natives breaking spells that are higher than 4 levels.
+15. Fixed fatal error on map/game exit whenever ANcl-type abilities were modified via SetAbilityField, etc.
+16. Fixed SetWidgetVertexColour not working properly.
+17. Added new DzAPI native "support" DzAPI_Map_GetPlayerUserName.
+18. Added MMEngine support, now you can launch it with UjAPI and both will work.

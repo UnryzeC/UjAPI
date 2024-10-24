@@ -1,0 +1,24 @@
+v1.0.36.132
+
+1. New Natives:
+	native GetStringCount									takes nothing returns integer
+	native IsUnitTargetable									takes unit whichUnit returns boolean
+	native SetUnitTargetable								takes unit whichUnit, boolean targetable returns nothing
+	native GetFrameTextColourEx								takes framehandle whichFrame, integer stateId returns integer // 0 = font | 1 = highlighted | 2 = disabled | 3 = shadow
+	native GetFrameTextColour								takes framehandle whichFrame returns integer
+	native SetFrameTextColourEx								takes framehandle whichFrame, integer stateId, integer colour returns nothing
+2. Major code optimisation for Frame API, additionally removed a lot of redundant code.
+3. Rewritten GetFrameWidth, now it properly operates on all frames and no longer causes a fatal error on certain frame types.
+4. Rewritten GetFrameHeight, now it properly operates on all frames and no longer causes a fatal error on certain frame types.
+5. IsFrameEnabled now returns if CSimpleButton and its children are enabled/disabled.
+6. Fixed Fatal Error whenever any unit attacking with Artillery Attack type, while having any Orb-effect.
+	Note: this is a very old fatal error of the game itself.
+7. Fixed Fatal Error whenever any non-hero unit would pick up Strength Bonus runes/books, etc.
+8. Fixed Fatal Error whenever any non-hero unit would pick up Agility Bonus runes/books, etc.
+9. Fixed Fatal Error whenever any non-hero unit would pick up Intelligence Bonus runes/books, etc.
+10. Fixed Fatal Error whenever any non-hero unit would pick up Experience Bonus runes/books, etc.
+11. Fixed Fatal Error whenever any non-hero unit would learn Engineering (ANeg).
+12. Fixed Fatal Error whenever Life Drain/Mana syphon was casted via CastAbilityTarget and "caster" (ability's owner) would move.
+13. Potentially fixed an extremely rare bug, that would cause a specific player unable to control his units, but was able to control other units.
+	Note 1: other players somehow CAN control units of that player, so the issue is local.
+	Note 2: this did not seem to be connected to any of the Player Controls.

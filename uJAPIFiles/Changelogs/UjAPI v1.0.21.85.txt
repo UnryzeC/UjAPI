@@ -1,0 +1,73 @@
+v1.0.21.85
+
+1. New Constants:
+	constant targetflag	 				TARGET_FLAG_SELF											= ConvertTargetFlag(4096)
+	constant targetflag	 				TARGET_FLAG_PLAYER_UNITS    								= ConvertTargetFlag(8192)
+	constant targetflag	 				TARGET_FLAG_ALLIED											= ConvertTargetFlag(16384)
+    constant targetflag	 				TARGET_FLAG_FRIEND											= ConvertTargetFlag(24576) // ALLIED | PLAYER_UNITS
+	constant targetflag	 				TARGET_FLAG_NEUTRAL											= ConvertTargetFlag(32768)
+    constant targetflag	 				TARGET_FLAG_ENEMY		    								= ConvertTargetFlag(65536)
+    constant targetflag	 				TARGET_FLAG_NOT_SELF        								= ConvertTargetFlag(122880) // ENEMY | NEUTRAL | FRIEND
+    constant targetflag	 				TARGET_FLAG_VULNERABLE										= ConvertTargetFlag(1048576)
+    constant targetflag	 				TARGET_FLAG_INVULNERABLE									= ConvertTargetFlag(2097152)
+    constant targetflag	 				TARGET_FLAG_HERO											= ConvertTargetFlag(4194304)
+    constant targetflag	 				TARGET_FLAG_NON_HERO										= ConvertTargetFlag(8388608)
+    constant targetflag	 				TARGET_FLAG_ALIVE											= ConvertTargetFlag(16777216)
+    constant targetflag	 				TARGET_FLAG_DEAD											= ConvertTargetFlag(33554432)
+    constant targetflag	 				TARGET_FLAG_ORGANIC											= ConvertTargetFlag(67108864)
+    constant targetflag	 				TARGET_FLAG_MECHANICAL										= ConvertTargetFlag(134217728)
+    constant targetflag	 				TARGET_FLAG_NON_SUICIDAL									= ConvertTargetFlag(268435456)
+    constant targetflag	 				TARGET_FLAG_SUICIDAL										= ConvertTargetFlag(536870912)
+    constant targetflag	 				TARGET_FLAG_NON_ANCIENT										= ConvertTargetFlag(1073741824)
+    constant targetflag	 				TARGET_FLAG_ANCIENT											= ConvertTargetFlag(2147483648)
+    constant targetflag	 				TARGET_FLAG_EMPTY											= ConvertTargetFlag(4294967295)
+	//
+	constant abilityrealfield 			ABILITY_RF_AURA_REFRESH_TIME								= ConvertAbilityRealField('artm')
+	constant abilityintegerlevelfield 	ABILITY_ILF_TARGETS_ALLOWED					   				= ConvertAbilityIntegerLevelField('atar')
+	//
+	constant playerunitevent 			EVENT_PLAYER_UNIT_ATTACK_FINISHED				 			= ConvertPlayerUnitEvent(317)
+	constant unitevent 					EVENT_UNIT_ATTACK_FINISHED				 					= ConvertUnitEvent(316)
+2. New Natives:
+	native IsAbilityTargetAllowed 							takes ability whichAbility, widget whichWidget returns boolean
+	native GetSpecialEffectModelObjectPositionX				takes effect whichEffect, string whichObject returns real
+	native GetSpecialEffectModelObjectPositionY				takes effect whichEffect, string whichObject returns real
+	native GetSpecialEffectModelObjectPositionZ				takes effect whichEffect, string whichObject returns real
+	native GetSpecialEffectModelObjectPositionLoc			takes effect whichEffect, string whichObject returns location
+	native GetTrackableModelObjectPositionX					takes trackable whichTrackable, string whichObject returns real
+	native GetTrackableModelObjectPositionY					takes trackable whichTrackable, string whichObject returns real
+	native GetTrackableModelObjectPositionZ					takes trackable whichTrackable, string whichObject returns real
+	native GetTrackableModelObjectPositionLoc				takes trackable whichTrackable, string whichObject returns location
+	native GetWidgetModelObjectPositionX					takes widget whichWidget, string whichObject returns real
+	native GetWidgetModelObjectPositionY					takes widget whichWidget, string whichObject returns real
+	native GetWidgetModelObjectPositionZ					takes widget whichWidget, string whichObject returns real
+	native GetWidgetModelObjectPositionLoc					takes widget whichWidget, string whichObject returns location
+	native GetDestructableModelObjectPositionX				takes destructable whichDestructable, string whichObject returns real
+	native GetDestructableModelObjectPositionY				takes destructable whichDestructable, string whichObject returns real
+	native GetDestructableModelObjectPositionZ				takes destructable whichDestructable, string whichObject returns real
+	native GetDestructableModelObjectPositionLoc			takes destructable whichDestructable, string whichObject returns location	
+	native GetItemModelObjectPositionX						takes item whichItem, string whichObject returns real
+	native GetItemModelObjectPositionY						takes item whichItem, string whichObject returns real
+	native GetItemModelObjectPositionZ						takes item whichItem, string whichObject returns real
+	native GetItemModelObjectPositionLoc					takes item whichItem, string whichObject returns location
+	native GetUnitModelObjectPositionX						takes unit whichUnit, string whichObject returns real
+	native GetUnitModelObjectPositionY						takes unit whichUnit, string whichObject returns real
+	native GetUnitModelObjectPositionZ						takes unit whichUnit, string whichObject returns real
+	native GetUnitModelObjectPositionLoc					takes unit whichUnit, string whichObject returns location
+	native GetProjectileModelObjectPositionX				takes projectile whichProjectile, string whichObject returns real
+	native GetProjectileModelObjectPositionY				takes projectile whichProjectile, string whichObject returns real
+	native GetProjectileModelObjectPositionZ				takes projectile whichProjectile, string whichObject returns real
+	native GetProjectileModelObjectPositionLoc				takes projectile whichProjectile, string whichObject returns location
+	//Frame API
+	native GetFrameCheckState								takes fremehandle whichFrame returns boolean
+	native SetFrameCheckState								takes framehandle whichFrame, boolean isCheck returns nothing
+	native GetTriggerFrameMouseButton 						takes nothing returns mousebuttontype
+	native RegisterFrameMouseButton							takes framehandle whichFrame, mousebuttontype whichButton, boolean isAdd returns nothing
+3. Fixed CLI commands sometimes not being properly passed.
+4. Fixed subsequent UjAPI applications being unable to send commands to main app.
+5. Fixed IsTextTagVisible returning inversed result.
+6. Fixed CastAbilityTarget causing a fatal error when used on channeled targeted ability.
+7. Reworked SetUnitSelectable, now it no longer "fakes death" to achieve non-targettable/non-selectable state.
+8. SetFrameTexture now also works with CSimpleButton/CCommandButton/CSimpleCheckBox.
+9. CSimpleCheckBox is now supported, it also suppors CLICK/CHECK events along with RegisterFrameMouseButton.
+10. CONTROL_CLICK and MOUSE_DOUBLECLICK events can now be used on CListBoxWar3 frames.
+11. Fixed most of the ABILITY_RLF_ fields that had numbers at the end of the typeid, now all of them should work as intended.

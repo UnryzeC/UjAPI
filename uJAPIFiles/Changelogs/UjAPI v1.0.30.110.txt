@@ -1,0 +1,81 @@
+v1.0.30.110
+
+1. New Types:
+	type agentdatafield										extends handle
+2. Removed Types:
+	type buffstringfield									extends agentdatafield
+3. Removed Natives:
+	constant native ConvertBuffStringField					takes integer i returns buffstringfield
+	native EnableUnitInventory								takes unit whichUnit, boolean enable returns nothing
+	native IsUnitInventoryEnabledEx							takes unit whichUnit returns boolean
+	native EnableUnitInventoryEx							takes unit whichUnit, boolean enable returns nothing
+	native EnableUnitMovement								takes unit whichUnit, boolean enable returns nothing
+	native IsUnitMovementEnabledEx							takes unit whichUnit returns boolean
+	native EnableUnitMovementEx								takes unit whichUnit, boolean enable returns nothing
+	native EnableUnitAttack									takes unit whichUnit, boolean enable returns nothing
+	native IsUnitAttackEnabledEx							takes unit whichUnit returns boolean
+	native EnableUnitAttackEx								takes unit whichUnit, boolean enable returns nothing
+	native SetUnitControl									takes unit whichUnit, integer flagValue, boolean isSetFlagValue, boolean ismove, boolean isattack, boolean isinventory returns nothing // flagValue = 0x200 and isSetFlagValue = true to emulate pause 
+	native SetUnitLocustFlag								takes unit whichUnit, integer flag, integer mode returns nothing
+4. New Natives
+	native CreateAbility									takes integer abilityId returns ability
+	native SetAbilityOwner									takes ability whichAbility, unit whichUnit returns nothing
+	//
+	native GetBuffIntegerField								takes buff whichBuff, abilityintegerfield whichField returns integer
+	native SetBuffIntegerField								takes buff whichBuff, abilityintegerfield whichField, integer value returns boolean
+
+	native GetBuffBooleanField								takes buff whichBuff, abilittybooleanfield whichField returns boolean
+	native SetBuffBooleanField								takes buff whichBuff, abilittybooleanfield whichField, boolean value returns boolean
+
+	native GetBuffRealField									takes buff whichBuff, abilityrealfield whichField returns real
+	native SetBuffRealField									takes buff whichBuff, abilityrealfield whichField, real value returns boolean
+	//
+	native CreateBuff										takes integer buffId returns buff
+	native SetBuffOwner										takes buff whichBuff, unit whichUnit returns nothing
+	native ResetBuffFieldData								takes buff whichBuff returns boolean // Acts same as ResetAbilityFieldData, but for buffs.
+	// In very early stages of development, may be unstable for now.
+	native UnitAddBuff										takes unit whichUnit, buff whichBuff returns boolean // Does not add duplicates!
+	native UnitAddBuffEx									takes unit whichUnit, buff whichBuff, boolean checkForDuplicates returns boolean
+	native UnitAddBuffById									takes unit whichUnit, integer buffId returns boolean // Does not add duplicates!
+	native UnitAddBuffByIdEx								takes unit whichUnit, integer buffId, boolean checkForDuplicates returns boolean
+	//
+	native UnitEnableInventory								takes unit whichUnit, boolean enable, boolean ignoreErrorMessages returns nothing
+	native UnitEnableMovement								takes unit whichUnit, boolean enable, boolean ignoreErrorMessages returns nothing
+	native UnitEnableAttack									takes unit whichUnit, boolean enable, boolean ignoreErrorMessages returns nothing
+	native IsUnitTruesightImmune							takes unit whichUnit returns boolean
+	native CreateBuilding									takes player whichPlayer, integer unitTypeId, real x, real y, real facing returns unit
+	native CreateBuildingEx									takes player whichPlayer, integer unitTypeId, real x, real y, real facing, boolean isAutoBuild, boolean workersCanAssist returns unit
+	native UnitGetConstructionProgress						takes unit whichUnit returns real
+	native UnitGetConstructionRemainingTime					takes unit whichUnit returns real
+	native UnitSetConstructionRemainingTime					takes unit whichUnit, real time returns nothing
+	native UnitGetUpgradeProgress							takes unit whichUnit returns real
+	native UnitGetUpgradeRemainingTime						takes unit whichUnit returns real
+	native UnitSetUpgradeRemainingTime						takes unit whichUnit, real time returns nothing
+	//
+	native HandleListGetDoodadCount							takes handlelist whichHandleList returns integer
+	native HandleListGetDoodadByIndex						takes handlelist whichHandleList, integer index returns doodad
+	native HandleListGetFilterDoodad						takes nothing returns doodad
+	native HandleListGetEnumDoodad							takes nothing returns doodad
+	native HandleListEnumDoodadsInRange						takes handlelist whichHandleList, real x, real y, real radius, boolexpr filter returns nothing
+	native HandleListEnumDoodadsInRangeOfLoc				takes handlelist whichHandleList, location whichLocation, real radius, boolexpr filter returns nothing
+	native HandleListEnumDoodadsInRect						takes handlelist whichHandleList, rect whichRect, boolexpr filter returns nothing
+	native HandleListEnumUnitAbilities						takes handlelist whichHandleList, unit whichUnit, boolexpr filter returns nothing
+	native HandleListEnumUnitBuffs							takes handlelist whichHandleList, unit whichUnit, boolexpr filter returns nothing
+	//
+5. Buff field API will now used abilityfields to prevent copies of the same fields, etc.
+6. BUFF_SF_ICON_NORMAL, BUFF_SF_TOOLTIP_NORMAL, BUFF_SF_TOOLTIP_NORMAL_EXTENDED retained their names, but as mentioned will use ConvertAbilityStringField instead of ConvertBuffStringField.
+7. All types that were related to field now extend agentdatafield instead of handle.
+8. ABILITY_ILF_MAX_LIFE_GAINED field now works with SetAbilityIntegerLevelField.
+9. ABILITY_ILF_HIT_POINTS_REGENERATED_PER_SECOND field now works with SetAbilityIntegerLevelField.
+10. ABILITY_ILF_DEFENSE_BONUS_IDEF field now works with SetAbilityIntegerLevelField.
+11. ABILITY_ILF_ATTACK_BONUS field now works with SetAbilityIntegerLevelField.
+12. ABILITY_ILF_STRENGTH_BONUS_ISTR field now works with SetAbilityIntegerLevelField.
+13. ABILITY_ILF_AGILITY_BONUS field now works with SetAbilityIntegerLevelField.
+14. ABILITY_ILF_INTELLIGENCE_BONUS field now works with SetAbilityIntegerLevelField.
+15. Fixed OnStartPipe error for UjAPIApp.exe.
+16. Slightly optimised EVENT_PLAYER_MOUSE_MOVE event and increased its frequency.
+17. SetFrameTooltip now also works with Simple Frame children (Simple Frame itself does not produce OnEnter/OnExit).
+18. Fixed SetUnitModel/SetUnitModelEx affect bonus stats.
+	Note: this was happening because I tried game's method of "reviving" hero, without actually reviving, which apparently doubled all passives on each call.
+19. Fixed fatal error upon trying to get position or move Special Effect that was attached to a widget.
+20. Getting attached special effect position will now return position of the widget it is attached to.

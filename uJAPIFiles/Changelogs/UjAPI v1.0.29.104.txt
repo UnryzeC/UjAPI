@@ -1,0 +1,97 @@
+v1.0.29.104
+
+1. New Natives:
+	native GetLightningColourA								takes lightning whichBolt returns integer
+	native GetLightningColourR								takes lightning whichBolt returns integer
+	native GetLightningColourG								takes lightning whichBolt returns integer
+	native GetLightningColourB								takes lightning whichBolt returns integer
+	native SetLightningColour								takes lightning whichBolt, integer r, integer g, integer b, integer a returns boolean
+	//
+	native GetLocale										takes nothing returns string
+	//
+	native DisplayWarningMessage							takes player toPlayer, string message returns nothing
+	native DisplayTimedWarningMessage						takes player toPlayer, real duration, string message returns nothing
+	native DisplayTopMessage								takes player toPlayer, string message returns nothing
+	native DisplayTimedTopMessage							takes player toPlayer, real duration, string message returns nothing
+	//
+	native TextFileGetSizeByPath							takes string filePath returns integer
+	native TextFileGetSize									takes textfilehandle whichTextFile returns integer
+	//
+	native CreateDoodad										takes integer objectid, real x, real y, real face, real scale, integer variation returns doodad
+	native CreateDoodadZ									takes integer objectid, real x, real y, real z, real face, real scale, integer variation returns doodad
+	native RemoveDoodad										takes doodad whichDoodad returns nothing
+	native GetDoodadColour									takes doodad whichDoodad returns integer
+	native SetDoodadColour									takes doodad whichDoodad, integer colour returns nothing
+	native SetDoodadVertexColour							takes doodad whichDoodad, integer red, integer green, integer blue, integer alpha returns nothing
+	native GetDoodadScale									takes doodad whichDoodad returns real
+	native SetDoodadScale									takes doodad whichDoodad, real facing returns nothing
+	native GetDoodadX										takes doodad whichDoodad returns real
+	native SetDoodadX										takes doodad whichDoodad, real x returns nothing
+	native GetDoodadY										takes doodad whichDoodad returns real
+	native SetDoodadY										takes doodad whichDoodad, real y returns nothing
+	native GetDoodadZ										takes doodad whichDoodad returns real
+	native SetDoodadZ										takes doodad whichDoodad, real z returns nothing
+	native SetDoodadPosition								takes doodad whichDoodad, real x, real y returns nothing
+	native SetDoodadPositionEx								takes doodad whichDoodad, real x, real y, real z returns nothing
+	native GetDoodadPositionLocation						takes doodad whichDoodad returns location
+	native SetDoodadPositionLocation						takes doodad whichDoodad, location whichLocation returns nothing
+	native GetDoodadScreenX									takes doodad whichDoodad returns real
+	native GetDoodadScreenY									takes doodad whichDoodad returns real
+	native SetDoodadMatrixScale								takes doodad whichDoodad, real x, real y, real z returns nothing		
+	native ResetDoodadMatrix								takes doodad whichDoodad returns nothing		
+	native SetDoodadOrientationEx							takes doodad whichDoodad, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+	native GetDoodadYaw										takes doodad whichDoodad returns real		
+	native SetDoodadYaw										takes doodad whichDoodad, real yaw returns nothing		
+	native GetDoodadFacing									takes doodad whichDoodad returns real		
+	native SetDoodadFacing									takes doodad whichDoodad, real facing returns nothing		
+	native GetDoodadPitch									takes doodad whichDoodad returns real		
+	native SetDoodadPitch									takes doodad whichDoodad, real pitch returns nothing		
+	native GetDoodadRoll									takes doodad whichDoodad returns real		
+	native SetDoodadRoll									takes doodad whichDoodad, real roll returns nothing		
+	native SetDoodadOrientation								takes doodad whichDoodad, real yaw, real pitch, real roll returns nothing		
+	native GetDoodadModel									takes doodad whichDoodad returns string
+	native SetDoodadModel									takes doodad whichDoodad, string whichModel returns nothing
+	//
+	native GetWidgetTypeId									takes widget whichWidget returns integer
+	//
+	native GetUnitTarget									takes unit whichUnit returns widget
+	native GetUnitTargetUnit								takes unit whichUnit returns unit
+	native GetUnitTargetItem								takes unit whichUnit returns item
+	native GetUnitTargetDestructable						takes unit whichUnit returns destructable
+	native UnitAttackTarget									takes unit whichUnit, widget whichTarget, bool ignoreDistance, boolean isInstant returns nothing // ignoreDistance only works if isInstant is set to true.
+	native UnitAttackTargetPointZ							takes unit whichUnit, real x, real y, real z, boolean ignoreDistance, boolean isInstant returns nothing
+	native UnitAttackTargetPoint							takes unit whichUnit, real x, real y, boolean ignoreDistance, boolean isInstant returns nothing
+	native UnitAttackTargetPointLoc							takes unit whichUnit, location whichLocation, boolean ignoreDistance, boolean isInstant returns nothing
+	native UnitAttackCancel									takes unit whichUnit returns boolean
+	native UnitCancelTimedLife								takes unit whichUnit returns nothing
+	native GetUnitRemainingTimedLife						takes unit whichUnit returns real
+	native SetUnitRemainingTimedLife						takes unit whichUnit, real duration returns nothing
+	//
+	native CreateIllusion									takes player whichPlayer, integer unitTypeId, real x, real y, real facing returns unit
+	native CreateIllusionAtLoc								takes player whichPlayer, integer unitTypeId, location whichLocation, real facing returns unit
+	native CreateIllusionFromUnit							takes unit whichUnit returns unit
+	native GetIllusionDamageDealt							takes unit whichUnit returns real
+	native SetIllusionDamageDealt							takes unit whichUnit, real multiplier returns nothing
+	native GetIllusionDamageReceived						takes unit whichUnit returns real
+	native SetIllusionDamageReceived						takes unit whichUnit, real multiplier returns nothing
+	//
+	native SetFrameValueEx									takes framehandle whichFrame, real value, boolean isFireEvent returns nothing
+	native GetFrameStepSize									takes framehandle whichFrame returns real
+2. Fixed some of the not working Unorderable abilities. (One of them was Elf Transformation "back from bear form").
+3. Fixed DestroyFrame crashing when destroying CSimpleRegion/CSimpleFrame types.
+4. Fixed OSKEY_UP/DOWN/LEFT/RIGHT not working with TriggerRegisterPlayerKeyEvent, etc.
+5. SetFrameValue will trigger SLIDER_CHANGE event from now on.
+6. Fixed TriggerRegisterPlayerKeyEvent issues that would sometimes block input.
+7. SetUnitModel and SetUnitModelEx now also update any and all attachments/effects, etc.
+8. Fixed UnitStringFields: ICON_SCORE_SCREEN/MODEL/PORTRAIT/SHADOW_IMAGE_UNIT not working.
+9. Upgraded TextFile API, now it can read files from MPQs/Maps/Patches, etc.
+	Note: when TextFile API accesses these files, it's in read-only mode.
+10. Fixed wrong values of UNIT_IF_STRENGTH_BASE/UNIT_IF_AGILITY_BASE/UNIT_IF_INTELLIGENCE_BASE.
+11. UnitResetAttack renamed into UnitRestartAttack.
+12. Fixed UnitRestartAttack and UnitFinishAttack not doing anything.
+13. Fixed MathAngleBetweenPoints and MathAngleBetweenLocations returning inversed value
+14. UnitRestartAttack and UnitFinishAttack renamed into: UnitAttackRestart and UnitAttackFinish.
+15. BlzUnitCancelTimedLife now works as intended.
+16. Fixed PROJECTILE_HIT events not working with Artillery/Artillery (Line).
+17. Added experimental SecurityProtocol to bypass Windows 7 expired certificate, which blocks C# from being able to use WebAPI.
+	Note: this potentially should fix auto update feature for future versions.

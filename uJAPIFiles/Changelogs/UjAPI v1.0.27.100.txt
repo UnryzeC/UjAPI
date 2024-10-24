@@ -1,0 +1,63 @@
+v1.0.27.100
+
+1. New Constants
+	constant playercolor				PLAYER_COLOR_MAROON											= ConvertPlayerColor(12)
+	constant playercolor				PLAYER_COLOR_NAVY											= ConvertPlayerColor(13)
+	constant playercolor				PLAYER_COLOR_TURQUOISE										= ConvertPlayerColor(14)
+	constant playercolor				PLAYER_COLOR_VIOLET											= ConvertPlayerColor(15)
+	constant playercolor				PLAYER_COLOR_WHEAT											= ConvertPlayerColor(16)
+	constant playercolor				PLAYER_COLOR_PEACH											= ConvertPlayerColor(17)
+	constant playercolor				PLAYER_COLOR_MINT											= ConvertPlayerColor(18)
+	constant playercolor				PLAYER_COLOR_LAVENDER										= ConvertPlayerColor(19)
+	constant playercolor				PLAYER_COLOR_COAL											= ConvertPlayerColor(20)
+	constant playercolor				PLAYER_COLOR_SNOW											= ConvertPlayerColor(21)
+	constant playercolor				PLAYER_COLOR_EMERALD										= ConvertPlayerColor(22)
+	constant playercolor				PLAYER_COLOR_PEANUT											= ConvertPlayerColor(23)
+	//
+	constant integer 					CORNER_FLAG_UPPER_LEFT 										= 1
+	constant integer 					CORNER_FLAG_UPPER_RIGHT 									= 2
+	constant integer 					CORNER_FLAG_BOTTOM_LEFT 									= 4
+	constant integer 					CORNER_FLAG_BOTTOM_RIGHT 									= 8
+	constant integer 					CORNER_FLAG_TOP 											= 16
+	constant integer 					CORNER_FLAG_LEFT 											= 32
+	constant integer 					CORNER_FLAG_BOTTOM 											= 64
+	constant integer 					CORNER_FLAG_RIGHT 											= 128
+	constant integer 					CORNER_FLAG_ALL 											= 255
+2. New Natives:
+	constant native GetBJMaxPlayers							takes nothing returns integer
+	constant native GetBJPlayerNeutralVictim				takes nothing returns integer
+	constant native GetBJPlayerNeutralExtra					takes nothing returns integer
+	constant native GetBJMaxPlayerSlots						takes nothing returns integer
+	constant native GetPlayerNeutralPassive					takes nothing returns integer
+	constant native GetPlayerNeutralAggressive				takes nothing returns integer
+	//
+	native SaveCode											takes hashtable table, integer parentKey, integer childKey, code whichCode returns boolean
+	native SaveHandleList									takes hashtable table, integer parentKey, integer childKey, handlelist whichHandleList returns boolean
+	native LoadCode											takes hashtable table, integer parentKey, integer childKey returns code
+	native LoadHandleList									takes hashtable table, integer parentKey, integer childKey returns handlelist
+	//
+	native GetFrameTypeName									takes framehandle whichFrame returns string
+	native GetFrameCornerFlags 								takes framehandle whichFrame, integer backdropId returns integer
+	native SetFrameCornerFlags 								takes framehandle whichFrame, integer backdropId, integer cornerFlag returns nothing
+	native GetFrameCornerSize 								takes framehandle whichFrame, integer backdropId returns real
+	native SetFrameCornerSize 								takes framehandle whichFrame, integer backdropId, real value returns nothing
+	native GetFrameBackgroundSize 							takes framehandle whichFrame, integer backdropId returns real
+	native SetFrameBackgroundSize 							takes framehandle whichFrame, integer backdropId, real value returns nothing
+	native GetFrameBackgroundInsetById 						takes framehandle whichFrame, integer backdropId, integer insetId returns real
+	native SetFrameBackgroundInsetById 						takes framehandle whichFrame, integer backdropId, integer insetId, real value returns nothing
+	native SetFrameBackgroundInsets 						takes framehandle whichFrame, integer backdropId, real minX, real minY, real maxX, real maxY returns nothing
+	native SetFrameBackdropTexture							takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean allowTransparency, boolean blend, string borderTextureFile, integer borderFlags, boolean isControlBackdrop returns nothing
+	//
+3. SetFrameTextureEx argument sequence rearranged.
+4. Fixed Jass Section analyser GREATER/LESSER/GREATEROREQUAL/LESSEROREQUAL integer comparisons from uint32_t to int32_t.
+	Note: this was a stupid mistake that was spotted by N1ghtSiren.
+5. Fixed I2C returning wrong values.
+	Note: Apparently, while code contains Ids to Opcodes, returning it as direct id will cause the game to generate a new Opcode, instead of returning the one it points to...
+	Thanks to N1ghtSiren for spotting this issue.
+6. Fixed SetWidgetModel and SetWidgetModelEx causing fatal error.
+	Note: Units/Items/Destructables suffered from the same issue.
+	Thanks to necromanser_rus for noticing this issue.
+7. Fixed UjAPIApp still loading dll if Load Library was set to false.
+8. Fixed UjAPIApp still launching map from Arguments even if "Additional Command Line Arguments" was disabled. 
+9. Fixed UjAPIApp being unable to remove older app after update.
+10. Fixed EVENT_UNIT_DAMAGED losing GetUnitDamageSource when UnitDamageTarget is called from within it.

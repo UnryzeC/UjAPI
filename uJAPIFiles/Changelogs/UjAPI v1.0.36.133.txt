@@ -1,0 +1,5 @@
+v1.0.36.133
+
+1. Fixed MathPointProjectionY returning bogus values.
+2. Fixed EnableOPLimit, now it once again is able to remove Jass opcode limit.
+3. Fixed all of the Jass Thread API natives, they were connected to EnableOPLimit issue.

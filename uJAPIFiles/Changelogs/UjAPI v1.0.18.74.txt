@@ -1,0 +1,76 @@
+v1.0.18.74
+
+1. New Constants:
+	constant originframetype			ORIGIN_FRAME_CURSOR_FRAME									= ConvertOriginFrameType(44)
+2. New Natives:
+	native BitwiseGetBit									takes integer number, integer bitIndex returns integer
+	native BitwiseGetByte									takes integer number, integer byteIndex returns integer
+	native StringCount										takes string s, string whichString, boolean caseSensitive returns integer
+	native StringTrimLeft									takes string s, boolean caseSensitive returns string
+	native StringTrimRight									takes string s, boolean caseSensitive returns string
+	native StringTrim										takes string s, boolean caseSensitive returns string
+	native StringReverse									takes string s, boolean caseSensitive returns string
+	native StringReplace									takes string s, string whichString, string replaceWith, boolean caseSensitive returns string
+	native StringInsert										takes string s, string whichString, integer whichPosition, boolean caseSensitive returns string
+	native GetTriggerSyncPlayer								takes nothing returns player // this is simply mimicking GetTriggerPlayer, added for simplicity.
+	native IsTextTagVisible 								takes texttag whichTextTag returns boolean
+	native IsTextTagSuspended 								takes texttag whichTextTag returns boolean
+	native IsTextTagPermanent 								takes texttag whichTextTag returns real
+	native GetTextTagX 										takes texttag whichTextTag returns real
+	native SetTextTagX 										takes texttag whichTextTag, real x returns nothing
+	native GetTextTagY 										takes texttag whichTextTag returns real
+	native SetTextTagY 										takes texttag whichTextTag, real y returns nothing
+	native GetTextTagZ 										takes texttag whichTextTag returns real
+	native SetTextTagZ 										takes texttag whichTextTag, real z returns nothing
+	native GetTextTagHeight 								takes texttag whichTextTag returns real
+	native SetTextTagHeight 								takes texttag whichTextTag, real height returns nothing
+	native GetTextTagLocation 								takes texttag whichTextTag returns location
+	native SetTextTagPositionLocation 						takes texttag whichTextTag, location whichLocation returns nothing
+	native GetTextTagColour 								takes texttag whichTextTag returns integer
+	native GetTextTagAlpha 									takes texttag whichTextTag returns integer
+	native SetTextTagAlpha 									takes texttag whichTextTag, integer alpha returns nothing
+	native GetTextTagVelocityX 								takes texttag whichTextTag returns real
+	native SetTextTagVelocityX 								takes texttag whichTextTag, real velX returns nothing
+	native GetTextTagVelocityY 								takes texttag whichTextTag returns real
+	native SetTextTagVelocityY 								takes texttag whichTextTag, real velY returns nothing
+	native GetTextTagVelocityZ 								takes texttag whichTextTag returns real
+	native SetTextTagVelocityZ 								takes texttag whichTextTag, real velZ returns nothing
+	native GetTextTagAge 									takes texttag whichTextTag returns real
+	native GetTextTagLifespan 								takes texttag whichTextTag returns real
+	native GetTextTagFadepoint 								takes texttag whichTextTag returns real
+	native GetTextTagShadowColour 							takes texttag whichTextTag returns integer
+	native SetTextTagShadowColour 							takes texttag whichTextTag, integer colour returns nothing
+	native GetTextTagShadowAlpha 							takes texttag whichTextTag returns integer
+	native SetTextTagShadowAlpha 							takes texttag whichTextTag, integer alpha returns nothing
+	native GetTextTagText 									takes texttag whichTextTag returns string
+3. Added missing constants from previous version.
+4. Added UjAPI version text to Warcraft's main menu.
+5. Added "Load Library" setting for main section. This will simply enable/disable load of UjAPI.mpq and its natives.
+	Note: this is by default enabled and toggling it on already launched WC3 will do nothing.
+6. Added "Load Library" setting for LUA section. This will enable/disable loading of war3_lua.dll.
+	Note: this is by default disabled and toggling it on already launched WC3 will do nothing.
+7. Added "CLI" capability to UjAPI, now any subsequent launches of UjAPI will instead send the launch arguments to the "main" program.
+	Example 1: "D:\Files\Work Files\Programming\uJAPI\Release\UjAPILauncher.exe" -ujapi "dev" -lua "dev console nowarnings" -multiwindow -window -loadfile "Maps\Test\WorldEditTestMap.w3x"
+		Note 1: This will run UjAPI and enable its Developer mode, also it will load lua with provided settings, make it multiwindow, and windowed mode. Then it will launch map provided in loadfile argument.
+	Example 2 (full): "D:\Files\Work Files\Programming\uJAPI\Release\UjAPILauncher.exe" -ujapi "dev" -lua "dev console nowarnings" -multiwindow -window -launch "Warcraft" -gamepath "D:\Games\Warcraft III TFT\war3.exe" -loadfile "Maps\Test\WorldEditTestMap.w3x"
+		Note 2: This will run everything as stated in Note 1, however it will also override any install path selected in UjAPI.exe if -gamepath or -editorpath are present.
+8. CLI commands:
+	Note: explanations of the commands will be in brackets, like so - (information).
+	-justdoupdate (will simply do force re-download and update of UjAPI, rest of the commands will be ignored).
+	-ujapi (opens setting of some UjAPI specific settings, like so: -ujapi "dev"), "" are required!
+		noload (disables UjAPI.mpq and UjAPI natives from loading).
+		dev (enables Developer mode, which will also enable console).
+	-lua (opens setting of war3_lua.dll module data, like so: -lua "dev console nowarnings"), "" are required!
+		dev (enables developer mode).
+		console (enables lua console printing).
+		nowarnings (disables some of the internal type warnings).
+	-multiwindow (enables Multi-Window option and loads required module).
+	-window (will start process in window mode).
+	-launch (allows to specify if we want to launch Game or Editor, by default it launches the Game, like so: -launch "Editor"), "" are required!
+	-gamepath (overrides Install Path option from UjAPI Launcher and uses it instead, like so: -gamepath "D:\Games\Warcraft III TFT\war3.exe"), "" are required!
+	-editorpath (overrides Install Path option from UjAPI Launcher and uses it instead, like so: -editorpath "D:\Programs\WC3 Tools\JNPG-R1.4-Prometheus-Edition\NewGen WE.exe"), "" are required!
+	-loadfile (mimics 1 to 1 whatever Warcraft does to launch any given map, the path is ALWAYS relative to the provided game/editor path).
+9. Added -loadfile command for World Editor Section setting, however the path has to be full, it is NOT relative to Warcraft 3.
+10. Added Load Library option to World Editor Section.
+11. Added Dev Mode to World Editor Section.
+	Note: both #10 and #11 work exactly as options for Warcraft 3.

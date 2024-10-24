@@ -1,0 +1,22 @@
+v1.0.35.127
+
+1. New Constants:
+	constant originframetype			ORIGIN_FRAME_TRAINABLE_BUTTON								= ConvertOriginFrameType(51)
+	constant originframetype			ORIGIN_FRAME_CARGO_BUTTON									= ConvertOriginFrameType(52)
+	constant originframetype			ORIGIN_FRAME_GROUP_BUTTON									= ConvertOriginFrameType(53)
+2. New Natives:
+	native RemoveProjectile									takes projectile whichProjectile returns nothing
+3. Fixed default World Editor processing, now even default WE can be used with UjAPI if need be.
+4. FRAMEEVENT_DIALOG_ACCEPT is now properly implemented.
+5. FRAMEEVENT_DIALOG_CANCEL is now properly implemented.
+6. FRAMEEVENT_SPRITE_ANIM_UPDATE is now properly implemented.
+	Note: this event happens on each screen update tick, I do NOT recommend using this unless you really have to.
+7. Optimised and reduced total packets sent on any Frame Action.
+	Note: this simply searches for similar/identical events and removes them from the sent packets list.
+8. Fixed fatal error occurring due to usage of SHIFT orders (this is related to waypoints).
+9. Fixed fatal error whenever a Missile was killed on launch.
+10. Fixed MorphUnitToTypeId/Ex not recalculating base movement speed.
+11. FRAMEEVENT_CONTROL_CLICK now also works with Minimap.
+12. FRAMEEVENT_CONTROL_RELEASE now also works with Minimap.
+13. FRAMEEVENT_CONTROL_DRAG now also works with Minimap.
+14. Fixed fatal error from CreateDoodad.

@@ -1,0 +1,7 @@
+v1.0.29.107
+
+1. Fixed WFE Fast Menu breaking when injected via AutoInjector.
+	Note: this happened because UjAPI had some code to also enable/disable fast menu, it's disabled for now.
+2. Fixed UjAPI being unable to launch/inject with Frozen Throne.exe.
+	Note: it is still recommened to use War3.exe instead of it for patches below 1.28.
+3. Starting from next version, UjAPI should have no more issues with being able to remove older app after updating.

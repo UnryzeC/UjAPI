@@ -1,0 +1,4 @@
+v1.0.31.116
+
+1. Fixed fatal error caused by CreateIllusionFromUnit on god-awful 1.28f.
+2. Fixed UjAPI issues that sometimes happen with launching 1.28f patch.

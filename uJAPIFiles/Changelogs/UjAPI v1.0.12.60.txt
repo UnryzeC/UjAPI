@@ -1,0 +1,6 @@
+v1.0.12.60
+
+1. Reverted CreateFrame/CreateFrameByType fix, as it was breaking internal logic of frame position.
+	Note: to avoid fatal error on map exit/game exit, do NOT create frames in main function without some sort of a delay via timer.
+2. Added hook for all Frames/SimpleFrames/SimpleTextures/SimpleFonts to prevent them from trying to free empty data.
+	Note: this is a "countermeasure" for the need for the usage of timers as stated in bullet point #1.

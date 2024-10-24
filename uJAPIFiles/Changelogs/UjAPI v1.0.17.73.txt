@@ -1,0 +1,323 @@
+v1.0.17.73
+
+1. New Types:
+	type minimapicon        								extends handle
+	type commandbuttoneffect            					extends handle
+2. New Constants:
+	constant unitrealfield 				UNIT_RF_COLLISION_SIZE										= ConvertUnitRealField('ucol')
+	constant originframetype			ORIGIN_FRAME_CONSOLE_UI										= ConvertOriginFrameType(18)
+	constant originframetype			ORIGIN_FRAME_PORTRAIT_TEXT									= ConvertOriginFrameType(19)
+	constant originframetype			ORIGIN_FRAME_BUFF_BAR										= ConvertOriginFrameType(20)
+	constant originframetype			ORIGIN_FRAME_BUFF_BAR_TEXT									= ConvertOriginFrameType(21)
+	constant originframetype			ORIGIN_FRAME_BUFF_BAR_INDICATOR								= ConvertOriginFrameType(22)
+	constant originframetype			ORIGIN_FRAME_TIME_OF_DAY_INDICATOR							= ConvertOriginFrameType(23)
+	constant originframetype			ORIGIN_FRAME_LEADERBOARD									= ConvertOriginFrameType(24)
+	constant originframetype			ORIGIN_FRAME_MULTIBOARD										= ConvertOriginFrameType(25)
+	constant originframetype			ORIGIN_FRAME_INFO_BAR										= ConvertOriginFrameType(26)
+	constant originframetype			ORIGIN_FRAME_COMMAND_BAR									= ConvertOriginFrameType(27)
+	constant originframetype			ORIGIN_FRAME_RESOURCE_BAR									= ConvertOriginFrameType(28)
+	constant originframetype			ORIGIN_FRAME_RESOURCE_BAR_TEXTURE							= ConvertOriginFrameType(29)
+	constant originframetype			ORIGIN_FRAME_RESOURCE_BAR_TEXT								= ConvertOriginFrameType(30)
+	constant originframetype			ORIGIN_FRAME_UPPERBUTTON_BAR								= ConvertOriginFrameType(31)
+	constant originframetype			ORIGIN_FRAME_UPPERBUTTON_BAR_BUTTON							= ConvertOriginFrameType(32)
+	constant originframetype			ORIGIN_FRAME_PEON_BAR										= ConvertOriginFrameType(33)
+	constant originframetype			ORIGIN_FRAME_PLAYER_MESSAGE									= ConvertOriginFrameType(34)
+	constant originframetype			ORIGIN_FRAME_UNIT_MESSAGE									= ConvertOriginFrameType(35)
+	constant originframetype			ORIGIN_FRAME_CHAT_MESSAGE									= ConvertOriginFrameType(36)
+	constant originframetype			ORIGIN_FRAME_TOP_MESSAGE									= ConvertOriginFrameType(37)
+	constant originframetype			ORIGIN_FRAME_CHAT_EDITBAR									= ConvertOriginFrameType(38)
+	constant originframetype			ORIGIN_FRAME_CINEMATIC_PANEL								= ConvertOriginFrameType(39)
+	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON_COOLDOWN_INDICATOR				= ConvertOriginFrameType(40)
+	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON_AUTOCAST_FRAME					= ConvertOriginFrameType(41)
+	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON_CHARGES_FRAME					= ConvertOriginFrameType(42)
+	constant originframetype			ORIGIN_FRAME_COMMAND_BUTTON_CHARGES_TEXT					= ConvertOriginFrameType(43)
+3. New Natives:
+	native MathRealMin										takes real a, real b returns real
+	native MathRealMax										takes real a, real b returns real
+	native MathRealSign										takes real r returns integer
+	native MathIntegerMin									takes integer a, integer b returns integer
+	native MathIntegerMax									takes integer a, integer b returns integer
+	native MathIntegerSign									takes integer i returns integer
+	native MathPointProjectionX								takes real x, real angle, real distance returns real
+	native MathPointProjectionY								takes real y, real angle, real distance returns real
+	native MathAngleBetweenPoints							takes real fromX, real fromY, real toX, real toY returns real
+	native MathDistanceBetweenPoints						takes real fromX, real fromY, real toX, real toY returns real
+	native MathAngleBetweenLocations						takes location fromLoc, location toLoc returns real
+	native MathDistanceBetweenLocations						takes location fromLoc, location toLoc returns real
+	native GetUnitZ 										takes unit whichUnit returns real
+	native DisableUnitAbility 								takes unit whichUnit, integer abilityId, boolean hide, boolean disable returns nothing
+	native EnableUnitAbility 								takes unit whichUnit, integer abilityId, boolean show, boolean enable returns nothing
+	native GetUnitBuffByIndex 								takes unit whichUnit, integer index returns buff
+	native SetSpecialEffectMatrixScale              		takes effect whichEffect, real x, real y, real z returns nothing
+	native SetMiniMapTexture								takes string texturePath returns boolean
+	native IsFrameRegion									takes framehandle whichFrame returns boolean
+	native IsFrameSimple									takes framehandle whichFrame returns boolean
+	native IsFrameComplex									takes framehandle whichFrame returns boolean
+4. Added missing constant UNIT_IF_LUMBER_COST.
+5. Added missing constant UNIT_IF_HOTKEY.
+6. Added missing constant UNIT_WEAPON_IF_ATTACK_WEAPON_TYPE.
+7. Fixed Fatal Error when field native with UNIT_WEAPON_RF_ATTACK_PROJECTILE_ARC or UNIT_WEAPON_RF_ATTACK_PROJECTILE_SPEED was used on a melee unit.
+8. Fixed wrong typeid in constant UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART.
+9. GetMouseScreenX and GetMouseScreenY now return values from .0 to 1. instead of .0 to .8 for X and .0 to .6 for Y.
+10. HideOriginFrames native now behaves nearly identical to how it works on Reforged.
+11. UnitUnapplyUpdates and UnitApplyUpdates, word Updates changed to Upgrades, this was a massive typo.
+12. Silence/UnsilenceAbility natives renamed into Disable/EnableAbility.
+13. ITEM_IF_TINTING_COLOR value changed from icol to iclt.
+14. UNIT_IF_TINTING_COLOR value changed from ucol to uclt.
+15. Added Blz Natives, some of the natives are simply placeholders, however most are active. Working/non-placeholder natives list:
+	BlzGroupAddGroupFast
+	BlzGroupRemoveGroupFast
+	BlzGroupGetSize
+	BlzGroupUnitAt
+	BlzForceHasPlayer
+	BlzGetTriggerPlayerMouseX
+	BlzGetTriggerPlayerMouseY
+	BlzGetTriggerPlayerMousePosition
+	BlzGetTriggerPlayerMouseButton
+	BlzSetAbilityTooltip
+	BlzSetAbilityActivatedTooltip
+	BlzSetAbilityExtendedTooltip
+	BlzSetAbilityActivatedExtendedTooltip
+	BlzSetAbilityResearchTooltip
+	BlzSetAbilityResearchExtendedTooltip
+	BlzGetAbilityTooltip
+	BlzGetAbilityActivatedTooltip
+	BlzGetAbilityExtendedTooltip
+	BlzGetAbilityActivatedExtendedTooltip
+	BlzGetAbilityResearchTooltip
+	BlzGetAbilityResearchExtendedTooltip
+	BlzSetAbilityIcon
+	BlzGetAbilityIcon
+	BlzSetAbilityActivatedIcon
+	BlzGetAbilityActivatedIcon
+	BlzGetAbilityPosX
+	BlzGetAbilityPosY
+	BlzSetAbilityPosX
+	BlzSetAbilityPosY
+	BlzGetAbilityActivatedPosX
+	BlzGetAbilityActivatedPosY
+	BlzSetAbilityActivatedPosX
+	BlzSetAbilityActivatedPosY
+	BlzGetUnitMaxHP
+	BlzSetUnitMaxHP
+	BlzGetUnitMaxMana
+	BlzSetUnitMaxMana
+	BlzSetItemName
+	BlzSetItemDescription
+	BlzGetItemDescription
+	BlzSetItemTooltip
+	BlzGetItemTooltip
+	BlzSetItemExtendedTooltip
+	BlzGetItemExtendedTooltip
+	BlzSetItemIconPath
+	BlzGetItemIconPath
+	BlzSetUnitName
+	BlzSetHeroProperName
+	BlzGetUnitBaseDamage
+	BlzSetUnitBaseDamage
+	BlzGetUnitDiceNumber
+	BlzSetUnitDiceNumber
+	BlzGetUnitDiceSides
+	BlzSetUnitDiceSides
+	BlzGetUnitAttackCooldown
+	BlzSetUnitAttackCooldown
+	BlzSetSpecialEffectColorByPlayer
+	BlzSetSpecialEffectColor
+	BlzSetSpecialEffectAlpha
+	BlzSetSpecialEffectScale
+	BlzSetSpecialEffectPosition
+	BlzSetSpecialEffectHeight
+	BlzSetSpecialEffectTimeScale
+	BlzSetSpecialEffectTime
+	BlzSetSpecialEffectOrientation
+	BlzSetSpecialEffectYaw
+	BlzSetSpecialEffectPitch
+	BlzSetSpecialEffectRoll
+	BlzSetSpecialEffectX
+	BlzSetSpecialEffectY
+	BlzSetSpecialEffectZ
+	BlzSetSpecialEffectPositionLoc
+	BlzGetLocalSpecialEffectX
+	BlzGetLocalSpecialEffectY
+	BlzGetLocalSpecialEffectZ
+	BlzPlaySpecialEffect
+	BlzPlaySpecialEffectWithTimeScale
+	BlzGetAnimName
+	BlzGetUnitArmor
+	BlzSetUnitArmor
+	BlzUnitHideAbility
+	BlzUnitDisableAbility
+	BlzIsUnitSelectable
+	BlzIsUnitInvulnerable
+	BlzUnitInterruptAttack
+	BlzGetUnitCollisionSize
+	BlzGetAbilityManaCost
+	BlzGetAbilityCooldown
+	BlzSetUnitAbilityCooldown
+	BlzGetUnitAbilityCooldown
+	BlzGetUnitAbilityCooldownRemaining
+	BlzEndUnitAbilityCooldown
+	BlzStartUnitAbilityCooldown
+	BlzGetUnitAbilityManaCost
+	BlzSetUnitAbilityManaCost
+	BlzGetLocalUnitZ
+	BlzSetEventDamage
+	BlzGetEventDamageTarget
+	BlzGetEventAttackType
+	BlzGetEventDamageType
+	BlzGetEventWeaponType
+	BlzSetEventAttackType
+	BlzSetEventDamageType
+	BlzSetEventWeaponType
+	BlzGetEventIsAttack
+	BlzGetUnitZ
+	BlzGetOriginFrame
+	BlzHideOriginFrames
+	BlzConvertColor
+	BlzLoadTOCFile
+	BlzCreateFrame
+	BlzCreateSimpleFrame
+	BlzCreateFrameByType
+	BlzDestroyFrame
+	BlzFrameSetPoint
+	BlzFrameSetAbsPoint
+	BlzFrameClearAllPoints
+	BlzFrameSetAllPoints
+	BlzFrameSetVisible
+	BlzFrameIsVisible
+	BlzGetFrameByName
+	BlzFrameGetName
+	BlzFrameClick
+	BlzFrameSetText
+	BlzFrameGetText
+	BlzFrameAddText
+	BlzFrameSetTextSizeLimit
+	BlzFrameGetTextSizeLimit
+	BlzFrameSetTextColor
+	BlzFrameSetFocus
+	BlzFrameSetModel
+	BlzFrameSetEnable
+	BlzFrameGetEnable
+	BlzFrameSetAlpha
+	BlzFrameGetAlpha
+	BlzFrameSetSpriteAnimate
+	BlzFrameSetTexture
+	BlzFrameSetScale
+	BlzFrameSetTooltip
+	BlzFrameCageMouse
+	BlzFrameSetValue
+	BlzFrameGetValue
+	BlzFrameSetMinMaxValue
+	BlzFrameSetStepSize
+	BlzFrameSetSize
+	BlzFrameSetVertexColor
+	BlzFrameSetLevel
+	BlzFrameSetParent
+	BlzFrameGetParent
+	BlzFrameGetHeight
+	BlzFrameGetWidth
+	BlzFrameSetFont
+	BlzFrameSetTextAlignment
+	BlzFrameGetChildrenCount
+	BlzFrameGetChild
+	BlzTriggerRegisterFrameEvent
+	BlzGetTriggerFrame
+	BlzGetTriggerFrameEvent
+	BlzGetTriggerFrameValue
+	BlzGetTriggerFrameText
+	BlzTriggerRegisterPlayerSyncEvent
+	BlzSendSyncData
+	BlzGetTriggerSyncPrefix
+	BlzGetTriggerSyncData
+	BlzTriggerRegisterPlayerKeyEvent
+	BlzGetTriggerPlayerKey
+	BlzGetTriggerPlayerMetaKey
+	BlzGetTriggerPlayerIsKeyDown
+	BlzSetMousePos
+	BlzGetLocalClientWidth
+	BlzGetLocalClientHeight
+	BlzIsLocalClientActive
+	BlzGetMouseFocusUnit
+	BlzChangeMinimapTerrainTex
+	BlzGetSpecialEffectScale
+	BlzSetSpecialEffectMatrixScale
+	BlzResetSpecialEffectMatrix
+	BlzGetUnitAbility
+	BlzGetUnitAbilityByIndex
+	BlzGetAbilityId
+	BlzDisplayChatMessage
+	BlzPauseUnitEx
+	BlzFourCC2S
+	BlzS2FourCC
+	BlzSetUnitFacingEx
+	BlzBitOr
+	BlzBitAnd
+	BlzBitXor
+	BlzGetAbilityBooleanField
+	BlzGetAbilityIntegerField
+	BlzGetAbilityRealField
+	BlzGetAbilityStringField
+	BlzGetAbilityBooleanLevelField
+	BlzGetAbilityIntegerLevelField
+	BlzGetAbilityRealLevelField
+	BlzGetAbilityStringLevelField
+	BlzGetAbilityBooleanLevelArrayField
+	BlzGetAbilityIntegerLevelArrayField
+	BlzGetAbilityRealLevelArrayField
+	BlzGetAbilityStringLevelArrayField
+	BlzSetAbilityBooleanField
+	BlzSetAbilityIntegerField
+	BlzSetAbilityRealField
+	BlzSetAbilityStringField
+	BlzSetAbilityBooleanLevelField
+	BlzSetAbilityIntegerLevelField
+	BlzSetAbilityRealLevelField
+	BlzSetAbilityStringLevelField
+	BlzSetAbilityBooleanLevelArrayField
+	BlzSetAbilityIntegerLevelArrayField
+	BlzSetAbilityRealLevelArrayField
+	BlzSetAbilityStringLevelArrayField
+	BlzAddAbilityBooleanLevelArrayField
+	BlzAddAbilityIntegerLevelArrayField
+	BlzAddAbilityRealLevelArrayField
+	BlzAddAbilityStringLevelArrayField
+	BlzRemoveAbilityBooleanLevelArrayField
+	BlzRemoveAbilityIntegerLevelArrayField
+	BlzRemoveAbilityRealLevelArrayField
+	BlzRemoveAbilityStringLevelArrayField
+	BlzGetItemBooleanField
+	BlzGetItemIntegerField
+	BlzGetItemRealField
+	BlzGetItemStringField
+	BlzSetItemBooleanField
+	BlzSetItemIntegerField
+	BlzSetItemRealField
+	BlzSetItemStringField
+	BlzGetUnitBooleanField
+	BlzGetUnitIntegerField
+	BlzGetUnitRealField
+	BlzGetUnitStringField
+	BlzSetUnitBooleanField
+	BlzSetUnitIntegerField
+	BlzSetUnitRealField
+	BlzSetUnitStringField
+	BlzGetUnitWeaponBooleanField
+	BlzGetUnitWeaponIntegerField
+	BlzGetUnitWeaponRealField
+	BlzGetUnitWeaponStringField
+	BlzSetUnitWeaponBooleanField
+	BlzSetUnitWeaponIntegerField
+	BlzSetUnitWeaponRealField
+	BlzSetUnitWeaponStringField
+	BlzQueueImmediateOrderById
+	BlzQueuePointOrderById
+	BlzQueueTargetOrderById
+	BlzQueueInstantPointOrderById
+	BlzQueueInstantTargetOrderById
+	BlzQueueBuildOrderById
+	BlzQueueNeutralImmediateOrderById
+	BlzQueueNeutralPointOrderById
+	BlzQueueNeutralTargetOrderById
+	BlzGetUnitOrderCount
+	BlzUnitClearOrders
+	BlzUnitForceStopOrder

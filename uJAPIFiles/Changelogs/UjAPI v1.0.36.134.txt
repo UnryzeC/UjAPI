@@ -1,0 +1,5 @@
+v1.0.36.134
+
+1. Fixed HideOriginFrames not hiding ClickableBlock frame.
+2. Fixed Fatal Error whenever GetFrameText was used on a Text Frame with not text initialised.
+3. Fixed weird attack combinations causing Clones deal 100% damage at all times.

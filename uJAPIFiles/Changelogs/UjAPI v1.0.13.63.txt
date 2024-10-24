@@ -1,0 +1,119 @@
+v1.0.13.63
+
+1. New Types:
+type buffstringfield			 						extends handle
+2. New Convertors:
+constant native ConvertBuffStringField			   		takes integer i returns buffstringfield
+3. New Constants:
+constant buffstringfield 			BUFF_SF_ICON_NORMAL				   							= ConvertBuffStringField('fart')
+constant buffstringfield 			BUFF_SF_TOOLTIP_NORMAL										= ConvertBuffStringField('ftip')
+constant buffstringfield 			BUFF_SF_TOOLTIP_NORMAL_EXTENDED					 			= ConvertBuffStringField('fube')
+constant unitstringfield 			UNIT_SF_HERO_ABILITY_LIST                   				= ConvertUnitStringField('uhab')
+constant unitstringfield 			UNIT_SF_ABILITY_LIST                   						= ConvertUnitStringField('uabi')
+4. New natives:
+native GetUjAPIVersion									takes nothing returns string
+native HideOriginFrames 								takes boolean flag returns nothing
+native EditBlackBorders									takes real upperHeight, real bottomHeight returns nothing
+// Ability
+native GetAbilityOrderId 								takes ability whichAbility returns integer // this replaced GetAbilityOrder, used wrong naming
+native SetAbilityOrderId 								takes ability whichAbility, integer orderId returns boolean // Highly experimental, may be removed if proven unstable.
+native SetAbilityLevel 									takes ability whichAbility, integer level returns boolean
+// Ability Base Field API
+native GetAbilityBaseIntegerFieldById                   takes integer aid, abilityintegerfield whichField returns integer
+native SetAbilityBaseIntegerFieldById                   takes integer aid, abilityintegerfield whichField, integer value returns boolean
+native GetAbilityBaseBooleanFieldById                   takes integer aid, abilitybooleanfield whichField returns boolean
+native SetAbilityBaseBooleanFieldById                   takes integer aid, abilitybooleanfield whichField, boolean value returns boolean
+native GetAbilityBaseRealFieldById                      takes integer aid, abilityrealfield whichField returns real
+native SetAbilityBaseRealFieldById                      takes integer aid, abilityrealfield whichField, real value returns boolean
+native GetAbilityBaseStringFieldById                    takes integer aid, abilitystringfield whichField returns string
+native SetAbilityBaseStringFieldById                    takes integer aid, abilitystringfield whichField, string value returns boolean
+native GetAbilityBaseIntegerLevelFieldById              takes integer aid, abilityintegerlevelfield whichField, integer level returns integer
+native SetAbilityBaseIntegerLevelFieldById              takes integer aid, abilityintegerlevelfield whichField, integer level, integer value returns boolean
+native GetAbilityBaseBooleanLevelFieldById              takes integer aid, abilitybooleanlevelfield whichField, integer level returns boolean
+native SetAbilityBaseBooleanLevelFieldById              takes integer aid, abilitybooleanlevelfield whichField, integer level, boolean value returns boolean
+native GetAbilityBaseRealLevelFieldById                 takes integer aid, abilityreallevelfield whichField, integer level returns real
+native SetAbilityBaseRealLevelFieldById                 takes integer aid, abilityreallevelfield whichField, integer level, real value returns boolean
+native GetAbilityBaseStringLevelFieldById               takes integer aid, abilitystringlevelfield whichField, integer level returns string
+native SetAbilityBaseStringLevelFieldById               takes integer aid, abilitystringlevelfield whichField, integer level, string value returns boolean
+native GetAbilityBaseIntegerLevelArrayFieldById         takes integer aid, abilityintegerlevelarrayfield whichField, integer level, integer index returns integer
+native SetAbilityBaseIntegerLevelArrayFieldById         takes integer aid, abilityintegerlevelarrayfield whichField, integer level, integer index, integer value returns boolean
+native AddAbilityBaseIntegerLevelArrayFieldById         takes integer aid, abilityintegerlevelarrayfield whichField, integer level, integer value returns boolean
+native RemoveAbilityBaseIntegerLevelArrayFieldById      takes integer aid, abilityintegerlevelarrayfield whichField, integer level, integer value returns boolean
+native GetAbilityBaseBooleanLevelArrayFieldById         takes integer aid, abilitybooleanlevelarrayfield whichField, integer level, integer index returns boolean
+native SetAbilityBaseBooleanLevelArrayFieldById         takes integer aid, abilitybooleanlevelarrayfield whichField, integer level, integer index, boolean value returns boolean
+native AddAbilityBaseBooleanLevelArrayFieldById         takes integer aid, abilitybooleanlevelarrayfield whichField, integer level, boolean value returns boolean
+native RemoveAbilityBaseBooleanLevelArrayFieldById      takes integer aid, abilitybooleanlevelarrayfield whichField, integer level, boolean value returns boolean
+native GetAbilityBaseRealLevelArrayFieldById            takes integer aid, abilityreallevelarrayfield whichField, integer level, integer index returns real
+native SetAbilityBaseRealLevelArrayFieldById            takes integer aid, abilityreallevelarrayfield whichField, integer level, integer index, real value returns boolean
+native AddAbilityBaseRealLevelArrayFieldById            takes integer aid, abilityreallevelarrayfield whichField, integer level, real value returns boolean
+native RemoveAbilityBaseRealLevelArrayFieldById         takes integer aid, abilityreallevelarrayfield whichField, integer level, real value returns boolean
+native GetAbilityBaseStringLevelArrayFieldById          takes integer aid, abilitystringlevelarrayfield whichField, integer level, integer index returns string
+native SetAbilityBaseStringLevelArrayFieldById          takes integer aid, abilitystringlevelarrayfield whichField, integer level, integer index, string value returns boolean
+native AddAbilityBaseStringLevelArrayFieldById          takes integer aid, abilitystringlevelarrayfield whichField, integer level, string value returns boolean
+native RemoveAbilityBaseStringLevelArrayFieldById       takes integer aid, abilitystringlevelarrayfield whichField, integer level, string value returns boolean
+// Buff Base Field API
+native GetBuffBaseStringFieldById						takes integer aid, buffstringfield whichField returns string
+native SetBuffBaseStringFieldById						takes integer aid, buffstringfield whichField, string value returns boolean
+// Buff Field API
+native GetBuffStringField								takes buff whichBuff, buffstringfield whichField returns string
+native SetBuffStringField								takes buff whichBuff, buffstringfield whichField, string value returns boolean
+// Item Base Field API
+native GetBaseItemIntegerFieldById                      takes integer itemId, itemintegerfield whichField returns integer
+native SetBaseItemIntegerFieldById                      takes integer itemId, itemintegerfield whichField, integer value returns boolean
+native GetBaseItemBooleanFieldById                      takes integer itemId, itembooleanfield whichField returns boolean
+native SetBaseItemBooleanFieldById                      takes integer itemId, itembooleanfield whichField, boolean value returns boolean
+native GetBaseItemRealFieldById                         takes integer itemId, itemrealfield whichField returns real
+native SetBaseItemRealFieldById                         takes integer itemId, itemrealfield whichField, real value returns boolean
+native GetBaseItemStringFieldById                       takes integer itemId, itemstringfield whichField returns string
+native SetBaseItemStringFieldById                       takes integer itemId, itemstringfield whichField, string value returns boolean
+// Unit Base Field API
+native GetUnitBaseIntegerFieldById                      takes integer unitTypeId, unitintegerfield whichField returns integer
+native SetUnitBaseIntegerFieldById                      takes integer unitTypeId, unitintegerfield whichField, integer value returns boolean
+native GetUnitBaseBooleanFieldById                      takes integer unitTypeId, unitbooleanfield whichField returns boolean
+native SetUnitBaseBooleanFieldById                      takes integer unitTypeId, unitbooleanfield whichField, boolean value returns boolean
+native GetUnitBaseRealFieldById                         takes integer unitTypeId, unitrealfield whichField returns real
+native SetUnitBaseRealFieldById                         takes integer unitTypeId, unitrealfield whichField, real value returns boolean
+native GetUnitBaseStringFieldById                       takes integer unitTypeId, unitstringfield whichField returns string
+native SetUnitBaseStringFieldById                       takes integer unitTypeId, unitstringfield whichField, string value returns boolean
+native GetUnitBaseWeaponIntegerFieldById                takes integer unitTypeId, unitweaponintegerfield whichField, integer index returns integer
+native SetUnitBaseWeaponIntegerFieldById                takes integer unitTypeId, unitweaponintegerfield whichField, integer index, integer value returns boolean
+native GetUnitBaseWeaponBooleanFieldById                takes integer unitTypeId, unitweaponbooleanfield whichField, integer index returns boolean
+native SetUnitBaseWeaponBooleanFieldById                takes integer unitTypeId, unitweaponbooleanfield whichField, integer index, boolean value returns boolean
+native GetUnitBaseWeaponRealFieldById                   takes integer unitTypeId, unitweaponrealfield whichField, integer index returns real
+native SetUnitBaseWeaponRealFieldById                   takes integer unitTypeId, unitweaponrealfield whichField, integer index, real value returns boolean
+native GetUnitBaseWeaponStringFieldById                 takes integer unitTypeId, unitweaponstringfield whichField, integer index returns string
+native SetUnitBaseWeaponStringFieldById                 takes integer unitTypeId, unitweaponstringfield whichField, integer index, string value returns boolean
+5. Fixed fatal errors involving all of the EX natives that modify Ability Fields.
+6. Fixed fatal errors involving CreateSimpleFrame when non-simple frame parent was passed.
+7. FRAMEEVENT_CONTROL_CLICK can now be used with all CSimpleButtons, namely:
+CSimpleButton
+CReplayButton
+CTrainableButton
+CCommandButton
+CHeroBarButton
+CSimpleCheckbox	
+8. FRAMEEVENT_MOUSE_ENTER and FRAMEEVENT_MOUSE_LEAVE can now be used with all CSimpleFrames.
+	Note: CSimpleTexture and CSimpleFontString (aka CSimpleRegions) are not supported, as they do not have internal events.
+9. Added support for these JN Natives:
+native BitOr takes integer x,integer y returns integer
+native BitAnd takes integer x,integer y returns integer
+native BitXor takes integer x,integer y returns integer
+native BitShiftL takes integer x,integer y returns integer
+native BitShiftR takes integer x,integer y returns integer
+native JNI2R takes integer i returns real
+native JNR2I takes real r returns integer
+native JNGetMaxAttackSpeed takes nothing returns real
+native IsReplayMode takes nothing returns boolean
+native IsHostPlayer takes nothing returns boolean
+native JNStringPos takes string str,string sub returns integer
+native JNStringReverse takes string str returns string
+native JNStringCount takes string str,string sub returns integer
+native JNStringContains takes string str,string sub returns boolean
+native JNStringReplace takes string str,string old,string newstr returns string
+native JNStringInsert takes string str,integer index,string val returns string
+native JNStringSub takes string str,integer start,integer length returns string
+native JNStringLength takes string str returns integer
+	Note: the rest of the natives will be visible by UjAPI, but they will do nothing and return null, but valid values, to prevent any possible crashes.
+10. Slightly reworked damaged event data, sometimes wrong data would be passed or straight up cause a crash.
+11. Fixed wrong colour being set for all CControl frames, aka CTextFrame, etc.
+12. Removed all cases of tabs being emulated via spaces in common.j, this caused a 30KB reduction in size.

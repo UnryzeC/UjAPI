@@ -1,0 +1,39 @@
+v1.0.23.91
+
+1. New Natives:
+native MathRealClamp									takes real value, real min, real max returns real
+native MathRealLerp										takes real a, real b, real t returns real
+native MathIntegerClamp									takes integer value, integer min, integer max returns integer
+native SetFrameWidth									takes framehandle whichFrame, real width returns nothing
+native SetFrameHeight									takes framehandle whichFrame, real height returns nothing
+native SetFrameTextVerticalAlignment					takes framehandle whichFrame, textaligntype verticalAlign returns nothing
+native SetFrameTextHorizontalAlignment					takes framehandle whichFrame, textaligntype horizontalAlign returns nothing
+native GetFrameTexture									takes framehandle whichFrame, integer textureId returns string
+native GetFrameTrackState								takes framehandle whichFrame returns boolean
+native SetFrameTrackState								takes framehandle whichFrame, integer trackState returns nothing // 0 - NONE | 1 - Track | 2 - Ignore Track
+native SetFrameTextureEx								takes framehandle whichFrame, string backgroundTextureFile, string borderTextureFile, integer textureId, boolean blend returns nothing
+2. CSimpleTexture can now be created via CreateFrameByType, with "SIMPLETEXTURE" frameType name.
+3. CSimpleFontString can now be created via CreateFrameByType, with "SIMPLETEXT" frameType name.
+4. FRAMEEVENT_MOUSE_DOWN and FRAMEEVENT_MOUSE_UP are properly implemented for CSimpleButtons and all its children types.
+5. Fixed not working Frame API for CScrollBar.
+6. Fixed inversed flag in BlzUnitHideAbility.
+7. Fixed all custom/new events only working with latest added trigger event.
+	Thanks to Radioactive for spotting this issue.
+8. Re-fixed CSpellbook interactions and ABILITY_SF_FIELD_ABILITY_LIST.
+9. Fixed fatal error on map load on 1.27a/1.27b/1.28f.
+	Note: this was a new bug introduced due to the removal of RCString limit.
+10. Fixed SetAbilityString not invoking ability UI data cloning.
+11. Fixed StringReplace replacing only 1 occurence instead of all.
+12. Fixed StringReplace not working if replacement string was empty.
+13. Slightly increased wait time for packet handling, this should prevent UjAPI sometimes failing to launch the map provided in the launch arguments.
+14. Added Jass section in UjAPI app.
+15. Added Dev Mode in Jass Section. This will cause UjAPI to print to console current running Jass function.
+16. Added Log Actions in Jass Section. This will cause UjAPI to print any and all Jass actions to console.
+	Example: ADD real -> -2816.000000 + 512.000000 = -2304.000000.
+	Note: there are a total of 43 different types of operations (opcodes).
+17. Added "-jass" CLI option to access new features such as Dev Mode and Log Actions.
+18. Added "dev" option to "-jass" CLI option.
+	Example: "-jass dev".
+19. Added "logactions" option to "-jass" CLI option.
+	Example: "-jass logactions".
+20. Get/SetFrameAlpha should work with CSimpleFrames that have textures and with all CSimpleRegions

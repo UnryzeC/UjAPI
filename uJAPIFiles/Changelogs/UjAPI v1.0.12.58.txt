@@ -1,0 +1,23 @@
+v1.0.12.58
+
+1. New Constants:
+constant integer					CHAT_RECIPIENT_ALL											= 0
+constant integer					CHAT_RECIPIENT_ALLIES										= 1
+constant integer					CHAT_RECIPIENT_REFEREES										= 2
+constant integer					CHAT_RECIPIENT_OBSERVERS									= 2
+constant integer					CHAT_RECIPIENT_PRIVATE										= 3
+constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACKS_ENABLED                  			= ConvertUnitWeaponIntegerField('uaen')
+2. New Natives:
+native DisplayChatMessage								takes player whichPlayer, integer recipient, string message returns nothing
+native DisplayTimedChatMessage							takes player whichPlayer, integer recipient, string message, real duration returns nothing
+native SetSpecialEffectAnimationOffsetPercent 			takes effect whichEffect, real percent returns boolean
+native SetTrackableAnimationOffsetPercent 				takes trackable whichTrackable, real percent returns boolean
+native SetWidgetAnimationOffsetPercent 					takes widget whichWidget, real percent returns boolean
+native SetDestructableAnimationOffsetPercent 			takes destructable whichDestructable, real percent returns boolean
+native SetItemAnimationOffsetPercent 					takes item whichItem, real percent returns boolean
+native SetUnitAnimationOffsetPercent 					takes unit whichUnit, real percent returns boolean
+native SetMissileAnimationOffsetPercent 				takes missile whichMissile, real percent returns boolean
+3. SetFrameSpriteAnimationOffset changed to SetFrameSpriteAnimationOffsetPercent.
+4. Fixed all natives related to fields, none of them were working.
+5. Fixed fatal error on map exit/restart when any frame was created via CreateFrame, CreateSimpleFrame and CreateFrameByType natives with duplicate contextId.
+	Note: meaning if you create a frame like so: CreateFrame( "SomFrame", gameUI, 0, 0 ) and do it again CreateFrame( "SomFrame", gameUI, 0, 0 ), it was essentially "popping" previous frame, which is no longer the case.

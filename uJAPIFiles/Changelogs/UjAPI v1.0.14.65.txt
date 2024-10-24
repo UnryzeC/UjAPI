@@ -1,0 +1,44 @@
+v1.0.14.65
+
+1. New Natives:
+native CreateImageSimple								takes string file, real sizeX, real sizeY, real posX, real posY, real posZ, integer imageType returns image
+native GetImageType										takes image whichImage returns integer	
+native GetImageX										takes image whichImage returns real	
+native SetImageX										takes image whichImage, real sizeX returns nothing	
+native GetImageY										takes image whichImage returns real	
+native SetImageY										takes image whichImage, real sizeY returns nothing	
+native GetImageZ										takes image whichImage returns real	
+native SetImageZ										takes image whichImage, real sizeZ returns nothing	
+native GetImagePositionLocation							takes image whichImage returns location
+native SetImagePositionLocation							takes image whichImage, location whichLocation returns nothing
+native GetImageOriginX									takes image whichImage returns real	
+native SetImageOriginX									takes image whichImage, real originX returns nothing	
+native GetImageOriginY									takes image whichImage returns real	
+native SetImageOriginY									takes image whichImage, real originY returns nothing	
+native SetImageOrigin									takes image whichImage, real originX, real originY returns nothing	
+native GetImageSizeX									takes image whichImage returns real	
+native SetImageSizeX									takes image whichImage, real sizeX returns nothing	
+native GetImageSizeY									takes image whichImage returns real	
+native SetImageSizeY									takes image whichImage, real sizeY returns nothing
+native SetImageSize										takes image whichImage, real size returns nothing
+native SetImageSizeEx									takes image whichImage, real sizeX, real sizeY returns nothing
+native GetImageColour									takes image whichImage returns integer
+native IsImageRendered									takes image whichImage returns boolean
+native IsImageRenderAlways								takes image whichImage returns boolean
+native IsImageRenderAboveWater							takes image whichImage returns boolean
+native IsImageVisible									takes image whichImage returns boolean
+native GetImageConstantHeight							takes image whichImage returns real
+native GetImageTexture									takes image whichImage returns string
+native SetImageTexture									takes image whichImage, string imagePath returns nothing
+2. Fixed Fatal Error involving OnDamaging/OnDamage event in very badly coded maps (meaning Jass code is very unoptimised).
+	Note: the issue was caused by my C++ code optimisation, I was freeing the data in a "as soon as possible" manner, which resulted being too fast.
+3. Fixed Fatal Error when selecting shops/hero ability (Aher)/spellbook, etc.
+	Note: this error was introduced due to a "workaround" implementation of extremely experimental SetAbilityOrderId.
+4. Added pseudo-support for these JN natives:
+native JNDailySave takes string MapId, string UserId, string SecretKey, string Character, string DailyType returns string
+native JNDailyCheckToday takes string MapId, string UserId, string SecretKey, string Character, string DailyType returns string
+native JNDailyCheckTodayList takes string MapId, string UserId, string SecretKey, string Character, string DailyType returns string
+native JNDailyCountWeek takes string MapId, string UserId, string SecretKey, string Character, string DailyType, string WeekDay returns string
+native JNDailyCountWeekList takes string MapId, string UserId, string SecretKey, string Character, string DailyType, string WeekDay returns string
+native JNDailyCountMonth takes string MapId, string UserId, string SecretKey, string Character, string DailyType returns string
+native JNDailyCountMonthList takes string MapId, string UserId, string SecretKey, string Character, string DailyType returns string

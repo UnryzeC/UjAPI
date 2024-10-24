@@ -1,0 +1,19 @@
+v1.0.24.92
+
+1. New Natives:
+	native RemoveSound										takes sound whichSound returns nothing
+	native ReplaceSound										takes sound whichSound, string fileName, boolean looping, boolean is3D, boolean stopwhenoutofrange, integer fadeInRate, integer fadeOutRate, string eaxSetting returns sound
+	native ReplaceSoundWithLabel							takes sound whichSound, string fileName, boolean looping, boolean is3D, boolean stopwhenoutofrange, integer fadeInRate, integer fadeOutRate, string SLKEntryName returns sound
+	native ReplaceSoundFromLabel							takes sound whichSound, string soundLabel, boolean looping, boolean is3D, boolean stopwhenoutofrange, integer fadeInRate, integer fadeOutRate returns sound
+	native ReplaceMIDISound									takes sound whichSound, string soundLabel, integer fadeInRate, integer fadeOutRate returns sound
+	//
+	native TextFileExists									takes string filePath returns boolean
+2. Re-Fixed SetFrameTexture for CBackdropFrame.
+3. Fixed fatal error when GetStringField was used on an empty field.
+4. TextFileErase changed to TextFileDelete.
+5. Fixed EVENT_WIDGET_DEATH not triggering.
+6. GetKillingUnit now works with EVENT_WIDGET_DEATH.
+7. Fixed fatal error from HandleListEnumByTypeId.
+8. Fixed somewhat broken HandleListGetTYPEByIndex, now they work properly.
+	Note: HandleListGetHandleByIndex and HandleListGetAgentByIndex worked without issues.
+9. Fixed Jass Logger Dev Mode not opening Debug Console.

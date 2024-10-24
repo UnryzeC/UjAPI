@@ -1,0 +1,4 @@
+v1.0.30.112
+
+1. Fixed UnitAddBuff/SetBuffOwner creating a copy of the target unit for some of the buffs.
+	Note: this was originally used to test some of the buffs that require a caster, like devotion aura.

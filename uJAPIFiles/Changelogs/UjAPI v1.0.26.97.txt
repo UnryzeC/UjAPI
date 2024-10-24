@@ -1,0 +1,121 @@
+v1.0.26.97
+
+1. New Types:
+	type mappedfield										extends handle
+	type mappedtype											extends handle
+	type attachmenttype										extends mappedtype
+	type bonetype											extends attachmenttype
+	type cursoranimtype										extends mappedtype
+2. New Convertors:
+	constant native ConvertMappedField						takes integer i returns mappedfield
+	constant native ConvertAttachmentType					takes integer i returns attachmenttype
+	constant native ConvertBoneType							takes integer i returns bonetype
+	constant native ConvertCursorAnimType					takes integer i returns cursoranimtype
+3. New Constants:
+	constant mappedfield				MAPPED_FIELD_ATTACHMENT										= ConvertMappedField(0)
+	constant mappedfield				MAPPED_FIELD_BONE											= ConvertMappedField(1)
+	constant mappedfield				MAPPED_FIELD_ANIMATION										= ConvertMappedField(2)
+	constant mappedfield				MAPPED_FIELD_SUB_ANIMATION									= ConvertMappedField(3)
+	constant mappedfield				MAPPED_CURSOR_SUB_ANIMATION									= ConvertMappedField(4)
+	//
+	constant attachmenttype 			ATTACHMENT_TYPE_CHEST										= ConvertAttachmentType('ches')
+	constant attachmenttype 			ATTACHMENT_TYPE_FEET										= ConvertAttachmentType('feet')
+	constant attachmenttype 			ATTACHMENT_TYPE_FOOT										= ConvertAttachmentType('foot')
+	constant attachmenttype 			ATTACHMENT_TYPE_HAND										= ConvertAttachmentType('hand')
+	constant attachmenttype 			ATTACHMENT_TYPE_HEAD										= ConvertAttachmentType('head')
+	constant attachmenttype 			ATTACHMENT_TYPE_ORIGIN										= ConvertAttachmentType('orig')
+	constant attachmenttype 			ATTACHMENT_TYPE_OVERHEAD									= ConvertAttachmentType('over')
+	constant attachmenttype 			ATTACHMENT_TYPE_SPRITE										= ConvertAttachmentType('spri')
+	constant attachmenttype 			ATTACHMENT_TYPE_WEAPON										= ConvertAttachmentType('weap')
+	constant attachmenttype 			ATTACHMENT_TYPE_ALTERNATE									= ConvertAttachmentType('alte')
+	constant attachmenttype 			ATTACHMENT_TYPE_LEFT										= ConvertAttachmentType('left')
+	constant attachmenttype 			ATTACHMENT_TYPE_RIGHT										= ConvertAttachmentType('righ')
+	constant attachmenttype 			ATTACHMENT_TYPE_MOUNT										= ConvertAttachmentType('moun')
+	constant attachmenttype 			ATTACHMENT_TYPE_REAR										= ConvertAttachmentType('rear')
+	constant attachmenttype 			ATTACHMENT_TYPE_SMART										= ConvertAttachmentType('smar')
+	constant attachmenttype 			ATTACHMENT_TYPE_FIRST										= ConvertAttachmentType('firs')
+	constant attachmenttype 			ATTACHMENT_TYPE_SECOND										= ConvertAttachmentType('seco')
+	constant attachmenttype 			ATTACHMENT_TYPE_THIRD										= ConvertAttachmentType('thir')
+	constant attachmenttype 			ATTACHMENT_TYPE_FOURTH										= ConvertAttachmentType('four')
+	constant attachmenttype 			ATTACHMENT_TYPE_FIFTH										= ConvertAttachmentType('fift')
+	constant attachmenttype 			ATTACHMENT_TYPE_SIXTH										= ConvertAttachmentType('sixt')
+	constant attachmenttype 			ATTACHMENT_TYPE_SMALL										= ConvertAttachmentType('smal')
+	constant attachmenttype 			ATTACHMENT_TYPE_MEDIUM										= ConvertAttachmentType('medi')
+	constant attachmenttype 			ATTACHMENT_TYPE_LARGE										= ConvertAttachmentType('larg')
+	constant attachmenttype 			ATTACHMENT_TYPE_GOLD										= ConvertAttachmentType('gold')
+	constant attachmenttype 			ATTACHMENT_TYPE_RALLYPOINT									= ConvertAttachmentType('rall')
+	constant attachmenttype 			ATTACHMENT_TYPE_EAT_TREE									= ConvertAttachmentType('eatt')
+	//
+	constant bonetype 					BONE_TYPE_CHEST												= ConvertBoneType('ches')
+	constant bonetype 					BONE_TYPE_FOOT 												= ConvertBoneType('foot')
+	constant bonetype 					BONE_TYPE_HAND 												= ConvertBoneType('hand')
+	constant bonetype 					BONE_TYPE_HEAD 												= ConvertBoneType('head')
+	constant bonetype 					BONE_TYPE_TURRET 											= ConvertBoneType('turr')
+	constant bonetype 					BONE_TYPE_ALTERNATE 										= ConvertBoneType('alte')
+	constant bonetype 					BONE_TYPE_LEFT 												= ConvertBoneType('left')
+	constant bonetype 					BONE_TYPE_RIGHT 											= ConvertBoneType('righ')
+	constant bonetype 					BONE_TYPE_MOUNT 											= ConvertBoneType('moun')
+	constant bonetype 					BONE_TYPE_SMART 											= ConvertBoneType('smar')
+	//
+	constant cursoranimtype				CURSORANIM_TYPE_NORMAL										= ConvertCursorAnimType(0)
+	constant cursoranimtype				CURSORANIM_TYPE_SELECT										= ConvertCursorAnimType(1)
+	constant cursoranimtype				CURSORANIM_TYPE_TARGET										= ConvertCursorAnimType(2)
+	constant cursoranimtype				CURSORANIM_TYPE_TARGET_SELECT								= ConvertCursorAnimType(3)
+	constant cursoranimtype				CURSORANIM_TYPE_INVALID_TARGET								= ConvertCursorAnimType(4)
+	constant cursoranimtype				CURSORANIM_TYPE_HOLD_ITEM									= ConvertCursorAnimType(5)
+	constant cursoranimtype				CURSORANIM_TYPE_SCROLL										= ConvertCursorAnimType(6)
+	constant cursoranimtype				CURSORANIM_TYPE_LEFT										= ConvertCursorAnimType(7)
+	constant cursoranimtype				CURSORANIM_TYPE_RIGHT										= ConvertCursorAnimType(8)
+	constant cursoranimtype				CURSORANIM_TYPE_UP											= ConvertCursorAnimType(9)
+	constant cursoranimtype				CURSORANIM_TYPE_DOWN										= ConvertCursorAnimType(10)
+5. Removed Natives:
+	native GetAnimationName									takes animtype whichAnim returns string
+6. New Natives:
+	native GetMiscDataString								takes string sectionName, string optionName, integer index returns string
+	native SetMiscDataString								takes string sectionName, string optionName, integer index, string value returns nothing
+	//
+	native GetSkinDataString								takes string raceName, string sectionName, string optionName, integer index returns string // raceName can be null
+	native SetSkinDataString								takes string raceName, string sectionName, string optionName, integer index, string value returns nothing // raceName can be null
+	//
+	native GetFDFDataString									takes string sectionName, string optionName returns string
+	native SetFDFDataString									takes string sectionName, string optionName, string value returns nothing
+	//
+	native GetMappedTypeName								takes mappedfield whichField, mappedtype whichMapType returns string
+	//
+	native TriggerCountEvents								takes trigger whichTrigger returns integer
+	native TriggerCountConditions							takes trigger whichTrigger returns integer
+	native TriggerCountActions								takes trigger whichTrigger returns integer
+	native TriggerRemoveEvent								takes trigger whichTrigger, event whichEvent returns nothing
+	native TriggerRemoveEventId								takes trigger whichTrigger, eventid whichEventId, boolean removeAllOccurences returns nothing
+	native TriggerClearEvents								takes trigger whichTrigger returns nothing
+	native TriggerClear										takes trigger whichTrigger returns nothing
+	//
+	native GetSpecialEffectCurrentAnimationName				takes effect whichEffect returns string
+	native GetTrackableCurrentAnimationName					takes trackable whichTrackable returns string
+	native GetWidgetCurrentAnimationName					takes widget whichWidget returns string
+	native GetDestructableCurrentAnimationName				takes destructable whichDestructable returns string
+	native GetItemCurrentAnimationName						takes item whichItem returns string
+	native GetUnitCurrentAnimationName						takes unit whichUnit returns string
+	native GetProjectileCurrentAnimationName				takes projectile whichProjectile returns string
+	native GetFrameSpriteCurrentAnimationName				takes framehandle whichFrame returns string
+	//
+	native CreateSimpleGlueFrame							takes framehandle whichSimpleParent, framehandle whichSpriteFrame returns framehandle
+	native SetFrameName										takes framehandle whichFrame, string contextName returns nothing
+	native GetFrameContext									takes framehandle whichFrame returns integer
+	native SetFrameContext									takes framehandle whichFrame, integer createContext returns nothing
+	native SetFrameContextName								takes framehandle whichFrame, string contextName, integer createContext returns nothing
+7. Fixed ABILITY_IF_BUTTON_HOTKEY_RESEARCH's wrong typeId aukh to arhk.
+8. Renamed ABILITY_ILF_RESTORED_MANA__1_FOR_CURRENT into ABILITY_ILF_RESTORED_MANA_1_FOR_CURRENT.
+9. textfilehandle type no longer uses real handle-management, instead it now uses fake-handles, like fogstate, so it can be used in local block.
+10. Added experimental new w3i parser that should be able to at least read reforged maps and display correct Forces/Player slots.
+	Note: pure lua maps won't work until Ev3nt fixes his war3_lua.dll.
+	Note 2: this "little" change required around 1000 lines of code, what am I doing with my life...
+11. Technically fixed a wrong data in a structure related to MemoryAllocation, which was related to JassStack, etc.
+	Note: while there were no issues before, it was either by pure luck or because it was not used as much.
+12. Fixed all SetAnimationOffsetPercent functions.
+13. Fixed GetFrameName causing fatal error.
+14. Fixed GetFrameName only working with CFrames.
+15. Fixed fatal error whenever GetHandleId was used on anything "too large".
+16. ClickFrameEx now uses mousebuttontype instead of flat boolean flag.
+17. Fixed FRAMEEVENT_MOUSE_DOWN breaking default Item/Ability button's action.
+18. Fixed fatal error from GetFrameParent.

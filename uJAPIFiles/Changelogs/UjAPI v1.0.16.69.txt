@@ -1,0 +1,42 @@
+v1.0.16.69
+
+1. Type Changes:
+subanimtype now extends animtype, so its name can be received via GetAnimationName native.
+2. New Constants:
+constant itemstringfield 			ITEM_SF_ABILITY_LIST										= ConvertItemStringField('iabi')
+constant itemstringfield 			ITEM_SF_ICON												= ConvertItemStringField('iico')
+constant unitstringfield 			UNIT_SF_ICON_NORMAL											= ConvertUnitStringField('uico')
+constant unitstringfield 			UNIT_SF_ICON_SCORE_SCREEN									= ConvertUnitStringField('ussi')
+constant unitstringfield 			UNIT_SF_MODEL												= ConvertUnitStringField('umdl')
+constant unitstringfield 			UNIT_SF_PORTRAIT											= ConvertUnitStringField('upor')
+constant unitstringfield 			UNIT_SF_SPECIAL												= ConvertUnitStringField('uspa')
+constant unitstringfield 			UNIT_SF_TOOLTIP_AWAKEN						 				= ConvertUnitStringField('uawt')
+constant unitstringfield 			UNIT_SF_TOOLTIP_REVIVE						 				= ConvertUnitStringField('utpr')
+3. New Natives:
+native HandleToHandle									takes handle h returns handle
+native SaveHandle										takes hashtable table, integer parentKey, integer childKey, handle whichHandle returns boolean
+native SaveAttackTypeHandle								takes hashtable table, integer parentKey, integer childKey, attacktype whichAttackType returns boolean
+native SaveDamageTypeHandle								takes hashtable table, integer parentKey, integer childKey, damagetype whichDamageType returns boolean
+native SaveWeaponTypeHandle								takes hashtable table, integer parentKey, integer childKey, weapontype whichWeaponType returns boolean
+native LoadHandle			 							takes hashtable table, integer parentKey, integer childKey returns handle
+native LoadAttackTypeHandle								takes hashtable table, integer parentKey, integer childKey returns attacktype
+native LoadDamageTypeHandle								takes hashtable table, integer parentKey, integer childKey returns damagetype
+native LoadWeaponTypeHandle								takes hashtable table, integer parentKey, integer childKey returns weapontype
+native GetAnimationName                              	takes animtype whichAnim returns string
+native QueueImmediateOrderById      					takes unit whichUnit, integer order returns boolean
+native QueuePointOrderById          					takes unit whichUnit, integer order, real x, real y returns boolean
+native QueueTargetOrderById         					takes unit whichUnit, integer order, widget targetWidget returns boolean
+native QueueInstantPointOrderById   					takes unit whichUnit, integer order, real x, real y, widget instantTargetWidget returns boolean
+native QueueInstantTargetOrderById  					takes unit whichUnit, integer order, widget targetWidget, widget instantTargetWidget returns boolean
+native QueueBuildOrderById          					takes unit whichPeon, integer unitId, real x, real y returns boolean
+native QueueNeutralImmediateOrderById   				takes player forWhichPlayer, unit neutralStructure, integer unitId returns boolean
+native QueueNeutralPointOrderById       				takes player forWhichPlayer, unit neutralStructure, integer unitId, real x, real y returns boolean
+native QueueNeutralTargetOrderById      				takes player forWhichPlayer, unit neutralStructure, integer unitId, widget target returns boolean
+native GetUnitOrderCount 								takes unit whichUnit returns integer
+native GetUnitOrderIdByIndex 							takes unit whichUnit, integer index returns integer
+native UnitClearOrders 									takes unit whichUnit, boolean onlyQueued returns nothing
+native UnitForceStopOrder 								takes unit whichUnit, boolean clearQueue returns nothing
+4. Fixed JASS Error parser to correctly display error text instead of the same one all the time.
+5. Fixed accidentally broken support for 1.27a.
+6. Reworked OnDamage event yet again, to prevent crashes whenever CastTargetAbility was used with DAMAGING event.
+7. Reworked frame creation engine, it was unintentionally partially broken on one of the previous updates.

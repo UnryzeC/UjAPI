@@ -1,0 +1,254 @@
+v1.0.12.57
+
+1. New Constants:
+constant abilityintegerfield 		ABILITY_IF_BUTTON_HOTKEY_NORMAL        						= ConvertAbilityIntegerField('ahky')
+constant abilityintegerfield 		ABILITY_IF_BUTTON_HOTKEY_ACTIVATED        					= ConvertAbilityIntegerField('auhk')
+constant abilityintegerfield 		ABILITY_IF_BUTTON_HOTKEY_RESEARCH        					= ConvertAbilityIntegerField('auhk')
+constant abilitystringfield 		ABILITY_SF_ICON_NORMAL                   					= ConvertAbilityStringField('aart')
+constant unitintegerfield 			UNIT_IF_FOOD_USED    										= ConvertUnitIntegerField('ufoo')
+constant unitintegerfield 			UNIT_IF_FOOD_PRODUCED    									= ConvertUnitIntegerField('ufma')
+constant unitintegerfield 			UNIT_IF_GOLD_COST    										= ConvertUnitIntegerField('ugol')
+constant unitintegerfield 			UNIT_IF_LUMBER_COST    										= ConvertUnitIntegerField('ulum')
+constant unitintegerfield 			UNIT_IF_AGILITY_BASE                               			= ConvertUnitIntegerField('ustr')
+constant unitintegerfield 			UNIT_IF_INTELLIGENCE_BASE                          			= ConvertUnitIntegerField('uagi')
+constant unitintegerfield 			UNIT_IF_STRENGTH_BASE                              			= ConvertUnitIntegerField('uint')
+2. New Natives:
+// utility
+native GetHostPlayer									takes nothing returns player
+native GetHandleCount									takes nothing returns integer
+native GetNextHandleIndex								takes nothing returns integer
+native IsKeyPressed										takes oskeytype key returns boolean
+native IsMouseKeyPressed								takes mousebuttontype mouseKey returns boolean
+// screen
+native SetScreenFieldOfView								takes real fov returns nothing
+native SetWidescreenState								takes boolean flag returns nothing
+// window
+native IsWindowActive 									takes nothing returns boolean
+native GetWindowWidth 									takes nothing returns integer
+native GetWindowHeight 									takes nothing returns integer
+native GetClientWidth 									takes nothing returns integer
+native GetClientHeight 									takes nothing returns integer
+native GetWindowX 										takes nothing returns integer
+native GetWindowY 										takes nothing returns integer
+native GetWindowCenterX 								takes nothing returns integer
+native GetWindowCenterY 								takes nothing returns integer
+// Frame
+native GetCFrameByName 									takes string frameName, integer createContext returns framehandle
+native GetCSimpleFontStringByName 						takes string frameName, integer createContext returns framehandle
+native GetCSimpleTextureByName 							takes string frameName, integer createContext returns framehandle
+native GetCSimpleFrameByName 							takes string frameName, integer createContext returns framehandle
+native GetFrameUnderMouse								takes nothing returns framehandle
+native SetFrameSpriteAnimationOffset					takes framehandle whichFrame, real percent returns boolean
+// ability
+native GetAbilityIntegerField                   		takes ability whichAbility, abilityintegerfield whichField returns integer
+native SetAbilityIntegerField                   		takes ability whichAbility, abilityintegerfield whichField, integer value returns boolean
+native GetAbilityBooleanField                   		takes ability whichAbility, abilitybooleanfield whichField returns boolean
+native SetAbilityBooleanField                   		takes ability whichAbility, abilitybooleanfield whichField, boolean value returns boolean
+native GetAbilityRealField                      		takes ability whichAbility, abilityrealfield whichField returns real
+native SetAbilityRealField                      		takes ability whichAbility, abilityrealfield whichField, real value returns boolean
+native GetAbilityStringField                    		takes ability whichAbility, abilitystringfield whichField returns string
+native SetAbilityStringField                    		takes ability whichAbility, abilitystringfield whichField, string value returns boolean
+native GetAbilityIntegerLevelField              		takes ability whichAbility, abilityintegerlevelfield whichField, integer level returns integer
+native SetAbilityIntegerLevelField              		takes ability whichAbility, abilityintegerlevelfield whichField, integer level, integer value returns boolean
+native GetAbilityBooleanLevelField              		takes ability whichAbility, abilitybooleanlevelfield whichField, integer level returns boolean
+native SetAbilityBooleanLevelField              		takes ability whichAbility, abilitybooleanlevelfield whichField, integer level, boolean value returns boolean
+native GetAbilityRealLevelField                 		takes ability whichAbility, abilityreallevelfield whichField, integer level returns real
+native SetAbilityRealLevelField                 		takes ability whichAbility, abilityreallevelfield whichField, integer level, real value returns boolean
+native GetAbilityStringLevelField               		takes ability whichAbility, abilitystringlevelfield whichField, integer level returns string
+native SetAbilityStringLevelField               		takes ability whichAbility, abilitystringlevelfield whichField, integer level, string value returns boolean
+native GetAbilityIntegerLevelArrayField         		takes ability whichAbility, abilityintegerlevelarrayfield whichField, integer level, integer index returns integer
+native SetAbilityIntegerLevelArrayField         		takes ability whichAbility, abilityintegerlevelarrayfield whichField, integer level, integer index, integer value returns boolean
+native AddAbilityIntegerLevelArrayField         		takes ability whichAbility, abilityintegerlevelarrayfield whichField, integer level, integer value returns boolean
+native RemoveAbilityIntegerLevelArrayField      		takes ability whichAbility, abilityintegerlevelarrayfield whichField, integer level, integer value returns boolean
+native GetAbilityBooleanLevelArrayField         		takes ability whichAbility, abilitybooleanlevelarrayfield whichField, integer level, integer index returns boolean
+native SetAbilityBooleanLevelArrayField         		takes ability whichAbility, abilitybooleanlevelarrayfield whichField, integer level, integer index, boolean value returns boolean
+native AddAbilityBooleanLevelArrayField         		takes ability whichAbility, abilitybooleanlevelarrayfield whichField, integer level, boolean value returns boolean
+native RemoveAbilityBooleanLevelArrayField      		takes ability whichAbility, abilitybooleanlevelarrayfield whichField, integer level, boolean value returns boolean
+native GetAbilityRealLevelArrayField            		takes ability whichAbility, abilityreallevelarrayfield whichField, integer level, integer index returns real
+native SetAbilityRealLevelArrayField            		takes ability whichAbility, abilityreallevelarrayfield whichField, integer level, integer index, real value returns boolean
+native AddAbilityRealLevelArrayField            		takes ability whichAbility, abilityreallevelarrayfield whichField, integer level, real value returns boolean
+native RemoveAbilityRealLevelArrayField         		takes ability whichAbility, abilityreallevelarrayfield whichField, integer level, real value returns boolean
+native GetAbilityStringLevelArrayField          		takes ability whichAbility, abilitystringlevelarrayfield whichField, integer level, integer index returns string
+native SetAbilityStringLevelArrayField          		takes ability whichAbility, abilitystringlevelarrayfield whichField, integer level, integer index, string value returns boolean
+native AddAbilityStringLevelArrayField          		takes ability whichAbility, abilitystringlevelarrayfield whichField, integer level, string value returns boolean
+native RemoveAbilityStringLevelArrayField       		takes ability whichAbility, abilitystringlevelarrayfield whichField, integer level, string value returns boolean
+// item
+native GetItemIntegerField                      		takes item whichItem, itemintegerfield whichField returns integer
+native SetItemIntegerField                      		takes item whichItem, itemintegerfield whichField, integer value returns boolean
+native GetItemBooleanField                      		takes item whichItem, itembooleanfield whichField returns boolean
+native SetItemBooleanField                      		takes item whichItem, itembooleanfield whichField, boolean value returns boolean
+native GetItemRealField                         		takes item whichItem, itemrealfield whichField returns real
+native SetItemRealField                         		takes item whichItem, itemrealfield whichField, real value returns boolean
+native GetItemStringField                       		takes item whichItem, itemstringfield whichField returns string
+native SetItemStringField                       		takes item whichItem, itemstringfield whichField, string value returns boolean
+// unit
+native GetUnitMinimumDamageByIndex						takes unit whichUnit, integer attackIndex returns integer
+native GetUnitMaximumDamageByIndex						takes unit whichUnit, integer attackIndex returns integer
+native GetUnitBooleanField                      		takes unit whichUnit, unitbooleanfield whichField returns boolean
+native GetUnitIntegerField                      		takes unit whichUnit, unitintegerfield whichField returns integer
+native GetUnitRealField                         		takes unit whichUnit, unitrealfield whichField returns real
+native GetUnitStringField                       		takes unit whichUnit, unitstringfield whichField returns string
+native SetUnitBooleanField                      		takes unit whichUnit, unitbooleanfield whichField, boolean value returns boolean
+native SetUnitIntegerField                      		takes unit whichUnit, unitintegerfield whichField, integer value returns boolean
+native SetUnitRealField                         		takes unit whichUnit, unitrealfield whichField, real value returns boolean
+native SetUnitStringField                       		takes unit whichUnit, unitstringfield whichField, string value returns boolean
+native GetUnitWeaponBooleanField                		takes unit whichUnit, unitweaponbooleanfield whichField, integer index returns boolean
+native GetUnitWeaponIntegerField                		takes unit whichUnit, unitweaponintegerfield whichField, integer index returns integer
+native GetUnitWeaponRealField                   		takes unit whichUnit, unitweaponrealfield whichField, integer index returns real
+native GetUnitWeaponStringField                 		takes unit whichUnit, unitweaponstringfield whichField, integer index returns string
+native SetUnitWeaponBooleanField                		takes unit whichUnit, unitweaponbooleanfield whichField, integer index, boolean value returns boolean
+native SetUnitWeaponIntegerField                		takes unit whichUnit, unitweaponintegerfield whichField, integer index, integer value returns boolean
+native SetUnitWeaponRealField                   		takes unit whichUnit, unitweaponrealfield whichField, integer index, real value returns boolean
+native SetUnitWeaponStringField                 		takes unit whichUnit, unitweaponstringfield whichField, integer index, string value returns boolean
+3. Removed Natives:
+native GetAbilityHotkey 								takes ability whichAbility returns oskeytype
+native SetAbilityHotkey 								takes ability whichAbility, oskeytype whichKey returns nothing
+native GetAbilityUnHotkey 								takes ability whichAbility returns oskeytype
+native SetAbilityUnHotkey 								takes ability whichAbility, oskeytype whichKey returns nothing
+native GetAbilityResearchHotkey 						takes ability whichAbility returns oskeytype
+native SetAbilityResearchHotkey 						takes ability whichAbility, oskeytype whichKey returns nothing
+native GetAbilityEffectSound 							takes ability whichAbility returns string
+native SetAbilityEffectSound 							takes ability whichAbility, string text returns nothing
+native GetAbilityGlobalMessage 							takes ability whichAbility returns string
+native SetAbilityGlobalMessage 							takes ability whichAbility, string text returns nothing
+native GetAbilityGlobalSound 							takes ability whichAbility returns string
+native SetAbilityGlobalSound 							takes ability whichAbility, string text returns nothing
+native GetAbilityButtonX 								takes ability whichAbility returns integer
+native SetAbilityButtonX 								takes ability whichAbility, integer positionX returns nothing
+native GetAbilityButtonY 								takes ability whichAbility returns integer
+native SetAbilityButtonY 								takes ability whichAbility, integer positionY returns nothing
+native GetAbilityUnButtonX 								takes ability whichAbility returns integer
+native SetAbilityUnButtonX 								takes ability whichAbility, integer positionX returns nothing
+native GetAbilityUnButtonY 								takes ability whichAbility returns integer
+native SetAbilityUnButtonY 								takes ability whichAbility, integer positionY returns nothing
+native GetAbilityResearchButtonX 						takes ability whichAbility returns integer
+native SetAbilityResearchButtonX 						takes ability whichAbility, integer positionX returns nothing
+native GetAbilityResearchButtonY 						takes ability whichAbility returns integer
+native SetAbilityResearchButtonY 						takes ability whichAbility, integer positionY returns nothing
+native GetAbilityMissileSpeed 							takes ability whichAbility returns real
+native SetAbilityMissileSpeed 							takes ability whichAbility, real missileSpeed returns nothing
+native GetAbilityMissileArc 							takes ability whichAbility returns real
+native SetAbilityMissileArc 							takes ability whichAbility, real missileArc returns nothing
+native GetAbilityIsMissileHoming 						takes ability whichAbility returns boolean
+native SetAbilityIsMissileHoming 						takes ability whichAbility, boolean ishoming returns nothing
+native GetAbilityBaseSpellDetails 						takes ability whichAbility returns integer
+native SetAbilityBaseSpellDetails 						takes ability whichAbility, integer level returns nothing
+native GetAbilityBaseTip 								takes ability whichAbility, integer level returns string
+native SetAbilityBaseTip 								takes ability whichAbility, integer level, string text returns nothing
+native GetAbilityBaseUnTip 								takes ability whichAbility, integer level returns string
+native SetAbilityBaseUnTip 								takes ability whichAbility, integer level, string text returns nothing
+native GetAbilityBaseUberTip 							takes ability whichAbility, integer level returns string
+native SetAbilityBaseUberTip 							takes ability whichAbility, integer level, string text returns nothing
+native GetAbilityBaseUnUberTip 							takes ability whichAbility, integer level returns string
+native SetAbilityBaseUnUberTip 							takes ability whichAbility, integer level, string text returns nothing
+native SetAbilityHotkeyEx 								takes ability whichAbility, oskeytype whichKey returns nothing
+native GetItemBaseName 									takes item whichItem returns string
+native SetItemBaseName 									takes item whichItem, string name returns nothing
+native GetItemBaseDescription							takes item whichItem returns string
+native SetItemBaseDescription 							takes item whichItem, string name returns nothing
+native GetItemBaseIcon 									takes item whichItem returns string
+native SetItemBaseIcon 									takes item whichItem, string path returns nothing
+native GetItemBaseHotkey 								takes item whichItem returns oskeytype
+native SetItemBaseHotkey 								takes item whichItem, oskeytype whichKey returns nothing
+native GetItemBaseTip 									takes item whichItem returns string
+native SetItemBaseTip 									takes item whichItem, string tip returns nothing
+native GetItemBaseUberTip 								takes item whichItem returns string
+native SetItemBaseUberTip 								takes item whichItem, string tip returns nothing
+native GetItemBaseGoldCost 								takes item whichItem returns integer
+native SetItemBaseGoldCost 								takes item whichItem, integer goldcost returns nothing
+native GetItemBaseLumberCost 							takes item whichItem returns integer
+native SetItemBaseLumberCost 							takes item whichItem, integer lumbercost returns nothing
+native GetItemBaseStockMaximum 							takes item whichItem returns integer
+native SetItemBaseStockMaximum 							takes item whichItem, integer stockMax returns nothing
+native GetItemBaseStockReplenishInterval 				takes item whichItem returns real
+native SetItemBaseStockReplenishInterval 				takes item whichItem, real replenishInterval returns nothing
+native GetItemBaseStockStartDelay 						takes item whichItem returns real
+native SetItemBaseStockStartDelay 						takes item whichItem, real stockStartDelay returns nothing
+native GetItemBasePriority 								takes item whichItem returns integer
+native SetItemBasePriority 								takes item whichItem, integer priority returns nothing
+native GetItemBaseLevel 								takes item whichItem returns integer
+native SetItemBaseLevel 								takes item whichItem, integer level returns nothing
+native GetItemBaseOldLevel 								takes item whichItem returns integer
+native SetItemBaseOldLevel 								takes item whichItem, integer oldlevel returns nothing
+native GetItemBaseClassification 						takes item whichItem returns integer
+native SetItemBaseClassification 						takes item whichItem, integer classifictaionId returns nothing
+native GetItemBaseIsMorph 								takes item whichItem returns boolean
+native SetItemBaseIsMorph 								takes item whichItem, boolean flag returns nothing
+native GetItemBaseIsPickRandom 							takes item whichItem returns boolean
+native SetItemBaseIsPickRandom 							takes item whichItem, boolean flag returns nothing
+native GetItemBaseCharges 								takes item whichItem returns integer
+native SetItemBaseCharges 								takes item whichItem, integer charges returns nothing
+native GetItemBaseCooldownId 							takes item whichItem returns integer
+native SetItemBaseCooldownId 							takes item whichItem, integer cooldownId returns nothing
+native GetItemBaseIsIgnoreCooldown 						takes item whichItem returns boolean
+native SetItemBaseIsIgnoreCooldown 						takes item whichItem, boolean flag returns nothing
+native GetItemBaseIsPowerUp 							takes item whichItem returns boolean
+native SetItemBaseIsPowerUp 							takes item whichItem, boolean flag returns nothing
+native GetItemBaseIsPawnable 							takes item whichItem returns boolean
+native SetItemBaseIsPawnable 							takes item whichItem, boolean flag returns nothing
+native GetItemBaseIsUsable 								takes item whichItem returns boolean
+native SetItemBaseIsUsable 								takes item whichItem, boolean flag returns nothing
+native GetItemBaseIsPerishable 							takes item whichItem returns boolean
+native SetItemBaseIsPerishable 							takes item whichItem, boolean flag returns nothing
+native GetItemBaseIsDroppable 							takes item whichItem returns boolean
+native SetItemBaseIsDroppable 							takes item whichItem, boolean flag returns nothing
+native GetItemBaseIsDroppableOnDeath 					takes item whichItem returns boolean
+native SetItemBaseIsDroppableOnDeath 					takes item whichItem, boolean flag returns nothing
+native GetItemBaseIsSellable 							takes item whichItem returns boolean
+native SetItemBaseIsSellable 							takes item whichItem, boolean flag returns nothing
+native GetHeroBasePrimaryStat 							takes unit whichUnit returns heroattribute
+native SetHeroBasePrimaryStat 							takes unit whichUnit, heroattribute whichHeroAttribute returns nothing
+native GetUnitBaseGoldCost 								takes unit whichUnit returns integer
+native SetUnitBaseGoldCost 								takes unit whichUnit, integer goldCost returns nothing
+native GetUnitBaseDaySight 								takes unit whichUnit returns real
+native SetUnitBaseDaySight 								takes unit whichUnit, real dsight returns nothing
+native GetUnitBaseNightSight 							takes unit whichUnit returns real
+native SetUnitBaseNightSight 							takes unit whichUnit, real nsight returns nothing
+native GetUnitBaseColour 								takes unit whichUnit returns integer
+native SetUnitBaseColour 								takes unit whichUnit, integer colour returns nothing
+native GetUnitBaseColourA 								takes unit whichUnit returns integer
+native SetUnitBaseColourA 								takes unit whichUnit, integer alpha returns nothing
+native GetUnitBaseColourR 								takes unit whichUnit returns integer
+native SetUnitBaseColourR 								takes unit whichUnit, integer red returns nothing
+native GetUnitBaseColourG 								takes unit whichUnit returns integer
+native SetUnitBaseColourG 								takes unit whichUnit, integer green returns nothing
+native GetUnitBaseColourB 								takes unit whichUnit returns integer
+native SetUnitBaseColourB 								takes unit whichUnit, integer blue returns nothing
+native GetUnitBaseName 									takes unit whichUnit returns string
+native SetUnitBaseName 									takes unit whichUnit, string name returns nothing
+native GetHeroBaseProperName 							takes unit whichUnit, integer nameIndex returns string
+native SetHeroBaseProperName 							takes unit whichUnit, integer nameIndex, string properName returns nothing
+native GetUnitBaseDescription 							takes unit whichUnit returns string
+native SetUnitBaseDescription 							takes unit whichUnit, string name returns nothing
+native GetUnitBaseModel 								takes unit whichUnit returns string
+native SetUnitBaseModel 								takes unit whichUnit, string model returns nothing
+native GetUnitBasePortrait 								takes unit whichUnit returns string
+native SetUnitBasePortrait 								takes unit whichUnit, string portrait returns nothing
+native GetUnitBaseHotkey 								takes unit whichUnit returns oskeytype
+native SetUnitBaseHotkey 								takes unit whichUnit, oskeytype whichKey returns nothing
+native GetUnitBaseIcon 									takes unit whichUnit returns string
+native SetUnitBaseIcon 									takes unit whichUnit, string name returns nothing
+native GetUnitBaseAwakenTip 							takes unit whichUnit returns string
+native SetUnitBaseAwakenTip 							takes unit whichUnit, string awakenTip returns nothing
+native GetUnitBaseTip 									takes unit whichUnit returns string
+native SetUnitBaseTip 									takes unit whichUnit, string tip returns nothing
+native GetUnitBaseUberTip 								takes unit whichUnit returns string
+native SetUnitBaseUberTip 								takes unit whichUnit, string ubertip returns nothing
+native GetUnitBaseReviveTip 							takes unit whichUnit returns string
+native SetUnitBaseReviveTip 							takes unit whichUnit, string revivetip returns nothing
+native GetUnitBaseShadowTex 							takes unit whichUnit returns string
+native SetUnitBaseShadowTex 							takes unit whichUnit, string shadowTexture returns nothing
+native GetUnitBaseMissileArt 							takes unit whichUnit, integer attackIndex returns string
+native SetUnitBaseMissileArt 							takes unit whichUnit, integer attackIndex, string missleArt returns nothing   
+native GetUnitBaseMissileSpeed 							takes unit whichUnit, integer attackIndex returns real
+native SetUnitBaseMissileSpeed 							takes unit whichUnit, integer attackIndex, real missleSpeed returns nothing
+native GetUnitBaseSelectionScale 						takes unit whichUnit returns real
+native SetUnitBaseSelectionScale 						takes unit whichUnit, real selectionScale returns nothing
+4. Added keyword "Base" to natives that were revolving around Base data and did not have this keyword.
+5. Fixed fatal error from natives CastAbility/CastAbilityGround/CastAbilityTarget on majority of "unsupported" abilities, now all abilities should be supported.
+6. SetFrameAllPoints now returns boolean.
+7. SetFrameFocus now returns boolean.
+8. SetUnitMoveAIType now has additional boolean argument "flag", which stands for set/unset data.
+9. Fully re-written Launcher -> Game -> Launcher communication, now it uses pipes instead of signals.
+10. Fixed native GetEventDamageTarget returning source instead.
+11. Fixed all TriggerRegister functions from "failing" to work with new events if all of them were called from "main" function without any delay.

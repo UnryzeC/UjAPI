@@ -1,0 +1,50 @@
+v1.0.33.121
+
+1. New Constants:
+	constant originframetype			ORIGIN_FRAME_ITEM_BUTTON_COOLDOWN_INDICATOR					= ConvertOriginFrameType(47)
+	constant originframetype			ORIGIN_FRAME_ITEM_BUTTON_AUTOCAST_FRAME						= ConvertOriginFrameType(48)
+	constant originframetype			ORIGIN_FRAME_ITEM_BUTTON_CHARGES_FRAME						= ConvertOriginFrameType(49)
+	constant originframetype			ORIGIN_FRAME_ITEM_BUTTON_CHARGES_TEXT						= ConvertOriginFrameType(50)
+2. New Natives:
+	native SetProjectileMatrixScale							takes projectile whichProjectile, real x, real y, real z returns nothing
+	//
+	native SetWidgetMatrixScale								takes widget whichWidget, real x, real y, real z returns nothing
+	native ResetWidgetMatrix								takes widget whichWidget returns nothing
+	//
+	native SetDestructableMatrixScale						takes destructable whichDestructable, real x, real y, real z returns nothing
+	native ResetDestructableMatrix							takes destructable whichDestructable returns nothing
+	//
+	native SetItemMatrixScale								takes item whichItem, real x, real y, real z returns nothing
+	native ResetItemMatrix									takes item whichItem returns nothing
+	//
+	native IsUnitAutoOrientationEnabled						takes unit whichUnit returns boolean
+	native UnitEnableAutoOrientation						takes unit whichUnit, boolean enable returns nothing
+	native GetUnitYaw										takes unit whichUnit returns real
+	native SetUnitYaw										takes unit whichUnit, real yaw returns boolean
+	native GetUnitPitch										takes unit whichUnit returns real
+	native SetUnitPitch										takes unit whichUnit, real pitch returns boolean
+	native GetUnitRoll										takes unit whichUnit returns real
+	native SetUnitRoll										takes unit whichUnit, real roll returns boolean
+	native SetUnitMatrixScale								takes unit whichUnit, real x, real y, real z returns nothing
+	native ResetUnitMatrix									takes unit whichUnit returns nothing
+	native SetUnitOrientation								takes unit whichUnit, real yaw, real pitch, real roll returns nothing
+	native SetUnitOrientationEx								takes unit whichUnit, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+	//
+	native ResetFrameSpriteMatrix							takes framehandle whichFrame returns nothing
+3. ORIGIN_FRAME_COMMAND_BUTTON now uses the same indexing as on Reforged.
+4. ORIGIN_FRAME_COMMAND_BUTTON_COOLDOWN_INDICATOR now uses the same indexing as on Reforged.
+5. ORIGIN_FRAME_COMMAND_BUTTON_AUTOCAST_FRAME now uses the same indexing as on Reforged.
+6. ORIGIN_FRAME_COMMAND_BUTTON_CHARGES_FRAME now uses the same indexing as on Reforged.
+7. ORIGIN_FRAME_COMMAND_BUTTON_CHARGES_TEXT now uses the same indexing as on Reforged.
+8. Fixed UjAPIApp failing to launch game from third-party launchers for 1.28f.
+	Note: this was a recently "introduced" bug when 1.28f launch method was optimised.
+9. Fixed AntiHack not invoking previous changes/modifications.
+10. Added a failsafe for Projectile Launch events.
+11. GetTriggerUnit now also works with Projectile Events.
+12. Fixed fatal error caused by SetFrameColour by specific colour combinations on CSimpleRegion/CSimpleFontString/CSimpleTexture.
+13. SpaceRotation keyword changed to OrientationEx.
+14. Fixed ResetTrackableetMatrix name to ResetTrackableMatrix.
+15. Added SetUnitFacingTimed hook to enable rotation when Auto Orientation is disabled.
+16. Added SetUnitFacing hook to enable rotation when Auto Orientation is disabled.
+17. Fixed CreateProjectile/Ex returning null instead of the created handle.
+18. SetFrameSpriteMaterialScale renamed into SetFrameSpriteMatrixScale.

@@ -1,0 +1,5 @@
+v1.0.31.115
+
+1. New Constants:
+	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_DAMAGE_BONUS_FROM_STATS				= ConvertUnitWeaponIntegerField('udbs')
+2. Fixed Fatal Error caused by SetBuffField/SetAbilityField whenever internal check for IsBuff was invoked.

@@ -1,0 +1,86 @@
+v1.0.19.78
+
+1. New Types:
+	type jassthread											extends handle
+2. New Constants:
+	constant widgetevent 				EVENT_WIDGET_DAMAGING							 			= ConvertWidgetEvent(400)
+	constant widgetevent 				EVENT_WIDGET_DAMAGED							 			= ConvertWidgetEvent(401)
+	constant abilityreallevelfield 		ABILITY_RLF_CAST_BACK_SWING						  			= ConvertAbilityRealLevelField('acbs')
+	constant abilityreallevelfield 		ABILITY_RLF_CAST_POINT							   			= ConvertAbilityRealLevelField('acpt')	
+	constant unitintegerfield 			UNIT_IF_AGILITY_BONUS										= ConvertUnitIntegerField('uag+') // Get Only
+	constant unitintegerfield 			UNIT_IF_INTELLIGENCE_BONUS			   						= ConvertUnitIntegerField('uin+') // Get Only
+	constant unitintegerfield 			UNIT_IF_STRENGTH_BONUS				   						= ConvertUnitIntegerField('ust+') // Get Only
+	constant unitrealfield 				UNIT_RF_HEALTH_FROM_BONUS_STRENGTH					   		= ConvertUnitRealField('uhs+') // Get Only
+	constant unitrealfield 				UNIT_RF_MANA_FROM_BONUS_INTELLIGENCE						= ConvertUnitRealField('umi+') // Get Only
+	constant unitrealfield 				UNIT_RF_DEFENSE_BONUS										= ConvertUnitRealField('udf+') // Get Only
+	constant unitrealfield 				UNIT_RF_SPEED_BONUS											= ConvertUnitRealField('umv+') // Get Only
+	constant unitweaponintegerfield 	UNIT_WEAPON_IF_ATTACK_DAMAGE_BONUS			   				= ConvertUnitWeaponIntegerField('ud1+') // Get Only | this is the + (Green) or - (Red) value next to attack.
+	constant unitweaponrealfield 		UNIT_WEAPON_RF_ATTACK_SPEED_BONUS							= ConvertUnitWeaponRealField('us1+') // Get Only
+3. New Natives:
+	// Jass VM Natives
+	native GetJassMainThread								takes nothing returns jassthread
+	native GetJassCurrentThread								takes nothing returns jassthread
+	native RunJassScriptEx									takes string parentScriptFile, string helperScriptFile, string jassScriptFile returns jassthread
+	native RunJassScript									takes string helperScriptFile, string jassScriptFile returns jassthread
+	native RunJassScriptSimple								takes string jassScriptFile returns jassthread
+	native StopJassThread									takes jassthread thread returns boolean
+	native GetJassGlobalInteger								takes jassthread thread, string variableName returns integer
+	native GetJassGlobalReal								takes jassthread thread, string variableName returns real
+	native GetJassGlobalString								takes jassthread thread, string variableName returns string
+	native GetJassGlobalHandle								takes jassthread thread, string variableName returns handle
+	native GetJassGlobalBoolean								takes jassthread thread, string variableName returns boolean
+	native SetJassGlobalInteger								takes jassthread thread, string variableName, integer value returns boolean
+	native SetJassGlobalReal								takes jassthread thread, string variableName, real value returns boolean
+	native SetJassGlobalString								takes jassthread thread, string variableName, string value returns boolean
+	native SetJassGlobalHandle								takes jassthread thread, string variableName, handle value returns boolean
+	native SetJassGlobalBoolean								takes jassthread thread, string variableName, boolean value returns boolean
+	//
+	native GetWidgetModel 									takes widget whichWidget returns string
+	native TriggerRegisterWidgetEvent						takes trigger whichTrigger, widget whichWidget, widgetevent whichWidgetEvent returns event
+	native SetSpecialEffectPlayerColour					   	takes effect whichEffect, playercolor color returns nothing
+	native SetSpecialEffectMaterialTexture 					takes effect whichEffect, string textureName, integer materialId, integer textureIndex returns nothing
+	native SetSpecialEffectTexture 							takes effect whichEffect, string textureName, integer textureIndex returns nothing
+	native SetSpecialEffectReplaceableTexture 				takes effect whichEffect, string textureName, integer textureIndex returns nothing	
+	native SetTrackablePlayerColour					   		takes trackable whichTrackable, playercolor color returns nothing
+	native SetMissilePlayerColour					   		takes missile whichMissile, playercolor color returns nothing
+	native SetMissileMaterialTexture 						takes missile whichMissile, string textureName, integer materialId, integer textureIndex returns nothing
+	native SetMissileTexture 								takes missile whichMissile, string textureName, integer textureIndex returns nothing
+	native SetMissileReplaceableTexture 					takes missile whichMissile, string textureName, integer textureIndex returns nothing
+	native SetFrameSpritePlayerColour						takes framehandle whichFrame, playercolor color returns nothing
+	native GetFrameSpriteAlpha						   		takes framehandle whichFrame returns integer
+	native SetFrameSpriteMaterialTexture 					takes framehandle whichFrame, string textureName, integer materialId, integer textureIndex returns nothing
+	native SetFrameSpriteTexture 							takes framehandle whichFrame, string textureName, integer textureIndex returns nothing
+	native SetFrameSpriteReplaceableTexture 				takes framehandle whichFrame, string textureName, integer textureIndex returns nothing	
+	native GetUnitInSelectionByIndex 						takes player whichPlayer, integer index returns unit
+	native GetLastUnitInSelection 							takes player whichPlayer returns unit
+4. Fixed UNIT_IF_INTELLIGENCE returning potentially wrong value.
+5. Added these unit fields to internal support in Get/SetUnitField:
+	UNIT_IF_AGILITY_PERMANENT
+	UNIT_IF_INTELLIGENCE_PERMANENT
+	UNIT_IF_STRENGTH_PERMANENT
+	UNIT_IF_AGILITY_WITH_BONUS
+	UNIT_IF_INTELLIGENCE_WITH_BONUS
+	UNIT_IF_STRENGTH_WITH_BONUS
+6. Added these unit fields to internal support in GetUnitField:
+	UNIT_IF_AGILITY_BONUS
+	UNIT_IF_INTELLIGENCE_BONUS
+	UNIT_IF_STRENGTH_BONUS
+	UNIT_RF_HEALTH_FROM_BONUS_STRENGTH
+	UNIT_RF_MANA_FROM_BONUS_INTELLIGENCE
+	UNIT_RF_DEFENSE_BONUS
+	UNIT_RF_SPEED_BONUS
+	UNIT_WEAPON_IF_ATTACK_DAMAGE_BONUS
+	UNIT_WEAPON_RF_ATTACK_SPEED_BONUS
+7. Fixed GetTriggerFrame returning null.
+8. BlzSetSpecialEffectColorByPlayer now colours replaceable textures as it's supposed to.
+9. Fixed fatal error witth all BlzSetField natives.
+10. Added ABILITY_ILF_TARGET_TYPE to SetAbilityField handling.
+11. Fixed fatal error with ORIGIN_FRAME_BUFF_BAR_INDICATOR, added forced validity check, since the game does not create all indicators at once.
+	Explanation: game by default creates only 1 buff indicator, then whenever it has no available indicators, it will create a new one, up to 7.
+12. Fixed some "typos" of OSKEY_ variables, courtesy of my mouse's double click, when adding tabulations, some letters got erased/replaced, etc.
+13. Fixed Missile API, it "stopped" working due to hasty code cleanup/fixes.
+14. Fixed BUFF_SF fields returning "<null>" instead of actual values.
+15. Added these ability fields to internal support in Get/SetAbilityField:
+	ABILITY_RLF_CASTING_TIME
+	ABILITY_RLF_CAST_BACK_SWING
+	ABILITY_RLF_CAST_POINT

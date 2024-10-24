@@ -1,0 +1,112 @@
+v1.0.22.88
+
+1. New Types:
+	type pathingaitype extends handle
+	type collisiontype extends handle
+2. New Convertors:
+	constant native ConvertPathingAIType					takes integer i returns pathingaitype
+	constant native ConvertCollisionType					takes integer i returns collisiontype
+3. New Constants:
+	constant pathingaitype	   			PATHING_AI_TYPE_FOOT				  						= ConvertPathingAIType(0)
+	constant pathingaitype	   			PATHING_AI_TYPE_AMPHIBIOUS				  					= ConvertPathingAIType(64)
+	constant pathingaitype	   			PATHING_AI_TYPE_FLOAT				  						= ConvertPathingAIType(128)
+	constant pathingaitype	   			PATHING_AI_TYPE_FLY				  							= ConvertPathingAIType(192) // MOVE_TYPE_AMPHIBIOUS | MOVE_TYPE_FLOAT
+	constant collisiontype	   			COLLISION_TYPE_NONE			   								= ConvertCollisionType(0)
+	constant collisiontype	   			COLLISION_TYPE_ANY			   								= ConvertCollisionType(1)
+	constant collisiontype	   			COLLISION_TYPE_FOOT			   								= ConvertCollisionType(2)
+	constant collisiontype	   			COLLISION_TYPE_AIR			   								= ConvertCollisionType(4)
+	constant collisiontype	   			COLLISION_TYPE_BUILDING			   							= ConvertCollisionType(8)
+	constant collisiontype	   			COLLISION_TYPE_HARVESTER			   						= ConvertCollisionType(16)
+	constant collisiontype	   			COLLISION_TYPE_BLIGHTED			   							= ConvertCollisionType(32)
+	constant collisiontype	   			COLLISION_TYPE_FLOAT			   							= ConvertCollisionType(64)
+	constant collisiontype	   			COLLISION_TYPE_AMPHIBIOUS			   						= ConvertCollisionType(128)
+	constant collisiontype	   			COLLISION_TYPE_GROUND			   							= ConvertCollisionType(202) // COLLISION_TYPE_FOOT | COLLISION_TYPE_BUILDING | COLLISION_TYPE_FLOAT | COLLISION_TYPE_AMPHIBIOUS
+	constant originframetype			ORIGIN_FRAME_INVENTORY_COVER_FRAME							= ConvertOriginFrameType(45)
+	constant originframetype			ORIGIN_FRAME_UNIT_TIP										= ConvertOriginFrameType(46)
+	constant unitevent 					EVENT_UNIT_DECAY_FINISHED				 					= ConvertUnitEvent(318)
+	constant playerunitevent 			EVENT_PLAYER_UNIT_DECAY_FINISHED				 			= ConvertPlayerUnitEvent(319)
+	constant frameeventtype		 		FRAMEEVENT_CHECKBOX_CHANGED		 							= ConvertFrameEventType(17)
+	constant frameeventtype		 		FRAMEEVENT_CONTROL_RELEASE									= ConvertFrameEventType(18)
+	constant frameeventtype		 		FRAMEEVENT_CONTROL_DRAG										= ConvertFrameEventType(19)
+	constant unitintegerfield 			UNIT_IF_COLLISION_TYPE										= ConvertUnitIntegerField('ucot')
+	constant unitintegerfield 			UNIT_IF_PATHING_AI											= ConvertUnitIntegerField('upai')
+	constant unitintegerfield 			UNIT_IF_PATHING_TYPE										= ConvertUnitIntegerField('upat')
+4. Removed Natives:
+	native SetUnitMoveTypeByIndex 							takes unit whichUnit, integer moveIndex returns nothing
+5. New Natives:
+	native IntToChar										takes integer i returns string
+	native BitwiseSetBit									takes integer i, integer bitIndex, integer bitValue returns integer
+	native BitwiseSetByte									takes integer i, integer byteIndex, integer byteValue returns integer
+	native BitwiseToInteger									takes integer byte1, integer byte2, integer byte3, integer byte4 returns integer
+	//
+	native GetTimeStamp										takes boolean isLocalTime, integer isMiliseconds returns string
+	native ConsoleEnable									takes boolean flag returns nothing
+	native ConsolePrint										takes string s returns nothing
+	//
+	native TextFileOpen										takes string filePath returns textfilehandle
+	native TextFileGetPath									takes textfilehandle whichTextFile returns string
+	native TextFileClose									takes textfilehandle whichTextFile returns nothing
+	native TextFileClear									takes textfilehandle whichTextFile returns nothing
+	native TextFileErase									takes textfilehandle whichTextFile returns nothing
+	native TextFileCountLines								takes textfilehandle whichTextFile returns integer
+	native TextFileReadLine									takes textfilehandle whichTextFile, integer lineNumber returns string
+	native TextFileReadAll									takes textfilehandle whichTextFile returns string
+	native TextFileWriteLine								takes textfilehandle whichTextFile, string text returns nothing
+	//
+	native IsCursorEnabled									takes nothing returns boolean
+	native SetCursorEnabled									takes boolean enable returns nothing
+	native IsCursorAnimationLocked							takes nothing returns boolean
+	native SetCursorAnimationLocked							takes boolean isLock returns nothing
+	native IsFrameDraggable 								takes framehandle whichFrame returns boolean
+	native SetFrameDraggable 								takes framehandle whichFrame, boolean enabled returns nothing
+	native GetFrameModel 									takes framehandle whichFrame returns string
+	native SetFrameSpriteMaterialScale						takes framehandle whichFrame, real sizeX, real sizeY, real sizeZ returns nothing
+	native IsWidgetTipEnabled								takes nothing returns boolean
+	native SetWidgetTipEnabled								takes boolean enable returns nothing
+	native IsAbilityBaseTargetAllowed 						takes integer abilityId, widget source, widget target returns boolean // source can be null
+	native IsWidgetTargetAllowed							takes widget source, widget target, targetflag whichFlags returns boolean
+	//
+	native GetUnitCollisionType 							takes unit whichUnit returns collisiontype
+	native SetUnitCollisionType 							takes unit whichUnit, collisiontype collisionType returns nothing
+4. Constant Changes:
+	JASS_MAX_ARRAY_SIZE increased from 8192 to 262144.
+5. Fixed IsSpecialEffectVisible returning inversed result.
+6. Fixed ShowFrame to properly work with CSimpleRegion/CSimpleTexture/CSimpleFrame and all of their children types.
+7. SetFrameTexture "flag" argument name changed to "textureId".
+8. SetFrameTexture now it supports CConsoleUI.
+	Example: call SetFrameTexture( frm, "UI\\Console\\Orc\\OrcUITile01.blp", 0, false )
+	Note: Console has 4 "parts" so indexes are 0-3.
+9. Fixed IsAbilityTargetAllowed, now it properly checks all target flags.
+10. targetflag type handle now uses the same property as CDataFieldWar3 to prevent crash once a flag higher in value than 0x100000 is converted via ConvertTargetFlag.
+11. Fixed ITEM_SF_ABILITY_LIST field returning "<null>".
+12. Fixed fatal error with ABILITY_SLF_SPELL_LIST.
+13. ABILITY_SLF_SPELL_LIST option now works for Base (get only) and ability instance (get and set).
+	Note: this ignores Minimum/Maximum spell count, because I am too lazy to implement it.
+	Example of usage: call SetAbilityStringLevelField( GetUnitAbility( u, 'Aspb' ), ABILITY_SLF_SPELL_LIST, 0, "AHad,AHhb,AHbz,AUau" )
+14. SetFrameTexture will automatically check for .tga/.blp (in this order) if no file extension was provided.
+	Example: call SetFrameTexture( frm, "UI\\Console\\Orc\\OrcUITile01", 0, false ), will automatically add .blp to the end of the path.
+15. Fixed mostly broken Sync API, note to self, trying to instantiate CGameWar3 was a stupid-ass idea.
+16. Fixed a very-very old Spellbook bug with item, displaying no abilities upon changing item slots.
+	Note: old way to "fix" this issue, was to drop item and pick it back up, now it's no longer needed.
+17. Greatly enhanced Frame API for CCursor frame.
+18. Removed (or at least very greatly increased) RCString (Jass String) limit.
+	Note: original limit was: 4097. (4096 + 1 for null termination).
+19. Jass Error Debugger now prints errors grouped by the Error Id, instead of focusing on a line.
+20. Fixed GetFrameChildByIndex not properly returning a frame at 0 index.
+21. Fixed fatal error from SetFrameEnabled and BlzSetFrameEnable on Backdrop frames.
+22. Fixed missing ITEM_IF internal field handlers. (One of them was ITEM_IF_GOLD_COST).
+23. Reworked GetFrameChild and GetFrameChildrenCount.
+24. FRAMEEVENT_MOUSE_ENTER and FRAMEEVENT_MOUSE_LEAVE can now be used with IconDamage, IconHero, IconArmor, etc.
+25. Fixed some of the "unsupported keys" such as OSKEY_TAB, VK_SHIFT, etc.
+26. Potentially fully fixed "game pause" breaking in single player when alt-tabbing when any KeyEvent was registered.
+	Note: this bug only "haunted" single player mode, this could never happen in local game/multiplayer mode.
+27. Fixed FRAMEEVENT_MOUSE_DOWN and FRAMEEVENT_MOUSE_UP for all CControl frames.
+28. Fixed RegisterFrameMouseButton incorrectly processing mousebuttontype, MIDDLE was read as RIGHT and RIGHT as MIDDLE.
+29. Fixed UjAPILauncher.exe not properly launching fullscreen game.
+30. Fixed UjAPILauncher.exe failing to handle CLI launch request if settings are fully empty.
+31. COLLISION_SIZE unit field will now affect unis in unique manner. This does not change Base field, to change it, please use SetUnitBaseRealField, etc.
+32. Get/SetUnitMoveAIType "Move" renamed into "Pathing" and now they use pathingaitype as arguments.
+33. Get/SetUnitMoveType "Move" renamed into "Pathing" and now they use pathingtype as arguments.
+34. Added UnlockMapSizeLimit.dll module.
+35. Added Remove Map Size Limit option in UjAPILauncher.
+36. Added -nomapsizelimit CLI command to load UnlockMapSizeLimit via CLI.

@@ -1,0 +1,21 @@
+v1.0.25.94
+
+1. New Natives:
+	native ConsolePause										takes string s returns nothing
+	native GetTickCount										takes nothing returns integer
+	native GetSpecialEffectCurrentAnimationId				takes effect whichEffect returns integer
+	native GetTrackableCurrentAnimationId					takes trackable whichTrackable returns integer
+	native GetWidgetCurrentAnimationId						takes widget whichWidget returns integer
+	native GetDestructableCurrentAnimationId				takes destructable whichDestructable returns integer
+	native GetItemCurrentAnimationId						takes item whichItem returns integer
+	native GetUnitCurrentAnimationId						takes unit whichUnit returns integer
+	native GetProjectileCurrentAnimationId					takes projectile whichProjectile returns integer
+	native GetFrameSpriteCurrentAnimationId					takes framehandle whichFrame returns integer
+	native GetFrameColourEx									takes framehandle whichFrame, integer textureId returns integer
+	native SetFrameColourEx									takes framehandle whichFrame, integer textureId, integer colour returns nothing
+	native GetFrameColour									takes framehandle whichFrame returns integer
+	native SetFrameColour									takes framehandle whichFrame, integer colour returns nothing
+	native GetFrameAlphaEx									takes framehandle whichFrame, integer textureId returns integer
+	native SetFrameAlphaEx									takes framehandle whichFrame, integer textureId, integer alpha returns nothing
+2. Fixed HideOriginFrames also hiding items, which was not supposed to happen.
+3. Fixed IsFrameVisible not properly working with CSimpleRegions/CSimpleFrames and their children.

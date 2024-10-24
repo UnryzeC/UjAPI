@@ -1,0 +1,16 @@
+v1.0.31.114
+
+1. New Constants:
+	constant unitrealfield				UNIT_RF_DEFENSE_BASE										= ConvertUnitRealField('udfb') // Get Only
+	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_DAMAGE_BASE_MINIMUM					= ConvertUnitWeaponIntegerField('udm1') // Get Only
+	constant unitweaponintegerfield		UNIT_WEAPON_IF_ATTACK_DAMAGE_BASE_MAXIMUM					= ConvertUnitWeaponIntegerField('udh1') // Get Only
+2. GetUnitBonusDamageByIndex now also includes bonuses from hero stats.
+3. GetUnitBaseDamageByIndex now excludes bonuses from hero stats for more accurate values.
+4. Fixed SetTextTagText displaying texttag even if it was hidden initially, before any text was actually set.
+5. PauseUnitEx now mimics Pause without hiding any abilities, as it was supposed to, it no longer borrows SetUnitStunned method.
+6. UjAPI Console now reads/writes data in UTF-8.
+7. Fixed random crash from Adding Buffs via Buff API.
+8. Fixed fatal error from adding Mirror Image buff via Buff API.
+9. Fixed fatal error from adding Item Illusion buff via Buff API.
+10. Fixed fatal error from adding Item Monster Lure buff via Buff API.
+11. Fixed fatal error from adding Lava Monster buff via Buff API.

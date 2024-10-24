@@ -1,0 +1,246 @@
+v1.0.15.67
+
+1. New Constants
+constant abilityintegerfield 		ABILITY_IF_BUTTON_HOTKEY_ALL								= ConvertAbilityIntegerField('ahtk') // Set only
+constant abilitybooleanfield 		ABILITY_BF_HOMING											= ConvertAbilityBooleanField('amho')
+constant itemintegerfield 			ITEM_IF_TINTING_COLOR	 									= ConvertItemIntegerField('icol')
+constant itemintegerfield 			ITEM_IF_LEVEL_UNCLASSIFIED				 					= ConvertItemIntegerField('ilvo')
+constant itemintegerfield 			ITEM_IF_GOLD_COST											= ConvertItemIntegerField('igol')
+constant itemintegerfield 			ITEM_IF_LUMBER_COST											= ConvertItemIntegerField('ilum')
+constant itemintegerfield 			ITEM_IF_PRIORITY			  								= ConvertItemIntegerField('ipri')
+constant itemintegerfield 			ITEM_IF_STOCK_REPLENISH_INTERVAL							= ConvertItemIntegerField('istr')
+constant itemintegerfield 			ITEM_IF_STOCK_START_DELAY									= ConvertItemIntegerField('isst')
+constant itembooleanfield 			ITEM_BF_IGNORE_COOLDOWN		  								= ConvertItemBooleanField('iicd')
+constant itembooleanfield 			ITEM_BF_VALID_FOR_TRANSFORMATION   							= ConvertItemBooleanField('imor')
+constant itemrealfield 				ITEM_RF_SELECTION_SIZE										= ConvertItemRealField('issc')
+constant itemstringfield 			ITEM_SF_NAME						 						= ConvertItemStringField('unam')
+constant itemstringfield 			ITEM_SF_DESCRIPTION						 					= ConvertItemStringField('ides')
+constant itemstringfield 			ITEM_SF_TOOLTIP_NORMAL						 				= ConvertItemStringField('utip')
+constant itemstringfield 			ITEM_SF_TOOLTIP_EXTENDED						 			= ConvertItemStringField('utub')
+constant unitintegerfield 			ITEM_IF_GOLD_COST											= ConvertItemIntegerField('igol')
+constant unitintegerfield 			ITEM_IF_LUMBER_COST											= ConvertItemIntegerField('ilum')
+constant unitintegerfield 			ITEM_IF_STOCK_MAXIMUM										= ConvertItemIntegerField('isto')
+constant unitintegerfield 			UNIT_IF_TINTING_COLOR					 					= ConvertUnitIntegerField('ucol')
+constant unitintegerfield 			UNIT_IF_PROPER_NAMES_COUNT			   						= ConvertUnitIntegerField('upru') // Get Only
+constant unitrealfield 				UNIT_RF_SIGHT_RADIUS_DAY							 		= ConvertUnitRealField('usid')
+constant unitrealfield 				UNIT_RF_SIGHT_RADIUS_NIGHT							 		= ConvertUnitRealField('usin')
+constant unitstringfield 			UNIT_SF_TOOLTIP_NORMAL						 				= ConvertUnitStringField('utip')
+constant unitstringfield 			UNIT_SF_TOOLTIP_EXTENDED						 			= ConvertUnitStringField('utub')
+constant unitstringfield 			UNIT_SF_PROPER_NAME		   									= ConvertUnitStringField('uprn')
+2. New Natives:
+native GetHandleReferenceCount							takes handle whichHandle returns integer
+native GetHandleBaseTypeId								takes handle whichHandle returns integer // this returns '+w3u' from unit, if it was passed as handle, and so on.
+native GetHandleBaseTypeName							takes handle whichHandle returns string // this returns CUnit from unit, if it was passed as handle, and so on.
+native GetFilterHandle									takes nothing returns handle
+native GetEnumHandle									takes nothing returns handle
+native EnumHandlesOfType								takes integer handleBaseTypeId, boolexpr filter, code handlerFunc returns nothing
+native SetImageOrigin									takes image whichImage, real origin returns nothing
+native SetAbilityRemainingCooldown 						takes ability whichAbility, real cooldown returns boolean
+native SetUnitPointValueByType 							takes integer unitType, integer newPointValue returns nothing
+native EnumDestructablesInRange							takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
+native EnumItemsInRange									takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
+native GetTriggerSpecialEffect							takes nothing returns effect
+native GetFilterSpecialEffect							takes nothing returns effect
+native GetEnumSpecialEffect								takes nothing returns effect
+native EnumSpecialEffectsInRange						takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
+native GetTriggerTrackable								takes nothing returns trackable
+native GetFilterTrackable								takes nothing returns trackable
+native GetEnumTrackable									takes nothing returns trackable
+native EnumTrackablesInRange							takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
+native IsMissileAlive					   				takes missile whichMissile returns boolean
+native GetFilterMissile									takes nothing returns missile
+native GetEnumMissile									takes nothing returns missile
+native EnumMissilesInRange								takes real x, real y, real radius, boolexpr filter, code handlerFunc returns nothing
+native ResetAbilityFieldData							takes ability whichAbility returns boolean // Restores original ability data, meaning it reverts any and all changes made by Field API. Returns true if reset was needed.
+native GetUnitAttackRemainingDamagePoint 				takes unit whichUnit returns real
+native SetUnitAttackRemainingDamagePoint 				takes unit whichUnit real time returns nothing
+native GetUnitAttackRemainingBackswing 					takes unit whichUnit returns real
+native SetUnitAttackRemainingBackswing 					takes unit whichUnit real time returns nothing
+3. Removed all "duplicate" natives like GetAbilityBaseManaCostById, they are superseded by Instance API now. Removed natives List:
+// Ability API
+native GetAbilityBaseManaCostById 						takes integer aid, integer level returns integer
+native SetAbilityBaseManaCostById 						takes integer aid, integer level, integer manaCost returns nothing
+native GetAbilityBaseCooldownById 						takes integer aid, integer level returns real
+native SetAbilityBaseCooldownById 						takes integer aid, integer level, real cooldown returns nothing
+native GetAbilityBaseHotkeyById 						takes integer aid returns oskeytype
+native SetAbilityBaseHotkeyById 						takes integer aid, oskeytype whichKey returns nothing
+native GetAbilityBaseUnHotkeyById 						takes integer aid returns oskeytype
+native SetAbilityBaseUnHotkeyById 						takes integer aid, oskeytype whichKey returns nothing
+native GetAbilityBaseResearchHotkeyById 				takes integer aid returns oskeytype
+native SetAbilityBaseResearchHotkeyById 				takes integer aid, oskeytype whichKey returns nothing
+native GetAbilityBaseEffectSoundById 					takes integer aid returns string
+native SetAbilityBaseEffectSoundById 					takes integer aid, string text returns nothing
+native GetAbilityBaseGlobalMessageById 					takes integer aid returns string
+native SetAbilityBaseGlobalMessageById 					takes integer aid, string text returns nothing
+native GetAbilityBaseGlobalSoundById 					takes integer aid returns string
+native SetAbilityBaseGlobalSoundById 					takes integer aid, string text returns nothing
+native GetAbilityBaseButtonXById 						takes integer aid returns integer
+native SetAbilityBaseButtonXById 						takes integer aid, integer positionX returns nothing
+native GetAbilityBaseButtonYById 						takes integer aid returns integer
+native SetAbilityBaseButtonYById 						takes integer aid, integer positionY returns nothing
+native GetAbilityBaseUnButtonXById 						takes integer aid returns integer
+native SetAbilityBaseUnButtonXById 						takes integer aid, integer positionX returns nothing
+native GetAbilityBaseUnButtonYById 						takes integer aid returns integer
+native SetAbilityBaseUnButtonYById 						takes integer aid, integer positionY returns nothing
+native GetAbilityBaseResearchButtonXById 				takes integer aid returns integer
+native SetAbilityBaseResearchButtonXById 				takes integer aid, integer positionX returns nothing
+native GetAbilityBaseResearchButtonYById 				takes integer aid returns integer
+native SetAbilityBaseResearchButtonYById 				takes integer aid, integer positionY returns nothing
+native GetAbilityBaseMissileSpeedById 					takes integer aid returns real
+native SetAbilityBaseMissileSpeedById 					takes integer aid, real missileSpeed returns nothing
+native GetAbilityBaseMissileArcById 					takes integer aid returns real
+native SetAbilityBaseMissileArcById 					takes integer aid, real missileArc returns nothing
+native GetAbilityBaseIsMissileHomingById 				takes integer aid returns boolean
+native SetAbilityBaseIsMissileHomingById 				takes integer aid, boolean ishoming returns nothing
+native GetAbilityBaseSpellDetailsById 					takes integer aid returns integer
+native SetAbilityBaseSpellDetailsById 					takes integer aid, integer level returns nothing
+native GetAbilityBaseTipById 							takes integer aid, integer level returns string
+native SetAbilityBaseTipById 							takes integer aid, integer level, string text returns nothing
+native GetAbilityBaseUnTipById 							takes integer aid, integer level returns string
+native SetAbilityBaseUnTipById 							takes integer aid, integer level, string text returns nothing
+native GetAbilityBaseUberTipById 						takes integer aid, integer level returns string
+native SetAbilityBaseUberTipById 						takes integer aid, integer level, string text returns nothing
+native GetAbilityBaseUnUberTipById 						takes integer aid, integer level returns string
+native SetAbilityBaseUnUberTipById 						takes integer aid, integer level, string text returns nothing
+native SetAbilityBaseHotkeyByIdEx 						takes integer aid, oskeytype whichKey returns nothing
+// Item API
+native GetItemBaseNameById 								takes integer itemId returns string
+native SetItemBaseNameById 								takes integer itemId, string name returns nothing
+native GetItemBaseDescriptionById						takes integer itemId returns string
+native SetItemBaseDescriptionById 						takes integer itemId, string name returns nothing
+native GetItemBaseIconById 								takes integer itemId returns string
+native SetItemBaseIconById 								takes integer itemId, string path returns nothing
+native GetItemBaseHotkeyById 							takes integer itemId returns oskeytype
+native SetItemBaseHotkeyById 							takes integer itemId, oskeytype whichKey returns nothing
+native GetItemBaseTipById 								takes integer itemId returns string
+native SetItemBaseTipById 								takes integer itemId, string tip returns nothing
+native GetItemBaseUberTipById 							takes integer itemId returns string
+native SetItemBaseUberTipById 							takes integer itemId, string tip returns nothing
+native GetItemBaseGoldCostById 							takes integer itemId returns integer
+native SetItemBaseGoldCostById 							takes integer itemId, integer goldcost returns nothing
+native GetItemBaseLumberCostById 						takes integer itemId returns integer
+native SetItemBaseLumberCostById 						takes integer itemId, integer lumbercost returns nothing
+native GetItemBaseStockMaximumById 						takes integer itemId returns integer
+native SetItemBaseStockMaximumById 						takes integer itemId, integer stockMax returns nothing
+native GetItemBaseStockReplenishIntervalById 			takes integer itemId returns real
+native SetItemBaseStockReplenishIntervalById 			takes integer itemId, real replenishInterval returns nothing
+native GetItemBaseStockStartDelayById 					takes integer itemId returns real
+native SetItemBaseStockStartDelayById 					takes integer itemId, real stockStartDelay returns nothing
+native GetItemBasePriorityById 							takes integer itemId returns integer
+native SetItemBasePriorityById 							takes integer itemId, integer priority returns nothing
+native GetItemBaseLevelById 							takes integer itemId returns integer
+native SetItemBaseLevelById 							takes integer itemId, integer level returns nothing
+native GetItemBaseOldLevelById 							takes integer itemId returns integer
+native SetItemBaseOldLevelById 							takes integer itemId, integer oldlevel returns nothing
+native GetItemBaseClassificationById 					takes integer itemId returns integer
+native SetItemBaseClassificationById 					takes integer itemId, integer classifictaionId returns nothing
+native GetItemBaseIsMorphById 							takes integer itemId returns boolean
+native SetItemBaseIsMorphById 							takes integer itemId, boolean flag returns nothing
+native GetItemBaseIsPickRandomById 						takes integer itemId returns boolean
+native SetItemBaseIsPickRandomById 						takes integer itemId, boolean flag returns nothing
+native GetItemBaseChargesById 							takes integer itemId returns integer
+native SetItemBaseChargesById 							takes integer itemId, integer charges returns nothing
+native GetItemBaseCooldownIdById 						takes integer itemId returns integer
+native SetItemBaseCooldownIdById 						takes integer itemId, integer cooldownId returns nothing
+native GetItemBaseIsIgnoreCooldownById 					takes integer itemId returns boolean
+native SetItemBaseIsIgnoreCooldownById 					takes integer itemId, boolean flag returns nothing
+native GetItemBaseIsPowerUpById 						takes integer itemId returns boolean
+native SetItemBaseIsPowerUpById 						takes integer itemId, boolean flag returns nothing
+native GetItemBaseIsPawnableById 						takes integer itemId returns boolean
+native SetItemBaseIsPawnableById 						takes integer itemId, boolean flag returns nothing
+native GetItemBaseIsUsableById 							takes integer itemId returns boolean
+native SetItemBaseIsUsableById 							takes integer itemId, boolean flag returns nothing
+native GetItemBaseIsPerishableById 						takes integer itemId returns boolean
+native SetItemBaseIsPerishableById 						takes integer itemId, boolean flag returns nothing
+native GetItemBaseIsDroppableById 						takes integer itemId returns boolean
+native SetItemBaseIsDroppableById 						takes integer itemId, boolean flag returns nothing
+native GetItemBaseIsDroppableOnDeathById 				takes integer itemId returns boolean
+native SetItemBaseIsDroppableOnDeathById 				takes integer itemId, boolean flag returns nothing
+native GetItemBaseIsSellableById 						takes integer itemId returns boolean
+native SetItemBaseIsSellableById 						takes integer itemId, boolean flag returns nothing
+// Unit API
+native GetUnitBasePrimaryStatById 						takes integer unitTypeId returns heroattribute
+native SetUnitBasePrimaryStatById 						takes integer unitTypeId, heroattribute whichHeroAttribute returns nothing
+native GetUnitBaseGoldCostById 							takes integer unitTypeId returns integer
+native SetUnitBaseGoldCostById 							takes integer unitTypeId, integer goldCost returns nothing
+native GetUnitBaseDaySightById 							takes integer unitTypeId returns real
+native SetUnitBaseDaySightById 							takes integer unitTypeId, real daySight returns nothing
+native GetUnitBaseNightSightById 						takes integer unitTypeId returns real
+native SetUnitBaseNightSightById 						takes integer unitTypeId, real nightSight returns nothing
+native GetUnitBaseColourById 							takes integer unitTypeId returns integer
+native SetUnitBaseColourById 							takes integer unitTypeId, integer colour returns nothing
+native GetUnitBaseColourAById 							takes integer unitTypeId returns integer
+native SetUnitBaseColourAById 							takes integer unitTypeId, integer colourA returns nothing
+native GetUnitBaseColourRById 							takes integer unitTypeId returns integer
+native SetUnitBaseColourRById 							takes integer unitTypeId, integer colourR returns nothing
+native GetUnitBaseColourGById 							takes integer unitTypeId returns integer
+native SetUnitBaseColourGById 							takes integer unitTypeId, integer colourG returns nothing
+native GetUnitBaseColourBById 							takes integer unitTypeId returns integer
+native SetUnitBaseColourBById 							takes integer unitTypeId, integer colourB returns nothing
+native GetUnitBaseNameById 								takes integer unitTypeId returns string
+native SetUnitBaseNameById 								takes integer unitTypeId, string name returns nothing
+native GetUnitBaseProperNameById 						takes integer unitTypeId, integer properNameIndex returns string
+native SetUnitBaseProperNameById 						takes integer unitTypeId, integer properNameIndex, string properName returns nothing
+native GetUnitBaseDescriptionById 						takes integer unitTypeId returns string
+native SetUnitBaseDescriptionById 						takes integer unitTypeId, string name returns nothing
+native GetUnitBaseModelById 							takes integer unitTypeId returns string
+native SetUnitBaseModelById 							takes integer unitTypeId, string modelName returns nothing
+native GetUnitBasePortraitById 							takes integer unitTypeId returns string
+native SetUnitBasePortraitById 							takes integer unitTypeId, string portraitName returns nothing
+native GetUnitBaseHotkeyById 							takes integer unitTypeId returns oskeytype
+native SetUnitBaseHotkeyById 							takes integer unitTypeId, oskeytype whichKey returns nothing
+native GetUnitBaseIconById 								takes integer unitTypeId returns string
+native SetUnitBaseIconById 								takes integer unitTypeId, string name returns nothing
+native GetUnitBaseAwakenTipById 						takes integer unitTypeId returns string
+native SetUnitBaseAwakenTipById 						takes integer unitTypeId, string awakenTip returns nothing
+native GetUnitBaseTipById 								takes integer unitTypeId returns string
+native SetUnitBaseTipById 								takes integer unitTypeId, string tip returns nothing
+native GetUnitBaseUberTipById 							takes integer unitTypeId returns string
+native SetUnitBaseUberTipById 							takes integer unitTypeId, string uberTip returns nothing
+native GetUnitBaseReviveTipById 						takes integer unitTypeId returns string
+native SetUnitBaseReviveTipById 						takes integer unitTypeId, string reviveTip returns nothing
+native GetUnitBaseShadowTexById 						takes integer unitTypeId returns string
+native SetUnitBaseShadowTexById 						takes integer unitTypeId, string shadowTexture returns nothing
+native GetUnitBaseMissileArtById 						takes integer unitTypeId, integer attackIndex returns string
+native SetUnitBaseMissileArtById 						takes integer unitTypeId, integer attackIndex, string missleArt returns nothing
+native GetUnitBaseMissileSpeedById 						takes integer unitTypeId, integer attackIndex returns real
+native SetUnitBaseMissileSpeedById 						takes integer unitTypeId, integer attackIndex, real realValue returns nothing
+native GetUnitBaseMissileArcById 						takes integer unitTypeId, integer attackIndex returns real
+native SetUnitBaseMissileArcById 						takes integer unitTypeId, integer attackIndex, real realValue returns nothing
+native GetUnitBaseSelectionScaleById 					takes integer unitTypeId returns real
+native SetUnitBaseSelectionScaleById 					takes integer unitTypeId, real realValue returns nothing
+4. All SetAbilityField natives now actually utilise Instance-based logic, meaning any of the data or UI data will be edited strictly for applied ability.
+5. Previous SetImageOrigin changed to SetImageOriginEx.
+6. Fixed EXSetAbilityState not working as intended.
+7. Fixed toggleable abilities being unable to be turned off.
+	Note: this is still related to the newly introduced experimental feature SetAbilityOrderId... :(
+8. Added these Ability Fields to internal processing:
+ABILITY_SLF_CASTER
+ABILITY_SLF_TARGET
+ABILITY_SLF_SPECIAL
+ABILITY_SLF_EFFECT
+ABILITY_SLF_AREA_EFFECT
+ABILITY_SLF_LIGHTNING_EFFECTS
+ABILITY_SLF_MISSILE_ART
+ABILITY_SLF_TOOLTIP_LEARN
+ABILITY_SLF_TOOLTIP_LEARN_EXTENDED
+ABILITY_SLF_TOOLTIP_NORMAL
+ABILITY_SLF_TOOLTIP_TURN_OFF
+ABILITY_SLF_TOOLTIP_NORMAL_EXTENDED
+ABILITY_SLF_TOOLTIP_TURN_OFF_EXTENDED
+9. Changed Unit Attack Natives:
+Removed:
+	SetUnitAttackState
+	UnitCancelCurrentAttackByIndex
+Changed:
+	GetUnitNextAttackTimeStampByIndex -> GetUnitAttackRemainingCooldown | Now it returns actual remaining time.
+	SetUnitNextAttackTimeStampByIndex -> SetUnitAttackRemainingCooldown | Now it sets actual remaining time.
+	UnitResetAttackCooldownByIndex -> UnitResetAttack
+	UnitAddExtraAttackByIndex -> UnitFinishAttack
+Added:
+	native GetUnitAttackRemainingDamagePoint 				takes unit whichUnit returns real
+	native SetUnitAttackRemainingDamagePoint 				takes unit whichUnit real time returns nothing
+	native GetUnitAttackRemainingBackswing 					takes unit whichUnit returns real
+	native SetUnitAttackRemainingBackswing 					takes unit whichUnit real time returns nothing
+10. Added new "Dev Mode" option for UjAPI.
+	Note: enabling it will cause UjAPI to print any possible Jass errors (if map has jass code errors) or file errors to console.

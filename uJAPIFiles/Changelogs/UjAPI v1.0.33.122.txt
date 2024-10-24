@@ -1,0 +1,5 @@
+v1.0.33.122
+
+1. AntiHack was optimised and reduced the amount of checks/procs.
+	Note 1: these checks were over the top and probably not needed.
+	Note 2: I might return those checks with less strain later as natives.

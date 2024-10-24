@@ -1,0 +1,48 @@
+v1.0.4.22
+
+1. native IsAbilityShown changed to IsAbilityVisible.
+2. All return types of Setters in AbilityAPI changed to "nothing" from integer, since the returned data was bogus anyways.
+3. New natives:
+	native I2C												takes integer i returns code
+	native C2I												takes code c returns integer
+
+	native MathRound										takes real r returns integer
+
+	native MathRealRound									takes real r returns real
+	native MathRealFloor									takes real r returns real
+	native MathRealCeil										takes real r returns real
+	native MathRealAbs										takes real r returns real
+	native MathRealLog										takes real r returns real
+	native MathRealLn										takes real r returns real
+
+	native MathIntegerAbs									takes integer i returns integer
+	native MathIntegerLog									takes integer i returns real
+	native MathIntegerLn									takes integer i returns real
+
+	native StringContains									takes string s, string whichString returns boolean
+	native StringFind										takes string s, string whichString returns integer
+	native StringFindFirstOf								takes string s, string whichString returns integer
+	native StringFindFirstNotOf								takes string s, string whichString returns integer
+	native StringFindLastOf									takes string s, string whichString returns integer
+	native StringFindLastNotOf								takes string s, string whichString returns integer
+
+	native IsOperationLimitEnabled							takes nothing returns boolean
+	native EnableOperationLimit								takes boolean enable returns nothing
+	native ExecuteFuncEx									takes string funcName returns nothing
+
+	native GetUnitDamageReduction 							takes unit whichUnit returns real
+	native IsUnitAbilityVisible 							takes unit whichUnit, integer abilityId returns integer
+	native ShowUnitAbility 									takes unit whichUnit, integer abilityId, boolean flag returns nothing
+4. Decyphered these natives:
+	native SilenceAbility 									takes ability whicAbility, boolean hide, boolean disable returns nothing
+	native UnsilenceAbility 								takes ability whicAbility, boolean show, boolean enable returns nothing
+Now their arguments have proper names.
+5. Fixed native GetUnitAblity, it would fail to grab ability if it had more than 1 level or if it was not HeroAbil.
+6. Re-refixed SpecialEffectAPI x/y/z setters.
+7. Fixed native IsAbilityOnCooldown, was comparing wrong flags, hence returning bogus result.
+8. Fixed native IsFrameVisible, was returning inverse value instead.
+9. Fixed native SetUnitCurrentSight.
+10. TriggerRegisterFrameEvent now works properly and actually creates a new event for the said frame.
+	Note: not all events are fully supported yet and for now frameEvents are local, soon they will work in multiplayer too.
+11. Fixed fatal error whenever Neutral Passive unit was damaged.
+12. Fixed fatal error on map launch on 1.28.5.

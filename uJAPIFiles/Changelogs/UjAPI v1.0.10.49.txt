@@ -1,0 +1,80 @@
+v1.0.10.49
+
+1. New Types:
+type missile											extends agent
+type playermissileevent    								extends eventid
+2. New Convertors:
+constant native ConvertPlayerMissileEvent				takes integer i returns playermissileevent
+3. New Constants:
+constant playermissileevent			EVENT_PLAYER_MISSILE_LAUNCH									= ConvertPlayerMissileEvent(600)
+constant playermissileevent			EVENT_PLAYER_MISSILE_HIT									= ConvertPlayerMissileEvent(601)
+4. New natives:
+native KillMissile                       		takes missile whichMissile returns nothing
+native IsMissileVisible                       	takes missile whichMissile returns boolean
+native SetMissileVisibility                   	takes missile whichMissile, boolean visibility returns nothing
+native GetMissileX                            	takes missile whichMissile returns real
+native SetMissileX                            	takes missile whichMissile, real x returns nothing
+native GetMissileY                            	takes missile whichMissile returns real
+native SetMissileY                            	takes missile whichMissile, real y returns nothing
+native GetMissileZ                            	takes missile whichMissile returns real
+native SetMissileZ                            	takes missile whichMissile, real z returns nothing
+native GetMissileHeight                       	takes missile whichMissile returns real
+native SetMissileHeight                       	takes missile whichMissile, real height returns nothing
+native GetMissilePositionLocation             	takes missile whichMissile returns location
+native SetMissilePositionWithZ                	takes missile whichMissile, real x, real y, real z returns nothing
+native SetMissilePosition                     	takes missile whichMissile, real x, real y returns nothing
+native SetMissilePositionLocation             	takes missile whichMissile, location loc returns nothing
+native GetMissileScale                        	takes missile whichMissile returns real
+native SetMissileScale                        	takes missile whichMissile, real scale returns nothing
+native GetMissileTimeScale                    	takes missile whichMissile returns real
+native SetMissileTimeScale                    	takes missile whichMissile, real timescale returns nothing
+native GetMissileColour                       	takes missile whichMissile returns integer
+native SetMissileColour                       	takes missile whichMissile, integer colour returns boolean
+native SetMissileAlpha                        	takes missile whichMissile, integer alpha returns boolean
+native SetMissileVertexColour                 	takes missile whichMissile, integer red, integer green, integer blue, integer alpha returns boolean
+native SetMissileAnimationWithRarityByIndex   	takes missile whichMissile, integer animIndex, raritycontrol rarity returns nothing
+native SetMissileAnimationWithRarity          	takes missile whichMissile, string animation, raritycontrol rarity returns nothing
+native SetMissileAnimationByIndex             	takes missile whichMissile, integer animIndex returns nothing
+native SetMissileAnimation                    	takes missile whichMissile, string animation returns nothing
+native QueueMissileAnimationByIndex           	takes missile whichMissile, integer animIndex returns nothing
+native QueueMissileAnimation                  	takes missile whichMissile, string animation returns nothing
+native ResetMissileMatrix                   	takes missile whichMissile returns nothing
+native SetMissileOrientationEx                	takes missile whichMissile, real yaw, real pitch, real roll, integer eulerOrder returns boolean
+native GetMissileYaw                          	takes missile whichMissile returns real
+native SetMissileYaw                          	takes missile whichMissile, real yaw returns boolean
+native GetMissileFacing                       	takes missile whichMissile returns real
+native SetMissileFacing                       	takes missile whichMissile, real facing returns boolean
+native GetMissilePitch                        	takes missile whichMissile returns real
+native SetMissilePitch                        	takes missile whichMissile, real pitch returns boolean
+native GetMissileRoll                         	takes missile whichMissile returns real
+native SetMissileRoll                         	takes missile whichMissile, real roll returns boolean
+native SetMissileOrientation                  	takes missile whichMissile, real yaw, real pitch, real roll returns nothing
+native SetMissileModel                        	takes missile whichMissile, string modelName returns nothing
+native SetMissileModelEx                      	takes missile whichMissile, string modelName, integer playerColour returns nothing
+native GetMissileSource							takes missile whichMissile returns unit
+native SetMissileSource							takes missile whichMissile, unit whichUnit returns nothing
+native GetMissileTarget							takes missile whichMissile returns widget
+native SetMissileTarget							takes missile whichMissile, widget whichWidget returns nothing
+native GetMissileAttackType 					takes missile whichMissile returns attacktype
+native SetMissileAttackType 					takes missile whichMissile, attacktype whichAttackType returns nothing
+native GetMissileDamage 						takes missile whichMissile returns real
+native SetMissileDamage 						takes missile whichMissile, real damage returns nothing
+native GetMissileSpeed 							takes missile whichMissile returns real
+native SetMissileSpeed 							takes missile whichMissile, real speed returns nothing
+native GetMissileArc 							takes missile whichMissile returns real
+native SetMissileArc 							takes missile whichMissile, real arc returns nothing
+native GetMissileWeaponType 					takes missile whichMissile returns weapontype
+native SetMissileWeaponType 					takes missile whichMissile, weapontype whichWeaponType returns nothing
+native GetMissileDamageType 					takes missile whichMissile returns damagetype
+native SetMissileDamageType 					takes missile whichMissile, damagetype whichDamageType returns nothing
+native GetMissileDamageFlags 					takes missile whichMissile returns integer
+native SetMissileDamageFlags 					takes missile whichMissile, integer flags returns nothing
+native SaveMissileHandle						takes hashtable whichHashtable, integer parentKey, integer childKey, missile whichMissile returns boolean
+native LoadMissileHandle						takes hashtable whichHashtable, integer parentKey, integer childKey returns missile
+native GetTriggerMissile						takes nothing returns missile
+native GetTriggerMissileSource					takes nothing returns unit
+native GetTriggerMissileTarget					takes nothing returns unit
+native TriggerRegisterPlayerMissileEvent		takes trigger whichTrigger, player whichPlayer, playermissileevent whichMissileEvent returns event
+5. Fixed all natives getting/setting attacktype/damagetype/weapontype, now they use these handle types instead of integers.
+6. All natives getting/setting Hero's base attribute now use heroattribute instead of integer.
+7. Fixed native GetTriggerFrameReal with MOUSE_WHEEL event, now it returns mouse delta like on Reforged.

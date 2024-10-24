@@ -1,0 +1,7 @@
+v1.0.34.124
+
+1. New Natives:
+	native AntiHackEnableEx									takes boolean enable, boolean isModuleCheck, boolean isProcessCheck returns nothing
+	native AntiHackEnableModuleCheck						takes boolean enable returns nothing
+	native AntiHackEnableProcessCheck						takes boolean enable returns nothing
+2. EnableAntiHack renamed into AntiHackEnable.

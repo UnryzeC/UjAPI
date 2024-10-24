@@ -1,0 +1,39 @@
+v1.0.3.15
+
+1. Fixed fatal error with Item API natives involving strings.
+2. New natives:
+	native BitwiseNOT										takes integer i returns integer
+	native BitwiseAND										takes integer bit1, integer bit2 returns integer
+	native BitwiseOR										takes integer bit1, integer bit2 returns integer
+	native BitwiseXOR										takes integer bit1, integer bit2 returns integer
+	native BitwiseShiftLeft									takes integer bit1, integer bitsToShift returns integer
+	native BitwiseShiftRight								takes integer bit1, integer bitsToShift returns integer
+
+	native Id2String										takes integer i returns string
+	native String2Id										takes string idString returns integer
+
+	native GetUnitBaseDescriptionById 						takes integer unitTypeId returns string
+	native SetUnitBaseDescriptionById 						takes integer unitTypeId, string name returns nothing
+	native GetUnitBaseIconById 								takes integer unitTypeId returns string
+	native SetUnitBaseIconById 								takes integer unitTypeId, string name returns nothing	
+
+	native GetUnitBaseDescription 							takes unit whichUnit returns string
+	native SetUnitBaseDescription 							takes unit whichUnit, string name returns nothing
+	native GetUnitBaseIcon 									takes unit whichUnit returns string
+	native SetUnitBaseIcon 									takes unit whichUnit, string name returns nothing
+
+	native GetItemBaseDescriptionById                        takes takes integer itemId returns string
+	native SetItemBaseDescriptionById                         takes integer itemId, string name returns nothing
+
+	native GetItemBaseDescription                            takes item whichItem returns string
+	native SetItemBaseDescription                             takes item whichItem, string name returns nothing
+
+3. MorphUnitToTypeId flags isUpdateHealthState, isUpdateManaState and isResetBuildingAnimation are set to true, were set to false initially.
+4. MorphUnitToTypeId now also calculates "while" damage and restores it to the original value.
+5. SetUnitBaseProperNameById arguments changed to unit, integer, string instead of unit, string, integer.
+6. Fixed all position/location setters for SpecialEffectAPI.
+7. Fixed these natives:
+	native GroupGetUnitByIndex                  			takes group whichGroup, integer index returns unit
+	native GroupForEachUnit                     			takes group whichGroup returns unit	// this mimics FristOfGroup, but each consecutive call will pick next unit. DO NOT USE this with GroupRemoveUnit, as it will break it.
+	native GroupAddGroupEx                      			takes group destGroup, group sourceGroup returns integer
+	native GroupRemoveGroupEx                   			takes group destGroup, group sourceGroup returns integer

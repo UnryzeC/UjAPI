@@ -1,0 +1,7 @@
+v1.0.12.59
+
+1. Fixed fatal error on 1.28.5.
+	Note: this was related to any action being done, such as clicking system frames, selecting unit, etc. Just moving mouse around and camera wouldn't cause a crash.
+2. Fixed CastAbilityGround and CastAbilityTarget natives.
+	Note: do NOT use these without any delay from main function, as the game might not have enough time to register events, etc.
+3. Fixed fatal error with any frame creation native on lua for war3_lua.dll.

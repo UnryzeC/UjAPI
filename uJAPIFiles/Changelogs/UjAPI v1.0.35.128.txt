@@ -1,0 +1,5 @@
+v1.0.35.128
+
+1. Fixed incorrect handling of GetEventDamage.
+2. Fixed incorrect handling of Magical/Non-Magical damage.
+	Note: IsEventAttack now works properly, UnitDamageTarget is always considered "magical", but it can contain On Hit flag, which is 0x100 (aka old IsAttack).

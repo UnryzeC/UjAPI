@@ -1,0 +1,4 @@
+v1.0.35.129
+
+1. Fixed IsAttack check failing on Melee Damage if unit had any orb effects.
+2. Fixed UjAPIApp non-functional button Check Updates.

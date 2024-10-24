@@ -1,0 +1,96 @@
+v1.0.28.102
+
+1. New Constants
+	constant integer					TEXT_TAG_MAX_SIZE											= GetTextTagLimit( )  // Original 100 limit raised to 1024, this is subject to change if needed.
+2. New Natives:
+	constant native GetJassArrayLimit						takes nothing returns integer
+	constant native GetTextTagLimit							takes nothing returns integer
+	//
+	native GetCodeByName									takes string funcName returns code
+	//
+	native TimerIsPaused 									takes timer whichTimer returns boolean
+	native TimerRestart 									takes timer whichTimer returns nothing
+	native TimerIsPeriodic 									takes timer whichTimer returns boolean
+	native TimerSetPeriodic 								takes timer whichTimer, boolean isPeriodic returns nothing
+	native TimerSetRemaining 								takes timer whichTimer, real remaining returns nothing
+	native TimerSetTimeout 									takes timer whichTimer, real timeout returns nothing
+	native TimerGetCallback 								takes timer whichTimer returns code
+	native TimerSetCallback 								takes timer whichTimer, code whichFunction returns nothing
+	//
+	native GetDoodadModel                                   takes doodad whichDoodad returns string
+	native SetDoodadModel                                   takes doodad whichDoodad, string whichModel returns nothing
+	native IsDoodadVisible                                  takes doodad whichDoodad returns boolean
+	native ShowDoodad                                       takes doodad whichDoodad, boolean isShow returns nothing
+	//
+	native GetLightningSourceX 								takes lightning whichBolt returns real
+	native SetLightningSourceX 								takes lightning whichBolt, real value returns nothing
+	native GetLightningSourceY 								takes lightning whichBolt returns real
+	native SetLightningSourceY 								takes lightning whichBolt, real value returns nothing
+	native GetLightningSourceZ 								takes lightning whichBolt returns real
+	native SetLightningSourceZ 								takes lightning whichBolt, real value returns nothing
+	native GetLightningSourcePositionLocation 				takes lightning whichBolt returns location
+	native SetLightningSourcePositionLocation 				takes lightning whichBolt, location whichLocation returns nothing
+	native GetLightningTargetX 								takes lightning whichBolt returns real
+	native SetLightningTargetX 								takes lightning whichBolt, real value returns nothing
+	native GetLightningTargetY 								takes lightning whichBolt returns real
+	native SetLightningTargetY 								takes lightning whichBolt, real value returns nothing
+	native GetLightningTargetZ 								takes lightning whichBolt returns real
+	native SetLightningTargetZ 								takes lightning whichBolt, real value returns nothing
+	native GetLightningTargetPositionLocation 				takes lightning whichBolt returns location
+	native SetLightningTargetPositionLocation 				takes lightning whichBolt, location whichLocation returns nothing
+	native GetLightningScreenX								takes lightning whichBolt returns real
+	native GetLightningScreenY								takes lightning whichBolt returns real
+	native GetLightningColour 								takes lightning whichBolt returns integer
+	native GetLightningLength 								takes lightning whichBolt returns real
+	native SetLightningLength 								takes lightning whichBolt, real value returns nothing
+	native GetLightningNoiseScaling 						takes lightning whichBolt returns real
+	native SetLightningNoiseScaling 						takes lightning whichBolt, real value returns nothing
+	native GetLightningTextureCoordinates 					takes lightning whichBolt returns real
+	native SetLightningTextureCoordinates 					takes lightning whichBolt, real value returns nothing
+	native GetLightningDuration 							takes lightning whichBolt returns real
+	native SetLightningDuration 							takes lightning whichBolt, real value returns nothing
+	native GetLightningTexture 								takes lightning whichBolt returns string
+	native SetLightningTexture 								takes lightning whichBolt, string textureName returns nothing
+	//
+	native GetTextTagScreenX								takes texttag whichTextTag returns real
+	native GetTextTagScreenY								takes texttag whichTextTag returns real
+	//
+	native GetImageScreenX									takes image whichImage returns real
+	native GetImageScreenY									takes image whichImage returns real
+	//
+	native GetSpecialEffectScreenX							takes effect whichEffect returns real
+	native GetSpecialEffectScreenY							takes effect whichEffect returns real
+	//
+	native GetTrackableScreenX								takes trackable whichTrackable returns real
+	native GetTrackableScreenY								takes trackable whichTrackable returns real
+	//
+	native GetWidgetScreenX									takes widget whichWidget returns real
+	native GetWidgetScreenY									takes widget whichWidget returns real
+	//
+	native GetDestructableScreenX							takes destructable whichDestructable returns real
+	native GetDestructableScreenY							takes destructable whichDestructable returns real
+	//
+	native GetItemScreenX									takes item whichItem returns real
+	native GetItemScreenY									takes item whichItem returns real
+	//
+	native GetUnitScreenX									takes unit whichUnit returns real
+	native GetUnitScreenY									takes unit whichUnit returns real
+	//
+	native GetProjectileScreenX								takes projectile whichProjectile returns real
+	native GetProjectileScreenY								takes projectile whichProjectile returns real
+	//
+	native HandleListContainsTypeId							takes handlelist whichHandleList, integer typeId returns boolean
+	native HandleListGetHandleByTypeId						takes handlelist whichHandleList, integer typeId, integer index returns handle
+	native HandleListRemoveEmpty							takes handlelist whichHandleList returns integer
+	//
+3. TextTag limit was set to 1024.
+	Note: using 512 did not result in any FPS drop, however tests while using 8192 tags resulted in 20 average FPS, hence a limit of 1024 was applied instead, as it also produced no fps drop.
+4. Fixed HandleListContainsHandle failing at checking wherever it contains handle or not.
+5. Fixed fatal error if array was initialised and then a value outside of its range was set.
+	Note: this was not an issue on "vanilla".
+6. Fixed fatal error from setting RESEARCH/ACTIVATED icon via SetAbilityStringField, etc.
+7. ICON_RESEARCH now affects AHer (Hero learn) ability and everything else related to research.
+8. Fixed SetFrameTexture wrong internal argument handling.
+9. Fixed HideOriginFrames causing a fatal error when called in main function/without any timer delay.
+10. Fixed fatal error with Windows 7, that is caused by Windows 7 simply being slow at launching Warcraft III...
+	Note: error happens because UjAPI tries to access CGlueManager to write UjAPI text in the Version Frame, but it has black screen instead.

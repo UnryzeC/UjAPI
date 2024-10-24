@@ -1,0 +1,23 @@
+v1.0.32.118
+
+1. New Natives:
+	native CreateIllusionFromUnitEx							takes unit whichUnit, boolean copyPassives returns unit
+	native GetAbilityOwningItem								takes ability whichAbility returns item
+	native ShowUnitAbilityEx								takes unit whichUnit, integer abilityId, boolean show, boolean checkDuplicates returns nothing
+	native DisableUnitAbilityEx								takes unit whichUnit, integer abilityId, boolean hide, boolean disable, boolean checkDuplicates returns nothing
+	native EnableUnitAbilityEx								takes unit whichUnit, integer abilityId, boolean show, boolean enable, boolean checkDuplicates returns nothing
+2. SetUnitBaseDamage and its field equivalent now include bonus damage from stats in calculation by default.
+3. SetUnitBaseDamage and its field equivalent now also update UI to display changes.
+4. SetUnitArmour and its field equivalent now also update UI to display changes.
+5. SetUnitArmourType and its field equivalent now also update UI to display changes.
+6. SetUnitPrimaryStat and its field equivalent now also update UI to display changes.
+7. SetUnitMoveSpeed and its field equivalent now also update UI to display changes.
+8. SetUnitBonusMoveSpeedPercent and its field equivalent now also update UI to display changes.
+9. Fixed UnitUpdateInfoBar incorretly processing bonus stats.
+10. Added Crash Handler Hook, this is mostly useful for 1.27b and 1.28f, it will now display its base address in console.
+11. UpdateUnitInfoBar now returns null, as its original returned integer value was pretty much bogus.
+12. UnitUnapplyUpgrades now returns null, as its original returned integer value was pretty much bogus.
+13. UnitApplyUpgrades now returns null, as its original returned integer value was pretty much bogus.
+14. Fixed BUFF_SF_TOOLTIP_NORMAL and BUFF_SF_TOOLTIP_NORMAL_EXTENDED fields returning/setting bogus values.
+15. Fixed HandleListGetBuffByIndex not returning buffs.
+16. ShowUnitAbility/DisableUnitAbility/EnableUnitAbility no longer affect all duplicates, this was moved as an option to Ex version.

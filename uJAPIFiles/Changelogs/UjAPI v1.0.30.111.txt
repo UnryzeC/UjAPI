@@ -1,0 +1,4 @@
+v1.0.30.111
+
+1. Fixed UnitEnableInventory not disabling first item's hotkey.
+2. Yet another attempt at fixing "error" when older version of the app is being removed.

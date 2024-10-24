@@ -1,0 +1,160 @@
+v1.0.37.137
+
+1. New Types:
+	type sprite												extends agent
+2. New Constants:
+	constant camerafield 				CAMERA_FIELD_NEARZ											= ConvertCameraField(7)
+	constant camerafield 				CAMERA_FIELD_LOCAL_PITCH									= ConvertCameraField(8)
+	constant camerafield 				CAMERA_FIELD_LOCAL_YAW										= ConvertCameraField(9)
+	constant camerafield 				CAMERA_FIELD_LOCAL_ROLL										= ConvertCameraField(10) // Not implemented yet
+3. New Natives:
+	native GetDoodadAnimationOffsetPercent					takes doodad whichDoodad returns real
+	//
+	native GetSpecialEffectSprite							takes effect whichEffect returns sprite
+	native GetSpecialEffectAnimationOffsetPercent			takes effect whichEffect returns real
+	//
+	native GetTrackableSprite								takes trackable whichTrackable returns sprite
+	native GetTrackableAnimationOffsetPercent				takes trackable whichTrackable returns real
+	//
+	native GetWidgetSprite									takes widget whichWidget returns sprite
+	native GetWidgetAnimationOffsetPercent					takes widget whichWidget returns real
+	//
+	native GetDestructableSprite							takes destructable whichDestructable returns sprite
+	native GetDestructableAnimationOffsetPercent			takes destructable whichDestructable returns real
+	//
+	native GetItemSprite									takes item whichItem returns sprite
+	native GetItemAnimationOffsetPercent					takes item whichItem returns real
+	//
+	native GetUnitSprite									takes unit whichUnit returns sprite
+	native GetUnitAnimationOffsetPercent					takes unit whichUnit returns real
+	//
+	native LaunchProjectileAt								takes projectile whichProjectile, real x, real y, real z returns nothing
+	native GetProjectileSprite								takes projectile whichProjectile returns sprite
+	native GetProjectileAnimationOffsetPercent				takes projectile whichProjectile returns real
+	native SetProjectileTargetPointX						takes projectile whichProjectile, real x returns nothing
+	native SetProjectileTargetPointY						takes projectile whichProjectile, real y returns nothing
+	native SetProjectileTargetPointZ						takes projectile whichProjectile, real z returns nothing
+	native SetProjectileTargetPositionLoc					takes projectile whichProjectile, location loc returns nothing
+	//
+	native GetFrameSprite									takes framehandle whichFrame returns sprite
+	native GetFrameSpriteAnimationOffsetPercent				takes framehandle whichFrame returns real
+	//
+	native CreateSprite										takes boolean isUber returns sprite
+	native AttachSpriteToTarget								takes sprite whichSprite, sprite targetSprite, string attachPointName returns sprite
+	native AddSpriteToTarget								takes string modelName, sprite targetSprite, string attachPointName returns sprite
+	native GetSpriteChildrenCount							takes sprite whichSprite returns integer
+	native GetSpriteChildById								takes sprite whichSprite, integer index returns sprite
+	native RemoveSprite										takes sprite whichSprite returns nothing
+	native IsSpriteUber										takes sprite whichSprite returns boolean
+	native GetSpriteX										takes sprite whichSprite returns real
+	native GetSpriteY										takes sprite whichSprite returns real
+	native GetSpriteZ										takes sprite whichSprite returns real
+	native GetSpriteHeight									takes sprite whichSprite returns real
+	native GetSpritePositionLoc								takes sprite whichSprite returns location
+	native SetSpritePositionEx								takes sprite whichSprite, real x, real y, real z returns nothing
+	native SetSpritePosition								takes sprite whichSprite, real x, real y returns nothing
+	native SetSpritePositionLoc								takes sprite whichSprite, location loc returns nothing
+	native SetSpriteX										takes sprite whichSprite, real x returns nothing
+	native SetSpriteY										takes sprite whichSprite, real y returns nothing
+	native SetSpriteZ										takes sprite whichSprite, real z returns nothing
+	native SetSpriteHeight									takes sprite whichSprite, real height returns nothing
+	native GetSpriteScreenX									takes sprite whichSprite returns real
+	native GetSpriteScreenY									takes sprite whichSprite returns real
+	native GetSpriteScale									takes sprite whichSprite returns real
+	native SetSpriteScale									takes sprite whichSprite, real scale returns nothing
+	native GetSpriteTimeScale								takes sprite whichSprite returns real
+	native SetSpriteTimeScale								takes sprite whichSprite, real timescale returns nothing
+	native SetSpritePlayerColour							takes sprite whichSprite, playercolor color returns nothing
+	native GetSpriteColour									takes sprite whichSprite returns integer
+	native SetSpriteColour									takes sprite whichSprite, integer colour returns nothing
+	native SetSpriteAlpha									takes sprite whichSprite, integer alpha returns nothing
+	native SetSpriteVertexColour							takes sprite whichSprite, integer red, integer green, integer blue, integer alpha returns nothing
+	native SetSpriteMatrixScale								takes sprite whichSprite, real x, real y, real z returns nothing
+	native ResetSpriteMatrix								takes sprite whichSprite returns nothing
+	native SetSpriteOrientationEx							takes sprite whichSprite, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+	native GetSpriteYaw										takes sprite whichSprite returns real
+	native SetSpriteYaw										takes sprite whichSprite, real yaw returns nothing
+	native GetSpriteFacing									takes sprite whichSprite returns real
+	native SetSpriteFacing									takes sprite whichSprite, real facing returns nothing
+	native GetSpritePitch									takes sprite whichSprite returns real
+	native SetSpritePitch									takes sprite whichSprite, real pitch returns nothing
+	native GetSpriteRoll									takes sprite whichSprite returns real
+	native SetSpriteRoll									takes sprite whichSprite, real roll returns nothing
+	native SetSpriteOrientation								takes sprite whichSprite, real yaw, real pitch, real roll returns nothing
+	native SetSpriteMaterialTexture							takes sprite whichSprite, string textureName, integer materialId, integer textureIndex returns nothing
+	native SetSpriteTexture									takes sprite whichSprite, string textureName, integer textureIndex returns nothing
+	native SetSpriteReplaceableTexture						takes sprite whichSprite, string textureName, integer textureIndex returns nothing
+	native SetSpriteModel									takes sprite whichSprite, string modelName returns nothing
+	native SetSpriteModelEx									takes sprite whichSprite, string modelName, integer playerColour returns nothing
+	native GetSpriteModelObjectPositionX					takes sprite whichSprite, string whichObject returns real
+	native GetSpriteModelObjectPositionY					takes sprite whichSprite, string whichObject returns real
+	native GetSpriteModelObjectPositionZ					takes sprite whichSprite, string whichObject returns real
+	native GetSpriteModelObjectPositionLoc					takes sprite whichSprite, string whichObject returns location
+	native GetSpriteCurrentAnimationId						takes sprite whichSprite returns integer
+	native GetSpriteCurrentAnimationName					takes sprite whichSprite returns string
+	native SetSpriteAnimationWithRarityByIndex				takes sprite whichSprite, integer animIndex, raritycontrol rarity returns nothing
+	native SetSpriteAnimationWithRarity						takes sprite whichSprite, string animationName, raritycontrol rarity returns nothing
+	native SetSpriteAnimationByIndex						takes sprite whichSprite, integer animIndex returns nothing
+	native SetSpriteAnimation								takes sprite whichSprite, string animationName returns nothing
+	native QueueSpriteAnimationByIndex						takes sprite whichSprite, integer animIndex returns nothing
+	native QueueSpriteAnimation								takes sprite whichSprite, string animationName returns nothing
+	native GetSpriteAnimationOffsetPercent					takes sprite whichSprite returns real
+	native SetSpriteAnimationOffsetPercent					takes sprite whichSprite, real percent returns nothing
+4. Fixed Fatal Error whenever GetFrameName was used on a Frame that has no initialised name.
+5. CORNER_FLAG renamed to BORDER_FLAG.
+6. Get/SetFrameCornerFlags renamed to Get/SetFrameBorderFlags.
+7. Get/SetFrameCornerSize renamed to Get/SetFrameBorderSize.
+8. UnitEnableAttack when set to false now also disables retaliation/auto-attack.
+9. UnitEnableAttack when set to false now also hides Attack ability, without hiding Attack Icon.
+10. GetFrameUnderMouse renamed to GetFrameUnderCursor.
+11. GetFrameUnderCursor now is also able to return any CSimpleFrame and its children.
+	Note: priority is as follows: CSimpleFrame, CLayer (Under Cursor) and CLayer (Highlighted).
+12. SetFrameSpriteModel/SetFrameSpriteModelEx no longer break animations for used models.
+13. Fixed GetEventDamageTarget returning bogus values.
+14. Fixed CreateAbility returning always null.
+15. All internal Axis getters changed from pointers to local/reference variables.
+	Note: this is a note to self, these changes should not impact game at all.
+16. SetSpecialEffectAnimationOffsetPercent now returns nothing instead of boolean.
+17. SetTrackableAnimationOffsetPercent now returns nothing instead of boolean.
+18. SetWidgetAnimationOffsetPercent now returns nothing instead of boolean.
+19. SetDestructableAnimationOffsetPercent now returns nothing instead of boolean.
+20. SetItemAnimationOffsetPercent now returns nothing instead of boolean.
+21. SetUnitAnimationOffsetPercent now returns nothing instead of boolean.
+22. SetProjectileAnimationOffsetPercent now returns nothing instead of boolean.
+23. SetFrameSpriteAnimationOffsetPercent now returns nothing instead of boolean.
+24. SetSpecialEffectColour now returns nothing instead of boolean.
+25. SetSpecialEffectAlpha now returns nothing instead of boolean.
+26. SetSpecialEffectVertexColour now returns nothing instead of boolean.
+27. SetSpecialEffectYaw now returns nothing instead of boolean.
+28. SetSpecialEffectFacing now returns nothing instead of boolean.
+29. SetSpecialEffectPitch now returns nothing instead of boolean.
+30. SetSpecialEffectRoll now returns nothing instead of boolean.
+31. SetTrackableColour now returns nothing instead of boolean.
+32. SetTrackableAlpha now returns nothing instead of boolean.
+33. SetTrackableVertexColour now returns nothing instead of boolean.
+34. SetTrackableOrientationEx now returns nothing instead of boolean.
+35. SetTrackableYaw now returns nothing instead of boolean.
+36. SetTrackableFacing now returns nothing instead of boolean.
+37. SetTrackablePitch now returns nothing instead of boolean.
+38. SetTrackableRoll now returns nothing instead of boolean.
+39. SetProjectileColour now returns nothing instead of boolean.
+40. SetProjectileAlpha now returns nothing instead of boolean.
+41. SetProjectileVertexColour now returns nothing instead of boolean.
+42. SetProjectileOrientationEx now returns nothing instead of boolean.
+43. SetProjectileYaw now returns nothing instead of boolean.
+44. SetProjectileFacing now returns nothing instead of boolean.
+45. SetProjectilePitch now returns nothing instead of boolean.
+46. SetProjectileRoll now returns nothing instead of boolean.
+47. Fixed TimerIsPaused returning TimerIsPeriodic instead.
+48. Added new offsets to AntiHack.
+49. Fixed AntiHack not kicking hackers after first detection.
+50. Added WorldFrame integrity checks to AntiHack.
+51. Removed 1024 character String Literal size limit.
+	Note: for this to take effect in JNGP, you will need to somehow make pjass allow strings that are longer than 1024.
+52. SetProjectileModel/SetProjectileModelEx now properly set model.
+53. LaunchTargetProjectile renamed to LaunchProjectileTarget.
+54. Fixed TimerSetPeriodic.
+55. All PositionLocation renamed to PositionLoc to match vanilla names.
+56. All PositionEx renamed to PositionWithZ to match vanilla names.
+57. All ModelObjectPosition(X/Y/Z) renamed to ModelObject(X/Y/Z).
+58. Fixed fatal error caused by UnitAddGroupEx.

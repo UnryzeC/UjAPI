@@ -1,0 +1,4 @@
+v1.0.29.105
+
+1. Fixed ABILITY_ILF_TARGET_TYPE getting/setting bogus values.
+2. Added new detection methods to AntiHack.

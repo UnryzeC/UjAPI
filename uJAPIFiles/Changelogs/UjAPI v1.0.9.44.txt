@@ -1,0 +1,38 @@
+v1.0.9.44
+
+1. New types:
+type mousebuttontype    extends     handle
+2. New Constants:
+constant mousebuttontype    MOUSE_BUTTON_TYPE_LEFT          = ConvertMouseButtonType(1)
+constant mousebuttontype    MOUSE_BUTTON_TYPE_MIDDLE        = ConvertMouseButtonType(2)
+constant mousebuttontype    MOUSE_BUTTON_TYPE_RIGHT         = ConvertMouseButtonType(3)
+3. New Convertors:
+constant native ConvertMouseButtonType      takes integer i returns mousebuttontype
+4. New Natives:
+native GetTriggerPlayerMouseButton             			takes nothing returns mousebuttontype
+native GetFrameSpriteScale                            	takes framehandle whichFrame returns real
+native SetFrameSpriteScale                            	takes framehandle whichFrame, real scale returns nothing
+native GetFrameSpriteTimeScale                        	takes framehandle whichFrame returns real
+native SetFrameSpriteTimeScale                        	takes framehandle whichFrame, real timescale returns nothing
+native GetFrameSpriteColour                           	takes framehandle whichFrame returns integer
+native SetFrameSpriteColour                           	takes framehandle whichFrame, integer colour returns boolean
+native SetFrameSpriteAlpha                            	takes framehandle whichFrame, integer alpha returns boolean
+native SetFrameSpriteVertexColour                     	takes framehandle whichFrame, integer red, integer green, integer blue, integer alpha returns boolean
+native SetFrameSpriteOrientationEx                    	takes framehandle whichFrame, real yaw, real pitch, real roll, integer eulerOrder returns boolean
+native GetFrameSpriteYaw                              	takes framehandle whichFrame returns real
+native SetFrameSpriteYaw                              	takes framehandle whichFrame, real yaw returns boolean
+native GetFrameSpriteFacing                           	takes framehandle whichFrame returns real
+native SetFrameSpriteFacing                           	takes framehandle whichFrame, real facing returns boolean
+native GetFrameSpritePitch                            	takes framehandle whichFrame returns real
+native SetFrameSpritePitch                            	takes framehandle whichFrame, real pitch returns boolean
+native GetFrameSpriteRoll                             	takes framehandle whichFrame returns real
+native SetFrameSpriteRoll                             	takes framehandle whichFrame, real roll returns boolean
+native SetFrameSpriteOrientation                      	takes framehandle whichFrame, real yaw, real pitch, real roll returns nothing
+native SetFrameSpriteModel                            	takes framehandle whichFrame, string modelName returns nothing
+native SetFrameSpriteModelEx                          	takes framehandle whichFrame, string modelName, integer playerColour returns nothing
+5. Fixed Fatal Error on MiniMap ping.
+6. Fixed MOUSE_MOVE event consuming any other action, resulting in no other command being handled.
+7. Fixed Fatal Error from SetFrameTooltip native.
+8. Fixed SetFrameEnabled native not working.
+9. Fixed GetTriggerFrameEvent native returning wrong value.
+10. Fixed GetTriggerPlayerKey native returning wrong mouse button.

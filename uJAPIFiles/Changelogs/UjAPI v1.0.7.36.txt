@@ -1,0 +1,9 @@
+v1.0.7.36
+
+1. Added Auto Updater (for now it is "silent" after choosing "Yes" option).
+2. Fixed fatal errors related to CreateFrameByType.
+3. Fixed fatal errors related to SetFrameTexture.
+4. Fixed SetFrameVertexColour not working with CSimpleStatusBar.
+5. Fixed NetCode handler from breaking if two different players issued packets together.
+6. Added new "IsNoWarnings" option for LUA.
+7. LUA settings have been moved to their own section.

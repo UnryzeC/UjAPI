@@ -1,0 +1,30 @@
+v1.0.5.31
+
+1. New types:
+	type timetype											extends handle
+2. New Convertors:
+	constant native ConvertTimeType                      	takes integer i returns timetype
+3. New Constants:
+	constant timetype					TIME_TYPE_YEAR												= ConvertTimeType( 0 )
+	constant timetype					TIME_TYPE_MONTH												= ConvertTimeType( 1 )
+	constant timetype					TIME_TYPE_DAY_OF_WEEK										= ConvertTimeType( 2 )
+	constant timetype					TIME_TYPE_DAY												= ConvertTimeType( 3 )
+	constant timetype					TIME_TYPE_HOUR												= ConvertTimeType( 4 )
+	constant timetype					TIME_TYPE_MINUTE											= ConvertTimeType( 5 )
+	constant timetype					TIME_TYPE_SECOND											= ConvertTimeType( 6 )
+	constant timetype					TIME_TYPE_MILLISECOND										= ConvertTimeType( 7 )
+4. New natives:
+	native GetSystemTime									takes timetype whichTimeType returns integer
+	native GetLocalTime										takes timetype whichTimeType returns integer
+	native ExecuteCode										takes code c returns nothing
+	native SyncInteger             							takes string variableName returns nothing
+	native SyncReal             							takes string variableName returns nothing
+	native SyncBoolean             							takes string variableName returns nothing
+	native SyncString             							takes string variableName returns nothing
+	native SyncHandle             							takes string variableName returns nothing
+	native SyncSavedInteger             					takes hashtable table, integer parentKey, integer childKey returns nothing
+	native SyncSavedReal             						takes hashtable table, integer parentKey, integer childKey returns nothing
+	native SyncSavedBoolean             					takes hashtable table, integer parentKey, integer childKey returns nothing
+	native SyncSavedHandle             						takes hashtable table, integer parentKey, integer childKey returns nothing
+	native SyncSavedString             						takes hashtable table, integer parentKey, integer childKey returns nothing
+5. Code improvement and performance uplift.

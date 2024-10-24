@@ -1,0 +1,103 @@
+v1.0.11.53
+
+1. New Natives:
+// Unit
+native IsUnitAlive 										takes unit whichUnit returns boolean
+native SetUnitModelEx 									takes unit whichUnit, string modelName, integer playercolourId returns nothing
+native SetUnitMaterialTexture 							takes unit whichUnit, string textureName, integer materialId, integer textureIndex returns nothing
+native SetUnitTexture 									takes unit whichUnit, string textureName, integer textureIndex returns nothing
+//
+// Item
+native SetItemModelEx 									takes item whichItem, string modelFile, integer playerColourId returns nothing
+native SetItemMaterialTexture 							takes item whichItem, string textureName, integer materialId, integer textureIndex returns nothing
+native SetItemTexture 									takes item whichItem, string textureName, integer textureIndex returns nothing
+native SetItemReplaceableTexture 						takes item whichItem, string textureName, integer textureIndex returns nothing
+//
+// Missile
+native GetMissileTargetUnit								takes missile whichMissile returns unit
+native GetMissileTargetItem								takes missile whichMissile returns item
+native GetMissileTargetDestructable						takes missile whichMissile returns destructable
+
+native GetTriggerMissileTargetUnit						takes nothing returns unit
+native GetTriggerMissileTargetItem						takes nothing returns item
+native GetTriggerMissileTargetDestructable				takes nothing returns destructable
+//
+
+// Widget
+native IsWidgetVisible									takes widget whichWidget returns boolean
+native SetWidgetVisible									takes widget whichWidget, boolean visible returns nothing
+native IsWidgetInvulnerable								takes widget whichWidget returns boolean
+native SetWidgetInvulnerable							takes widget whichWidget, boolean invulnerable returns nothing
+native GetWidgetPositionLocation						takes widget whichWidget returns location
+native SetWidgetPosition								takes widget whichWidget, real x, real y returns nothing
+native SetWidgetPositionLocation						takes widget whichWidget, location whichLocation returns nothing
+native SetWidgetX										takes widget whichWidget, real x returns nothing
+native SetWidgetY										takes widget whichWidget, real y returns nothing
+native GetWidgetVertexColour 							takes widget whichWidget returns integer
+native SetWidgetVertexColour 							takes widget whichWidget, integer red, integer green, integer blue, integer alpha returns nothing
+native GetWidgetTimeScale 								takes widget whichWidget returns real
+native SetWidgetTimeScale 								takes widget whichWidget, real timeScale returns nothing
+native GetWidgetScale 									takes widget whichWidget returns real
+native SetWidgetScale 									takes widget whichWidget, real scale returns nothing
+native GetWidgetFacing 									takes widget whichWidget returns real
+native SetWidgetFacing 									takes widget whichWidget, real facing, boolean isInstant returns nothing
+native SetWidgetSpaceRotation        					takes widget whichWidget, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+native SetWidgetOrientation          					takes widget whichWidget, real yaw, real pitch, real roll returns nothing
+native GetWidgetYaw 									takes widget whichWidget returns real
+native SetWidgetYaw 									takes widget whichWidget, real yaw returns nothing
+native GetWidgetPitch 									takes widget whichWidget returns real
+native SetWidgetPitch 									takes widget whichWidget, real pitch returns nothing
+native GetWidgetRoll 									takes widget whichWidget returns real
+native SetWidgetRoll 									takes widget whichWidget, real roll returns nothing
+native SetWidgetModel 									takes widget whichWidget, string modelFile returns nothing
+native SetWidgetModelEx 								takes widget whichWidget, string modelFile, integer playerId returns nothing
+native SetWidgetAnimationWithRarityByIndex 				takes widget whichWidget, integer animIndex, raritycontrol rarity returns nothing
+native SetWidgetAnimationWithRarity 					takes widget whichWidget, string animation, raritycontrol rarity returns nothing
+native SetWidgetAnimationByIndex 						takes widget whichWidget, integer animIndex returns nothing
+native SetWidgetAnimation 								takes widget whichWidget, string animation returns nothing
+native QueueWidgetAnimationByIndex 						takes widget whichWidget, integer animIndex returns nothing
+native QueueWidgetAnimation 							takes widget whichWidget, string animation returns nothing
+native SetWidgetMaterialTexture 						takes widget whichWidget, string textureName, integer materialId, integer textureIndex returns nothing
+native SetWidgetTexture 								takes widget whichWidget, string textureName, integer textureIndex returns nothing
+native SetWidgetReplaceableTexture 						takes widget whichWidget, string textureName, integer textureIndex returns nothing
+//
+// Destructable
+native GetDestructablePositionLocation					takes destructable whichDestructable returns location
+native SetDestructablePosition							takes destructable whichDestructable, real x, real y returns nothing
+native SetDestructablePositionLocation					takes destructable whichDestructable, location whichLocation returns nothing
+native SetDestructableX									takes destructable whichDestructable, real x returns nothing
+native SetDestructableY									takes destructable whichDestructable, real y returns nothing
+native SetDestructableModel 							takes destructable whichDestructable, string modelFile returns nothing
+native SetDestructableModelEx 							takes destructable whichDestructable, string modelFile, integer playerColourId returns nothing
+native GetDestructableVertexColour 						takes destructable whichDestructable returns integer
+native SetDestructableVertexColour 						takes destructable whichDestructable, integer red, integer green, integer blue, integer alpha returns nothing
+native GetDestructableTimeScale 						takes destructable whichDestructable returns real
+native SetDestructableTimeScale 						takes destructable whichDestructable, real timeScale returns nothing
+native GetDestructableScale 							takes destructable whichDestructable returns real
+native SetDestructableScale 							takes destructable whichDestructable, real scale returns nothing
+native GetDestructableFacing 							takes destructable whichDestructable returns real
+native SetDestructableFacing 							takes destructable whichDestructable, real facing, boolean isInstant returns nothing
+native SetDestructableSpaceRotation        				takes destructable whichDestructable, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+native SetDestructableOrientation          				takes destructable whichDestructable, real yaw, real pitch, real roll returns nothing
+native GetDestructableYaw 								takes destructable whichDestructable returns real
+native SetDestructableYaw 								takes destructable whichDestructable, real yaw returns nothing
+native GetDestructablePitch 							takes destructable whichDestructable returns real
+native SetDestructablePitch 							takes destructable whichDestructable, real pitch returns nothing
+native GetDestructableRoll 								takes destructable whichDestructable returns real
+native SetDestructableRoll 								takes destructable whichDestructable, real roll returns nothing
+native SetDestructableModel 							takes destructable whichDestructable, string modelFile returns nothing
+native SetDestructableModelEx 							takes destructable whichDestructable, string modelFile, integer playerId returns nothing
+native SetDestructableMaterialTexture 					takes destructable whichDestructable, string textureName, integer materialId, integer textureIndex returns nothing
+native SetDestructableTexture 							takes destructable whichDestructable, string textureName, integer textureIndex returns nothing
+native SetDestructableReplaceableTexture 				takes destructable whichDestructable, string textureName, integer textureIndex returns nothing
+native SetDestructableAnimationWithRarityByIndex 		takes destructable whichDestructable, integer animIndex, raritycontrol rarity returns nothing
+native SetDestructableAnimationWithRarity 				takes destructable whichDestructable, string animation, raritycontrol rarity returns nothing
+native SetDestructableAnimationByIndex 					takes destructable whichDestructable, integer animIndex returns nothing
+native QueueDestructableAnimationByIndex 				takes destructable whichDestructable, integer animIndex returns nothing
+//
+2. Fixed game freezing when FRAMEEVENT_SLIDER_VALUE_CHANGED event was registered and SetFrameValue was used on it.
+3. Get/SetUnitArmourType now use defensetype instead of integer.
+4. Fixed fatal error with natives SetUnitFacingEx and SetUnitFacingInstant.
+5. CastAbilityTarget now uses widget as target instead of unit.
+6. native CastAbilityGround no longer uses unit in its arguments.
+7. Upgraded War3 lua version.
