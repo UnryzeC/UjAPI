@@ -68,5 +68,3 @@ v1.1.24.260
 17. Fixed missing integer base parameter in MathIntegerLog.
 18. Fixed MathRealLog using log2 instead of log.
 19. Fixed MathIntegerLog using log2 instead of log.
-
-4. Added hook to CPlayerEventReg::PushEvent, now it's fully handled by UjAPI with added nullptr checks.
