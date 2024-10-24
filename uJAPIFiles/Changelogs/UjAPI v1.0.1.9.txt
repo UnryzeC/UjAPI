@@ -1,0 +1,25 @@
+v1.0.1.9
+
+1. New natives:
+	native ForceHasPlayer 						takes force whichForce, player whichPlayer returns boolean
+	native ForceCountPlayers 					takes force whichForce returns integer
+	native GetUnitBuff 							takes unit whichUnit, integer buffId returns buff
+	native GetUnitBuffLevel 					takes unit whichUnit, integer buffId returns integer
+	native GetBuffLevel 						takes buff whichBuff returns integer
+	native RefreshBuff							takes buff whichBuff returns boolean
+	native SetBuffDuration						takes buff whichBuff, real duration returns boolean
+
+2. Fixed CScriptEvent 20 bytes leaking, due to repeated memory allocation.
+3. Fixed wrong native name (SetFrameFront) to SetFrameFont.
+4. Activated these frame natives:
+	1) TriggerRegisterFrameEvent
+	2) GetTriggerFrame
+	3) GetTriggerFrameEvent
+5. Fixed fatal error with all frame natives that used string as argument.
+6. All HotKey cases changed to Hotkey.
+7. All new natives Getting/Setting keys now use oskeytype.
+8. MorphUnitToTypeIdEx decyphered, now all arguments have proper names.
+9. Fixed new natives not working in Local/Battle.net for any player besides host.
+10. Fixed w3l and other custom loaders not working/launching through UjAPI.exe.
+	Note: custom loaders won't support Multi-window/Wa3Lua debug mode options, to use multi-window/lua debug, please use default war3.exe, etc.
+11. Added War3_Lua.dll module to Modules folder.
