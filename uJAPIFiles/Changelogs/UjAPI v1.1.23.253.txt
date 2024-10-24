@@ -1,0 +1,13 @@
+v1.1.23.253
+
+1. New Constants:
+	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_REMOVED								= ConvertPlayerUnitEvent(508)
+	constant unitevent					EVENT_UNIT_BUFF_REMOVED										= ConvertUnitEvent(518)
+2. New Natives:
+	native IsBuffType										takes buff whichBuff, abilitytype whichAbilityType returns boolean
+	//
+	native GetUnitStatbarHeight								takes unit whichUnit returns real
+	native SetUnitStatbarHeight								takes unit whichUnit, real height returns nothing
+3. Fixed Fatal error on some of the ABILITY/BUFF events.
+	Note: sometimes nullptr was received, hence causing the crash.
+4. Fixed random fatal errors particularly on Choice Battle and possibly some other maps.

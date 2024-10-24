@@ -1,0 +1,5 @@
+v1.1.9.184
+
+1. Fixed forever duplicating visuals of buffs provided via auras.
+	Note: this was happening only if you enabled duplicate draw of similar buffs.
+2. Fixed broken buff tips provided by auras.

@@ -1,0 +1,4 @@
+v1.1.1.160
+
+1. Fixed a bug with Adding/Removing abilities while unit is hidden.
+	Note: this is generally a bad thing to do, remember, when unit is hidden you should not do anything to it, unhide it first, then do your things!

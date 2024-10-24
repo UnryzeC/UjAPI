@@ -1,0 +1,6 @@
+v1.1.16.224
+
+1. Fixed fatal error from GetTriggerProjectileSource, whenever current triggering projectile was null.
+2. Fixed fatal error from EXExecuteScript on non-existent fields.
+3. Added Propernames handling to EXExecuteScript.
+4. Fixed PauseUnitEx not unpausing unit.

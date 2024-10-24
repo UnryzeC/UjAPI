@@ -1,0 +1,3 @@
+v1.1.0.154
+
+1. Removed redundant logging for ExecuteCode and natives similar to it.

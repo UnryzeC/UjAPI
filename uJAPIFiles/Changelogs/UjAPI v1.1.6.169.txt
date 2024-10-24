@@ -1,0 +1,15 @@
+v1.1.6.169
+
+1. New Constants:
+	constant unitintegerfield			UNIT_IF_PROPER_NAME_INDEX									= ConvertUnitIntegerField('uprd') // Gets/Sets currently active name from the list | Instance Unit Only.
+	constant unitintegerfield			UNIT_IF_PROPER_NAME_GENERATION								= ConvertUnitIntegerField('uprg') // This sets the Roman numeration of the unit, a number is contained. | Instance Unit Only.
+2. New Natives:
+	native IntToRoman takes integer i returns string
+3. Fixed BlzSetUnitAbilityCooldown not working as Instance API as it was supposed to.
+4. Fixed BlzGetUnitAbilityCooldown not working as Instance API as it was supposed to.
+5. Fixed BlzGetUnitAbilityManaCost not working as Instance API as it was supposed to.
+6. Fixed BlzSetUnitAbilityManaCost not working as Instance API as it was supposed to.
+7. Added LoadBoolean( null, 0, StringHash( "ujapi" ) ) method to check for UjAPI without using any of the natives.
+	Note: this will always returns false on Reforged, etc.
+8. Fixed all Widget/Destructable/Item/Unit Get/SetStringField natives from getting/setting bogus values.
+9. Fixed GetUnitAbilityLevel improper level handling (was returning index instead, and level is index + 1).

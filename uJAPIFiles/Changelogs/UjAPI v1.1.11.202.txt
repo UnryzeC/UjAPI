@@ -1,0 +1,17 @@
+v1.1.11.202
+
+1. Fixed WIDGET_DEATH events triggering multiple times if an already dead widget was hit.
+2. Fixed EVENT_PLAYER_MOUSE_MOVE not returning screen position.
+3. KEY/MOUSE down/up handler was moved to WndProc for a more consistent handling.
+	Note: this should fix some of the keys being ignored, as now it's not relying on how game handles keys.
+4. Added XButton1 support in KEY/MOUSE down/up event.
+5. Added XButton2 support in KEY/MOUSE down/up event.
+6. SHIFT/LSHIFT/RSHIFT handling fixed. LSHIFT/RSHIFT will fire a separate event after SHIFT.
+7. ALT/LALT/RALT handling fixed. LALT/RALT will fire a separate event after ALT.
+8. CTRL/LCTRL/RCTRL handling fixed. LCTRL/RCTRL will fire a separate event after CTRL.
+9. Fixed a desync issue introduced since 1.1.11.199.
+10. Fixed LaunchProjectileAt not saving target axis.
+11. Fixed LaunchProjectile not working through SetProjectileTargetPositionWithZ.
+12. GetFrameTexture now works with CSimpleFrame.
+13. Fixed SetFrameTexture caching CSimpleFrame texture paths, making it unable to change to original texture.
+14. Updated UnlockMapSize module to version 1.0.1.3.

@@ -1,0 +1,4 @@
+v1.1.13.209
+
+1. Fixed EVENT_PLAYER_WIDGET_GHOST_CLICK event being sent instead of EVENT_PLAYER_WIDGET_CLICK.
+2. Added widget under cursor push to GetTriggerWidget in EVENT_PLAYER_TERRAIN_CLICK.

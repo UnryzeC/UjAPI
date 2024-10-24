@@ -1,0 +1,28 @@
+v1.1.12.205
+
+1. New Natives:
+	native BenchmarkStart									takes nothing returns nothing
+	native BenchmarkEnd										takes nothing returns nothing
+	native BenchmarkReset									takes nothing returns nothing
+	native BenchmarkGetElapsed								takes integer benchType returns string // 0 for nanoseconds, 1 for microseconds, 2 for milliseconds
+	//
+	native GetFrameScreenX									takes framehandle whichFrame returns real
+	native GetFrameScreenY									takes framehandle whichFrame returns real
+	native GetFrameRelativePointParent						takes framehandle whichFrame, framepointtype point returns framehandle
+	native GetFrameRelativePointType						takes framehandle whichFrame, framepointtype point returns framepointtype
+	native GetFrameRelativePointX							takes framehandle whichFrame, framepointtype point returns real
+	native GetFrameRelativePointY							takes framehandle whichFrame, framepointtype point returns real
+	native GetFrameAbsolutePointX							takes framehandle whichFrame, framepointtype point returns real
+	native GetFrameAbsolutePointY							takes framehandle whichFrame, framepointtype point returns real
+	native GetFrameBackdrop									takes framehandle whichFrame, integer backdropId returns framehandle
+	native IsFrameBorderEnabled 							takes framehandle whichFrame, integer backdropId returns boolean
+	native SetFrameBorderEnabled 							takes framehandle whichFrame, integer backdropId, boolean isEnable returns nothing
+	native GetFrameSlider 									takes framehandle whichFrame returns framehandle
+	native AddFrameSlider 									takes framehandle whichFrame returns framehandle
+2. LISTBOX basic template removed, as everything is now configurable via API.
+	Note: it can be fully configured from code.
+3. CHECKBOX basic template removed, as everything is now configurable via API.
+	Note: it can be fully configured from code.
+4. SetFrameFont now works with CTextArea.
+5. SetFrameText now works with CTextArea.
+6. AddFrameText now works with CTextArea.

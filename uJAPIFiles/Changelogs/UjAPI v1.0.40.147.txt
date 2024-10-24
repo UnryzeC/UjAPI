@@ -1,0 +1,13 @@
+v1.0.40.147
+
+1. New Natives:
+	native GetWheelDelta									takes nothing returns integer
+	native GetVisionMax 									takes nothing returns real
+	native SetVisionMax 									takes real value returns nothing
+2. Fixed fatal error from GetAbilityStringField when used on abilities that have a singular tip/ubertip/etc. while having more than 1 level.
+	Note: this is related to slk optimisation.
+3. Added a reallocation method for Tip/Ubertip/Untip/Unubertip texts for multi-level abilities if no level data was provided.
+	Example: "Ubertip=text", this means all levels will share "text" as ubertip, however internally only 1 index will be allocated.
+4. Re-Re-fixed SetDestructableZ, this broke yet again due to a fix related to other widgets.
+5. Fixed CreateBuff/UnitAddBuff/UnitAddBuffEx/UnitAddBuffById/UnitAddBuffByIdEx not working with SLK-optimised maps.
+6. Hooked CreateImage, now it uses CreateImageSimple internally, so resizing the image will no longer break it.

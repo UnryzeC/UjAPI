@@ -1,0 +1,4 @@
+v1.1.13.210
+
+1. Fixed internal Id2S error.
+	Note: this caused Buff API to break with slk maps.

@@ -1,0 +1,38 @@
+v1.1.7.171
+
+1. New Types:
+	type orderhandle												extends agent
+2. New Natives
+	native GetLightningWidth 								takes lightning whichBolt returns real
+	native SetLightningWidth 								takes lightning whichBolt, real value returns nothing
+	//
+	native GetUnitOrderByIndex								takes unit whichUnit, integer index returns orderhandle
+	native GetUnitOrderByOrderId							takes unit whichUnit, integer orderId, integer index returns orderhandle // since units can queue same orders, this allows to differentiate between them.
+	native UnitRemoveOrderByIndex							takes unit whichUnit, integer index returns boolean
+	native UnitRemoveOrderByOrderId							takes unit whichUnit, integer orderId, boolean eraseAllSimilar returns boolean
+	native UnitReverseOrders 								takes unit whichUnit returns nothing
+	//
+	native GetTriggerOrder									takes nothing returns orderhandle
+	native OrderGetNext										takes orderhandle whichOrder returns orderhandle
+	native OrderGetId										takes orderhandle whichOrder returns integer // returns actual order id, "move" as 851986.
+	native OrderGetTargetX									takes orderhandle whichOrder returns real
+	native OrderGetTargetY									takes orderhandle whichOrder returns real
+	native OrderGetTargetLoc								takes orderhandle whichOrder returns location
+	// Patrol orders only?
+	native OrderGetSourceX									takes orderhandle whichOrder returns real
+	native OrderGetSourceY									takes orderhandle whichOrder returns real
+	native OrderGetSourceLoc								takes orderhandle whichOrder returns location
+	//
+	native OrderGetTarget									takes orderhandle whichOrder returns widget
+	native OrderGetTargetDestructable						takes orderhandle whichOrder returns destructable
+	native OrderGetTargetItem								takes orderhandle whichOrder returns item
+	native OrderGetTargetUnit								takes orderhandle whichOrder returns unit
+	//
+	native HandleListGetOrderCount							takes handlelist whichHandleList returns integer
+	native HandleListGetOrderByIndex						takes handlelist whichHandleList, integer index returns orderhandle
+	native HandleListGetFilterOrder							takes nothing returns orderhandle
+	native HandleListGetEnumOrder							takes nothing returns orderhandle
+	native HandleListEnumUnitOrders							takes handlelist whichHandleList, unit whichUnit, boolexpr filter returns nothing
+	//
+3. Fixed SetBuffInteger/Real/Boolean field API incorrectly processing some of the buffs.
+4. Fixed all Queue API natives not queueing orders.

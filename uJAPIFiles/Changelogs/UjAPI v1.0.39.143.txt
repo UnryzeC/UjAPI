@@ -1,0 +1,4 @@
+v1.0.39.143
+
+1. ParseTags now properly works with ability data.
+2. Fixed fatal error from HandleListGetCount of any type.

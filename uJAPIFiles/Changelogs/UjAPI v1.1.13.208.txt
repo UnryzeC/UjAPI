@@ -1,0 +1,31 @@
+v1.1.13.208
+
+1. New Constants:
+	constant integer					CHAT_RECIPIENT_UNKNOWN										= 4
+2. New Natives:
+	native DisplayChatMessageEx								takes player whichPlayer, integer recipient, real duration, boolean addToLog, string message returns nothing
+	//
+	native UnitGetTrainingProgress 							takes unit whichUnit returns real
+	native UnitSetTrainingProgress 							takes unit whichUnit, integer trainingPercentage returns nothing
+	native UnitGetTrainingRemainingTime						takes unit whichUnit returns real
+	native UnitSetTrainingRemainingTime						takes unit whichUnit, real time returns nothing
+	native UnitGetTrainingTypeIdAt 							takes unit whichUnit, integer index returns integer
+	native UnitCancelTrainingAt 							takes unit whichUnit, integer index returns nothing
+	native UnitSetTrainingTypeIdAt 							takes unit whichUnit, integer index, integer typeId returns nothing
+	//
+	native UnitGetResearchProgress 							takes unit whichUnit returns real
+	native UnitSetResearchProgress 							takes unit whichUnit, integer trainingPercentage returns nothing
+	native UnitGetResearchRemainingTime						takes unit whichUnit returns real
+	native UnitSetResearchRemainingTime						takes unit whichUnit, real time returns nothing
+	native UnitGetResearchTypeIdAt 							takes unit whichUnit, integer index returns integer
+	native UnitCancelResearchAt 							takes unit whichUnit, integer index returns nothing
+	native UnitSetResearchTypeIdAt 							takes unit whichUnit, integer index, integer typeId returns nothing
+3. Fixed UnitDamageTarget incorrect damagetype processing.
+4. Fixed AntiHack for 1.26a two offsets had wrong values.
+5. Added Desync System Message whenever a player desyncs.
+6. Re-Fixed Item Frames not redrawing properly after HideOriginFrames was used.
+7. Fixed GetDestructableName always returning "Default String" instead of actual values.
+8. Fixed GetItemName always returning "Default String" instead of actual values.
+9. Fixed GetUnitName always returning "Default String" instead of actual values.
+10. Fixed GetHeroProperName always returning "Default String" instead of actual values.
+11. AngelScript settings added to CLI.

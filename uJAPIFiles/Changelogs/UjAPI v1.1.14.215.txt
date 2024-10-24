@@ -1,0 +1,4 @@
+v1.1.15.218
+
+1. Fixed SetTextTagText not working with default texts other than TRIGSTR_ due to previous fix.
+2. Fixed Get/SetBlendMode on CSimpleFontString.

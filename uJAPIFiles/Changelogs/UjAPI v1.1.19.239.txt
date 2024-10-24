@@ -1,0 +1,46 @@
+v1.1.19.239
+
+1. Fixed Fatal Error from CONTROL_STYLE_DRAW flag on frames like POUPFRAME if a non-existent texture is set.
+	Note: as usual internally in game.dll there was no nullptr check and it was trying to read memory from nullptr.
+2. UjAPI World Editor module is now separated from Warcraft III module.
+3. Fixed SetFrameEnabled for SimpleFrames working in inversed manner.
+4. Added CProjectileEventData structure for Projectile Event handling, this fixes an issue, when DestroyTrigger is involved with it, it breaks every other trigger.
+5. Added CPlayerProjectileEventData structure for Player Projectile Event handling, this fixes an issue, when DestroyTrigger is involved with it, it breaks every other trigger.
+6. Added Mode variable to CNetCustomCommandMouseData send/receive event.
+7. Fixed Fatal Error from ResumeTimer on non-initialised/non-started timers.
+8. Added nullptr check for internal RangeListener::SetValue function in engine.
+9. Added CChatEditBox to handled frames.
+10. Fixed inversed flag in UnitDisableAbilities.
+
+common.j
+
+1. Changed all cases of "player id", "player p", "player num" and "player forWhichPlayer" argument to "player whichPlayer".
+2. Changed all cases of "real face" argument to "real facing".
+3. Changed all cases of "item i" argument to "item whichItem".
+4. Changed all cases of "rect r" argument to "rect whichRect".
+5. Changed all cases of "unit hUnit" argument to "unit whichUnit".
+6. Changed all cases of "effecttype t" argument to "effecttype whichEffectType".
+7. Changed all cases of "soundtype t" argument to "soundtype whichSoundType".
+8. Changed all cases of "rect where" argument to "rect whichRect".
+9. Changed all cases of "leaderboard lb" argument to "leadeboard whichLeaderboard".
+10. Changed all cases of "multiboard lb" argument to "multiboard whichMultiboard".
+11. Changed all cases of "multiboarditem mbi" argument to "multiboarditem whichMultiboardItem".
+12. Changed all cases of "camerasetup whichSetup" argument to "camerasetup whichCameraSetup".
+13. Changed all cases of "integer bit1" argument to "integer a".
+14. Changed all cases of "integer bit2" argument to "integer b".
+15. Changed all cases of "hashtable table" argument to "hashtable whichHashtable".
+16. Changed all cases of "trackable t" argument to "trackable whichTrackable".
+17. Changed all cases of "destructable d" argument to "destructable whichDestructable".
+18. Changed all cases of "gamecache cache" argument to "gamecache whichGamecache".
+19. Changed all cases of "texttag t" argument to "texttag whichTextTag".
+20. Changed all cases of "timer t" argument to "timer whichTimer".
+21. Changed all cases of "pathingtype t" argument to "pathingtype whichPathingType".
+22. Changed all cases of "oskeytype key" argument to "oskeytype whichKey".
+23. Changed all cases of "mousebuttontype whichButton" and "mousebuttontype mouseKey" argument to "mousebuttontype whichMouseButton".
+24. Changed all cases of "handle h" argument to "handle whichHandle".
+25. Changed all cases of "minimapicon pingId" argument to "minimapicon whichMinimapIcon".
+
+UjAPILauncher
+
+1. Added Window mode in Warcraft 3 section.
+2. Added Borderless mode in Warcraft 3 section.

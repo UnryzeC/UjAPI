@@ -1,0 +1,24 @@
+v1.1.16.227
+
+1. Custom Ability data and orders now use uint64_t as key instead of pointer, where uint64_t key is HashGroup.
+2. Custom Buff data moved to Custom Ability data.
+3. Custom Widget Info/Axis now use uint64_t as key instead of pointer, where uint64_t key is HashGroup.
+4. Custom Item Ability List now uses uint64_t as key instead of pointer, where uint64_t key is HashGroup.
+5. Custom Projectile data now uses uint64_t as key instead of pointer, where uint64_t key is HashGroup.
+6. A lot of optimisation of internal code.
+7. Fully rewritten pipe communication between UjAPI and Warcraft 3/World Editor.
+8. Vastly increased the processing rate of pipe communication.
+9. Nearly fully fixed issue, when some part of message sent in the pipe communication method was lost.
+10. Added UjAPI folder to Warcraft III folder on startup.
+11. Jass Errors will now be printed in UjAPI\\Jass\\ folder.
+12. UjAPI\\MPQs folder will be auto-created on launch, this will load any and all MPQs with priority based on (priority) in the file, if this file doesn't exist, 0 priority will be assigned.
+13. UjAPI\\Patches folder will be auto-created on launch, this will load any and all .mix/.asi/.flt with priority based on (priority) in the file, if this file doesn't exist, 0 priority will be assigned.
+14. Moved MapFiles folder to UjAPI\\MapFiles, this will be auto-created on launch.
+15. Removed forced launch with admin rights, this causes game to launch faster and restores Drag and Drop for World Editor.
+	WARNING: If this breaks compatibility with OTHER applications, please launch the app as admin from the start.
+16. Rewritten internal handler of SetDoodadAnimationWithRarityByIndex.
+17. Rewritten internal handler of SetDoodadAnimationWithRarity.
+18. Rewritten internal handler of SetDoodadAnimationByIndex.
+19. Rewritten internal handler of SetDoodadAnimationEx.
+20. Rewritten internal handler of QueueDoodadAnimationByIndex.
+21. Rewritten internal handler of QueueDoodadAnimation.

@@ -1,0 +1,5 @@
+v1.1.7.172
+
+1. Re-Fixed SetBuffInteger/Real/Boolean field API incorrectly processing some of the buffs.
+2. Fixed incorrect behaviour of CBuffSilence via Buff API.
+3. Fixed incorrect behaviour of CBuffCripple via Buff API.

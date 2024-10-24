@@ -1,0 +1,87 @@
+v1.1.14.214
+
+1. Type Changes:
+	type effect												extends war3image
+	type trackable											extends war3image
+2. New Constants:
+	constant abilityintegerfield		ABILITY_IF_BUTTON_POSITION_SPELLBOOK_X						= ConvertAbilityIntegerField('asbx') // Ability Instance only
+	constant abilityintegerfield		ABILITY_IF_BUTTON_POSITION_SPELLBOOK_Y						= ConvertAbilityIntegerField('asby') // Ability Instance only
+3. New Natives:
+	native GetMouseMoveEventScreenAxisEnabled				takes nothing returns boolean
+	native SetMouseMoveEventScreenAxisEnabled				takes boolean enable returns nothing // Enables GetTriggerPlayerMouseScreenX/Y, default: on.
+	native GetMouseMoveEventWorldAxisEnabled				takes nothing returns boolean
+	native SetMouseMoveEventWorldAxisEnabled				takes boolean enable returns nothing // Enables GetTriggerPlayerMouseWorldX/Y/Z, default: off.
+	native GetMouseMoveEventDelay							takes nothing returns integer
+	native SetMouseMoveEventDelay							takes integer delay returns nothing // delay is in ticks (ms), default: 10
+	//
+	native IsHandleDestroyed								takes handle whichHandle returns boolean // this returns internal state of the object, whenever it's nullptr or CAgentBaseAbs was removed.
+	//
+	native GetWar3ImageSprite								takes war3image whichWar3Image returns sprite
+	native IsWar3ImageVisible								takes war3image whichWar3Image returns boolean
+	native SetWar3ImageVisible								takes war3image whichWar3Image, boolean visible returns nothing
+	native IsWar3ImageInvulnerable							takes war3image whichWar3Image returns boolean
+	native SetWar3ImageInvulnerable							takes war3image whichWar3Image, boolean invulnerable returns nothing
+	native GetWar3ImageX									takes war3image whichWar3Image returns real
+	native GetWar3ImageY									takes war3image whichWar3Image returns real
+	native GetWar3ImageZ									takes war3image whichWar3Image returns real
+	native GetWar3ImagePositionLoc							takes war3image whichWar3Image returns location
+	native SetWar3ImagePositionLoc							takes war3image whichWar3Image, location whichLocation returns nothing
+	native SetWar3ImagePosition								takes war3image whichWar3Image, real x, real y returns nothing
+	native SetWar3ImagePositionWithZ						takes war3image whichWar3Image, real x, real y, real z returns nothing
+	native SetWar3ImageX									takes war3image whichWar3Image, real x returns nothing
+	native SetWar3ImageY									takes war3image whichWar3Image, real y returns nothing
+	native SetWar3ImageZ									takes war3image whichWar3Image, real z returns nothing
+	native ResetWar3ImageZ									takes war3image whichWar3Image returns nothing // returns Z control to game.
+	native GetWar3ImageHeight								takes war3image whichWar3Image returns real
+	native SetWar3ImageHeight								takes war3image whichWar3Image, real height returns nothing
+	native GetWar3ImageScreenX								takes war3image whichWar3Image returns real
+	native GetWar3ImageScreenY								takes war3image whichWar3Image returns real
+	native GetWar3ImageVertexColour							takes war3image whichWar3Image returns integer
+	native SetWar3ImageVertexColour							takes war3image whichWar3Image, integer red, integer green, integer blue, integer alpha returns nothing
+	native GetWar3ImageTimeScale							takes war3image whichWar3Image returns real
+	native SetWar3ImageTimeScale							takes war3image whichWar3Image, real timeScale returns nothing
+	native GetWar3ImageScale								takes war3image whichWar3Image returns real
+	native SetWar3ImageScale								takes war3image whichWar3Image, real scale returns nothing
+	native GetWar3ImageFacing								takes war3image whichWar3Image returns real
+	native SetWar3ImageFacing								takes war3image whichWar3Image, real facing, boolean isInstant returns nothing
+	native SetWar3ImageMatrixScale							takes war3image whichWar3Image, real x, real y, real z returns nothing
+	native ResetWar3ImageMatrix								takes war3image whichWar3Image returns nothing
+	native SetWar3ImageOrientationEx						takes war3image whichWar3Image, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+	native SetWar3ImageOrientation							takes war3image whichWar3Image, real yaw, real pitch, real roll returns nothing
+	native GetWar3ImageYaw									takes war3image whichWar3Image returns real
+	native SetWar3ImageYaw									takes war3image whichWar3Image, real yaw returns nothing
+	native GetWar3ImagePitch								takes war3image whichWar3Image returns real
+	native SetWar3ImagePitch								takes war3image whichWar3Image, real pitch returns nothing
+	native GetWar3ImageRoll									takes war3image whichWar3Image returns real
+	native SetWar3ImageRoll									takes war3image whichWar3Image, real roll returns nothing
+	native GetWar3ImageModelObjectX							takes war3image whichWar3Image, string whichObject returns real
+	native GetWar3ImageModelObjectY							takes war3image whichWar3Image, string whichObject returns real
+	native GetWar3ImageModelObjectZ							takes war3image whichWar3Image, string whichObject returns real
+	native GetWar3ImageModelObjectPositionLoc				takes war3image whichWar3Image, string whichObject returns location
+	native GetWar3ImageCurrentAnimationId					takes war3image whichWar3Image returns integer
+	native GetWar3ImageCurrentAnimationName					takes war3image whichWar3Image returns string
+	native SetWar3ImageAnimationWithRarityByIndex			takes war3image whichWar3Image, integer animIndex, raritycontrol rarity returns nothing
+	native SetWar3ImageAnimationWithRarity					takes war3image whichWar3Image, string animationName, raritycontrol rarity returns nothing
+	native SetWar3ImageAnimationByIndex						takes war3image whichWar3Image, integer animIndex returns nothing
+	native SetWar3ImageAnimation							takes war3image whichWar3Image, string animationName returns nothing
+	native QueueWar3ImageAnimationByIndex					takes war3image whichWar3Image, integer animIndex returns nothing
+	native QueueWar3ImageAnimation							takes war3image whichWar3Image, string animationName returns nothing
+	native GetWar3ImageAnimationOffsetPercent				takes war3image whichWar3Image returns real
+	native SetWar3ImageAnimationOffsetPercent				takes war3image whichWar3Image, real percent returns nothing
+	//
+	native SetAbilityOwningAbility							takes ability whichAbility, ability whichSpellbook returns nothing
+	native SetAbilityOwningItem								takes ability whichAbility, item whichItem returns nothing
+	//
+	native GetFrameBlendMode								takes framehandle whichFrame, integer textureId returns blendmode // 0 for CSimpleRegions.
+	native SetFrameBlendMode								takes framehandle whichFrame, integer textureId, blendmode whichBlendMode returns nothing
+	native GetFrameHighlight								takes framehandle whichFrame, integer highlightId returns framehandle // Gets highlights of CControl
+	native GetFrameHighlightTexture							takes framehandle whichFrame, integer highlightId returns string // If highlighframe type is sent, it will modify itself instead, if ccontrol or its children, then it will check possible highlights.
+	native SetFrameHighlightTexture							takes framehandle whichFrame, integer highlightId, string texturePath, blendmode blendMode returns nothing // 0 - FOCUS | 1 - ON HOVER
+4. Fixed GetUnitStringField always returning "Default String" with UNIT_SF_HERO_ABILITY_LIST.
+5. Fixed UNIT_SF_ABILITY_LIST always returning "Default String" with UNIT_SF_HERO_ABILITY_LIST.
+6. GetTriggerPlayerMouseWorldX/Y/Z disabled by default to save 12 bytes in netCode. Use SetMouseMoveEventWorldAxisEnabled to enable it.
+7. Fixed OnCommandBarProcessKey not working properly with Spellbook.
+8. Fixed TRIGSTR_ not being properly processed in SetTextTagText.
+9. Added hook on CGameState::ToHandle.
+10. Fixed crash for maps that had 1.29+ w3i, this crash is related to maximum Player Id.
+11. SetFramePriority no longer works on CSimpleRegions, as they do not have priority, this option was in fact changing blendmode.

@@ -1,0 +1,30 @@
+v1.1.5.168
+
+1. New Natives:
+	native GetJassLocalInteger								takes string variableName returns integer
+	native GetJassLocalReal									takes string variableName returns real
+	native GetJassLocalString								takes string variableName returns string
+	native GetJassLocalHandle								takes string variableName returns handle
+	native GetJassLocalBoolean								takes string variableName returns boolean
+	//
+	native SetJassLocalInteger								takes string variableName, integer value returns boolean
+	native SetJassLocalReal									takes string variableName, real value returns boolean
+	native SetJassLocalString								takes string variableName, string value returns boolean
+	native SetJassLocalHandle								takes string variableName, handle value returns boolean
+	native SetJassLocalBoolean								takes string variableName, boolean value returns boolean
+	//
+	native GetOperationLimit								takes nothing returns integer
+	native SetOperationLimit								takes integer opLimit returns nothing
+	//
+	native GetAbilityOwningAbility							takes ability whichAbility returns ability
+2. Added support for CBuffLightningShield (Blsh) to CreateBuff/UnitAddBuff/ById.
+3. Added support for CBuffPermImmolation (BNpi) to CreateBuff/UnitAddBuff/ById.
+4. Added support for CBuffItemCloakOfFlames (BIcf) to CreateBuff/UnitAddBuff/ById.
+5. Added support for CBuffPandaImmolation (Bpig) to CreateBuff/UnitAddBuff/ById.
+6. Added support for CBuffAntiMagicShell (Bams) to CreateBuff/UnitAddBuff/ById.
+7. Added support for CBuffAntiMagicShellTwo (Bam2) to CreateBuff/UnitAddBuff/ById.
+8. Added support for CBuffFrostArmor (BUfa) to CreateBuff/UnitAddBuff/ById.
+9. Fixed fatal error from SetImageTexture.
+10. Restored offset parsing for AntiHack, it was disabled for test purposes and I forgot to re-enable it.
+11. Fully rewritten CNetData::EVENT_TURNS::Process, this should fix the random bug that causes specific player to lose control of unit.
+12. Disabled OnWidgetDamage useless internal data print.

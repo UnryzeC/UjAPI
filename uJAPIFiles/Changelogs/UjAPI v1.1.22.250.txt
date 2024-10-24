@@ -1,0 +1,80 @@
+v1.1.22.250
+
+1. New Constants:
+	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_LEVEL_CHANGED						= ConvertPlayerUnitEvent(507)
+	constant unitevent					EVENT_UNIT_ABILITY_LEVEL_CHANGED							= ConvertUnitEvent(517)
+2. New Natives:
+	native IsWindowMode										takes nothing returns boolean
+	//
+	native GetMouseScreenRelativeX							takes nothing returns real
+	native GetMouseScreenRelativeY							takes nothing returns real
+	//
+	native SetMouseScreenAbsoluteX							takes real x returns nothing
+	native SetMouseScreenAbsoluteY							takes real y returns nothing
+	native SetMouseScreenAbsolutePosition					takes real x, real y returns nothing
+	//
+	native GetTriggerAbilityPreviousLevel					takes nothing returns integer
+	//
+	native GetWar3ImageMatrixScaleX							takes war3image whichWar3Image returns real
+	native GetWar3ImageMatrixScaleY							takes war3image whichWar3Image returns real
+	native GetWar3ImageMatrixScaleZ							takes war3image whichWar3Image returns real
+	//
+	native GetSpriteMatrixScaleX							takes sprite whichSprite returns real
+	native GetSpriteMatrixScaleY							takes sprite whichSprite returns real
+	native GetSpriteMatrixScaleZ							takes sprite whichSprite returns real
+	//
+	native GetDoodadMatrixScaleX							takes doodad whichDoodad returns real
+	native GetDoodadMatrixScaleY							takes doodad whichDoodad returns real
+	native GetDoodadMatrixScaleZ							takes doodad whichDoodad returns real
+	//
+	native GetSpecialEffectMatrixScaleX						takes effect whichEffect returns real
+	native GetSpecialEffectMatrixScaleY						takes effect whichEffect returns real
+	native GetSpecialEffectMatrixScaleZ						takes effect whichEffect returns real
+	//
+	native GetTrackableMatrixScaleX							takes trackable whichTrackable returns real
+	native GetTrackableMatrixScaleY							takes trackable whichTrackable returns real
+	native GetTrackableMatrixScaleZ							takes trackable whichTrackable returns real
+	//
+	native GetWidgetMatrixScaleX							takes widget whichWidget returns real
+	native GetWidgetMatrixScaleY							takes widget whichWidget returns real
+	native GetWidgetMatrixScaleZ							takes widget whichWidget returns real
+	//
+	native GetDestructableMatrixScaleX						takes destructable whichDestructable returns real
+	native GetDestructableMatrixScaleY						takes destructable whichDestructable returns real
+	native GetDestructableMatrixScaleZ						takes destructable whichDestructable returns real
+	//
+	native GetItemMatrixScaleX								takes item whichItem returns real
+	native GetItemMatrixScaleY								takes item whichItem returns real
+	native GetItemMatrixScaleZ								takes item whichItem returns real
+	//
+	native GetUnitScale										takes unit whichUnit returns real
+	native GetUnitMatrixScaleX								takes unit whichUnit returns real
+	native GetUnitMatrixScaleY								takes unit whichUnit returns real
+	native GetUnitMatrixScaleZ								takes unit whichUnit returns real
+	//
+	native GetProjectileMatrixScaleX						takes unit whichUnit returns real
+	native GetProjectileMatrixScaleY						takes unit whichUnit returns real
+	native GetProjectileMatrixScaleZ						takes unit whichUnit returns real
+	//
+	native GetFrameSpriteMatrixScaleX						takes framehandle whichFrame returns real
+	native GetFrameSpriteMatrixScaleY						takes framehandle whichFrame returns real
+	native GetFrameSpriteMatrixScaleZ						takes framehandle whichFrame returns real
+3. Native Changes:
+	GetMouseScreenX -> GetMouseScreenAbsoluteX
+	GetMouseScreenY -> GetMouseScreenAbsoluteY
+	//
+	SetMouseScreenX -> SetMouseScreenRelativeX
+	SetMouseScreenY -> SetMouseScreenRelativeY
+	SetMouseScreenPosition -> SetMouseScreenRelativePosition
+	//
+	SetTrackableEffectMatrixScale -> SetTrackableMatrixScale
+	//
+	HandleListEnumEffectsInRange -> HandleListEnumSpecialEffectsInRange
+	HandleListEnumEffectsInRangeOfLoc -> HandleListEnumSpecialEffectsInRangeOfLoc
+	HandleListEnumEffectsInRect -> HandleListEnumSpecialEffectsInRect
+4. Removed debug texts from textfilehandle natives.
+5. Fixed TextFileOpen error that caused directory name not being read correctly.
+6. Fixed TextFileClear not clearing files.
+7. Internal optimisation for UnitDB and PlayerDB dispatchers, now they use generalised code.
+8. Fixed ResetTYPEMatrix that was only resetting by X field.
+9. Fixed SetTYPETexture not doing anything.

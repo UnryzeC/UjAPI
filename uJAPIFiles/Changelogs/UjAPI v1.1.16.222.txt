@@ -1,0 +1,80 @@
+v1.1.16.222
+
+1. Type Changes:
+	triggeraction now extends agent instead of handle.
+	framehandle now extends agent instead of handle.
+	handlelist now extends agent instead of handle.
+	textfilehandle now extends agent instead of handle.
+2. New Types:
+	type tradestate											extends handle
+3. New Converters:
+	constant native ConvertTradeState						takes integer i returns tradestate
+4. New Constants:
+	constant gameevent					EVENT_GAME_HACK_DETECTED									= ConvertGameEvent(850)
+	//
+	constant playerevent				EVENT_PLAYER_TRADE_RESOURCE									= ConvertPlayerEvent(350)
+	//
+	constant playerunitevent			EVENT_PLAYER_UNIT_REINCARNATION_START						= ConvertPlayerUnitEvent(325)
+	constant playerunitevent			EVENT_PLAYER_UNIT_REINCARNATION_END							= ConvertPlayerUnitEvent(327)
+	constant playerunitevent			EVENT_PLAYER_UNIT_REVIVED									= ConvertPlayerUnitEvent(329)
+	//
+	constant unitevent					EVENT_UNIT_REINCARNATION_START								= ConvertUnitEvent(326)
+	constant unitevent					EVENT_UNIT_REINCARNATION_END								= ConvertUnitEvent(328)
+	constant unitevent					EVENT_UNIT_REVIVED											= ConvertUnitEvent(330)
+	//
+	constant unitintegerfield			UNIT_IF_SEPARATION_GROUP_NUMBER								= ConvertUnitIntegerField('urpg')
+	constant unitintegerfield			UNIT_IF_SEPARATION_PARAMETER								= ConvertUnitIntegerField('urpp')
+	constant unitintegerfield			UNIT_IF_SEPARATION_PRIORITY									= ConvertUnitIntegerField('urpr')
+	//
+	constant unitrealfield				UNIT_RF_SPEED_BASE											= ConvertUnitRealField('umvs')
+	constant unitrealfield				UNIT_RF_SPEED_MINIMUM										= ConvertUnitRealField('umis')
+	constant unitrealfield				UNIT_RF_SPEED_MAXIMUM										= ConvertUnitRealField('umas')
+	//
+	constant unitbooleanfield			UNIT_BF_SEPARATION_ENABLED									= ConvertUnitBooleanField('urpo')
+	//
+	constant tradestate					TRADE_STATE_CANCELLED										= ConvertTradeState(1)
+	constant tradestate					TRADE_STATE_IGNORE_TRADING_LOCK								= ConvertTradeState(2)
+	constant tradestate					TRADE_STATE_IGNORE_TRADING_ALLIES_ONLY						= ConvertTradeState(4)
+	constant tradestate					TRADE_STATE_IGNORE_SOURCE_UPKEEP							= ConvertTradeState(8)
+	constant tradestate					TRADE_STATE_IGNORE_SOURCE_TAX								= ConvertTradeState(16)
+	constant tradestate					TRADE_STATE_IGNORE_SOURCE_LOSS								= ConvertTradeState(32)
+	constant tradestate					TRADE_STATE_IGNORE_TARGET_UPKEEP							= ConvertTradeState(64)
+	constant tradestate					TRADE_STATE_IGNORE_TARGET_TAX								= ConvertTradeState(128)
+	constant tradestate					TRADE_STATE_IGNORE_TARGET_LOSS								= ConvertTradeState(256)
+	constant tradestate					TRADE_STATE_IGNORE_NOTIFICATION								= ConvertTradeState(512)
+3. New Natives:
+	native DestroyQuestItem									takes questitem whichQuestItem returns nothing
+	//
+	native GetTradeSource									takes nothing returns player
+	native SetTradeSource									takes player whichPlayer returns nothing
+	native GetTradeTarget									takes nothing returns player
+	native SetTradeTarget									takes player whichPlayer returns nothing
+	native GetTradeGold										takes nothing returns integer
+	native SetTradeGold										takes integer amount returns nothing
+	native GetTradeLumber									takes nothing returns integer
+	native SetTradeLumber									takes integer amount returns nothing
+	native IsTradeState										takes tradestate whichTradeState returns boolean
+	native SetTradeState									takes tradestate whichTradeState, boolean isSet returns nothing
+	native TradePlayerResources								takes player fromPlayer, player toPlayer, integer gold, integer lumber returns nothing
+	//
+	native IsUnitFlyHeightEnabled 							takes unit whichUnit returns boolean
+	native SetUnitFlyHeightEnabled 							takes unit whichUnit, boolean enable returns nothing
+	//
+	native AntiHackEnableKick								takes boolean enable returns nothing // default: on, this is reset, whenever AntiHack is enabled.
+	native GetTriggerHackId									takes nothing returns integer // returns 65535 for Processes/Module detections.
+	native GetTriggerHackType								takes nothing returns integer // 1 - Normal | 2 - vtable | 3 - worldframe | 4 - process | 5 - window
+	native GetTriggerHackLine								takes nothing returns integer // returns line number from the AntiHack.cpp.
+4. Experimentally increased maximum received packet length from 1024 bytes to 102400 bytes.
+	Note: this does NOT affect the amount of packets that are sent, the limit for sending is still 1024.
+5. Fixed custom JassVM handler, which would only activate if Jass Dev Mode or/and Log Actions were selected.
+6. SetUnitCurrentSight no longer creates a dummy AIsi ability internally, now it's fully managed directly.
+7. Additional internal code cleanup, this mostly is related to CUnit.cpp.
+8. Rewritten all Event Dispatch methods, reduced code duplication along with overall improved code style.
+9. Fixed GetUnitMinimapY returning x axis instead.
+10. Fixed all getters for screen axis on 1.28f, internal structures were moved by 0x10 bytes.
+
+// Launcher Changes
+1. Rewritten Updater code, it previously would fail to extract file, since it would only try to update them instead.
+2. Fixed application not starting if UjAPIFiles\\settings.ini didn't exist, previous code was failing to force create it.
+3. Fixed Launcher not fully closing after update was finished.
+4. Fixed settings option not opening from secondary screen.

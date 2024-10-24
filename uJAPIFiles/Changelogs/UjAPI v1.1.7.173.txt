@@ -1,0 +1,5 @@
+v1.1.7.173
+
+1. Fixed inversed behaviour of EnableUnitAbility and DisableUnitAbility.
+2. Yet another major change to Buff API Fields, some Buffs had only latest field being affected at any time.
+	Note: this involved far more code than expected, but it should be final change, as it proved to be quite stable.

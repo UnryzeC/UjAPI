@@ -1,0 +1,104 @@
+v1.1.4.167
+
+1. New Types:
+	type war3image											extends agent
+	type styleflag											extends handle
+	type layerstyleflag										extends flagtype
+	type controlstyleflag									extends flagtype
+2. New Convertors:
+	constant native ConvertLayerStyleFlag					takes integer i returns layerstyleflag
+	constant native ConvertControlStyleFlag					takes integer i returns controlstyleflag
+3. New Constants:
+	constant originframetype			ORIGIN_FRAME_SIMPLE_TOP										= ConvertOriginFrameType(56) // This frame contains all CSimpleRegions/CSimpleFrames.
+	//
+	constant layerstyleflag				LAYER_STYLE_SVIEWPOINT										= ConvertLayerStyleFlag(1)
+	constant layerstyleflag				LAYER_STYLE_IGNORE_TRACK_EVENTS								= ConvertLayerStyleFlag(2)
+	constant layerstyleflag				LAYER_STYLE_SHADING											= ConvertLayerStyleFlag(4)
+	constant layerstyleflag				LAYER_STYLE_NO_DEPTH_SET									= ConvertLayerStyleFlag(16)
+	constant layerstyleflag				LAYER_STYLE_NO_DEPTH_TEST									= ConvertLayerStyleFlag(32)
+	//
+	constant controlstyleflag 			CONTROL_STYLE_AUTOTRACK										= ConvertControlStyleFlag(1)
+	constant controlstyleflag 			CONTROL_STYLE_CLICK_MOUSE_DOWN								= ConvertControlStyleFlag(2)
+	constant controlstyleflag 			CONTROL_STYLE_RELEASE_NOTIFY								= ConvertControlStyleFlag(4)
+	constant controlstyleflag 			CONTROL_STYLE_DRAG											= ConvertControlStyleFlag(8)
+	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT_FOCUS								= ConvertControlStyleFlag(32)
+	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT_HOVER								= ConvertControlStyleFlag(64)
+	constant controlstyleflag 			CONTROL_STYLE_SLIDER_STEP									= ConvertControlStyleFlag(128)
+	constant controlstyleflag 			CONTROL_STYLE_EXCLUSIVE										= ConvertControlStyleFlag(512)
+	constant controlstyleflag 			CONTROL_STYLE_AT_LEAST_ONE									= ConvertControlStyleFlag(1024)
+4. Removed Natives:
+	native IsFrameDraggable									takes framehandle whichFrame returns boolean
+	native SetFrameDraggable								takes framehandle whichFrame, boolean enabled returns nothing
+	native GetFrameTrackState								takes framehandle whichFrame returns integer
+	native SetFrameTrackState								takes framehandle whichFrame, integer trackState returns nothing // 0 - NONE | 1 - Track | 2 - Ignore Track
+5. New Natives:
+	native GetWar3ImagePlayerColour							takes war3image whichWar3Image returns playercolor // This gets glow/team colour.
+	native SetWar3ImagePlayerColour							takes war3image whichWar3Image, playercolor color returns nothing // This sets Glow and Team Colour. Mimics the SetUnitColor.
+	native SetWar3ImageMaterialTexture						takes war3image whichWar3Image, string textureName, integer materialId, integer textureIndex returns nothing
+	native SetWar3ImageTexture								takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing
+	native SetWar3ImageReplaceableTexture					takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing // 1 - TeamColour | 2 - TeamGlow | 11 - Cliff0/1 |  21 - "grabbed texture" for CCursorFrame | 31-37 trees.
+	native GetWar3ImageModel								takes war3image whichWar3Image returns string
+	native SetWar3ImageModel								takes war3image whichWar3Image, string modelName returns nothing
+	native SetWar3ImageModelEx								takes war3image whichWar3Image, string modelName, integer playerColour returns nothing // 0-15, -1 to ignore the colour.
+	native GetWidgetUnderCursor								takes nothing returns widget // Async
+	native GetWidgetPlayerColour							takes widget whichWidget returns playercolor
+	native SetWidgetPlayerColour							takes widget whichWidget, playercolor color returns nothing
+	native GetDestructableUnderCursor						takes nothing returns destructable // Async
+	native GetDestructablePlayerColour						takes destructable whichDestructable returns playercolor
+	native SetDestructablePlayerColour						takes destructable whichDestructable, playercolor color returns nothing
+	native GetItemUnderCursor								takes nothing returns item // Async
+	native GetItemPlayerColour								takes item whichItem returns playercolor
+	native SetItemPlayerColour								takes item whichItem, playercolor color returns nothing
+	native IsItemDroppable									takes item whichItem returns boolean
+	native GetUnitPlayerColour								takes unit whichUnit returns playercolor
+	native SetUnitPlayerColour								takes unit whichUnit, playercolor color returns nothing
+	native IsUnitGhosted									takes unit whichUnit returns boolean
+	native SetUnitGhosted									takes unit whichUnit, boolean state, real transitionTime returns nothing // Attacking from this state does not cause the unit to exit Ghost state.
+	native GetProjectilePlayerColour						takes projectile whichProjectile returns playercolor
+	native GetDoodadPlayerColour							takes doodad whichDoodad returns playercolor
+	native SetDoodadPlayerColour							takes doodad whichDoodad, playercolor color returns nothing
+	native SetDoodadModelEx									takes doodad whichDoodad, string modelFile, integer playerId returns nothing
+	native SetDoodadMaterialTexture							takes doodad whichDoodad, string textureName, integer materialId, integer textureIndex returns nothing
+	native SetDoodadTexture									takes doodad whichDoodad, string textureName, integer textureIndex returns nothing
+	native SetDoodadReplaceableTexture						takes doodad whichDoodad, string textureName, integer textureIndex returns nothing
+	native IsFrameLayerFlag									takes framehandle whichFrame, layerstyleflag whichLayerStyle returns boolean
+	native SetFrameLayerFlag								takes framehandle whichFrame, layerstyleflag whichLayerStyle, boolean isSet returns nothing
+	native IsFrameControlFlag								takes framehandle whichFrame, controlstyleflag whichControlStyle returns boolean
+	native SetFrameControlFlag								takes framehandle whichFrame, controlstyleflag whichControlStyle, boolean isSet returns nothing
+	native GetFrameSpritePlayerColour						takes framehandle whichFrame returns playercolor
+	native GetFrameMinMaxValues								takes framehandle whichFrame, integer valueId returns real // 0 = min | 1 = max
+6. SetSpecialEffectVisibility renamed to SetSpecialEffectVisible.
+7. SetTrackableVisibility renamed to SetTrackableVisible.
+8. Fixed PauseUnitEx allowing dead units to attack.
+	Note: this is related to not fully hiding all abilities, now Attack ability is forcefully hidden.
+9. Slightly reworked JassVM "RETURN" operation processing, now it's fully handled by UjAPI without relying on the original function at all.
+10. Fixed fatal error from CreateIllusion, as it was refering to a changed CAbilityInventory code, where I forgot that GetIntegerField deals with floats internally.
+	Note: this is related to inventory size checking.
+11. Fixed Attribute Bonus (Aamk) bonus stat processing via Field API.
+12. Fixed GetItemStringField returning bogus values.
+13. Slightly reworked Projectile internal API to circumvent some of the fatal errors caused by wrong usage.
+14. Fully reworked GetProjectileTargetX/Y/Z, now they are stored in a std::unordered_map, since the game doesn't keep track of it, at least not on the surface.
+15. Fixed fatal error from HandleListGetHandleById.
+16. Fixed HandleListContainsTypeId only working on first index.
+	Note: this happened a couple of versions ago after a huge refactor of the code.
+17. Fixed SetProjectileTargetX/Y/Z behaviour, it was launching projectiles instead of just changing their target axis.
+	Note: if projectile is already launched it will relaunch it to newly set axis as it was supposed to.
+18. Fixed SetProjectileArc setting bogus value.
+19. Fixed CHECKBOX reversed event processing.
+20. Added default template for CHECKBOX frame type.
+21. SetFrameTexture now works with all CControls.
+22. SetFrameTexture can now change CHECK texture via ids: 5 - checked, 6 - checkedDisabled.
+23. widget now extends war3image instead of agent.
+24. sprite now extends war3image instead of agent.
+25. projectile now extends war3image instead of agent.
+26. doodad now extends war3image instead of agent.
+24. racepreference now extends flagtype instead of handle.
+25. gametype now extends flagtype instead of handle.
+26. mapflag now extends flagtype instead of handle.
+27. movetype now extends flagtype instead of handle.
+28. pathingaitype now extends flagtype instead of handle.
+29. collisiontype now extends flagtype instead of handle.
+30. targetflag now extends flagtype instead of handle.
+31. unitcategory now extends flagtype instead of handle.
+32. pathingflag now extends flagtype instead of handle.
+33. GetUnitAbilityLevel now also properly works with buffs.

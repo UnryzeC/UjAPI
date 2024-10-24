@@ -1,0 +1,60 @@
+v1.1.15.218
+
+1. New Constants:
+	constant frameeventtype				FRAMEEVENT_FRAME_ITEM_CHANGED								= ConvertFrameEventType(10)
+	constant controlstyleflag 			CONTROL_STYLE_DRAW											= ConvertControlStyleFlag(32)
+2. New Natives:
+	native BitwiseShiftLeftLogical							takes integer i, integer bitsToShift returns integer
+	native BitwiseShiftRightLogical							takes integer i, integer bitsToShift returns integer
+	//
+	native CountUnitAbilities								takes unit whichUnit, boolean alsoCountBuffs returns integer
+	native CountUnitBuffs									takes unit whichUnit returns integer
+	//
+	native GetBuffOwningAbility								takes buff whichbuff returns ability // experimental
+	native SetBuffOwningAbility								takes buff whichBuff, ability whichAbility returns nothing // experimental
+	//
+	native SetProjectileSourceAbility						takes projectile whichProjectile, ability whichAbility returns nothing
+	//
+	native GetFrameChildrenCountEx							takes framehandle whichFrame, integer listId returns integer // listId: CFrames: 0 for default | 1 for layouts (will return CLayer) | CSimpleFrames 0 - 6 | CSimpleRegions any number, as they only have 1 child node.
+	native GetFrameChildEx									takes framehandle whichFrame, integer listId, integer index returns framehandle
+	native GetFrameTextAlignmentValue						takes framehandle whichFrame, integer id returns real // CSimpleFontString: 0 - x, 1 - y | CTextFrame: 0 - x, 1 - y, 2 - x Shadow, 3 - y Shadow, 4 = FontJustificationOffset
+	native SetFrameTextAlignmentValue						takes framehandle whichFrame, integer id, real offset returns nothing
+	native GetTriggerFrameTargetFrame						takes nothing returns framehandle
+3. Fixed negative number support all Integer Field Setters, previously all integers were processed as unsinged.
+4. CListBox API now works with CMenu.
+5. CListBox API now works with CPopupMenu.
+6. CListBox API now works with CRadioGroup.
+7. GetFrameTextColourEx now works with CListBoxItem.
+8. SetFrameTextColourEx now works with CListBoxItem.
+9. SetFrameFont now works with CTimerTextFrame.
+10. SetFrameFont now works with CListBoxItem.
+11. SetFrameTextAlignment now works with CTimerTextFrame.
+12. SetFrameTextAlignment now works with CListBoxItem.
+13. SetFrameTextVerticalAlignment now works with CTimerTextFrame.
+14. SetFrameTextVerticalAlignment now works with CListBoxItem.
+15. SetFrameTextHorizontalAlignment now works with CTimerTextFrame.
+16. SetFrameTextHorizontalAlignment now works with CListBoxItem.
+17. FRAMEEVENT_POPUPMENU_ITEM_CHANGED now works with CListBox.
+18. AddFrameListItem now works with CRadioGroup.
+19. FRAMEEVENT_POPUPMENU_ITEM_CHANGED now works with CRadioGroup.
+20. Fixed SetLightningTargetX setting source position instead.
+21. Fixed SetLightningTargetY setting source position instead.
+22. Fixed SetLightningTargetZ setting source position instead.
+23. Fixed SetLightningTargetPositionLoc setting source position instead.
+24. Fixed GroupContainsUnit always returning true.
+25. Moved all jFrame internal API to FrameAPI. This is note to self, it should have no impact on anything.
+26. Fixed BlzSetUnitMaxMana setting MaxLife instead.
+27. Fixed SetFrameTextHorizontalAlignment not working.
+28. Fixed SetFrameTextColourEx for CSimpleFontString.
+
+// Launcher Changes:
+1. CLI can now process these warcraft 3 commands: d3d, opengl, swtnl, classic, datadir, gametype, fullscreen.
+2. Added Dev Mode Option for AngelScript.
+3. Added Console Option for AngelScript.
+4. Added No Warnings option for AngelScript.
+5. Added "dev" CLI command for AngelScript.
+6. Added "console" CLI command for AngelScript.
+7. Added "nowarnings" CLI command for AngelScript.
+8. Added FastMenu.dll module to Modules.
+9. Added Fast Menu option for Launcher.
+10. Added -fastmenu CLI command for Launcher.

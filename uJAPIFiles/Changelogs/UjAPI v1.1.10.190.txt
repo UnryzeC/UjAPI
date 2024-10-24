@@ -1,0 +1,26 @@
+v1.1.10.190
+
+1. New Types:
+	type framestate 										extends flagtype
+2. New Convertors:
+	constant native ConvertFrameState						takes integer i returns framestate
+3. New Constants:
+	constant framestate					FRAME_STATE_SIMPLE_BUTTON_ENABLED							= ConvertFrameState(0)
+	constant framestate					FRAME_STATE_SIMPLE_BUTTON_DISABLED							= ConvertFrameState(1)
+	constant framestate					FRAME_STATE_SIMPLE_BUTTON_PUSHED							= ConvertFrameState(2)
+	constant framestate					FRAME_STATE_SIMPLE_BUTTON_CURRENT							= ConvertFrameState(3)
+	//
+	constant framestate					FRAME_STATE_CONTROL_CURRENT									= ConvertFrameState(0)
+	constant framestate					FRAME_STATE_CONTROL_ENABLED									= ConvertFrameState(1)
+	constant framestate					FRAME_STATE_CONTROL_PUSHED									= ConvertFrameState(2)
+	constant framestate					FRAME_STATE_CONTROL_DISABLED								= ConvertFrameState(3)
+	constant framestate					FRAME_STATE_CONTROL_CHECK_ENABLED							= ConvertFrameState(5)
+	constant framestate					FRAME_STATE_CONTROL_CHECK_DISABLED							= ConvertFrameState(6)
+4. New Natives:
+	native GetFrameState									takes framehandle whichFrame returns framestate
+	native SetFrameState									takes framehandle whichFrame, framestate whichFrameState returns nothing
+5. Fixed fatal error from SetFramePriority on CSimpleFrames if priority was higher than 8.
+6. Fixed fatal error from SetFramePriority on CSimpleRegions if priority was higher than 4.
+7. Fixed inversed behaviour of SetFrameEnabled with CSimpleButtons.
+8. Fixed SetFrameColour incorrect colour handling (internals were fixed, but API wasn't, which is fixed now).
+9. Fixed SetAbilityIntegerField improperly working with some of the fields.

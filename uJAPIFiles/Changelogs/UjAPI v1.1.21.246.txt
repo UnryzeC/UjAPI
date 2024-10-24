@@ -1,0 +1,44 @@
+v1.1.21.246
+
+1. New Natives:
+	native AntiHackEnableAddressCheck						takes boolean enable returns nothing
+	native AntiHackEnableBreakpointCheck					takes boolean enable returns nothing
+	native SetUnitAnimationWithRarityByIndex				takes unit whichUnit, integer animIndex, raritycontrol rarity returns nothing
+	native QueueUnitAnimationByIndex						takes unit whichUnit, integer animIndex returns nothing
+2. Removed Natives:
+	native AntiHackEnableEx									takes boolean enable, boolean isModuleCheck, boolean isProcessCheck returns nothing
+3. Fixed somewhat incorrect process of Command Bar drawing, which caused duplicate X/Y coordinates of buttons to fail to draw.
+4. Fixed Blizzard.as InitNeutralBuildings having index out of bounds on line 9467.
+5. Native GetHeroMaxLevelExperienceNeeded renamed to GetHeroExperienceCurrent.
+6. Native GetHeroExperienceNeeded renamed to GetHeroExperienceRequiredAt.
+7. Removed CBulletBase (+w3B) from createable Projectile types.
+8. Removed CBulletPath (+wbp) from createable Projectile types.
+9. Fixed CBullet crash on launch.
+	Note: it is advised to use CMissile instead, CBullet serves as base and is less configurable than CMissile.
+10. Added hook to CItem::PushToWorldFrameAVC, this list is unused by the game and causes the game to actually leak CItem memory, not allowing it to re-use removed items.
+	Note: thanks to IceFog for this discovery.
+11. Added hook to CUnit::UnitIssuedOrder to prevent CUnitOrderEventData from leaking whenever too many orders are processed.
+12. Added hook to CUnit::UnitIssuedPointOrder to prevent CUnitOrderPointEventData from leaking whenever too many orders are processed.
+13. Added hook to CUnit::UnitIssuedTargetOrder to prevent CUnitOrderTargetEventData from leaking whenever too many orders are processed.
+14. Applied some security fixes to textfilehandle internal logic.
+15. Fixed TextFileOpen not working properly with files in MPQ/Maps/Patches.
+16. Fixed fatal error on EVENT_PLAYER_TRADE_RESOURCE on 1.27b and 1.28f.
+17. Fixed GetMouseScreenPixelX returning GetMouseScreenX values instead.
+18. Fixed GetMouseScreenPixelY returning GetMouseScreenY values instead.
+19. Fixed SetMouseScreenPixelX calling SetMouseScreenX instead.
+20. Fixed SetMouseScreenPixelY calling SetMouseScreenY instead.
+21. Fixed SetMouseScreenPixelPosition calling SetMouseScreenPosition instead.
+22. Fixed fatal error whenever a unit walks in shallow water near the edge on maximum sized map by JNGP (above default limit).
+	Note: this is caused by game removing shadow from over the limit of the map, thus causing crash.
+23. Fixed some internal Damage Flag processing, this fixes incorrect value returned by GetEventIsAttack in AngelScript.
+24. AntiHackEnable now only enables/disables thread for the AntiHack, now it needs to be fully configured.
+25. Fixed HandleListEnumProjectilesInRange/HandleListEnumProjectilesInRangeOfLoc/HandleListEnumProjectilesInRect not working properly.
+26. Fixed HandleListEnumEffectsInRange/HandleListEnumEffectsInRangeOfLoc/HandleListEnumEffectsInRect not working properly.
+
+UjAPI World Editor 1.0.2.9
+
+1. Fixed UjAPI Dark Mode messing up the colour scheme for some other buttons.
+2. Added more things to Dark Mode handling.
+	Note: TESH's Menubar is broken because of this, this will be resolved someday, to use it disable Dark Mode and re-launch.
+3. Fixed Console Logging for loaded .mix/mpqs now it's a straight list along with timestamps.
+4. This is the last update for World Editor module in UjAPI.zip, the rest will be separate in its own Resource.

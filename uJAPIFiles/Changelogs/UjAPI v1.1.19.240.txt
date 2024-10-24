@@ -1,0 +1,4 @@
+v1.1.19.240
+
+1. Fixed wrong RangeListener wrong offset on 1.28f, this was causing fatal error.
+2. Removed debug text upon pressing V key. 

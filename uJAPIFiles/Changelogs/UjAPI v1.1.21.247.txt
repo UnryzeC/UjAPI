@@ -1,0 +1,21 @@
+v1.1.21.247
+
+1. New Natives:
+	native IsWindowMode										takes nothing returns boolean
+	//
+	native GetMouseScreenRelativeX							takes nothing returns real
+	native GetMouseScreenRelativeY							takes nothing returns real
+	//
+	native SetMouseScreenAbsoluteX							takes real x returns nothing
+	native SetMouseScreenAbsoluteY							takes real y returns nothing
+	native SetMouseScreenAbsolutePosition					takes real x, real y returns nothing
+2. Native Changes:
+	GetMouseScreenX -> GetMouseScreenAbsoluteX
+	GetMouseScreenY -> GetMouseScreenAbsoluteY
+	//
+	SetMouseScreenX -> SetMouseScreenRelativeX
+	SetMouseScreenY -> SetMouseScreenRelativeY
+	SetMouseScreenPosition -> SetMouseScreenRelativePosition
+3. Removed debug texts from textfilehandle natives.
+4. Fixed TextFileOpen error that caused directory name not being read correctly.
+5. Fixed TextFileClear not clearing files.

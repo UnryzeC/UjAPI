@@ -1,0 +1,27 @@
+v1.1.20.244
+
+1. New Natives:
+	native RemoveAbility									takes ability whichAbility returns nothing
+	native RemoveBuff										takes buff whichBuff returns nothing
+2. Fixed Window/Borderless modes requiring "Add Command Line" checkbox being enabled.
+3. Fixed MathAngleBetweenPoints wrong calculation of atan2, x and y were misplaced internally.
+4. Changed all occurences of "integer aid" to "integer abilityTypeId".
+5. Changed all occurences of "integer abilid/abilId" to "integer abilityTypeId".
+6. Changed all occurences of "integer abilcode" to "integer abilityTypeId".
+7. Changed all occurences of "integer bid" to "integer buffTypeId".
+8. Changed all occurences of "integer buffId" to "integer buffTypeId".
+9. Changed all occurences of "integer uid" to "integer unitTypeId".
+10. Changed all occurences of "integer unitId" to "integer unitTypeId".
+11. Changed all occurences of "integer unitType" to "integer unitTypeId".
+12. Changed all occurences of "integer portraitUnitId" to "integer unitTypeId".
+13. Changed all occurences of "integer itemId" to "integer itemTypeId".
+14. Changed all occurences of "integer objectid" to "integer objectTypeId".
+15. Changed all occurences of "integer order" to "integer orderId".
+16. Changed all occurences of "string order" to "string orderName".
+
+UjAPI World Editor 1.0.1.4
+
+1. Fixed UjAPI folder destination incorrectly pointing from WE to Warcraft III.
+	Note: this means both Patches / MPQ folders will now work with World Editor.
+2. Added "Dark Mode" option.
+	Note: this is unfinished and highly experimental.

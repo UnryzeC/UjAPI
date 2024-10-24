@@ -1,0 +1,4 @@
+v1.1.0.156
+
+1. Reworked OnDamage processing to bypass a newly created issue that would make units invulnerable.
+	Note: this was related to 0-damage issue fix.

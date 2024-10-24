@@ -1,0 +1,7 @@
+v1.1.7.174
+
+1. Fixed CBuffSpeed and its children: CBuffSpeedBonus/CBuffEarthquake/CBuffSlow incorrect processing of duration.
+2. Fixed SetBuffOwner improper behaviour when interacting with CreateBuff.
+3. Fixed SetBuffRemainingDuration not working with buffs with initial duration of 0.
+4. Fixed CBuffSilence not properly silencing abilities/attacks via CreateBuff/UnitAddBuffById/Ex.
+5. Fixed CBuffSilence fatal error, whenever any of the fields were edited via Buff Field API.

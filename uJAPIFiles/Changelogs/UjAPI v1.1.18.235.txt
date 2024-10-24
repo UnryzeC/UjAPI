@@ -1,0 +1,32 @@
+v1.1.18.235
+
+1. New Natives:
+	native GetDoodadTimeScale								takes doodad whichDoodad returns real
+	native SetDoodadTimeScale								takes doodad whichDoodad, real timeScale returns nothing
+	//
+	native IsFrameFocused									takes framehandle whichFrame returns boolean
+	//
+	native GetEventIsDamageFlag								takes integer flag returns boolean
+	native GetEventDamageExtraFlags							takes nothing returns integer
+	native GetEventDamageIsExtraFlag						takes integer flag returns boolean
+	native SetEventDamageExtraFlag							takes integer flag, boolean isSet returns boolean
+	native GetEventIsCritical								takes nothing returns boolean
+2. Fixed MathAngleBetweenPoints returning radians instead of degrees.
+3. SetEventDamageFlags renamed to SetEventDamageFlag.
+4. SetEventDamageFlag now has boolean to add/substract flag.
+5. Fixed CreateDoodad/Z fatal error.
+6. Fixed CPlayerTradeResourceEventData sending text to more than to the target.
+7. Fully rewritten whole Doodad API, now it also uses War3Image API internally.
+8. Attached sprites/effects now return their real world position based on the attachment they are attached to, instead of just returning their owner's coordinates.
+9. Attached sprites/effects now return their real world yaw/roll/pitch based on the attachment they are attached to and its animation, instead of just returning their owner's yaw/pitch/roll.
+10. Fixed .mix patches not loading from Patches folder, if Warcraft III wasn't started with admin rights.
+11. Fixed EVENT_PLAYER_UNIT_PROJECTILE_LAUNCH/EVENT_PLAYER_UNIT_PROJECTILE_HIT/EVENT_UNIT_PROJECTILE_LAUNCH/EVENT_UNIT_PROJECTILE_HIT events not firing.
+12. Reworked GetProjectileTarget, now it works with artillery too.
+13. Reworked SetProjectileTarget, now it saves data for artillery too.
+14. Reworked GetTriggerProjectileTarget, which now mimics GetProjectileTarget. So target can be acquired in LAUNCH/HIT events even for artillery.
+15. Fixed incorrect Event Dispatcher for WIDGET_DEATH/GAME_WIDGET_DEATH events.
+16. Fixed crashes from EXExecuteScript.
+17. Added HotKey support for unit fields EXExecuteScript.
+18. Added stockMax support for unit fields EXExecuteScript.
+19. Added spillDist support for unit fields EXExecuteScript.
+20. Added spillRadius support for unit fields EXExecuteScript.

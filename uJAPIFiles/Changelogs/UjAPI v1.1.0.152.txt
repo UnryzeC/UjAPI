@@ -1,0 +1,49 @@
+v1.1.0.152
+
+1. New Types:
+	type destructablestringfield							extends agentdatafield
+2. New Convertors:
+	constant native ConvertDestructableStringField			takes integer i returns destructablestringfield
+3. New Constants:
+	constant destructablestringfield	DESTRUCTABLE_SF_NAME										= ConvertDestructableStringField('bnam')
+	constant destructablestringfield	DESTRUCTABLE_SF_MODEL										= ConvertDestructableStringField('bfil')
+4. Removed Natives:
+	native GetEventDamageAbilityId							takes nothing returns integer
+5. New Natives:
+	native GetGameVersion									takes nothing returns string
+	native GetDestructableStringField						takes destructable whichDestructable, destructablestringfield whichField returns string
+	native SetDestructableStringField						takes destructable whichDestructable, destructablestringfield whichField, string value returns boolean
+	native ItemAddAbility									takes item whichItem, ability whichAbility returns boolean
+	native ItemRemoveAbility								takes item whichItem, ability whichAbility returns boolean
+	native ItemAddAbilityId									takes item whichItem, integer abilCode returns boolean
+	native ItemRemoveAbilityId								takes item whichItem, integer abilCode returns boolean
+	native GetProjectileSourceAbility						takes projectile whichProjectile returns ability
+6. Major code refactor, fully re-written all logging methods to utilise newer std::format as to fully ditch C-style strings.
+	Note: this resulted in a +200KB size increase, as std::format is quite hefty.
+7. BlzSetItemName is now properly implemented along with its SetItemStringField equivalent.
+8. BlzSetItemDescription is now properly implemented along with its SetItemStringField equivalent.
+9. BlzGetItemDescription is now properly implemented along with its SetItemStringField equivalent.
+10. BlzSetItemTooltip is now properly implemented along with its SetItemStringField equivalent.
+11. BlzGetItemTooltip is now properly implemented along with its SetItemStringField equivalent.
+12. BlzSetItemExtendedTooltip is now properly implemented along with its SetItemStringField equivalent.
+13. BlzGetItemExtendedTooltip is now properly implemented along with its SetItemStringField equivalent.
+14. BlzSetItemIconPath is now properly implemented along with its SetItemStringField equivalent.
+15. BlzGetItemIconPath is now properly implemented along with its SetItemStringField equivalent.
+16. BlzSetUnitName is now properly implemented along with its SetUnitStringField equivalent.
+17. BlzSetHeroProperName is now properly implemented along with its SetUnitStringField equivalent.
+18. GetDestructableName will now return custom set value if it exists.
+19. GetItemName will now return custom set value if it exists.
+20. GetUnitName will now return custom set value if it exists.
+21. GetHeroProperName will now return custom set value if it exists.
+22. Fixed improper behaviour of OnDamaged process whenever incoming damage was 0, since then game would use a global pointer instead, changing which would pretty much break the game.
+23. Fixed fatal error from RemoveDoodad.
+24. GetUnitPrimaryStat renamed to GetHeroPrimaryAttribute.
+25. SetUnitPrimaryStat renamed to SetHeroPrimaryAttribute.
+26. GetItemAbility renamed to GetItemAbilityById.
+27. HandleListGetHandleByTypeId renamed to HandleListGetHandleById.
+28. HandleListEnumByTypeId renamed to HandleListEnumById.
+29. HandleListEnumByTypeIdEx renamed to HandleListEnumByIdEx.
+30. HandleListForEachByTypeId renamed to HandleListForEachById.
+31. HandleListForEachByTypeIdEx renamed to HandleListForEachByIdEx.
+32. BlzItemAddAbility is now properly implemented, along with its UjAPI equivalent is ItemAddAbilityById.
+33. BlzItemRemoveAbility is now properly implemented, along with its UjAPI equivalent is ItemRemoveAbilityById.

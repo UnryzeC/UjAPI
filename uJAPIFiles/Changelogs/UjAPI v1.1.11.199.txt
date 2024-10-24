@@ -1,0 +1,167 @@
+v1.1.11.199
+
+1. Added new  C++ syntax-style scripting language AngelScript, which has strong typisation just like jass.
+	Note: you can compare it to vJass in terms of syntax. It's a much-much faster language than jass and has a lot of modern paradigms.
+2. New Constants:
+	constant gameevent					EVENT_GAME_AGENT_DESTROYED									= ConvertGameEvent(800)
+	constant gameevent					EVENT_GAME_AGENT_ARRIVAL									= ConvertGameEvent(801)
+	constant gameevent					EVENT_GAME_AGENT_CANT_PATH									= ConvertGameEvent(802)
+	constant gameevent					EVENT_GAME_AGENT_WARP_START									= ConvertGameEvent(803)
+	constant gameevent					EVENT_GAME_AGENT_WARP_END									= ConvertGameEvent(804)
+	constant gameevent					EVENT_GAME_WIDGET_DAMAGING									= ConvertGameEvent(805)
+	constant gameevent					EVENT_GAME_WIDGET_DAMAGED									= ConvertGameEvent(806)
+	constant gameevent					EVENT_GAME_WIDGET_DEATH										= ConvertGameEvent(807)
+	//
+	constant playerevent				EVENT_PLAYER_WIDGET_TRACK									= ConvertPlayerEvent(320)
+	constant playerevent				EVENT_PLAYER_WIDGET_GHOST_TRACK								= ConvertPlayerEvent(321)
+	constant playerevent				EVENT_PLAYER_WIDGET_CLICK									= ConvertPlayerEvent(322)
+	constant playerevent				EVENT_PLAYER_WIDGET_GHOST_CLICK								= ConvertPlayerEvent(323)
+	constant playerevent				EVENT_PLAYER_TERRAIN_CLICK									= ConvertPlayerEvent(324)
+3. New natives:
+	native HexToInt											takes string hex returns integer
+	//
+	native ResetAbilityOrder								takes ability whichAbility returns nothing
+	//
+	native GetWidgetZ										takes widget whichWidget returns real
+	native SetWidgetZ										takes widget whichWidget, real z returns nothing
+	native ResetWidgetZ										takes widget whichWidget returns nothing // returns Z control to game.
+	native GetWidgetHeight									takes widget whichWidget returns real
+	native SetWidgetHeight									takes widget whichWidget, real height returns nothing
+	native SetWidgetPositionWithZ							takes widget whichWidget, real x, real y, real z returns nothing
+	//
+	native GetDestructableHeight							takes destructable whichDestructable returns real
+	native SetDestructableHeight							takes destructable whichDestructable, real height returns nothing
+	native GetDestructableZ									takes destructable whichDestructable returns real
+	native ResetDestructableZ								takes destructable whichDestructable returns nothing // returns Z control to game.
+	//
+	constant native GetTriggerItem							takes nothing returns item
+	native GetItemOwner										takes item whichItem returns unit
+	native GetItemZ											takes item whichItem returns real
+	native SetItemX											takes item whichItem, real x returns nothing
+	native SetItemY											takes item whichItem, real y returns nothing
+	native SetItemZ											takes item whichItem, real z returns nothing
+	native SetItemPositionWithZ								takes item whichItem, real x, real y, real z returns nothing
+	native ResetItemZ										takes item whichItem returns nothing // returns Z control to game.
+	native GetItemHeight									takes item whichItem returns real
+	native SetItemHeight									takes item whichItem, real height returns nothing
+	//
+	native SaveBuffHandle									takes hashtable table, integer parentKey, integer childKey, buff whichBuff returns boolean
+	native SaveWar3Image									takes hashtable table, integer parentKey, integer childKey, war3image whichWar3Image returns boolean
+	native LoadBuffHandle									takes hashtable table, integer parentKey, integer childKey returns buff
+	native LoadWar3ImageHandle								takes hashtable table, integer parentKey, integer childKey returns war3image
+	//
+	native SetUnitPositionEx								takes unit whichUnit, boolean breakOrder, boolean checkPathing, real x, real y, real z returns nothing
+	native SetUnitPositionWithZ								takes unit whichUnit, real x, real y, real z returns nothing
+	native SetUnitZ											takes unit whichUnit, real z returns nothing
+	native ResetUnitZ										takes unit whichUnit returns nothing // returns Z control to game.
+	native GetUnitHeight									takes unit whichUnit returns real
+	native SetUnitHeight									takes unit whichUnit, real height returns nothing
+	native SetUnitResourceCurrent							takes unit whichUnit, integer amount returns nothing // only works on units that can "keep" gathered resources.
+	native GetUnitResourceCapacity							takes unit whichUnit, integer resourceType returns integer // 0 for gold, 1 for lumber.
+	native SetUnitResourceCapacity							takes unit whichUnit, integer resourceType, integer amount returns nothing // only works on units that can "keep" gathered resources.
+	native GetUnitResourcePerGather							takes unit whichUnit, integer resourceType returns integer
+	native SetUnitResourcePerGather							takes unit whichUnit, integer resourceType, integer amount returns nothing // for gold simply changes capacity
+	native GetUnitResourceGatherInterval					takes unit whichUnit, returns real // wisp only
+	native SetUnitResourceGatherInterval					takes unit whichUnit, real interval returns nothing
+4. Removed previous NetCode packet handling mechanism, which was erasing some of the duplicates, so 1024 byte limit isn't reached.
+	Note: this was a somewhat slow process, and after NetCode handling polish, should no longer be needed.
+5. Imposed 1024 limit on all new custom NetEvents, since if that limit is exceeded, those bytes are cut off internally.
+	Note: going over the limit can and will lead to issues, such as some NetCode not being handled at all, such as Unit orders, etc.
+6. Fixed fatal error on any item usage that has a cooldown on 1.27a/1.27b/1.28f.
+7. Fixed fatal error on item slot movement on 1.27a/1.27b/1.28f.
+8. Added UjAPI loading text to World Editor.
+9. Fixed inversed behaviour of CBuffHowlOfTerror.
+10. Fixed fatal error from SetBuffRemainingDuration on unsupported/erased buffs.
+11. Added support for CBuffAcidBomb in Buff API.
+12. Added support for CBuffSlowPoison in Buff API.
+13. Fixed fatal error from SetFrameAlpha on 1.27a/1.27b/1.28f.
+14. Fixed GetBuffOwner always returning 0.
+15. Fixed GetBuffTypeId always returning 0.
+16. GetUnitCurrentResources renamed to GetUnitResourceCurrent.
+17. Fixed GetBuffIntegerField returning bogus values.
+18. Fixed SetBuffIntegerField setting bogus values.
+19. Fixed CBuffRegenLife DataC and DataD handling in Buff API.
+20. Fixed CBuffRegenMana DataC and DataD handling in Buff API.
+21. Fixed CBuffRegeneration DataC and DataE handling in Buff API.
+22. Fixed CBuffRejuvination DataC and DataD handling in Buff API.
+23. Fixed CBuffDrunkenHaze DataA handling in Buff API.
+24. Fixed CBuffLavaMonster DataC and DataF handling in Buff API.
+25. Fixed CBuffSlowPoison DataD handling in Buff API.
+26. Fixed Fatal Error from SetFrameParent for CFrames on 1.27a.
+27. SetFrameVertexColourEx now additionally takes texture id.
+28. SetFrameVertexColour now uses previous SetFrameVertexColourEx without texture id.
+29. SetFrameVertexColour and SetFrameVertexColourEx colour order fixed from ARBG to ARGB.
+30. GetFrameAlpha/Ex now works with CModelFrame/CBackdropFrame/CChatEditBar.
+31. GetFrameAlpha/Ex now works with CModelFrame/CBackdropFrame/CChatEditBar.
+32. GetFrameColour/Ex now works with CModelFrame/CBackdropFrame/CChatEditBar.
+33. SetFrameColour/Ex/VertexColour/Ex now works with CModelFrame/CBackdropFrame/CChatEditBar.
+	Note: 30 - 33 only work for models that were added to CModelFrame/CBackdropFrame/CChatEditBar, not textures.
+34. Fully rewritten internal EVENT_PLAYER_UNIT_ABILITY_ADDED handling.
+35. Fully rewritten internal EVENT_UNIT_ABILITY_ADDED handling.
+36. Fully rewritten internal EVENT_PLAYER_UNIT_ABILITY_REMOVED handling.
+37. Fully rewritten internal EVENT_UNIT_ABILITY_REMOVED handling.
+38. Fully rewritten internal EVENT_PLAYER_UNIT_ABILITY_AUTOCAST_ON handling.
+39. Fully rewritten internal EVENT_PLAYER_UNIT_ABILITY_AUTOCAST_OFF handling.
+40. Fully rewritten internal EVENT_UNIT_ABILITY_AUTOCAST_ON handling.
+41. Fully rewritten internal EVENT_UNIT_ABILITY_AUTOCAST_OFF handling.
+42. Fully rewritten internal EVENT_PLAYER_UNIT_BUFF_RECEIVED handling.
+43. Fully rewritten internal EVENT_PLAYER_UNIT_BUFF_REFRESHED handling.
+44. Fully rewritten internal EVENT_PLAYER_UNIT_BUFF_ENDED handling.
+45. Fully rewritten internal EVENT_UNIT_BUFF_RECEIVED handling.
+46. Fully rewritten internal EVENT_UNIT_BUFF_REFRESHED handling.
+47. Fully rewritten internal EVENT_UNIT_BUFF_ENDED handling.
+48. Fully rewritten internal EVENT_WIDGET_DAMAGING handling.
+49. Fully rewritten internal EVENT_WIDGET_DAMAGED handling.
+50. Fully rewritten internal EVENT_WIDGET_DEATH handling.
+51. Fully rewritten internal EVENT_GAME_WIDGET_DAMAGING handling.
+52. Fully rewritten internal EVENT_GAME_WIDGET_DAMAGED handling.
+53. Fully rewritten internal EVENT_GAME_WIDGET_DEATH handling.
+54. Fully rewritten internal EVENT_PLAYER_UNIT_DAMAGING handling.
+55. Fully rewritten internal EVENT_PLAYER_UNIT_DAMAGED handling.
+56. Fully rewritten internal EVENT_UNIT_DAMAGING handling.
+57. Fully rewritten internal EVENT_UNIT_DAMAGED handling.
+58. Fully rewritten internal EVENT_PLAYER_UNIT_PROJECTILE_LAUNCHED handling.
+59. Fully rewritten internal EVENT_PLAYER_UNIT_PROJECTILE_HIT handling.
+60. Fully rewritten internal EVENT_UNIT_PROJECTILE_LAUNCHED handling.
+61. Fully rewritten internal EVENT_UNIT_PROJECTILE_HIT handling.
+62. Fully rewritten AntiHack offsets for 1.24e.
+	Note: 14 offsets added.
+63. Fully rewritten AntiHack offsets for 1.26a.
+	Note: 30 offsets added.
+64. Fully rewritten AntiHack offsets for 1.27a.
+	Note: 20 offsets added.
+65. Fully rewritten AntiHack offsets for 1.27b.
+	Note: 12 offsets added.
+66. Fully rewritten AntiHack offsets for 1.28f.
+	Note: 2 offsets added.
+67. CTrainableButton's unit is now sent in FRAMEEVENT_MOUSE_ENTER/FRAMEEVENT_MOUSE_LEAVE/FRAMEEVENT_MOUSE_UP/FRAMEEVENT_MOUSE_DOWN/FRAMEEVENT_CONTROL_CLICK events.
+68. CCommandButton's item/ability is now sent in FRAMEEVENT_MOUSE_ENTER/FRAMEEVENT_MOUSE_LEAVE/FRAMEEVENT_MOUSE_UP/FRAMEEVENT_MOUSE_DOWN/FRAMEEVENT_CONTROL_CLICK events.
+69. CCargoButton's unit is now sent in FRAMEEVENT_MOUSE_ENTER/FRAMEEVENT_MOUSE_LEAVE/FRAMEEVENT_MOUSE_UP/FRAMEEVENT_MOUSE_DOWN/FRAMEEVENT_CONTROL_CLICK events.
+70. CHeroBarButton's unit is now sent in FRAMEEVENT_MOUSE_ENTER/FRAMEEVENT_MOUSE_LEAVE/FRAMEEVENT_MOUSE_UP/FRAMEEVENT_MOUSE_DOWN/FRAMEEVENT_CONTROL_CLICK events.
+71. CBuffIndicator 's buff is now sent in FRAMEEVENT_MOUSE_ENTER/FRAMEEVENT_MOUSE_LEAVE/FRAMEEVENT_MOUSE_UP/FRAMEEVENT_MOUSE_DOWN/FRAMEEVENT_CONTROL_CLICK events.
+72. Fixed SetDestructableX/Y/Z/Position/PositionWithZ/PositionLoc not moving Pathing Map if it had one.
+	Note: shadows from pathing maps cannot be moved, as they are not tied to object at all.
+73. Fixed non-working strings in secondary threads. (Be it preload or any other thread spawned with ExecuteFunc that was called in the thread of ExecuteFunc).
+74. ClickFrame and ClickFrameEx will now trigger FRAMEEVENT_CONTROL_CLICK for CSimpleButton and its children.
+75. Fixed SetAbilityField API not updating some of the ability information.
+76. Fixed CBuffAuraDevotion not providing any bonus when created via buff API.
+77. Fixed CBuffAuraRegenLife not providing any bonus when created via buff API.
+78. Fixed CBuffAuraRegenMana not providing any bonus when created via buff API.
+79. Fixed CBuffAuraBrilliance not providing any bonus when created via buff API.
+80. Fixed CBuffAuraBlightRegen not providing any bonus when created via buff API.
+81. Fixed CBuffAuraUnholy not providing any bonus when created via buff API.
+82. Fixed CBuffAuraEndurance not providing any bonus when created via buff API.
+83. Fixed CBuffAuraSlow not providing any bonus when created via buff API.
+84. Fixed CBuffAuraThorns not providing any bonus when created via buff API.
+85. Fixed CBuffAuraVampiric not providing any bonus when created via buff API.
+86. Fixed broken Item Buttons when HideOriginFrames native was used.
+87. Fixed fatal error from DisplayTimedTopMessage.
+88. Fixed fatal error on some abilities from SetAbilityOrder.
+89. Fixed incorrect behaviour of SetAbilityOrder with CAbilityChannel.
+90. Fixed SetAbilityLevel being allowed to set level above maximum.
+91. SetAbilityOrderId now returns nothing instead of boolean.
+92. SetAbilityCooldown now returns nothing instead of boolean.
+93. SetAbilityRemainingCooldown now returns nothing instead of boolean.
+94. All handles extending agentdatafield now use fake handles.
+	Note: real handles were used on values that exceeded 0x100000 so lua wouldn't crash, now it's not longer a priority.
+95. war3_lua was removed from Modules, it will be available for download separately.

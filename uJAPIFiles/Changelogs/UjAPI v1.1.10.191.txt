@@ -1,0 +1,5 @@
+v1.1.10.191
+
+1. Reverted fix of an "exploit" that allowed to hide some of the command button data via negative X/Y position.
+	Note: now it's universal for all supported patches, meaning if even one of the axis is negative, it will not be drawn.
+2. Fixed fatal error from widgets that have empty tip or tooltip.

@@ -1,0 +1,65 @@
+v1.0.39.142
+
+1. New Types:
+	type renderstage										extends handle
+2. New Convertors:
+	constant native ConvertRenderStage						takes integer i returns renderstage
+3. New Constants:
+	constant renderstage				RENDER_STAGE_SKYBOX											= ConvertRenderStage(0)
+	constant renderstage				RENDER_STAGE_TERRAIN										= ConvertRenderStage(1)
+	constant renderstage				RENDER_STAGE_FOG_OF_WAR										= ConvertRenderStage(2)
+	constant renderstage				RENDER_STAGE_TERRAIN_SHADOW									= ConvertRenderStage(3)
+	constant renderstage				RENDER_STAGE_WATER_SHADOW									= ConvertRenderStage(4)
+	constant renderstage				RENDER_STAGE_BLIGHT											= ConvertRenderStage(5)
+	constant renderstage				RENDER_STAGE_WEATHER										= ConvertRenderStage(6)
+	constant renderstage				RENDER_STAGE_SELECTION_CIRCLE								= ConvertRenderStage(7)
+	constant renderstage				RENDER_STAGE_INDICATOR										= ConvertRenderStage(8)
+	constant renderstage				RENDER_STAGE_FOOTPRINT										= ConvertRenderStage(9)
+	constant renderstage				RENDER_STAGE_DOODAD											= ConvertRenderStage(10)
+	constant renderstage				RENDER_STAGE_SPRITE											= ConvertRenderStage(11)
+	constant renderstage				RENDER_STAGE_SELECTION_SPRITE								= ConvertRenderStage(12)
+	constant renderstage				RENDER_STAGE_DECORATION										= ConvertRenderStage(13)
+	constant renderstage				RENDER_STAGE_WATER											= ConvertRenderStage(14)
+	constant renderstage				RENDER_STAGE_SELECTION_BOX									= ConvertRenderStage(15)
+	constant renderstage				RENDER_STAGE_TEXTURE										= ConvertRenderStage(16)
+	constant renderstage				RENDER_STAGE_OCCLUSION_MASK									= ConvertRenderStage(17)
+	constant renderstage				RENDER_STAGE_BUILDING										= ConvertRenderStage(18)
+	constant renderstage				RENDER_STAGE_UBERSPLAT										= ConvertRenderStage(19)
+	constant renderstage				RENDER_STAGE_LIGHTNING										= ConvertRenderStage(20)
+	constant renderstage				RENDER_STAGE_TEXTTAG										= ConvertRenderStage(21)
+4. New Natives:
+	native GetFPS 											takes nothing returns real
+	//
+	native GetAttackSpeedMinBonus 							takes nothing returns real
+	native SetAttackSpeedMinBonus 							takes real value returns nothing
+	native GetAttackSpeedMaxBonus 							takes nothing returns real
+	native SetAttackSpeedMaxBonus 							takes real value returns nothing
+	native GetMoveSpeedMinAllowed 							takes nothing returns real
+	native SetMoveSpeedMinAllowed 							takes real value returns nothing
+	native GetMoveSpeedMaxAllowed 							takes nothing returns real
+	native SetMoveSpeedMaxAllowed 							takes real value returns nothing
+	//
+	native IsSelectionEnabled 								takes nothing returns boolean
+	native EnableSelection 									takes boolean enable returns nothing
+	native IsSelectionCircleEnabled 						takes nothing returns boolean
+	native EnableSelectionCircle 							takes boolean enable returns nothing
+	native IsTargetIndicatorEnabled 						takes nothing returns boolean
+	native EnableTargetIndicator 							takes boolean enable returns nothing
+	native IsRenderStage 									takes renderstage renderStage returns boolean
+	native EnableRenderStage 								takes renderstage renderStage, boolean enable returns nothing
+	native IsStatbarEnabled 								takes nothing returns boolean
+	native EnableStatbar 									takes boolean enable returns nothing
+	//
+	native HandleListGetSpriteCount							takes handlelist whichHandleList returns integer
+	native HandleListGetSpriteByIndex						takes handlelist whichHandleList, integer index returns sprite
+	native HandleListGetFilterSprite						takes nothing returns sprite
+	native HandleListGetEnumSprite							takes nothing returns sprite
+	//
+	native SaveSpriteHandle									takes hashtable table, integer parentKey, integer childKey, sprite whichsprite returns boolean
+	native SaveDoodadHandle									takes hashtable table, integer parentKey, integer childKey, doodad whichDoodad returns boolean
+	native SaveTextFileHandle								takes hashtable table, integer parentKey, integer childKey, textfilehandle whichFile returns boolean
+	native LoadSpriteHandle									takes hashtable table, integer parentKey, integer childKey returns sprite
+	native LoadDoodadHandle									takes hashtable table, integer parentKey, integer childKey returns doodad
+	native LoadTextFileHandle								takes hashtable table, integer parentKey, integer childKey returns textfilehandle
+5. Fixed CreateFrame/CreateFrameByType crash if a SIMPLETEXT/SIMPLETEXTURE was created with non-simple frame parent.
+6. Fixed IsFrameVisible for SimpleFrames.

@@ -1,0 +1,3 @@
+v1.1.9.185
+
+1. Fixed incorrect handling of GetItemUseSlotId, which sometimes resulted in order overlaps.

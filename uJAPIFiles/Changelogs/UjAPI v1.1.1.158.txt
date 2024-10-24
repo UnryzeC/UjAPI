@@ -1,0 +1,23 @@
+v1.1.1.158
+
+1. New Constants:
+	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_ADDED								= ConvertPlayerUnitEvent(503)
+	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_REMOVED							= ConvertPlayerUnitEvent(504)
+	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_AUTOCAST_ON						= ConvertPlayerUnitEvent(505)
+	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_AUTOCAST_OFF						= ConvertPlayerUnitEvent(506)
+	constant unitevent					EVENT_UNIT_ABILITY_ADDED									= ConvertUnitEvent(513)
+	constant unitevent					EVENT_UNIT_ABILITY_REMOVED									= ConvertUnitEvent(514)
+	constant unitevent					EVENT_UNIT_ABILITY_AUTOCAST_ON								= ConvertUnitEvent(515)
+	constant unitevent					EVENT_UNIT_ABILITY_AUTOCAST_OFF								= ConvertUnitEvent(516)
+	constant originframetype			ORIGIN_FRAME_FPS_TEXT										= ConvertOriginFrameType(54)
+	constant originframetype			ORIGIN_FRAME_MEMORY_TEXT									= ConvertOriginFrameType(55)
+2. New Natives:
+	native GetMapFogZ										takes nothing returns real
+	native SetMapFogZ										takes real z returns nothing
+	native GetMapFogColour									takes nothing returns integer
+	native SetMapFogColour									takes integer colour returns nothing
+	native IsAbilityAutocastEnabled							takes ability whichAbility returns boolean
+3. GetSpellAbility now works with Buff events and new Ability events.
+4. GetSpellAbilityId now works with Buff events and new Ability events.
+5. Fixed SetAbilityOwner not properly working with active abilities (they were not displayed if used directly via CreateAbility).
+6. Fixed fatal error from SetDoodadZ on 1.28f.

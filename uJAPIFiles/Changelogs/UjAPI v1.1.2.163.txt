@@ -1,0 +1,12 @@
+v1.1.2.163
+
+1. New Natives:
+	native TextFileRead										takes textfilehandle whichTextFile returns string
+	native UnitAddItemToSlot								takes unit whichUnit, item whichItem, integer itemSlot returns boolean
+	native ReviveUnit										takes unit whichUnit, real x, real y returns boolean
+	native ReviveUnitLoc									takes unit whichUnit, location loc returns boolean
+2. TextFileReadAll renamed to TextFileReadAllLines, now it properly reads text, not the file itself.
+3. Added experimental support for CSimpleFrame in CBackdropFrame API.
+4. Fixed fatal error from SetModel natives, this was caused by non-Ex variants improperly handling colour.
+5. Added more precise, yet slightly lenient internal check for Agent being active (not removed).
+	Note: this mostly affects new Unit API that was extremely strict with hidden/dead/removed units.

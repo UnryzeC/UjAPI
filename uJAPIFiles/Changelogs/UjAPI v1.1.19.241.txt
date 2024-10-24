@@ -1,0 +1,3 @@
+v1.1.19.241
+
+1. Fixed SetProjectileTargetPosition natives not setting target axis before launch.

@@ -1,0 +1,62 @@
+v1.1.9.181
+
+1. New Constants:
+	constant itemintegerfield			ITEM_IF_HOTKEY												= ConvertItemIntegerField('ihot')
+2. New Natives:
+	// Base Field API
+	native GetBuffBaseIntegerFieldById						takes integer bid, abilityintegerfield whichField returns integer
+	native SetBuffBaseIntegerFieldById						takes integer bid, abilityintegerfield whichField, integer value returns boolean
+	native GetBuffBaseBooleanFieldById						takes integer bid, abilitybooleanfield whichField returns boolean
+	native SetBuffBaseBooleanFieldById						takes integer bid, abilitybooleanfield whichField, boolean value returns boolean
+	native GetBuffBaseRealFieldById							takes integer bid, abilityrealfield whichField returns real
+	native SetBuffBaseRealFieldById							takes integer bid, abilityrealfield whichField, real value returns boolean
+	native GetBuffBaseIntegerArrayFieldById					takes integer bid, abilityintegerfield whichField, integer index returns integer
+	native SetBuffBaseIntegerArrayFieldById					takes integer bid, abilityintegerfield whichField, integer index, integer value returns boolean
+	native AddBuffBaseIntegerArrayFieldById					takes integer bid, abilityintegerfield whichField, integer value returns boolean
+	native RemoveBuffBaseIntegerArrayFieldById				takes integer bid, abilityintegerfield whichField, integer value returns boolean
+	native GetBuffBaseBooleanArrayFieldById					takes integer bid, abilitybooleanfield whichField, integer index returns boolean
+	native SetBuffBaseBooleanArrayFieldById					takes integer bid, abilitybooleanfield whichField, integer index, boolean value returns boolean
+	native AddBuffBaseBooleanArrayFieldById					takes integer bid, abilitybooleanfield whichField, boolean value returns boolean
+	native RemoveBuffBaseBooleanArrayFieldById				takes integer bid, abilitybooleanfield whichField, boolean value returns boolean
+	native GetBuffBaseRealArrayFieldById					takes integer bid, abilityrealfield whichField, integer index returns real
+	native SetBuffBaseRealArrayFieldById					takes integer bid, abilityrealfield whichField, integer index, real value returns boolean
+	native AddBuffBaseRealArrayFieldById					takes integer bid, abilityrealfield whichField, real value returns boolean
+	native RemoveBuffBaseRealArrayFieldById					takes integer bid, abilityrealfield whichField, real value returns boolean
+	native GetBuffBaseStringArrayFieldById					takes integer bid, abilitystringfield whichField, integer index returns string
+	native SetBuffBaseStringArrayFieldById					takes integer bid, abilitystringfield whichField, integer index, string value returns boolean
+	native AddBuffBaseStringArrayFieldById					takes integer bid, abilitystringfield whichField, string value returns boolean
+	native RemoveBuffBaseStringArrayFieldById				takes integer bid, abilitystringfield whichField, string value returns boolean
+	//
+	// Field API
+	native GetBuffIntegerArrayField							takes buff whichBuff, abilityintegerfield whichField, integer index returns integer
+	native SetBuffIntegerArrayField							takes buff whichBuff, abilityintegerfield whichField, integer index, integer value returns boolean
+	native AddBuffIntegerArrayField							takes buff whichBuff, abilityintegerfield whichField, integer value returns boolean
+	native RemoveBuffIntegerArrayField						takes buff whichBuff, abilityintegerfield whichField, integer value returns boolean
+	native GetBuffBooleanArrayField							takes buff whichBuff, abilitybooleanfield whichField, integer index returns boolean
+	native SetBuffBooleanArrayField							takes buff whichBuff, abilitybooleanfield whichField, integer index, boolean value returns boolean
+	native AddBuffBooleanArrayField							takes buff whichBuff, abilitybooleanfield whichField, boolean value returns boolean
+	native RemoveBuffBooleanArrayField						takes buff whichBuff, abilitybooleanfield whichField, boolean value returns boolean
+	native GetBuffRealArrayField							takes buff whichBuff, abilityrealfield whichField, integer index returns real
+	native SetBuffRealArrayField							takes buff whichBuff, abilityrealfield whichField, integer index, real value returns boolean
+	native AddBuffRealArrayField							takes buff whichBuff, abilityrealfield whichField, real value returns boolean
+	native RemoveBuffRealArrayField							takes buff whichBuff, abilityrealfield whichField, real value returns boolean
+	native GetBuffStringArrayField							takes buff whichBuff, abilitystringfield whichField, integer index returns string
+	native SetBuffStringArrayField							takes buff whichBuff, abilitystringfield whichField, integer index, string value returns boolean
+	native AddBuffStringArrayField							takes buff whichBuff, abilitystringfield whichField, string value returns boolean
+	native RemoveBuffStringArrayField						takes buff whichBuff, abilitystringfield whichField, string value returns boolean
+	//
+3. SetFrameGridFrame now supports CSimpleFontString and CSimpleTexture.
+4. Reworked CAbilityBase and CAbilityUIDef copying methods, now they are properly implemented.
+5. SetAbility/BuffStringField now properly works for ABILITY_SLF_CASTER, ABILITY_SLF_TARGET, ABILITY_SLF_SPECIAL, ABILITY_SLF_EFFECT and ABILITY_SLF_AREA_EFFECT.
+6. ABILITY_SLF_CASTER, ABILITY_SLF_TARGET, ABILITY_SLF_SPECIAL, ABILITY_SLF_EFFECT and ABILITY_SLF_AREA_EFFECT can now be processed as array fields.
+7. Fixed old-vanilla visual bug of Item Cooldowns, they would "reset" their animation and move the cooldown sprite faster, instead of simply continuing where it left off.
+8. Fixed GetTriggerFrameMouseButton not working in FRAMEEVENT_MOUSE_UP and FRAMEEVENT_MOUSE_DOWN.
+9. Fixed incorrect Frame Event NetCode processing for FRAMEEVENT_CONTROL_CLICKED and FRAMEEVENT_CONTROL_DRAG.
+10. ITEM_IF_HOTKEY can be used to make the item uniquely use specific hotkey, not tied to NUMPAD.
+11. Removed 1024 character limit of Tip (usually used for name) in Abilities.
+12. Removed 1024 character limit of Ubertip in Abilities.
+13. Removed 1024 character limit of Researchtip/Learntip in Abilities.
+14. Removed 96 character limit of Tip (usually used for name) in Buffs.
+15. Removed 1024 character limit of Ubertip in Buffs.
+16. Removed 96 character limit of Tip (usually used for name) in Items.
+17. Removed 1024 character limit of Ubertip in Items.

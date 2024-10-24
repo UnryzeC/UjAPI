@@ -1,0 +1,72 @@
+v1.1.24.260
+
+1. New Natives:
+	native IsPlayerMuted 									takes player whichPlayer returns boolean
+	native SetPlayerMuted 									takes player whichPlayer, boolean isMute returns nothing
+	native IsPlayerMutedForPlayer							takes player whichPlayer, player toPlayer returns boolean
+	native SetPlayerMutedForPlayer 							takes player whichPlayer, player toPlayer, boolean isMute returns nothing
+	//
+	native GetWar3ImageMaterialTexture						takes war3image whichWar3Image, integer materialId, integer textureIndex returns string
+	native GetWar3ImageTexture								takes war3image whichWar3Image, integer textureIndex returns string
+	//
+	native GetSpriteMaterialTexture							takes sprite whichSprite, integer materialId, integer textureIndex returns string
+	native GetSpriteTexture									takes sprite whichSprite, integer textureIndex returns string
+	//
+	native GetDoodadMaterialTexture							takes doodad whichDoodad, integer materialId, integer textureIndex returns string
+	native GetDoodadTexture									takes doodad whichDoodad, integer textureIndex returns string
+	//
+	native GetSpecialEffectMaterialTexture					takes effect whichEffect, integer materialId, integer textureIndex returns string
+	native GetSpecialEffectTexture							takes effect whichEffect, integer textureIndex returns string
+	//
+	native GetTrackableMaterialTexture						takes trackable whichTrackable, integer materialId, integer textureIndex returns string
+	native GetTrackableTexture								takes trackable whichTrackable, integer textureIndex returns string
+	//
+	native GetWidgetMaterialTexture							takes widget whichWidget, integer materialId, integer textureIndex returns string
+	native GetWidgetTexture									takes widget whichWidget, integer textureIndex returns string
+	//
+	native GetDestructableMaterialTexture					takes destructable whichDestructable, integer materialId, integer textureIndex returns string
+	native GetDestructableTexture							takes destructable whichDestructable, integer textureIndex returns string
+	//
+	native GetItemMaterialTexture							takes item whichItem, integer materialId, integer textureIndex returns string
+	native GetItemTexture									takes item whichItem, integer textureIndex returns string
+	//
+	native CountUnitAbilitiesWithTypeId						takes unit whichUnit, boolean alsoCountBuffs, integer abilityTypeId returns integer
+	native CountUnitBuffsWithTypeId							takes unit whichUnit, integer buffTypeId returns integer
+	native UnitRestartTimedLife								takes unit whichUnit returns nothing
+	native GetUnitMaterialTexture							takes unit whichUnit, integer materialId, integer textureIndex returns string
+	native GetUnitTexture									takes unit whichUnit, integer textureIndex returns string
+	//
+	native GetProjectileMaterialTexture						takes projectile whichProjectile, integer materialId, integer textureIndex returns string
+	native GetProjectileTexture								takes projectile whichProjectile, integer textureIndex returns string
+	//
+	native IsBuffDrawEnabled								takes buff whichBuff returns boolean
+	native SetBuffDrawEnabled								takes buff whichBuff, boolean isSet returns nothing
+	//
+	native GetFrameSpriteMaterialTexture					takes framehandle whichFrame, integer materialId, integer textureIndex returns string
+	native GetFrameSpriteTexture							takes framehandle whichFrame, integer textureIndex returns string
+	//
+	native GetEventIsAttackEx								takes boolean checkActual returns boolean
+	//
+2. Fixed fatal error from DisplayCineFilter is non-existent texture path was set in SetCineFilterTexture.
+3. Potentially fixed fatal error in CGxDeviceD3D and CGxDeviceOpenGL whenever a broken texture was supplied.
+	Note: this requires further testing.
+4. Slightly modified internal DataBase class templates, they also start/get set with a higher than needed refCount to prevent WC3 from erasing them.
+5. Fixed SetFrameSpriteOrientation and SetFrameSpriteOrientationEx not doing anything, this was related to previous code optimisation, some parts were not carried over correctly.
+6. Fixed fatal error from CBuffAuraEndurance when added via UnitAddBuff/ById or when its stats are modified.
+7. Fixed fatal error from CBuffAuraSlow when added via UnitAddBuff/ById or when its stats are modified.
+8. Added UjAPI version print to crash logs (error.txt and error.dmp).
+9. Restored classic crash/error debugger for 1.27b and 1.28f.
+	Note: newer one still works, older one was just added on top of it.
+10. Fixed Buff Field Getters not working until set was used at least once.
+11. Fixed GetTriggerBuffSourceAbility always returning null.
+12. Fixed GetTriggerBuffSourceUnit always returning null.
+13. Fixed Texture changing for models that are hidden by fog sometimes affecting either all subsequent copies or none at all.
+14. Fixed Fatal Error from SetDoodadTimeScale when instantly used on freshly created doodad.
+	Note: game needs around 1-2 ticks to process the new doodad creation and its model assignment, which is null by default, thus causing a crash.
+15. Fixed GetTriggerAbility always returning 0 in EVENT_PLAYER_UNIT_ABILITY_LEVEL_CHANGED event.
+16. Fixed missing integer base parameter in MathRealLog.
+17. Fixed missing integer base parameter in MathIntegerLog.
+18. Fixed MathRealLog using log2 instead of log.
+19. Fixed MathIntegerLog using log2 instead of log.
+
+4. Added hook to CPlayerEventReg::PushEvent, now it's fully handled by UjAPI with added nullptr checks.

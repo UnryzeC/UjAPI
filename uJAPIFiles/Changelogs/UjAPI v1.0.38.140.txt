@@ -1,0 +1,38 @@
+v1.0.38.140
+
+1. New Natives:
+	native MathRealModulo									takes real dividend, real divisor returns real
+	native MathIntegerModulo								takes integer dividend, integer divisor returns integer
+	// Note: I actually registered these natives long time ago, but forgot to add them to common.j.
+	native GetSpriteModel									takes sprite whichSprite returns string
+	//
+	native GetSpecialEffectModel							takes effect whichEffect returns string
+	//
+	native GetTrackableModel								takes trackable whichTrackable returns string
+	//
+	native GetDestructableVariation							takes destructable whichDestructable returns integer
+	native SetDestructableVariation							takes destructable whichDestructable, integer variation returns nothing
+	native SetDestructableVariationEx						takes destructable whichDestructable, integer variation, boolean ignoreStateCheck returns nothing // ignoreStateCheck will skip checking for dead/alive variations of the model.
+	native IsDestructableBlighted							takes destructable whichDestructable returns boolean
+	native SetDestructableBlighted							takes destructable whichDestructable, boolean flag returns nothing
+	native SetDestructablePositionWithZ						takes destructable whichDestructable, real x, real y, real z returns nothing
+	native SetDestructableZ									takes destructable whichDestructable, real z returns nothing
+	native GetDestructableModel								takes destructable whichDestructable returns string
+	//
+	native GetItemModel										takes item whichItem returns string
+	
+	native SetUnitVisibleByPlayer							takes unit whichUnit, player whichPlayer, boolean flag returns nothing
+	native SetUnitDetectableByPlayer						takes unit whichUnit, player whichPlayer, boolean flag returns nothing
+	native GetUnitModel										takes unit whichUnit returns string
+	//
+	native GetProjectileModel								takes projectile whichProjectile returns string
+	//
+	native GetFrameSpriteModel								takes framehandle whichFrame returns string
+	//
+2. Removed Natives:
+	native GetUnitLocustFlag								takes unit whichUnit returns integer
+3. Potentially fixed Jass Logger sometimes improperly processing Jass Bytecode.
+4. Script Checksum calculator adjusted, it should be more lenient now for maps that have no war3map.j.
+5. Fixed w3i parser incorrectly parsing title/subtitle/text for normal maps or campaigns.
+6. Removed 300 unit limit from FoodCeiling.
+7. Fixed all Z getters/setters for sprites/models, it was broken due to a little mistake.

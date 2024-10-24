@@ -1,0 +1,3 @@
+v1.1.9.187
+
+1. Fixed fatal error from RemoveSprite.

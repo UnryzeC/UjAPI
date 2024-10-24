@@ -1,0 +1,6 @@
+v1.0.37.138
+
+1. Fixed fatal error caused by SetSpecialEffectX/Y/Z.
+	Note: this was caused due to truncation of old code, newer method was faulty for simpler agents.
+2. Fixed "freeze" caused by SetUnitModel/Ex.
+	Note: this happened randomly for some specific maps.

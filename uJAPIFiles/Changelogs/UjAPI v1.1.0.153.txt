@@ -1,0 +1,4 @@
+v1.1.0.153
+
+1. Fixed fatal error from GetBuffBaseStringFieldById.
+2. Fixed fatal error from SetBuffBaseStringFieldById.

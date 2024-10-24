@@ -1,0 +1,6 @@
+v1.1.18.237
+
+1. Fixed SetTradeGold setting bogus value.
+2. Fixed SetTradeGold not updating resource amount for the message print.
+3. Fixed SetTradeLumber setting bogus value.
+4. Fixed SetTradeLumber not updating resource amount for the message print.

@@ -1,0 +1,4 @@
+v1.0.39.144
+
+1. Fixed SetWidgetX/Y/Z detaching sprite from Widget.
+2. Internal code optimisation and removal of some data to deflate total filesize.

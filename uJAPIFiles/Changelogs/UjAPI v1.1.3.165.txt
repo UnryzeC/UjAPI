@@ -1,0 +1,20 @@
+v1.1.3.165
+
+1. New Types:
+	type connectiontype										extends handle
+2. New Convertors:
+	constant native ConvertConnectionType					takes integer i returns connectiontype
+3. New Constants:
+	constant connectiontype				CONNECTION_TYPE_SINGLE_PLAYER								= ConvertConnectionType(0)
+	constant connectiontype				CONNECTION_TYPE_LOCAL_GAME									= ConvertConnectionType(1)
+	constant connectiontype				CONNECTION_TYPE_BATTLE_NET									= ConvertConnectionType(2)
+	constant connectiontype				CONNECTION_TYPE_REPLAY										= ConvertConnectionType(3)
+4. New Natives:
+	native GetConnectionType								takes nothing returns connectiontype
+5. Fixed GetFrameUnderCursor not working with non-simpleframe frames.
+6. Fixed GetEventIsAttack incorrect behaviour in DAMAGED event.
+7. Added CommandButton_0 to CommandButton_11 with contextId 0 support in GetFrameByName.
+	Note: these refer to Ability Buttons. Example: GetFrameByName( "CommandButton_0", 0 ).
+8. Added CommandButton_0 to CommandButton_5 with contextId 1 support in GetFrameByName.
+	Note: these refer to Item Buttons. Example: GetFrameByName( "CommandButton_0", 1 ).
+9. Fixed incorrect colour handling in SetModel.

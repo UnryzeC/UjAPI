@@ -1,0 +1,67 @@
+v1.1.8.178
+
+1. New Types:
+	type layoutstyleflag									extends flagtype
+	type gridstyleflag										extends flagtype
+2. New Convertors:
+	constant native ConvertLayoutStyleFlag					takes integer i returns layoutstyleflag
+	constant native ConvertGridStyleFlag					takes integer i returns gridstyleflag
+3. New Constants:
+	constant layoutstyleflag			LAYOUT_STYLE_BOUNDING_FRAME_POSITION						= ConvertLayoutStyleFlag(1)
+	constant layoutstyleflag			LAYOUT_STYLE_ALWAYS_TRACK									= ConvertLayoutStyleFlag(2)
+	constant layoutstyleflag			LAYOUT_STYLE_NO_ENV											= ConvertLayoutStyleFlag(4)
+	//
+	constant gridstyleflag				GRID_STYLE_JUSTIFY_LEFT										= ConvertGridStyleFlag(8)
+	constant gridstyleflag				GRID_STYLE_JUSTIFY_RIGHT									= ConvertGridStyleFlag(16)
+	constant gridstyleflag				GRID_STYLE_JUSTIFY_TOP										= ConvertGridStyleFlag(32)
+	constant gridstyleflag				GRID_STYLE_JUSTIFY_BOTTOM									= ConvertGridStyleFlag(64)
+	constant gridstyleflag				GRID_STYLE_JUSTIFY_MIDDLE									= ConvertGridStyleFlag(128)
+	constant gridstyleflag				GRID_STYLE_JUSTIFY_CENTER									= ConvertGridStyleFlag(256)
+	constant gridstyleflag				GRID_STYLE_PACK_ITEMS										= ConvertGridStyleFlag(512)
+	//
+	constant layerstyleflag				LAYER_STYLE_SCROLL											= ConvertLayerStyleFlag(8)
+	//
+	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT_ON_FOCUS							= ConvertControlStyleFlag(16)
+	constant controlstyleflag 			CONTROL_STYLE_HIGHLIGHT										= ConvertControlStyleFlag(256)
+	//
+	constant abilitytype				ABILITY_TYPE_POSITIVE										= ConvertAbilityType(0)
+	constant abilitytype				ABILITY_TYPE_NEGATIVE										= ConvertAbilityType(1)
+	constant abilitytype				ABILITY_TYPE_AURA											= ConvertAbilityType(2)
+	constant abilitytype				ABILITY_TYPE_BUFF											= ConvertAbilityType(3)
+	constant abilitytype				ABILITY_TYPE_TIMED_LIFE										= ConvertAbilityType(4)
+	constant abilitytype				ABILITY_TYPE_PHYSICAL										= ConvertAbilityType(5)
+	constant abilitytype				ABILITY_TYPE_MAGICAL										= ConvertAbilityType(6)
+	constant abilitytype				ABILITY_TYPE_AUTODISPEL										= ConvertAbilityType(7)
+4. New Natives:
+	native GetUnitAbilityEx									takes unit whichUnit, integer aid, integer id returns ability  // Allows you to search through duplicates.
+	native GetUnitBuffEx									takes unit whichUnit, integer buffId, integer id returns buff // Allows you to search through duplicates.
+	native IsAbilityType									takes ability whichAbility, abilitytype whichAbilityType returns boolean
+	native IsBuffDispelleable								takes buff whichBuff returns boolean
+	native SetBuffDispelleable								takes buff whichBuff, boolean isSet returns nothing
+	native PauseBuff										takes buff whichBuff, boolean pause returns nothing
+	native IsFrameLayoutFlag								takes framehandle whichFrame, layoutstyleflag whichLayoutStyle returns boolean
+	native SetFrameLayoutFlag								takes framehandle whichFrame, layoutstyleflag whichLayoutStyle, boolean isSet returns nothing
+	native IsFrameGridFlag									takes framehandle whichFrame, gridstyleflag whichGridStyle returns boolean
+	native SetFrameGridFlag									takes framehandle whichFrame, gridstyleflag whichGridStyle, boolean isSet returns nothing
+	native GetFrameGridRows 								takes framehandle grid returns integer
+	native GetFrameGridColumns 								takes framehandle grid returns integer
+	native SetFrameGridSize 								takes framehandle grid, integer row, integer column returns nothing
+	native GetFrameGridFrame 								takes framehandle grid, integer row, integer column returns framehandle
+	native GetFrameGridFrameById 							takes framehandle grid, integer id returns framehandle
+	native SetFrameGridFrame 								takes framehandle grid, integer row, integer column, framehandle whichFrame returns nothing
+	native IsBuffBarRenderDuplicates 						takes nothing returns boolean
+	native SetBuffBarRenderDuplicates 						takes boolean allow returns nothing // this will allow the rendering (drawing) of duplicate (similar) buffs. By default is off.
+6. CONTROL_STYLE_HIGHLIGHT_HOVER renamed to CONTROL_STYLE_HIGHLIGHT_ON_MOUSE_OVER.
+5. Fixed Get/SetFrameTexture with Console UI.
+6. SetBuffRemainingDuration now returns nothing instead of boolean.
+7. Fixed SetBuffRemainingDuration starting Buff tick even when unit is paused.
+8. Fixed SetBuffRemainingDuration not "saving" remaining time when unit is unpaused.
+9. RefreshBuff now returns nothing instead of boolean.
+10. RefreshBuff now triggers EVENT_PLAYER_UNIT_BUFF_REFRESHED and EVENT_UNIT_BUFF_REFRESHED.
+11. SetFrameGridSize supports ORIGIN_FRAME_BUFF_BAR, it should work seamlessly.
+12. SetFrameGridSize supports ORIGIN_FRAME_COMMAND_BAR, it should work seamlessly.
+	Note: Hotkeys work as well.
+13. Fixed fatal error from CBuffAuraEndurance when added via Buff API.
+14. Fixed fatal error from CBuffAuraSlow when added via Buff API.
+15. Fixed fatal error from CBuffAuraThorns when added via Buff API.
+16. Fully reworked PauseUnitEx, now it no longer hides attack button and it doesn't let dead units to attack.
