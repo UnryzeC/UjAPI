@@ -1,6 +1,24 @@
 v1.1.24.260
 
-1. New Natives:
+1. New Types:
+	type widgetintegerfield									extends agentdatafield
+	type widgetrealfield									extends agentdatafield
+	type widgetbooleanfield									extends agentdatafield
+	type widgetstringfield									extends agentdatafield
+	type destructableintegerfield							extends widgetintegerfield
+	type destructablerealfield								extends widgetrealfield
+	type destructablebooleanfield							extends widgetbooleanfield
+2. Type Changes:
+	type destructablestringfield now extends widgetstringfield
+	type itemintegerfield now extends widgetintegerfield
+	type itemrealfield now extends widgetrealfield
+	type itembooleanfield now extends widgetbooleanfield
+	type itemstringfield now extends widgetstringfield
+	type unitintegerfield now extends widgetintegerfield
+	type unitrealfield now extends widgetrealfield
+	type unitbooleanfield now extends widgetbooleanfield
+	type unitstringfield now extends widgetstringfield
+3. New Natives:
 	native IsPlayerMuted 									takes player whichPlayer returns boolean
 	native SetPlayerMuted 									takes player whichPlayer, boolean isMute returns nothing
 	native IsPlayerMutedForPlayer							takes player whichPlayer, player toPlayer returns boolean
@@ -21,18 +39,26 @@ v1.1.24.260
 	native GetTrackableMaterialTexture						takes trackable whichTrackable, integer materialId, integer textureIndex returns string
 	native GetTrackableTexture								takes trackable whichTrackable, integer textureIndex returns string
 	//
+	native GetWidgetPortrait								takes widget whichWidget returns string
+	native SetWidgetPortrait								takes widget whichWidget, string modelName returns nothing
 	native GetWidgetMaterialTexture							takes widget whichWidget, integer materialId, integer textureIndex returns string
 	native GetWidgetTexture									takes widget whichWidget, integer textureIndex returns string
 	//
+	native GetDestructablePortrait							takes destructable whichDestructable returns string
+	native SetDestructablePortrait							takes destructable whichDestructable, string modelName returns nothing
 	native GetDestructableMaterialTexture					takes destructable whichDestructable, integer materialId, integer textureIndex returns string
 	native GetDestructableTexture							takes destructable whichDestructable, integer textureIndex returns string
 	//
+	native GetItemPortrait									takes item whichItem returns string
+	native SetItemPortrait									takes item whichItem, string modelName returns nothing
 	native GetItemMaterialTexture							takes item whichItem, integer materialId, integer textureIndex returns string
 	native GetItemTexture									takes item whichItem, integer textureIndex returns string
 	//
 	native CountUnitAbilitiesWithTypeId						takes unit whichUnit, boolean alsoCountBuffs, integer abilityTypeId returns integer
 	native CountUnitBuffsWithTypeId							takes unit whichUnit, integer buffTypeId returns integer
 	native UnitRestartTimedLife								takes unit whichUnit returns nothing
+	native GetUnitPortrait									takes unit whichUnit returns string
+	native SetUnitPortrait									takes unit whichUnit, string modelName returns nothing
 	native GetUnitMaterialTexture							takes unit whichUnit, integer materialId, integer textureIndex returns string
 	native GetUnitTexture									takes unit whichUnit, integer textureIndex returns string
 	//
@@ -47,24 +73,24 @@ v1.1.24.260
 	//
 	native GetEventIsAttackEx								takes boolean checkActual returns boolean
 	//
-2. Fixed fatal error from DisplayCineFilter is non-existent texture path was set in SetCineFilterTexture.
-3. Potentially fixed fatal error in CGxDeviceD3D and CGxDeviceOpenGL whenever a broken texture was supplied.
+4. Fixed fatal error from DisplayCineFilter is non-existent texture path was set in SetCineFilterTexture.
+5. Potentially fixed fatal error in CGxDeviceD3D and CGxDeviceOpenGL whenever a broken texture was supplied.
 	Note: this requires further testing.
-4. Slightly modified internal DataBase class templates, they also start/get set with a higher than needed refCount to prevent WC3 from erasing them.
-5. Fixed SetFrameSpriteOrientation and SetFrameSpriteOrientationEx not doing anything, this was related to previous code optimisation, some parts were not carried over correctly.
-6. Fixed fatal error from CBuffAuraEndurance when added via UnitAddBuff/ById or when its stats are modified.
-7. Fixed fatal error from CBuffAuraSlow when added via UnitAddBuff/ById or when its stats are modified.
-8. Added UjAPI version print to crash logs (error.txt and error.dmp).
-9. Restored classic crash/error debugger for 1.27b and 1.28f.
+6. Slightly modified internal DataBase class templates, they also start/get set with a higher than needed refCount to prevent WC3 from erasing them.
+7. Fixed SetFrameSpriteOrientation and SetFrameSpriteOrientationEx not doing anything, this was related to previous code optimisation, some parts were not carried over correctly.
+8. Fixed fatal error from CBuffAuraEndurance when added via UnitAddBuff/ById or when its stats are modified.
+9. Fixed fatal error from CBuffAuraSlow when added via UnitAddBuff/ById or when its stats are modified.
+10. Added UjAPI version print to crash logs (error.txt and error.dmp).
+11. Restored classic crash/error debugger for 1.27b and 1.28f.
 	Note: newer one still works, older one was just added on top of it.
-10. Fixed Buff Field Getters not working until set was used at least once.
-11. Fixed GetTriggerBuffSourceAbility always returning null.
-12. Fixed GetTriggerBuffSourceUnit always returning null.
-13. Fixed Texture changing for models that are hidden by fog sometimes affecting either all subsequent copies or none at all.
-14. Fixed Fatal Error from SetDoodadTimeScale when instantly used on freshly created doodad.
+12. Fixed Buff Field Getters not working until set was used at least once.
+13. Fixed GetTriggerBuffSourceAbility always returning null.
+14. Fixed GetTriggerBuffSourceUnit always returning null.
+15. Fixed Texture changing for models that are hidden by fog sometimes affecting either all subsequent copies or none at all.
+16. Fixed Fatal Error from SetDoodadTimeScale when instantly used on freshly created doodad.
 	Note: game needs around 1-2 ticks to process the new doodad creation and its model assignment, which is null by default, thus causing a crash.
-15. Fixed GetTriggerAbility always returning 0 in EVENT_PLAYER_UNIT_ABILITY_LEVEL_CHANGED event.
-16. Fixed missing integer base parameter in MathRealLog.
-17. Fixed missing integer base parameter in MathIntegerLog.
-18. Fixed MathRealLog using log2 instead of log.
-19. Fixed MathIntegerLog using log2 instead of log.
+17. Fixed GetTriggerAbility always returning 0 in EVENT_PLAYER_UNIT_ABILITY_LEVEL_CHANGED event.
+18. Fixed missing integer base parameter in MathRealLog.
+19. Fixed missing integer base parameter in MathIntegerLog.
+20. Fixed MathRealLog using log2 instead of log.
+21. Fixed MathIntegerLog using log2 instead of log.
