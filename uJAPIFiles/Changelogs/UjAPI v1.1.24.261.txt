@@ -1,4 +1,4 @@
-v1.1.25.264
+v1.1.24.261
 
 1. Fixed fatal error from launching CMissileDarkSummoning and similar ones to it.
 2. Fixed random fatal error, which is related to newer Event Database management system.
