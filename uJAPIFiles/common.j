@@ -124,15 +124,22 @@ type abilityintegerlevelarrayfield						extends abilityintegerlevelfield
 type abilityreallevelarrayfield							extends abilityreallevelfield
 type abilitybooleanlevelarrayfield						extends abilitybooleanlevelfield
 type abilitystringlevelarrayfield						extends abilitystringlevelfield
-type destructablestringfield							extends agentdatafield
-type itemintegerfield									extends agentdatafield
-type itemrealfield										extends agentdatafield
-type itembooleanfield									extends agentdatafield
-type itemstringfield									extends agentdatafield
-type unitintegerfield									extends agentdatafield
-type unitrealfield										extends agentdatafield
-type unitbooleanfield									extends agentdatafield
-type unitstringfield									extends agentdatafield
+type widgetintegerfield									extends agentdatafield
+type widgetrealfield									extends agentdatafield
+type widgetbooleanfield									extends agentdatafield
+type widgetstringfield									extends agentdatafield
+type destructableintegerfield							extends widgetintegerfield
+type destructablerealfield								extends widgetrealfield
+type destructablebooleanfield							extends widgetbooleanfield
+type destructablestringfield							extends widgetstringfield
+type itemintegerfield									extends widgetintegerfield
+type itemrealfield										extends widgetrealfield
+type itembooleanfield									extends widgetbooleanfield
+type itemstringfield									extends widgetstringfield
+type unitintegerfield									extends widgetintegerfield
+type unitrealfield										extends widgetrealfield
+type unitbooleanfield									extends widgetbooleanfield
+type unitstringfield									extends widgetstringfield
 type unitweaponintegerfield								extends agentdatafield
 type unitweaponrealfield								extends agentdatafield
 type unitweaponbooleanfield								extends agentdatafield
@@ -4555,7 +4562,7 @@ native MathRealRound									takes real r returns real
 native MathRealFloor									takes real r returns real
 native MathRealCeil										takes real r returns real
 native MathRealAbs										takes real r returns real
-native MathRealLog										takes real r returns real
+native MathRealLog										takes real r, integer base returns real
 native MathRealLn										takes real r returns real
 native MathRealModulo									takes real dividend, real divisor returns real
 native MathRealMin										takes real a, real b returns real
@@ -4565,7 +4572,7 @@ native MathRealClamp									takes real value, real min, real max returns real
 native MathRealLerp										takes real a, real b, real t returns real
 
 native MathIntegerAbs									takes integer i returns integer
-native MathIntegerLog									takes integer i returns real
+native MathIntegerLog									takes integer i, integer base returns real
 native MathIntegerLn									takes integer i returns real
 native MathIntegerModulo								takes integer dividend, integer divisor returns integer
 native MathIntegerMin									takes integer a, integer b returns integer
@@ -4845,6 +4852,10 @@ native LoadHandleList									takes hashtable whichHashtable, integer parentKey,
 // Player API
 //
 native GetHostPlayer									takes nothing returns player
+native IsPlayerMuted 									takes player whichPlayer returns boolean
+native SetPlayerMuted 									takes player whichPlayer, boolean isMute returns nothing
+native IsPlayerMutedForPlayer							takes player whichPlayer, player toPlayer returns boolean
+native SetPlayerMutedForPlayer 							takes player whichPlayer, player toPlayer, boolean isMute returns nothing
 //
 
 //============================================================================
@@ -5414,6 +5425,8 @@ native GetBuffOwningAbility								takes buff whichbuff returns ability // exper
 native SetBuffOwningAbility								takes buff whichBuff, ability whichAbility returns nothing // experimental
 native IsBuffDispellable								takes buff whichBuff returns boolean
 native SetBuffDispellable								takes buff whichBuff, boolean isSet returns nothing
+native IsBuffDrawEnabled								takes buff whichBuff returns boolean
+native SetBuffDrawEnabled								takes buff whichBuff, boolean isSet returns nothing
 native GetBuffLevel										takes buff whichBuff returns integer
 native SetBuffLevel										takes buff whichBuff, integer level returns nothing
 native GetBuffRemainingDuration							takes buff whichBuff returns real
@@ -5482,7 +5495,9 @@ native SetWar3ImageRoll									takes war3image whichWar3Image, real roll return
 native GetWar3ImageModel								takes war3image whichWar3Image returns string
 native SetWar3ImageModel								takes war3image whichWar3Image, string modelFile returns nothing
 native SetWar3ImageModelEx								takes war3image whichWar3Image, string modelFile, integer playerId returns nothing // 0-15, -1 to ignore the colour.
+native GetWar3ImageMaterialTexture						takes war3image whichWar3Image, integer materialId, integer textureIndex returns string
 native SetWar3ImageMaterialTexture						takes war3image whichWar3Image, string textureName, integer materialId, integer textureIndex returns nothing
+native GetWar3ImageTexture								takes war3image whichWar3Image, integer textureIndex returns string
 native SetWar3ImageTexture								takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing
 native SetWar3ImageReplaceableTexture					takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing // 1 - TeamColour | 2 - TeamGlow | 11 - Cliff0/1 |  21 - "grabbed texture" for CCursorFrame | 31-37 trees.
 native GetWar3ImageModelObjectX							takes war3image whichWar3Image, string whichObject returns real
@@ -5554,7 +5569,9 @@ native SetSpritePitch									takes sprite whichSprite, real pitch returns nothi
 native GetSpriteRoll									takes sprite whichSprite returns real // Z
 native SetSpriteRoll									takes sprite whichSprite, real roll returns nothing // Z
 native SetSpriteOrientation								takes sprite whichSprite, real yaw, real pitch, real roll returns nothing // uses SetSpriteOrientationEx with XYZ orientation as default
+native GetSpriteMaterialTexture							takes sprite whichSprite, integer materialId, integer textureIndex returns string
 native SetSpriteMaterialTexture							takes sprite whichSprite, string textureName, integer materialId, integer textureIndex returns nothing
+native GetSpriteTexture									takes sprite whichSprite, integer textureIndex returns string
 native SetSpriteTexture									takes sprite whichSprite, string textureName, integer textureIndex returns nothing
 native SetSpriteReplaceableTexture						takes sprite whichSprite, string textureName, integer textureIndex returns nothing
 native GetSpriteModel									takes sprite whichSprite returns string
@@ -5625,7 +5642,9 @@ native SetDoodadPlayerColour							takes doodad whichDoodad, playercolor color r
 native GetDoodadModel									takes doodad whichDoodad returns string
 native SetDoodadModel									takes doodad whichDoodad, string modelFile returns nothing
 native SetDoodadModelEx									takes doodad whichDoodad, string modelFile, integer playerId returns nothing
+native GetDoodadMaterialTexture							takes doodad whichDoodad, integer materialId, integer textureIndex returns string
 native SetDoodadMaterialTexture							takes doodad whichDoodad, string textureName, integer materialId, integer textureIndex returns nothing
+native GetDoodadTexture									takes doodad whichDoodad, integer textureIndex returns string
 native SetDoodadTexture									takes doodad whichDoodad, string textureName, integer textureIndex returns nothing
 native SetDoodadReplaceableTexture						takes doodad whichDoodad, string textureName, integer textureIndex returns nothing
 native IsDoodadVisible									takes doodad whichDoodad returns boolean
@@ -5694,7 +5713,9 @@ native SetSpecialEffectPitch							takes effect whichEffect, real pitch returns 
 native GetSpecialEffectRoll								takes effect whichEffect returns real
 native SetSpecialEffectRoll								takes effect whichEffect, real roll returns nothing
 native SetSpecialEffectOrientation						takes effect whichEffect, real yaw, real pitch, real roll returns nothing
+native GetSpecialEffectMaterialTexture					takes effect whichEffect, integer materialId, integer textureIndex returns string
 native SetSpecialEffectMaterialTexture					takes effect whichEffect, string textureName, integer materialId, integer textureIndex returns nothing
+native GetSpecialEffectTexture							takes effect whichEffect, integer textureIndex returns string
 native SetSpecialEffectTexture							takes effect whichEffect, string textureName, integer textureIndex returns nothing
 native SetSpecialEffectReplaceableTexture				takes effect whichEffect, string textureName, integer textureIndex returns nothing
 native GetSpecialEffectModel							takes effect whichEffect returns string
@@ -5768,7 +5789,9 @@ native SetTrackablePitch								takes trackable whichTrackable, real pitch retur
 native GetTrackableRoll									takes trackable whichTrackable returns real
 native SetTrackableRoll									takes trackable whichTrackable, real roll returns nothing
 native SetTrackableOrientation							takes trackable whichTrackable, real yaw, real pitch, real roll returns nothing
+native GetTrackableMaterialTexture						takes trackable whichTrackable, integer materialId, integer textureIndex returns string
 native SetTrackableMaterialTexture						takes trackable whichTrackable, string textureName, integer materialId, integer textureIndex returns nothing
+native GetTrackableTexture								takes trackable whichTrackable, integer textureIndex returns string
 native SetTrackableTexture								takes trackable whichTrackable, string textureName, integer textureIndex returns nothing
 native SetTrackableReplaceableTexture					takes trackable whichTrackable, string textureName, integer textureIndex returns nothing
 native GetTrackableModel								takes trackable whichTrackable returns string
@@ -5849,7 +5872,11 @@ native SetWidgetRoll									takes widget whichWidget, real roll returns nothing
 native GetWidgetModel									takes widget whichWidget returns string
 native SetWidgetModel									takes widget whichWidget, string modelFile returns nothing
 native SetWidgetModelEx									takes widget whichWidget, string modelFile, integer playerId returns nothing
+native GetWidgetPortrait								takes widget whichWidget returns string
+native SetWidgetPortrait								takes widget whichWidget, string modelName returns nothing
+native GetWidgetMaterialTexture							takes widget whichWidget, integer materialId, integer textureIndex returns string
 native SetWidgetMaterialTexture							takes widget whichWidget, string textureName, integer materialId, integer textureIndex returns nothing
+native GetWidgetTexture									takes widget whichWidget, integer textureIndex returns string
 native SetWidgetTexture									takes widget whichWidget, string textureName, integer textureIndex returns nothing
 native SetWidgetReplaceableTexture						takes widget whichWidget, string textureName, integer textureIndex returns nothing
 native GetWidgetModelObjectX							takes widget whichWidget, string whichObject returns real
@@ -5926,7 +5953,11 @@ native SetDestructableRoll								takes destructable whichDestructable, real rol
 native GetDestructableModel								takes destructable whichDestructable returns string
 native SetDestructableModel								takes destructable whichDestructable, string modelFile returns nothing
 native SetDestructableModelEx							takes destructable whichDestructable, string modelFile, integer playerId returns nothing
+native GetDestructablePortrait							takes destructable whichDestructable returns string
+native SetDestructablePortrait							takes destructable whichDestructable, string modelName returns nothing
+native GetDestructableMaterialTexture					takes destructable whichDestructable, integer materialId, integer textureIndex returns string
 native SetDestructableMaterialTexture					takes destructable whichDestructable, string textureName, integer materialId, integer textureIndex returns nothing
+native GetDestructableTexture							takes destructable whichDestructable, integer textureIndex returns string
 native SetDestructableTexture							takes destructable whichDestructable, string textureName, integer textureIndex returns nothing
 native SetDestructableReplaceableTexture				takes destructable whichDestructable, string textureName, integer textureIndex returns nothing
 native GetDestructableModelObjectX						takes destructable whichDestructable, string whichObject returns real
@@ -6034,7 +6065,11 @@ native SetItemRoll										takes item whichItem, real roll returns nothing
 native GetItemModel										takes item whichItem returns string
 native SetItemModel										takes item whichItem, string modelFile returns nothing
 native SetItemModelEx									takes item whichItem, string modelFile, integer playerColourId returns nothing
+native GetItemPortrait									takes item whichItem returns string
+native SetItemPortrait									takes item whichItem, string modelName returns nothing
+native GetItemMaterialTexture							takes item whichItem, integer materialId, integer textureIndex returns string
 native SetItemMaterialTexture							takes item whichItem, string textureName, integer materialId, integer textureIndex returns nothing
+native GetItemTexture									takes item whichItem, integer textureIndex returns string
 native SetItemTexture									takes item whichItem, string textureName, integer textureIndex returns nothing
 native SetItemReplaceableTexture						takes item whichItem, string textureName, integer textureIndex returns nothing
 native GetItemModelObjectX								takes item whichItem, string whichObject returns real
@@ -6161,6 +6196,7 @@ native UnitAddAbilityEx									takes unit whichUnit, integer abilityTypeId, boo
 native UnitRemoveAbilityEx								takes unit whichUnit, integer abilityTypeId, boolean removeDuplicates returns boolean
 
 native CountUnitAbilities								takes unit whichUnit, boolean alsoCountBuffs returns integer
+native CountUnitAbilitiesWithTypeId						takes unit whichUnit, boolean alsoCountBuffs, integer abilityTypeId returns integer
 native GetUnitAbility									takes unit whichUnit, integer abilityTypeId returns ability
 native GetUnitAbilityEx									takes unit whichUnit, integer abilityTypeId, integer id returns ability  // Allows you to search through duplicates.
 native GetUnitAbilityByIndex							takes unit whichUnit, integer index returns ability
@@ -6180,6 +6216,7 @@ native UnitAddBuffById									takes unit whichUnit, integer buffTypeId returns 
 native UnitAddBuffByIdEx								takes unit whichUnit, integer buffTypeId, boolean checkForDuplicates returns boolean
 
 native CountUnitBuffs									takes unit whichUnit returns integer
+native CountUnitBuffsWithTypeId							takes unit whichUnit, integer buffTypeId returns integer
 native GetUnitBuff										takes unit whichUnit, integer buffTypeId returns buff
 native GetUnitBuffEx									takes unit whichUnit, integer buffTypeId, integer id returns buff // Allows you to search through duplicates.
 native GetUnitBuffByIndex								takes unit whichUnit, integer index returns buff
@@ -6187,6 +6224,7 @@ native GetUnitBuffLevel									takes unit whichUnit, integer buffTypeId returns
 //
 
 native UnitCancelTimedLife								takes unit whichUnit returns nothing
+native UnitRestartTimedLife								takes unit whichUnit returns nothing
 native GetUnitRemainingTimedLife						takes unit whichUnit returns real
 native SetUnitRemainingTimedLife						takes unit whichUnit, real duration returns nothing
 native IsUnitGhosted									takes unit whichUnit returns boolean
@@ -6294,7 +6332,11 @@ native SetHeroPrimaryAttribute							takes unit whichUnit, heroattribute whichHe
 native GetUnitModel										takes unit whichUnit returns string
 native SetUnitModel										takes unit whichUnit, string modelName returns nothing
 native SetUnitModelEx									takes unit whichUnit, string modelName, integer playercolourId returns nothing
+native GetUnitPortrait									takes unit whichUnit returns string
+native SetUnitPortrait									takes unit whichUnit, string modelName returns nothing
+native GetUnitMaterialTexture							takes unit whichUnit, integer materialId, integer textureIndex returns string
 native SetUnitMaterialTexture							takes unit whichUnit, string textureName, integer materialId, integer textureIndex returns nothing
+native GetUnitTexture									takes unit whichUnit, integer textureIndex returns string
 native SetUnitTexture									takes unit whichUnit, string textureName, integer textureIndex returns nothing
 native SetUnitReplaceableTexture						takes unit whichUnit, string textureName, integer textureIndex returns nothing
 native GetUnitCollisionType								takes unit whichUnit returns collisiontype
@@ -6505,7 +6547,9 @@ native SetProjectilePitch								takes projectile whichProjectile, real pitch re
 native GetProjectileRoll								takes projectile whichProjectile returns real
 native SetProjectileRoll								takes projectile whichProjectile, real roll returns nothing
 native SetProjectileOrientation							takes projectile whichProjectile, real yaw, real pitch, real roll returns nothing
+native GetProjectileMaterialTexture						takes projectile whichProjectile, integer materialId, integer textureIndex returns string
 native SetProjectileMaterialTexture						takes projectile whichProjectile, string textureName, integer materialId, integer textureIndex returns nothing
+native GetProjectileTexture								takes projectile whichProjectile, integer textureIndex returns string
 native SetProjectileTexture								takes projectile whichProjectile, string textureName, integer textureIndex returns nothing
 native SetProjectileReplaceableTexture					takes projectile whichProjectile, string textureName, integer textureIndex returns nothing
 native GetProjectileModel								takes projectile whichProjectile returns string
@@ -6806,12 +6850,14 @@ native SetFrameSpritePitch								takes framehandle whichFrame, real pitch retur
 native GetFrameSpriteRoll								takes framehandle whichFrame returns real
 native SetFrameSpriteRoll								takes framehandle whichFrame, real roll returns boolean
 native SetFrameSpriteOrientation						takes framehandle whichFrame, real yaw, real pitch, real roll returns nothing
-native SetFrameSpriteMaterialTexture					takes framehandle whichFrame, string textureName, integer materialId, integer textureIndex returns nothing
 native GetFrameSpriteMatrixScaleX						takes framehandle whichFrame returns real
 native GetFrameSpriteMatrixScaleY						takes framehandle whichFrame returns real
 native GetFrameSpriteMatrixScaleZ						takes framehandle whichFrame returns real
 native SetFrameSpriteMatrixScale						takes framehandle whichFrame, real sizeX, real sizeY, real sizeZ returns nothing
 native ResetFrameSpriteMatrix							takes framehandle whichFrame returns nothing
+native GetFrameSpriteMaterialTexture					takes framehandle whichFrame, integer materialId, integer textureIndex returns string
+native SetFrameSpriteMaterialTexture					takes framehandle whichFrame, string textureName, integer materialId, integer textureIndex returns nothing
+native GetFrameSpriteTexture							takes framehandle whichFrame, integer textureIndex returns string
 native SetFrameSpriteTexture							takes framehandle whichFrame, string textureName, integer textureIndex returns nothing
 native SetFrameSpriteReplaceableTexture					takes framehandle whichFrame, string textureName, integer textureIndex returns nothing
 native GetFrameSpriteModel								takes framehandle whichFrame returns string
@@ -6948,6 +6994,7 @@ native GetEventWeaponType								takes nothing returns weapontype
 native SetEventWeaponType								takes weapontype weaponType returns boolean
 
 native GetEventIsAttack									takes nothing returns boolean
+native GetEventIsAttackEx								takes boolean checkActual returns boolean // false checks for isAttack provided in UnitDamageTarget, true returns GetEventIsAttack
 native GetEventIsRanged									takes nothing returns boolean
 native GetEventIsCritical								takes nothing returns boolean
 
