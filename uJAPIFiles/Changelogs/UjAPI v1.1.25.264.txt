@@ -1,0 +1,5 @@
+v1.1.25.264
+
+1. New Natives:
+  native GetTriggerEvent									takes nothing returns event
+2. Fixed fatal error from SetEventTradeState.
