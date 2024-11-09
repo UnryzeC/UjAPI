@@ -1,5 +1,58 @@
 v1.1.25.264
 
 1. New Natives:
-  native GetTriggerEvent									takes nothing returns event
-2. Fixed fatal error from SetEventTradeState.
+  native GetTriggerEvent							takes nothing returns event
+  //
+  native IsWar3ImageAnimationFrozen				    takes war3image whichWar3Image returns boolean
+  native SetWar3ImageAnimationFrozen			    takes war3image whichWar3Image, boolean isFreeze returns nothing
+  //
+  native IsSpriteAnimationFrozen					takes sprite whichSprite returns boolean
+  native SetSpriteAnimationFrozen					takes sprite whichSprite, boolean isFreeze returns nothing
+  //
+  native IsDoodadAnimationFrozen					takes doodad whichDoodad returns boolean
+  native SetDoodadAnimationFrozen					takes doodad whichDoodad, boolean isFreeze returns nothing
+  //
+  native IsSpecialEffectAnimationFrozen				takes effect whichEffect returns boolean
+  native SetSpecialEffectAnimationFrozen			takes effect whichEffect, boolean isFreeze returns nothing
+  //
+  native IsTrackableAnimationFrozen					takes trackable whichTrackable returns boolean
+  native SetTrackableAnimationFrozen				takes trackable whichTrackable, boolean isFreeze returns nothing
+  //
+  native IsWidgetAnimationFrozen					takes widget whichWidget returns boolean
+  native SetWidgetAnimationFrozen					takes widget whichWidget, boolean isFreeze returns nothing
+  //
+  native IsDestructableAnimationFrozen				takes destructable whichDestructable returns boolean
+  native SetDestructableAnimationFrozen				takes destructable whichDestructable, boolean isFreeze returns nothing
+  //
+  native IsItemAnimationFrozen						takes item whichItem returns boolean
+  native SetItemAnimationFrozen					    takes item whichItem, boolean isFreeze returns nothing
+  //
+  native IsUnitAnimationFrozen					    takes unit whichUnit returns boolean
+  native SetUnitAnimationFrozen						takes unit whichUnit, boolean isFreeze returns nothing
+  //
+  native IsProjectileAnimationFrozen				takes projectile whichProjectile returns boolean
+  native SetProjectileAnimationFrozen				takes projectile whichProjectile, boolean isFreeze returns nothing
+  //
+  native IsFrameSpriteAnimationFrozen				takes framehandle whichFrame returns boolean
+  native SetFrameSpriteAnimationFrozen				takes framehandle whichFrame, boolean isFreeze returns nothing
+2. Native Changes:
+  SetFrameSpriteAlpha now returns nothing instead of boolean
+  SetFrameSpriteColour now returns nothing instead of boolean
+  SetFrameSpriteVertexColour now returns nothing instead of boolean
+  SetFrameSpriteOrientationEx now returns nothing instead of boolean
+  SetFrameSpriteYaw now returns nothing instead of boolean
+  SetFrameSpriteFacing now returns nothing instead of boolean
+  SetFrameSpritePitch now returns nothing instead of boolean
+  SetFrameSpriteRoll now returns nothing instead of boolean
+3. Fixed fatal error from SetEventTradeState.
+4. Optimised all internal native registers for War3Images.
+5. Optimised all internal native registers for Sprites.
+6. Optimised all internal native registers for Widgets.
+7. Optimised all internal native registers for Units.
+8. Optimised all internal native registers for Items.
+9. Optimised all internal native registers for Destructables.
+10. Optimised all internal native registers for SpecialEffects.
+11. Optimised all internal native registers for Trackables.
+12. Optimised all internal native registers for Projectiles.
+13. Optimised all internal native registers for FrameSprites.
+14. Optimised all internal native registers for Doodads.
