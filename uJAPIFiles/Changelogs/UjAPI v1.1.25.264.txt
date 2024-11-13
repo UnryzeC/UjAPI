@@ -60,5 +60,5 @@ v1.1.25.264
 11. Optimised all internal native registers for Trackables.
 12. Optimised all internal native registers for Projectiles.
 13. Optimised all internal native registers for FrameSprites.
-14. Rewritten internal TextTag font handling, so game won't default to original font after a new font was set.
 14. Optimised all internal native registers for Doodads.
+15. Rewritten internal TextTag font handling, so game won't default to original font after a new font was set.
