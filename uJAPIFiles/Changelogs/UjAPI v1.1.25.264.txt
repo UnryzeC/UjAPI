@@ -1,6 +1,8 @@
 v1.1.25.264
 
-1. New Natives:
+1. New Constants:
+  constant originframetype			ORIGIN_FRAME_INVENTORY_BAR									= ConvertOriginFrameType(46)
+2. New Natives:
   native GetTriggerEvent							takes nothing returns event
   //
   native GetBaseTextTagFont							takes nothing returns string
@@ -34,13 +36,26 @@ v1.1.25.264
   //
   native IsUnitAnimationFrozen					    takes unit whichUnit returns boolean
   native SetUnitAnimationFrozen						takes unit whichUnit, boolean isFreeze returns nothing
+  native UnitInventorySetSize						takes unit whichUnit, integer size returns nothing
   //
   native IsProjectileAnimationFrozen				takes projectile whichProjectile returns boolean
   native SetProjectileAnimationFrozen				takes projectile whichProjectile, boolean isFreeze returns nothing
   //
   native IsFrameSpriteAnimationFrozen				takes framehandle whichFrame returns boolean
   native SetFrameSpriteAnimationFrozen				takes framehandle whichFrame, boolean isFreeze returns nothing
-2. Native Changes:
+3. Constants Changes:
+  ORIGIN_FRAME_UNIT_TIP								= ConvertOriginFrameType(46 -> 45)
+  ORIGIN_FRAME_INVENTORY_COVER_FRAME				= ConvertOriginFrameType(45 -> 47)
+  ORIGIN_FRAME_ITEM_BUTTON_COOLDOWN_INDICATOR		= ConvertOriginFrameType(47 -> 48)
+  ORIGIN_FRAME_ITEM_BUTTON_AUTOCAST_FRAME			= ConvertOriginFrameType(48 -> 49)
+  ORIGIN_FRAME_ITEM_BUTTON_CHARGES_FRAME			= ConvertOriginFrameType(49 -> 50)
+  ORIGIN_FRAME_ITEM_BUTTON_CHARGES_TEXT				= ConvertOriginFrameType(50 -> 51)
+  ORIGIN_FRAME_TRAINABLE_BUTTON						= ConvertOriginFrameType(51 -> 52)
+  ORIGIN_FRAME_CARGO_BUTTON							= ConvertOriginFrameType(52 -> 53)
+  ORIGIN_FRAME_GROUP_BUTTON							= ConvertOriginFrameType(53 -> 54)
+  ORIGIN_FRAME_FPS_TEXT								= ConvertOriginFrameType(54 -> 55)
+  ORIGIN_FRAME_MEMORY_TEXT							= ConvertOriginFrameType(55 -> 56)
+4. Native Changes:
   SetFrameSpriteAlpha now returns nothing instead of boolean
   SetFrameSpriteColour now returns nothing instead of boolean
   SetFrameSpriteVertexColour now returns nothing instead of boolean
@@ -49,16 +64,19 @@ v1.1.25.264
   SetFrameSpriteFacing now returns nothing instead of boolean
   SetFrameSpritePitch now returns nothing instead of boolean
   SetFrameSpriteRoll now returns nothing instead of boolean
-3. Fixed fatal error from SetEventTradeState.
-4. Optimised all internal native registers for War3Images.
-5. Optimised all internal native registers for Sprites.
-6. Optimised all internal native registers for Widgets.
-7. Optimised all internal native registers for Units.
-8. Optimised all internal native registers for Items.
-9. Optimised all internal native registers for Destructables.
-10. Optimised all internal native registers for SpecialEffects.
-11. Optimised all internal native registers for Trackables.
-12. Optimised all internal native registers for Projectiles.
-13. Optimised all internal native registers for FrameSprites.
-14. Optimised all internal native registers for Doodads.
-15. Rewritten internal TextTag font handling, so game won't default to original font after a new font was set.
+5. Fixed fatal error from SetEventTradeState.
+6. Optimised all internal native registers for War3Images.
+7. Optimised all internal native registers for Sprites.
+8. Optimised all internal native registers for Widgets.
+9. Optimised all internal native registers for Units.
+10. Optimised all internal native registers for Items.
+11. Optimised all internal native registers for Destructables.
+12. Optimised all internal native registers for SpecialEffects.
+13. Optimised all internal native registers for Trackables.
+14. Optimised all internal native registers for Projectiles.
+15. Optimised all internal native registers for FrameSprites.
+16. Optimised all internal native registers for Doodads.
+17. Rewritten internal TextTag font handling, so game won't default to original font after a new font was set.
+18. Fully rewritten CAbilityInventory, now it supports up to 10000 items.
+    Note: this change is highly experimental, so crashes may happen, which will be fixed accordingly.
+19. InventoryBar can now be resized according to SetFrameGridSize.
