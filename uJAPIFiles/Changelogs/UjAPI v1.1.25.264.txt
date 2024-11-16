@@ -79,4 +79,6 @@ v1.1.25.264
 17. Rewritten internal TextTag font handling, so game won't default to original font after a new font was set.
 18. Fully rewritten CAbilityInventory, now it supports up to 10000 items.
     Note: this change is highly experimental, so crashes may happen, which will be fixed accordingly.
-19. InventoryBar can now be resized according to SetFrameGridSize.
+19. CAbilityInventory now resizes itself based on ITEM_CAPACITY field, which can be higher than 6.
+    NOTE: use SetAbilityBaseIntegerLevelFieldById( AbilityId, ABILITY_ILF_ITEM_CAPACITY, LEVEL, COUNT ) if you do NOT want to edit fields via WE.
+20. InventoryBar can now be resized according to SetFrameGridSize.
