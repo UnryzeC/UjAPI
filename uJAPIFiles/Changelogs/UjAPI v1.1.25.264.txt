@@ -2,59 +2,81 @@ v1.1.25.264
 
 1. New Constants:
   constant originframetype			ORIGIN_FRAME_INVENTORY_BAR									= ConvertOriginFrameType(46)
+  constant playerunitevent			EVENT_PLAYER_UNIT_ACQUIRED_TARGET							= ConvertPlayerUnitEvent(278)
+  constant playerunitevent			EVENT_PLAYER_UNIT_TARGET_IN_RANGE							= ConvertPlayerUnitEvent(279)
+  constant playerunitevent			EVENT_PLAYER_UNIT_MOVE_ITEM_SLOT							= ConvertPlayerUnitEvent(280)
+  constant playerunitevent          EVENT_PLAYER_UNIT_STACK_ITEM                                = ConvertPlayerUnitEvent(319)
+  constant unitevent				EVENT_UNIT_MOVE_ITEM_SLOT									= ConvertUnitEvent(297)
+  constant unitevent				EVENT_UNIT_STACK_ITEM										= ConvertUnitEvent(318)
 2. New Natives:
-  native GetTriggerEvent							takes nothing returns event
+  native GetTriggerEvent							    takes nothing returns event
   //
-  native GetBaseTextTagFont							takes nothing returns string
-  native SetBaseTextTagFont							takes string fontName, real size, integer flags returns nothing
-  native GetTextTagFont								takes texttag whichTextTag returns string
-  native SetTextTagFont								takes texttag whichTextTag, string fontName, real size, integer flags returns nothing
+  native GetBaseTextTagFont							    takes nothing returns string
+  native SetBaseTextTagFont							    takes string fontName, real size, integer flags returns nothing
+  native GetTextTagFont								    takes texttag whichTextTag returns string
+  native SetTextTagFont								    takes texttag whichTextTag, string fontName, real size, integer flags returns nothing
   //
-  native IsWar3ImageAnimationFrozen				    takes war3image whichWar3Image returns boolean
-  native SetWar3ImageAnimationFrozen			    takes war3image whichWar3Image, boolean isFreeze returns nothing
+  native IsWar3ImageAnimationFrozen				        takes war3image whichWar3Image returns boolean
+  native SetWar3ImageAnimationFrozen			        takes war3image whichWar3Image, boolean isFreeze returns nothing
   //
-  native IsSpriteAnimationFrozen					takes sprite whichSprite returns boolean
-  native SetSpriteAnimationFrozen					takes sprite whichSprite, boolean isFreeze returns nothing
+  native IsSpriteAnimationFrozen					    takes sprite whichSprite returns boolean
+  native SetSpriteAnimationFrozen					    takes sprite whichSprite, boolean isFreeze returns nothing
   //
-  native IsDoodadAnimationFrozen					takes doodad whichDoodad returns boolean
-  native SetDoodadAnimationFrozen					takes doodad whichDoodad, boolean isFreeze returns nothing
+  native IsDoodadAnimationFrozen					    takes doodad whichDoodad returns boolean
+  native SetDoodadAnimationFrozen					    takes doodad whichDoodad, boolean isFreeze returns nothing
   //
-  native IsSpecialEffectAnimationFrozen				takes effect whichEffect returns boolean
-  native SetSpecialEffectAnimationFrozen			takes effect whichEffect, boolean isFreeze returns nothing
+  native IsSpecialEffectAnimationFrozen				    takes effect whichEffect returns boolean
+  native SetSpecialEffectAnimationFrozen			    takes effect whichEffect, boolean isFreeze returns nothing
   //
-  native IsTrackableAnimationFrozen					takes trackable whichTrackable returns boolean
-  native SetTrackableAnimationFrozen				takes trackable whichTrackable, boolean isFreeze returns nothing
+  native IsTrackableAnimationFrozen					    takes trackable whichTrackable returns boolean
+  native SetTrackableAnimationFrozen				    takes trackable whichTrackable, boolean isFreeze returns nothing
   //
-  native IsWidgetAnimationFrozen					takes widget whichWidget returns boolean
-  native SetWidgetAnimationFrozen					takes widget whichWidget, boolean isFreeze returns nothing
+  native IsWidgetAnimationFrozen					    takes widget whichWidget returns boolean
+  native SetWidgetAnimationFrozen					    takes widget whichWidget, boolean isFreeze returns nothing
   //
-  native IsDestructableAnimationFrozen				takes destructable whichDestructable returns boolean
-  native SetDestructableAnimationFrozen				takes destructable whichDestructable, boolean isFreeze returns nothing
+  native IsDestructableAnimationFrozen				    takes destructable whichDestructable returns boolean
+  native SetDestructableAnimationFrozen				    takes destructable whichDestructable, boolean isFreeze returns nothing
   //
-  native IsItemAnimationFrozen						takes item whichItem returns boolean
-  native SetItemAnimationFrozen					    takes item whichItem, boolean isFreeze returns nothing
+  native IsItemAnimationFrozen						    takes item whichItem returns boolean
+  native SetItemAnimationFrozen					        takes item whichItem, boolean isFreeze returns nothing
+  constant native GetTriggerItemTargetItem				takes nothing returns item
+  constant native GetTriggerItemSourceSlot				takes nothing returns integer
+  constant native GetTriggerItemTargetSlot				takes nothing returns integer
+  constant native GetAbsorbedItem						takes nothing returns item
+  constant native GetAbsorbingItem						takes nothing returns item
+  constant native GetAbsorbedItemWasAbsorbed			takes nothing returns boolean
+  constant native GetStackingItemSource					takes nothing returns item
+  constant native GetStackingItemSourcePreviousCharges 	takes nothing returns integer
+  constant native GetStackingItemTarget					takes nothing returns item
+  constant native GetStackingItemTargetPreviousCharges 	takes nothing returns integer
+  constant native GetStackingItemTargetAddedCharges 	takes nothing returns integer
+  constant native SetTriggerItemAllowMoveSlot			takes boolean isMove returns nothing // Setting this to false will prevent items from moving or stacking.
+  constant native SetTriggerItemAllowStack				takes boolean isStack returns nothing // Setting this to false will prevent items from stacking in stack event.
   //
-  native IsUnitAnimationFrozen					    takes unit whichUnit returns boolean
-  native SetUnitAnimationFrozen						takes unit whichUnit, boolean isFreeze returns nothing
-  native UnitInventorySetSize						takes unit whichUnit, integer size returns nothing
+  native IsUnitAnimationFrozen					        takes unit whichUnit returns boolean
+  native SetUnitAnimationFrozen						    takes unit whichUnit, boolean isFreeze returns nothing
+  native UnitInventorySetSize						    takes unit whichUnit, integer size returns nothing
   //
-  native IsProjectileAnimationFrozen				takes projectile whichProjectile returns boolean
-  native SetProjectileAnimationFrozen				takes projectile whichProjectile, boolean isFreeze returns nothing
+  native IsProjectileAnimationFrozen				    takes projectile whichProjectile returns boolean
+  native SetProjectileAnimationFrozen				    takes projectile whichProjectile, boolean isFreeze returns nothing
   //
-  native IsFrameSpriteAnimationFrozen				takes framehandle whichFrame returns boolean
-  native SetFrameSpriteAnimationFrozen				takes framehandle whichFrame, boolean isFreeze returns nothing
+  native IsFrameSpriteAnimationFrozen				    takes framehandle whichFrame returns boolean
+  native SetFrameSpriteAnimationFrozen				    takes framehandle whichFrame, boolean isFreeze returns nothing
 3. Constants Changes:
-  ORIGIN_FRAME_UNIT_TIP								= ConvertOriginFrameType(46 -> 45)
-  ORIGIN_FRAME_INVENTORY_COVER_FRAME				= ConvertOriginFrameType(45 -> 47)
-  ORIGIN_FRAME_ITEM_BUTTON_COOLDOWN_INDICATOR		= ConvertOriginFrameType(47 -> 48)
-  ORIGIN_FRAME_ITEM_BUTTON_AUTOCAST_FRAME			= ConvertOriginFrameType(48 -> 49)
-  ORIGIN_FRAME_ITEM_BUTTON_CHARGES_FRAME			= ConvertOriginFrameType(49 -> 50)
-  ORIGIN_FRAME_ITEM_BUTTON_CHARGES_TEXT				= ConvertOriginFrameType(50 -> 51)
-  ORIGIN_FRAME_TRAINABLE_BUTTON						= ConvertOriginFrameType(51 -> 52)
-  ORIGIN_FRAME_CARGO_BUTTON							= ConvertOriginFrameType(52 -> 53)
-  ORIGIN_FRAME_GROUP_BUTTON							= ConvertOriginFrameType(53 -> 54)
-  ORIGIN_FRAME_FPS_TEXT								= ConvertOriginFrameType(54 -> 55)
-  ORIGIN_FRAME_MEMORY_TEXT							= ConvertOriginFrameType(55 -> 56)
+  ORIGIN_FRAME_UNIT_TIP								    = ConvertOriginFrameType(46 -> 45)
+  ORIGIN_FRAME_INVENTORY_COVER_FRAME				    = ConvertOriginFrameType(45 -> 47)
+  ORIGIN_FRAME_ITEM_BUTTON_COOLDOWN_INDICATOR		    = ConvertOriginFrameType(47 -> 48)
+  ORIGIN_FRAME_ITEM_BUTTON_AUTOCAST_FRAME			    = ConvertOriginFrameType(48 -> 49)
+  ORIGIN_FRAME_ITEM_BUTTON_CHARGES_FRAME			    = ConvertOriginFrameType(49 -> 50)
+  ORIGIN_FRAME_ITEM_BUTTON_CHARGES_TEXT				    = ConvertOriginFrameType(50 -> 51)
+  ORIGIN_FRAME_TRAINABLE_BUTTON						    = ConvertOriginFrameType(51 -> 52)
+  ORIGIN_FRAME_CARGO_BUTTON							    = ConvertOriginFrameType(52 -> 53)
+  ORIGIN_FRAME_GROUP_BUTTON							    = ConvertOriginFrameType(53 -> 54)
+  ORIGIN_FRAME_FPS_TEXT								    = ConvertOriginFrameType(54 -> 55)
+  ORIGIN_FRAME_MEMORY_TEXT							    = ConvertOriginFrameType(55 -> 56)
+  //
+  EVENT_PLAYER_UNIT_DECAY_FINISHED					    = ConvertPlayerUnitEvent(319 -> 332)
+  EVENT_UNIT_DECAY_FINISHED							    = ConvertUnitEvent(318 -> 331)
 4. Native Changes:
   SetFrameSpriteAlpha now returns nothing instead of boolean
   SetFrameSpriteColour now returns nothing instead of boolean
