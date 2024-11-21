@@ -104,3 +104,6 @@ v1.1.25.264
 19. CAbilityInventory now resizes itself based on ITEM_CAPACITY field, which can be higher than 6.
     NOTE: use SetAbilityBaseIntegerLevelFieldById( AbilityId, ABILITY_ILF_ITEM_CAPACITY, LEVEL, COUNT ) if you do NOT want to edit fields via WE.
 20. InventoryBar can now be resized according to SetFrameGridSize.
+21. Fixed SetTYPEPosition natives not working.
+22. Fully rewritten CItem structure and methods.
+23. CItem is no longer limited to 4 abilities, you can add as many as you like in WorldEditor, or via slk.
