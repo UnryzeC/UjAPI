@@ -62,6 +62,10 @@ v1.1.25.264
   //
   native IsFrameSpriteAnimationFrozen				    takes framehandle whichFrame returns boolean
   native SetFrameSpriteAnimationFrozen				    takes framehandle whichFrame, boolean isFreeze returns nothing
+  //
+  native IsAbilityPassive                               takes ability whichAbility returns boolean
+  native SetAbilityPassive                              takes ability whichAbility, boolean enable returns nothing // only works for CAbilityButton descendants
+  //
 3. Constants Changes:
   ORIGIN_FRAME_UNIT_TIP								    = ConvertOriginFrameType(46 -> 45)
   ORIGIN_FRAME_INVENTORY_COVER_FRAME				    = ConvertOriginFrameType(45 -> 47)
@@ -107,3 +111,7 @@ v1.1.25.264
 21. Fixed SetTYPEPosition natives not working.
 22. Fully rewritten CItem structure and methods.
 23. CItem is no longer limited to 4 abilities, you can add as many as you like in WorldEditor, or via slk.
+24. CCommandBar buttons are now created with cooldown indicators from the get-go.
+25. CInventoryBar buttons are now created with cooldown indicators from the get-go.
+26. CCommandBar buttons now default to ENABLED icon with DISABLED mask, if DISBTN doesn't exist instead of green texture.
+27. CInventoryBar buttons now default to ENABLED icon with DISABLED mask, if DISBTN doesn't exist instead of green texture.
