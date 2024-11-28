@@ -37,6 +37,8 @@ v1.1.25.264
   native IsDestructableAnimationFrozen				    takes destructable whichDestructable returns boolean
   native SetDestructableAnimationFrozen				    takes destructable whichDestructable, boolean isFreeze returns nothing
   //
+  native GetItemMaxCharges								takes item whichItem returns integer
+  native SetItemMaxCharges								takes item whichItem, integer charges returns nothing
   native IsItemAnimationFrozen						    takes item whichItem returns boolean
   native SetItemAnimationFrozen					        takes item whichItem, boolean isFreeze returns nothing
   constant native GetTriggerItemTargetItem				takes nothing returns item
@@ -56,6 +58,9 @@ v1.1.25.264
   native IsUnitAnimationFrozen					        takes unit whichUnit returns boolean
   native SetUnitAnimationFrozen						    takes unit whichUnit, boolean isFreeze returns nothing
   native UnitInventorySetSize						    takes unit whichUnit, integer size returns nothing
+  // 0 - Pick | 1 - Drop | 2 - Give | 3 - Pawn
+  native UnitInventoryGetRange							takes unit whichUnit, integer rangeType returns real
+  native UnitInventorySetRange							takes unit whichUnit, integer rangeType, real range returns nothing
   //
   native IsProjectileAnimationFrozen				    takes projectile whichProjectile returns boolean
   native SetProjectileAnimationFrozen				    takes projectile whichProjectile, boolean isFreeze returns nothing
