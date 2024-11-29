@@ -1,4 +1,4 @@
-v1.1.25.264
+v1.1.25.270
 
 1. New Constants:
   constant originframetype			ORIGIN_FRAME_INVENTORY_BAR									= ConvertOriginFrameType(46)
@@ -9,6 +9,10 @@ v1.1.25.264
   constant unitevent				EVENT_UNIT_MOVE_ITEM_SLOT									= ConvertUnitEvent(297)
   constant unitevent				EVENT_UNIT_STACK_ITEM										= ConvertUnitEvent(318)
 2. New Natives:
+  // Async (Local values) use with caution
+  native IsCursorInTargetMode							takes nothing returns boolean // When mouse has "target" art.
+  native IsSubmenuOpen									takes nothing returns boolean // Spellbook, Buildmenu, Hero Learn etc.
+  //
   native GetTriggerEvent							    takes nothing returns event
   //
   native GetBaseTextTagFont							    takes nothing returns string
