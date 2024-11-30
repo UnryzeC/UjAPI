@@ -1,0 +1,3 @@
+v1.1.25.271
+
+1. Fixed fatal error on map exit/reload when any Ability/Buff fields were changed.
