@@ -1,7 +1,7 @@
 # Jass API Projectile
 
-```
-// For Projectile Type Ids: https://github.com/UnryzeC/UjAPI/blob/main/TypeData/ in there check out these files: WC3BulletList.txt / WC3MissileList.txt / WC3ArtilleryList.txt
+```sql
+// For Projectile Type Ids: [[[https://github.com/UnryzeC/UjAPI/blob/main/TypeData/|https://github.com/UnryzeC/UjAPI/blob/main/TypeData/]]] in there check out these files: [[[WC3BulletList.txt|https://github.com/UnryzeC/UjAPI/blob/main/TypeData/WC3BulletList.txt]]] / [[[WC3MissileList.txt|https://github.com/UnryzeC/UjAPI/blob/main/TypeData/WC3MissileList.txt]]] / [[[WC3ArtilleryList.txt|https://github.com/UnryzeC/UjAPI/blob/main/TypeData/WC3ArtilleryList.txt]]]
 //
 native CreateProjectile									takes integer projectileTypeId returns projectile
 native CreateProjectileEx								takes unit owner, integer projectileTypeId, integer attackIndex returns projectile
