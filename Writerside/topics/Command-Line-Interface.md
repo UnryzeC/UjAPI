@@ -73,7 +73,9 @@
     </tr>
 </table>
 
-    Quotes are mandatory for commands that have multi-selection of arguments.
+> Quotes are mandatory for commands that have multi-selection of arguments.
+> 
+{style="note"}
 
 ## Arguments Dscriptions
 
