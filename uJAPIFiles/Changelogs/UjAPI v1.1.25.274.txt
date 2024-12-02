@@ -1,6 +1,7 @@
 v1.1.25.274
 
 1. Fixed incorrect processing of RangeEvent::SetFlagEx, was always setting 0x2 offset to true, instead of varying based on provided boolean.
+2. Fixed crash whenever an invalid/non-existent typeId was provided to CreateItem.
 
 UjAPIApp
 
