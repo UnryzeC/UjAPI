@@ -1,0 +1,4 @@
+v1.1.25.275
+
+1. Fixed fatal error on any shop selection, if any Active ability was set to passive via SetAbilityPassive.
+  Note: this is a weird error that resulted from C++ code optimisation discarding some nullptr checks on its own.
