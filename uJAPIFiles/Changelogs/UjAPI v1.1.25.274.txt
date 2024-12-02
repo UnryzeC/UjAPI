@@ -1,0 +1,7 @@
+v1.1.25.274
+
+1. Fixed incorrect processing of RangeEvent::SetFlagEx, was always setting 0x2 offset to true, instead of varying based on provided boolean.
+
+UjAPIApp
+
+1. Fixed AngelScript maps not loading directly, when provided to launch arguments, this required 200ms delay addition between module injection and command processing.
