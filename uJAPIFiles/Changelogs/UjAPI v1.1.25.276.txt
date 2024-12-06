@@ -1,0 +1,4 @@
+v1.1.25.276
+
+1. Fixed incorrect creation of Bbsk buff when created via Buff API.
+2. Fixed silent crash whenever any of the Bbsk fields were changed.
