@@ -1,10 +1,13 @@
 v1.1.25.277
 
-1. Fixed GetMouseScreenRelativeX/Y returning absolute value instead of relative.
-2. Fixed GetMouseScreenAbsoluteX/Y returning relative value instead of absolute.
-3. Fixed SetMouseScreenRelativeX/Y / SetMouseScreenRelativePosition setting position incorrently.
-4. Fixed SetMouseScreenAbsoluteX/Y / SetMouseScreenAbsolutePosition setting position incorrently.
-5. Fixed GetWindowWidth returning incorrect value when game was launched in windowed mode.
-6. Fixed GetWindowHeight returning incorrect value when game was launched in windowed mode.
-7. Fixed GetWindowX/Y returning incorrect value when game was launched in windowed mode.
-8. Fixed GetWindowCenterX/Y returning incorrect value when game was launched in windowed mode.
+1. New Natives:
+    native GetRelativeAxisX									takes real x returns real
+    native GetRelativeAxisY									takes real y returns real
+2. Fixed GetMouseScreenRelativeX/Y returning absolute value instead of relative.
+3. Fixed GetMouseScreenAbsoluteX/Y returning relative value instead of absolute.
+4. Fixed SetMouseScreenRelativeX/Y / SetMouseScreenRelativePosition setting position incorrently.
+5. Fixed SetMouseScreenAbsoluteX/Y / SetMouseScreenAbsolutePosition setting position incorrently.
+6. Fixed GetWindowWidth returning incorrect value when game was launched in windowed mode.
+7. Fixed GetWindowHeight returning incorrect value when game was launched in windowed mode.
+8. Fixed GetWindowX/Y returning incorrect value when game was launched in windowed mode.
+9. Fixed GetWindowCenterX/Y returning incorrect value when game was launched in windowed mode.
