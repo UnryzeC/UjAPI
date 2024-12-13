@@ -1,8 +1,8 @@
 v1.1.25.277
 
 1. New Natives:
-    native GetRelativeAxisX									takes real x returns real
-    native GetRelativeAxisY									takes real y returns real
+    native GetAspectRelativeAxisX									takes real x returns real
+    native GetAspectRelativeAxisY									takes real y returns real
 2. Fixed GetMouseScreenRelativeX/Y returning absolute value instead of relative.
 3. Fixed GetMouseScreenAbsoluteX/Y returning relative value instead of absolute.
 4. Fixed SetMouseScreenRelativeX/Y / SetMouseScreenRelativePosition setting position incorrently.
