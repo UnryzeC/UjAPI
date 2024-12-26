@@ -1,4 +1,4 @@
-v1.1.25.277
+v1.1.26.279
 
 1. New Natives:
     native GetAspectRatioRelativeX									takes real x returns real
@@ -11,3 +11,7 @@ v1.1.25.277
 7. Fixed GetWindowHeight returning incorrect value when game was launched in windowed mode.
 8. Fixed GetWindowX/Y returning incorrect value when game was launched in windowed mode.
 9. Fixed GetWindowCenterX/Y returning incorrect value when game was launched in windowed mode.
+10. Fixed initial item button drawing, which would fail for the first unit with inventory.
+11. Fixed random fatal error on item pickup, it was related to incorrect process of ability count.
+12. Items no longer remove abilities on drop, they are instead simply stripped from their owner, so they can be re-used.
+13. SetItemStringField with ITEM_SF_ABILITY_LIST is now instance specific, instead of being global.
