@@ -1,5 +1,10 @@
 v1.1.26.279
 
+1. Native Changes:
+    GetUnitStatbarHeight -> GetUnitOverheadOffset
+    SetUnitStatbarHeight -> SetUnitOverheadOffset
+	IsAbilityEnabledEx -> IsAbilityOrderEnabled
+	SetAbilityEnabledEx -> SetAbilityOrderEnabled
 1. New Natives:
     native GetAspectRatioRelativeX									takes real x returns real
     native GetAspectRatioRelativeY									takes real y returns real
@@ -15,3 +20,4 @@ v1.1.26.279
 11. Fixed random fatal error on item pickup, it was related to incorrect process of ability count.
 12. Items no longer remove abilities on drop, they are instead simply stripped from their owner, so they can be re-used.
 13. SetItemStringField with ITEM_SF_ABILITY_LIST is now instance specific, instead of being global.
+14. Huge inside remake of code, this won't really yield much of a change on performance, just developer's note.
