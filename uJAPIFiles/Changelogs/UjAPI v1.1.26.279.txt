@@ -8,6 +8,15 @@ v1.1.26.279
 1. New Natives:
     native GetAspectRatioRelativeX									takes real x returns real
     native GetAspectRatioRelativeY									takes real y returns real
+	//
+	native ActivateWidgetCollision							takes widget whichWidget, boolean causeInterferenceEvents, boolean isPathingObstacle, boolean liveFootprint returns nothing
+	native DealtctivateWidgetCollision						takes widget whichWidget, boolean causeInterferenceEvents, boolean liveFootprint returns nothing
+	//
+	native IsUnitLifeRegenEnabled							takes unit whichUnit returns boolean
+	native SetUnitLifeRegenEnabled							takes unit whichUnit, boolean enable returns nothing
+	native IsUnitManaRegenEnabled							takes unit whichUnit returns boolean
+	native SetUnitManaRegenEnabled							takes unit whichUnit, boolean enable returns nothing
+	native IsUnitIdle										takes unit whichUnit returns boolean
 2. Fixed GetMouseScreenRelativeX/Y returning absolute value instead of relative.
 3. Fixed GetMouseScreenAbsoluteX/Y returning relative value instead of absolute.
 4. Fixed SetMouseScreenRelativeX/Y / SetMouseScreenRelativePosition setting position incorrently.
