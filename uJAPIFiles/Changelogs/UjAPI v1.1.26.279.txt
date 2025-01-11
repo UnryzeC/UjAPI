@@ -6,11 +6,11 @@ v1.1.26.279
 	IsAbilityEnabledEx -> IsAbilityOrderEnabled
 	SetAbilityEnabledEx -> SetAbilityOrderEnabled
 1. New Natives:
-    native GetAspectRatioRelativeX									takes real x returns real
-    native GetAspectRatioRelativeY									takes real y returns real
+    native GetAspectRatioRelativeX							takes real x returns real
+    native GetAspectRatioRelativeY							takes real y returns real
 	//
 	native ActivateWidgetCollision							takes widget whichWidget, boolean causeInterferenceEvents, boolean isPathingObstacle, boolean liveFootprint returns nothing
-	native DealtctivateWidgetCollision						takes widget whichWidget, boolean causeInterferenceEvents, boolean liveFootprint returns nothing
+	native DeactivateWidgetCollision						takes widget whichWidget, boolean causeInterferenceEvents, boolean liveFootprint returns nothing
 	//
 	native IsUnitLifeRegenEnabled							takes unit whichUnit returns boolean
 	native SetUnitLifeRegenEnabled							takes unit whichUnit, boolean enable returns nothing
