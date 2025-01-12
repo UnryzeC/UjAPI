@@ -2345,6 +2345,12 @@ native BenchmarkReset									takes nothing returns nothing
 native BenchmarkGetElapsed								takes integer benchType returns string // 0 for nanoseconds, 1 for microseconds, 2 for milliseconds
 //
 
+// Aspect Ratio API
+// These return Absolute to Relative axis based on internal aspect ratio .8, .6 and such. i.e. GetAspectRatioRelativeX( .5 ) -> ( .5 * .8 ) -> .4
+native GetAspectRatioRelativeX							takes real x returns real
+native GetAspectRatioRelativeY							takes real y returns real
+//
+
 // Screen API
 native SetScreenFieldOfView								takes real fov returns nothing
 native SetWidescreenState								takes boolean flag returns nothing
@@ -2938,8 +2944,8 @@ native IsAbilityEnabled									takes ability whichAbility returns boolean
 native SetAbilityEnabled								takes ability whichAbility, boolean enable returns nothing
 native IsAbilityVisible									takes ability whichAbility returns boolean
 native ShowAbility										takes ability whichAbility, boolean show returns nothing
-native IsAbilityEnabledEx								takes ability whichAbility returns boolean
-native SetAbilityEnabledEx								takes ability whichAbility, boolean enable returns nothing
+native IsAbilityOrderEnabled							takes ability whichAbility returns boolean
+native SetAbilityOrderEnabled							takes ability whichAbility, boolean enable returns nothing
 native IsAbilityPassive									takes ability whichAbility returns boolean
 native SetAbilityPassive								takes ability whichAbility, boolean enable returns nothing // only works for CAbilityButton descendants
 native IsAbilityUsable									takes ability whichAbility returns boolean
@@ -3473,6 +3479,8 @@ native SetWidgetVisible									takes widget whichWidget, boolean visible return
 native IsWidgetInvulnerable								takes widget whichWidget returns boolean
 native SetWidgetInvulnerable							takes widget whichWidget, boolean invulnerable returns nothing
 native IsWidgetTargetAllowed							takes widget whichWidget, widget target, targetflag whichFlags returns boolean
+native ActivateWidgetCollision							takes widget whichWidget, boolean causeInterferenceEvents, boolean isPathingObstacle, boolean liveFootprint returns nothing
+native DeactivateWidgetCollision						takes widget whichWidget, boolean causeInterferenceEvents, boolean liveFootprint returns nothing
 native GetWidgetZ										takes widget whichWidget returns real
 native GetWidgetPositionLoc								takes widget whichWidget returns location
 native SetWidgetPositionLoc								takes widget whichWidget, location whichLocation returns nothing
@@ -3832,8 +3840,8 @@ native ResetUnitZ										takes unit whichUnit returns nothing // returns Z con
 native GetUnitScale										takes unit whichUnit returns real
 native GetUnitHeight									takes unit whichUnit returns real // this is separate from SetUnitFlyHeight
 native SetUnitHeight									takes unit whichUnit, real height returns nothing
-native GetUnitStatbarHeight								takes unit whichUnit returns real
-native SetUnitStatbarHeight								takes unit whichUnit, real height returns nothing
+native GetUnitOverheadOffset							takes unit whichUnit returns real
+native SetUnitOverheadOffset							takes unit whichUnit, real height returns nothing
 native GetUnitScreenX									takes unit whichUnit returns real
 native GetUnitScreenY									takes unit whichUnit returns real
 native SetUnitTypeId									takes unit whichUnit, integer newId returns nothing
@@ -3844,12 +3852,16 @@ native GetFirstUnitInSelection							takes player whichPlayer returns unit
 native GetLastUnitInSelection							takes player whichPlayer returns unit
 native IsUnitAlive										takes unit whichUnit returns boolean // checks unit flags
 native IsUnitDead										takes unit whichUnit returns boolean // checks internal flag (not a part of unit flags)
+native IsUnitIdle										takes unit whichUnit returns boolean
 native IsUnitMoving										takes unit whichUnit returns boolean
 native IsUnitStunned									takes unit whichUnit returns boolean
 native IsUnitInvulnerable								takes unit whichUnit returns boolean
 native IsUnitHero										takes unit whichUnit returns boolean
 native IsUnitTower										takes unit whichUnit returns boolean
 native IsUnitShop										takes unit whichUnit returns boolean
+native IsUnitPeon										takes unit whichUnit returns boolean
+native IsUnitConstructing								takes unit whichUnit returns boolean
+native IsUnitFlying										takes unit whichUnit returns boolean
 
 // Inventory API
 native IsUnitInventoryEnabled							takes unit whichUnit returns boolean
@@ -4000,12 +4012,16 @@ native GetUnitMaxLife									takes unit whichUnit returns real
 native SetUnitMaxLife									takes unit whichUnit, real maxLife returns nothing
 native GetUnitLifeRegen									takes unit whichUnit returns real
 native SetUnitLifeRegen									takes unit whichUnit, real lifeRegen returns nothing
+native IsUnitLifeRegenEnabled							takes unit whichUnit returns boolean
+native SetUnitLifeRegenEnabled							takes unit whichUnit, boolean enable returns nothing
 native GetUnitCurrentMana								takes unit whichUnit returns real
 native SetUnitCurrentMana								takes unit whichUnit, real mana returns nothing
 native GetUnitMaxMana									takes unit whichUnit returns real
 native SetUnitMaxMana									takes unit whichUnit, real maxMana returns nothing
 native GetUnitManaRegen									takes unit whichUnit returns real
 native SetUnitManaRegen									takes unit whichUnit, real manaRegen returns nothing
+native IsUnitManaRegenEnabled							takes unit whichUnit returns boolean
+native SetUnitManaRegenEnabled							takes unit whichUnit, boolean enable returns nothing
 native GetHeroPrimaryAttribute							takes unit whichUnit returns heroattribute
 native SetHeroPrimaryAttribute							takes unit whichUnit, heroattribute whichHeroAttribute returns nothing
 native GetUnitModel										takes unit whichUnit returns string
