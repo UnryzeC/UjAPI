@@ -2,3 +2,4 @@
   Note: previously #2 code was just skipped.
 2. Restored and fixed internal CUnit::UpdateRegenState, which was causing the crash.
 3. Fixed Attack related natives fatal errors that were caused by interaction with units that do not have Attack ability.
+4. Fixed Order related events not providing correct information.
