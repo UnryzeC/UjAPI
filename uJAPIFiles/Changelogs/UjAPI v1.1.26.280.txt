@@ -3,3 +3,4 @@
 2. Restored and fixed internal CUnit::UpdateRegenState, which was causing the crash.
 3. Fixed Attack related natives fatal errors that were caused by interaction with units that do not have Attack ability.
 4. Fixed Order related events not providing correct information.
+5. Fixed internal error in mouse key conversion that was incorrectly misassigning value for Middle and Right button.
