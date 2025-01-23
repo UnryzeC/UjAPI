@@ -1,4 +1,6 @@
-1. New Natives:
+1. Natives Changes:
+  RedrawUnit -> UpdateUnitInvisibilityAlpha
+2. New Natives:
   native GetAxisZEx										takes real x, real y, boolean checkSurface, boolean forceWalkableCheck returns real // checkSurface (will return highest Z of water if true), forceWalkableCheck (will return height of any walkable doodad if true)
   native GetTerrainFlagsAt								takes real x, real y returns integer
   native GetTerrainHeightAt								takes real x, real y returns real // same as GetAxisZEx with both booleans beign false.
@@ -9,14 +11,14 @@
   native GetWaterDepthAt								takes real x, real y returns real
   //
   native IsUnitMovable									takes unit whichUnit, boolean checkHoldPosition, boolean checkSleeping returns boolean
-2. Fixed fatal error from SetUnitLife/ManaRegen.
+3. Fixed fatal error from SetUnitLife/ManaRegen.
   Note: previously #2 code was just skipped.
-3. Restored and fixed internal CUnit::UpdateRegenState, which was causing the crash.
-4. Fixed Attack related natives fatal errors that were caused by interaction with units that do not have Attack ability.
-5. Fixed Order related events not providing correct information.
-6. Fixed internal error in mouse key conversion that was incorrectly misassigning value for Middle and Right button.
-7. Fixed cooldown indicators being drawn on UI creation, now they are properly hidden as they were supposed to be.
-8. Fixed EVENT_PLAYER_UNIT_BUFF_REMOVED issue causing it not to dispatch.
-9. Fixed Projectile enumeration with EnumProjectilesInArea/Rect.
-10. Fixed Projectile enumeration with HandleListEnumProjectilesInArea/Rect.
-11. Fixed SetProjectileSpeed not affecting actual speed.
+4. Restored and fixed internal CUnit::UpdateRegenState, which was causing the crash.
+5. Fixed Attack related natives fatal errors that were caused by interaction with units that do not have Attack ability.
+6. Fixed Order related events not providing correct information.
+7. Fixed internal error in mouse key conversion that was incorrectly misassigning value for Middle and Right button.
+8. Fixed cooldown indicators being drawn on UI creation, now they are properly hidden as they were supposed to be.
+9. Fixed EVENT_PLAYER_UNIT_BUFF_REMOVED issue causing it not to dispatch.
+10. Fixed Projectile enumeration with EnumProjectilesInArea/Rect.
+11. Fixed Projectile enumeration with HandleListEnumProjectilesInArea/Rect.
+12. Fixed SetProjectileSpeed not affecting actual speed.
