@@ -10,6 +10,10 @@
   native GetWaterLevelAt								takes real x, real y returns integer
   native GetWaterDepthAt								takes real x, real y returns real
   //
+  native GetUnitImage									takes unit whichUnit, integer index returns image
+  native SetUnitImage									takes unit whichUnit, integer index, image whichImage returns nothing
+  native GetUnitUbersplat								takes unit whichUnit returns ubersplat
+  native SetUnitUbersplat								takes unit whichUnit, ubersplat whichUbersplat returns nothing
   native IsUnitMovable									takes unit whichUnit, boolean checkHoldPosition, boolean checkSleeping returns boolean
 3. Fixed fatal error from SetUnitLife/ManaRegen.
   Note: previously #2 code was just skipped.
