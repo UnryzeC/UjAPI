@@ -1,7 +1,7 @@
 1. Natives Changes:
   RedrawUnit -> UpdateUnitInvisibilityAlpha
 2. New Natives:
-  native GetAxisZEx										takes real x, real y, boolean checkSurface, boolean forceWalkableCheck returns real // checkSurface (will return highest Z of water if true), forceWalkableCheck (will return height of any walkable doodad if true)
+  native GetAxisZEx										takes real x, real y, integer estimateLevel, boolean checkSurface, boolean forceWalkableCheck returns real
   native GetTerrainFlagsAt								takes real x, real y returns integer
   native GetTerrainHeightAt								takes real x, real y returns real // same as GetAxisZEx with both booleans beign false.
   native IsTerrainBordersWaterAt						takes real x, real y returns boolean
