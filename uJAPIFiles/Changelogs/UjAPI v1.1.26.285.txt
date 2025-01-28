@@ -28,3 +28,4 @@
 10. Fixed Projectile enumeration with EnumProjectilesInArea/Rect.
 11. Fixed Projectile enumeration with HandleListEnumProjectilesInArea/Rect.
 12. Fixed SetProjectileSpeed not affecting actual speed.
+13. Fixed all Projectile enumerations, now they work propeprly.
