@@ -1,6 +1,11 @@
-1. Natives Changes:
+1. New converters:
+  native HandleToDoodad									takes handle whichHandle returns doodad
+2. Natives Changes:
   RedrawUnit -> UpdateUnitInvisibilityAlpha
-2. New Natives:
+3. New Natives:
+  native CallNative										takes string funcName, string params returns integer
+  native CallFunction										takes string funcName, string signature, string params returns integer
+  //
   native GetAxisZEx										takes real x, real y, integer estimateLevel, boolean checkSurface, boolean forceWalkableCheck returns real
   native GetTerrainFlagsAt								takes real x, real y returns integer
   native GetTerrainHeightAt								takes real x, real y returns real // same as GetAxisZEx with both booleans beign false.
@@ -17,15 +22,17 @@
   native GetUnitUbersplat								takes unit whichUnit returns ubersplat
   native SetUnitUbersplat								takes unit whichUnit, ubersplat whichUbersplat returns nothing
   native IsUnitMovable									takes unit whichUnit, boolean checkHoldPosition, boolean checkSleeping returns boolean
-3. Fixed fatal error from SetUnitLife/ManaRegen.
+4. Fixed fatal error from SetUnitLife/ManaRegen.
   Note: previously #2 code was just skipped.
-4. Restored and fixed internal CUnit::UpdateRegenState, which was causing the crash.
-5. Fixed Attack related natives fatal errors that were caused by interaction with units that do not have Attack ability.
-6. Fixed Order related events not providing correct information.
-7. Fixed internal error in mouse key conversion that was incorrectly misassigning value for Middle and Right button.
-8. Fixed cooldown indicators being drawn on UI creation, now they are properly hidden as they were supposed to be.
-9. Fixed EVENT_PLAYER_UNIT_BUFF_REMOVED issue causing it not to dispatch.
-10. Fixed Projectile enumeration with EnumProjectilesInArea/Rect.
-11. Fixed Projectile enumeration with HandleListEnumProjectilesInArea/Rect.
-12. Fixed SetProjectileSpeed not affecting actual speed.
-13. Fixed all Projectile enumerations, now they work propeprly.
+5. Restored and fixed internal CUnit::UpdateRegenState, which was causing the crash.
+6. Fixed Attack related natives fatal errors that were caused by interaction with units that do not have Attack ability.
+7. Fixed Order related events not providing correct information.
+8. Fixed internal error in mouse key conversion that was incorrectly misassigning value for Middle and Right button.
+9. Fixed cooldown indicators being drawn on UI creation, now they are properly hidden as they were supposed to be.
+10. Fixed EVENT_PLAYER_UNIT_BUFF_REMOVED issue causing it not to dispatch.
+11. Fixed Projectile enumeration with EnumProjectilesInArea/Rect.
+12. Fixed Projectile enumeration with HandleListEnumProjectilesInArea/Rect.
+13. Fixed SetProjectileSpeed not affecting actual speed.
+14. Fixed all Projectile enumerations, now they work propeprly.
+15. Fixed fatal error from ExecuteCode.
+16. Fixed fatal error from ExecuteFuncEx.
