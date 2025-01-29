@@ -4,7 +4,7 @@
   RedrawUnit -> UpdateUnitInvisibilityAlpha
 3. New Natives:
   native CallNative										takes string funcName, string params returns integer
-  native CallFunction										takes string funcName, string signature, string params returns integer
+  native CallFunction									takes string funcName, string signature, string params returns integer
   //
   native GetAxisZEx										takes real x, real y, integer estimateLevel, boolean checkSurface, boolean forceWalkableCheck returns real
   native GetTerrainFlagsAt								takes real x, real y returns integer
