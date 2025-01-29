@@ -36,3 +36,7 @@
 14. Fixed all Projectile enumerations, now they work propeprly.
 15. Fixed fatal error from ExecuteCode.
 16. Fixed fatal error from ExecuteFuncEx.
+
+UjAPI WE Module:
+
+1. Module now also works with vanilla 1.26a World Editor.
