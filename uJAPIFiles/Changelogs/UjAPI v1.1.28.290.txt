@@ -1,0 +1,20 @@
+v1.1.28.290
+
+1. New Types:
+  type damageflag											extends flagtype
+2. New Convertors:
+  constant native ConvertDamageFlag						takes integer i returns damageflag
+3. New Constants:
+	constant damageflag					DAMAGE_FLAG_MELEE			    							= ConvertDamageFlag(0)
+	constant damageflag					DAMAGE_FLAG_RANGED			    							= ConvertDamageFlag(1)
+    constant damageflag					DAMAGE_FLAG_IGNORE_SOURCE	    							= ConvertDamageFlag(2)
+    constant damageflag					DAMAGE_FLAG_CALL_FOR_HELP       							= ConvertDamageFlag(4)
+	constant damageflag					DAMAGE_FLAG_EXPLOSION		    							= ConvertDamageFlag(8)
+	constant damageflag					DAMAGE_FLAG_NOTIFY_ONLY		    							= ConvertDamageFlag(16)
+	constant damageflag					DAMAGE_FLAG_INVULNERABLE	    							= ConvertDamageFlag(32)
+    constant damageflag					DAMAGE_FLAG_DONT_CALL_FOR_HELP								= ConvertDamageFlag(64)
+    constant damageflag					DAMAGE_FLAG_ATTACK_ONCE		    							= ConvertDamageFlag(128)
+    constant damageflag					DAMAGE_FLAG_ATTACK              							= ConvertDamageFlag(256)
+    constant damageflag					DAMAGE_FLAG_NO_PLAYER_MESSAGE								= ConvertDamageFlag(512)
+	constant damageflag					DAMAGE_FLAG_NEVER_MISS		    							= ConvertDamageFlag(1024)
+	constant damageflag					DAMAGE_FLAG_ACTUAL_ATTACK		    						= ConvertDamageFlag(1073741824)
