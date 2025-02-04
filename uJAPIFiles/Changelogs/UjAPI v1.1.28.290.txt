@@ -18,3 +18,15 @@ v1.1.28.290
     constant damageflag					DAMAGE_FLAG_NO_PLAYER_MESSAGE								= ConvertDamageFlag(512)
 	constant damageflag					DAMAGE_FLAG_NEVER_MISS		    							= ConvertDamageFlag(1024)
 	constant damageflag					DAMAGE_FLAG_ACTUAL_ATTACK		    						= ConvertDamageFlag(1073741824)
+4. Removed Natives:
+	native GetEventDamageExtraFlags							takes nothing returns integer
+	native GetEventDamageIsExtraFlag						takes integer flag returns boolean
+	native SetEventDamageExtraFlag							takes integer flag, boolean isSet returns boolean
+5. New Natives:
+	native GetEventDamageTypeExtra							takes nothing returns damagetype // DEMOLITION is usually related to critical hits.
+	native SetEventDamageTypeExtra							takes takes damagetype whichDamageType returns boolean
+	native SetEventPreDamage								takes real returns nothing
+	native GetEventPreDamageExtra							takes nothing returns real
+	native SetEventPreDamageExtra							takes real returns nothing
+	native GetEventDamageExtra								takes nothing returns real // related to crits/bashes, etc.
+	native SetEventDamageExtra								takes real damage returns nothing
