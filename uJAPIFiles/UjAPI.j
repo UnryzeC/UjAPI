@@ -2016,6 +2016,7 @@ native C2I												takes code c returns integer
 native HandleToHandle									takes handle whichHandle returns handle
 native HandleToAgent									takes handle whichHandle returns agent
 native HandleToEvent									takes handle whichHandle returns event
+native HandleToDoodad									takes handle whichHandle returns doodad
 native HandleToWidget									takes handle whichHandle returns widget
 native HandleToUnit										takes handle whichHandle returns unit
 native HandleToDestructable								takes handle whichHandle returns destructable
@@ -2165,6 +2166,8 @@ native SetOperationLimit								takes integer opLimit returns nothing
 native GetCodeByName									takes string funcName returns code
 native ExecuteCode										takes code c returns nothing
 native ExecuteFuncEx									takes string funcName returns nothing
+native CallNative										takes string funcName, string params returns integer
+native CallFunction										takes string funcName, string signature, string params returns integer // signature -> I for integer, R for real, B for boolean, H for handle, S for string and C for code. Usage example: CallFunction( "CheckItemStatus", "HI", I2S( GetHandleId( item ) ) + "," + I2S( i ) )
 //
 
 //============================================================================
@@ -2209,8 +2212,6 @@ native MathAngleBetweenPoints							takes real fromX, real fromY, real toX, real
 native MathDistanceBetweenPoints						takes real fromX, real fromY, real toX, real toY returns real
 native MathAngleBetweenLocations						takes location fromLoc, location toLoc returns real
 native MathDistanceBetweenLocations						takes location fromLoc, location toLoc returns real
-
-native GetAxisZ											takes real x, real y returns real
 //
 
 // String API
@@ -2299,6 +2300,21 @@ native EnableStatbar 									takes boolean enable returns nothing
 native IsCursorInTargetMode								takes nothing returns boolean // When mouse has "target" art.
 native IsSubmenuOpen									takes nothing returns boolean // Spellbook, Buildmenu, Hero Learn etc.
 //
+//
+
+// Terrain API
+native GetAxisZ											takes real x, real y returns real
+// estimateLevel: 0 - smooth, -1 - height with deformation, -2 - height only, -3 - flying height. Note: estimateLevel of -1 or -2 equates to forceWalkableCheck.
+// checkSurface: (will return highest Z of water if true).
+// forceWalkableCheck: (will return height of any walkable doodad if true).
+native GetAxisZEx										takes real x, real y, integer estimateLevel, boolean checkSurface, boolean forceWalkableCheck returns real
+native GetTerrainFlagsAt								takes real x, real y returns integer
+native GetTerrainHeightAt								takes real x, real y returns real // same as GetAxisZEx with both booleans beign false.
+native IsTerrainBordersWaterAt							takes real x, real y returns boolean
+native IsWaterAt										takes real x, real y returns boolean
+native IsWaterDeepAt									takes real x, real y returns boolean
+native GetWaterLevelAt									takes real x, real y returns integer
+native GetWaterDepthAt									takes real x, real y returns real
 //
 
 // Map API
@@ -3863,6 +3879,14 @@ native IsUnitPeon										takes unit whichUnit returns boolean
 native IsUnitConstructing								takes unit whichUnit returns boolean
 native IsUnitFlying										takes unit whichUnit returns boolean
 
+// Image API
+// 0 - preselection | 1 - selection | 2 - ally selection | 3 - shadow | 4 - shadow water | 5 - occlusion mark
+native GetUnitImage										takes unit whichUnit, integer index returns image
+native SetUnitImage										takes unit whichUnit, integer index, image whichImage returns nothing
+native GetUnitUbersplat									takes unit whichUnit returns ubersplat
+native SetUnitUbersplat									takes unit whichUnit, ubersplat whichUbersplat returns nothing
+//
+
 // Inventory API
 native IsUnitInventoryEnabled							takes unit whichUnit returns boolean
 native UnitEnableInventory								takes unit whichUnit, boolean enable, boolean ignoreErrorMessages returns nothing // ignoreErrorMessages simply causes the game not to print errors such as "unable to drop/unable to pick up" messages, etc.
@@ -3872,12 +3896,13 @@ native UnitInventoryGetRange							takes unit whichUnit, integer rangeType retur
 native UnitInventorySetRange							takes unit whichUnit, integer rangeType, real range returns nothing
 //
 
+native IsUnitMovable									takes unit whichUnit, boolean checkHoldPosition, boolean checkSleeping returns boolean
 native IsUnitMovementEnabled							takes unit whichUnit returns boolean
 native UnitEnableMovement								takes unit whichUnit, boolean enable, boolean fullDisable returns nothing // fullDisable will also block unit from being able to rotate.
 native IsUnitAttackEnabled								takes unit whichUnit returns boolean
 native UnitEnableAttack									takes unit whichUnit, boolean enable, boolean extraFlag returns nothing // extraFlag - sets internal flag, but no real changes were noticed... 
 native IsUnitStateNormal								takes unit whichUnit, boolean additionalCheck returns boolean
-native RedrawUnit										takes unit whichUnit returns nothing
+native UpdateUnitInvisibilityAlpha						takes unit whichUnit returns nothing
 native UpdateUnitInfoBar								takes unit whichUnit returns nothing
 native UnitUnapplyUpgrades								takes unit whichUnit returns nothing
 native UnitApplyUpgrades								takes unit whichUnit returns nothing
@@ -4201,6 +4226,7 @@ native LaunchProjectileTarget							takes projectile whichProjectile, widget whi
 native LaunchProjectileAt								takes projectile whichProjectile, real x, real y, real z returns nothing
 
 native GetProjectileSprite								takes projectile whichProjectile returns sprite
+native GetProjectileTypeId								takes projectile whichProjectile returns integer
 native IsProjectileType									takes projectile whichProjectile, projectiletype whichType returns boolean
 native IsProjectileAlive								takes projectile whichProjectile returns boolean
 native IsProjectileVisible								takes projectile whichProjectile returns boolean
