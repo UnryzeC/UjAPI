@@ -22,7 +22,12 @@ v1.1.28.290
 	native GetEventDamageExtraFlags							takes nothing returns integer
 	native GetEventDamageIsExtraFlag						takes integer flag returns boolean
 	native SetEventDamageExtraFlag							takes integer flag, boolean isSet returns boolean
-5. New Natives:
+5. Changed Natives:
+	GetProjectileDamage now additionally takes attackIndex
+	SetProjectileDamage now additionally takes attackIndex
+	GetProjectileDamageType now additionally takes attackIndex
+	SetProjectileDamageType now additionally takes attackIndex
+6. New Natives:
 	// Flags: 1 - basic disable | 2 - affect spellbook abilities | 4 - affect bonuses
 	native DisableItem										takes item whichItem, boolean hideUI, boolean disable, integer extraFlags returns nothing
 	native EnableItem										takes item whichItem, boolean showUI, boolean enable, integer extraFlags returns nothing
@@ -34,5 +39,5 @@ v1.1.28.290
 	native SetEventPreDamageExtra							takes real returns nothing
 	native GetEventDamageExtra								takes nothing returns real // related to crits/bashes, etc.
 	native SetEventDamageExtra								takes real damage returns nothing
-6. Fixed internal CAbilityInventory::Enable/Disable, now it properly uses rewritten logic of the inventory.
-7. Fixed internal CItem::Disable/Enable, now it uses rewritten logic of the items.
+7. Fixed internal CAbilityInventory::Enable/Disable, now it properly uses rewritten logic of the inventory.
+8. Fixed internal CItem::Disable/Enable, now it uses rewritten logic of the items.
