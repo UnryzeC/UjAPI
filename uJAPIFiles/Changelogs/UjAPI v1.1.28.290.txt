@@ -28,6 +28,8 @@ v1.1.28.290
 	GetProjectileDamageType now additionally takes attackIndex
 	SetProjectileDamageType now additionally takes attackIndex
 6. New Natives:
+	native IsBuffPaused										takes buff whichBuff returns boolean
+	//
 	// Flags: 1 - basic disable | 2 - affect spellbook abilities | 4 - affect bonuses
 	native DisableItem										takes item whichItem, boolean hideUI, boolean disable, integer extraFlags returns nothing
 	native EnableItem										takes item whichItem, boolean showUI, boolean enable, integer extraFlags returns nothing
@@ -41,3 +43,4 @@ v1.1.28.290
 	native SetEventDamageExtra								takes real damage returns nothing
 7. Fixed internal CAbilityInventory::Enable/Disable, now it properly uses rewritten logic of the inventory.
 8. Fixed internal CItem::Disable/Enable, now it uses rewritten logic of the items.
+9. Fixed GetBuffRemainingDuration returning 0 if buff is paused, but unit wasn't.
