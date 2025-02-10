@@ -44,3 +44,5 @@ v1.1.28.290
 7. Fixed internal CAbilityInventory::Enable/Disable, now it properly uses rewritten logic of the inventory.
 8. Fixed internal CItem::Disable/Enable, now it uses rewritten logic of the items.
 9. Fixed GetBuffRemainingDuration returning 0 if buff is paused, but unit wasn't.
+10. Fully rewritten CUnit::TakeDamage now DAMAGING/DAMAGED events are processed in a similar manner.
+	Note: this should also negate weird interactions with SetEventDamage breaking/crashing the game if initial damage was 0. or if any ability was given in damage thread.
