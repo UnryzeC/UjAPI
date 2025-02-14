@@ -65,3 +65,12 @@ v1.1.28.290
 9. Fixed GetBuffRemainingDuration returning 0 if buff is paused, but unit wasn't.
 10. Fully rewritten CUnit::TakeDamage now DAMAGING/DAMAGED events are processed in a similar manner.
 	Note: this should also negate weird interactions with SetEventDamage breaking/crashing the game if initial damage was 0. or if any ability was given in damage thread.
+11. Removed internal text limit for Passives/Learnable/Spellbook ability tooltips.
+12. Ability tooltips are now dynamically processed if provided with specific tags.
+	Example: Gives a chance to do more damage on an attack.|n|n|cffffcc00Level %d|r - $DataA$% chance, $DataB$ times normal damage.
+	Note 1: this will take DataA and DataB at run-time whenever you hover over the ability. All abilities have DataA - DataI, so you can really let loose.
+	Note 2: if ability Id is provided like so: $AOcr,DataA$% then it will instead read base data of that ability.
+13. Item tooltips are now dynamically processed, they are also able to read ability data. If item possesses provided ability, then it will check it directly.
+	Example: Increases nearby ranged units' damage by $AIar,DataA,%$%. |nDoes not stack with Trueshot Aura.
+	Note: this will read AIar ability from current item and print its actual data, and not base data. If item does NOT contain this ability, it will read base data instead.
+14. Extra note: in the future, an additional "setting" such as "base" may be added, so base reading will be enforceable.
