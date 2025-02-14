@@ -18,6 +18,18 @@ v1.1.28.290
     constant damageflag					DAMAGE_FLAG_NO_PLAYER_MESSAGE								= ConvertDamageFlag(512)
 	constant damageflag					DAMAGE_FLAG_NEVER_MISS		    							= ConvertDamageFlag(1024)
 	constant damageflag					DAMAGE_FLAG_ACTUAL_ATTACK		    						= ConvertDamageFlag(1073741824)
+	//
+	// These are always reals, even though some are later used as integer/boolean and such, so true/false = 1./0. same goes to integers.
+	// Note: these can be used in natives that do not handle levels, since these always exist anyways. Or use ConvertAbilityXField with GetHandleId of these constants.
+	constant abilityreallevelfield		ABILITY_RLF_DATA_FIELD_A									= ConvertAbilityRealLevelField('adfA')
+	constant abilityreallevelfield		ABILITY_RLF_DATA_FIELD_B									= ConvertAbilityRealLevelField('adfB')
+	constant abilityreallevelfield		ABILITY_RLF_DATA_FIELD_C									= ConvertAbilityRealLevelField('adfC')
+	constant abilityreallevelfield		ABILITY_RLF_DATA_FIELD_D									= ConvertAbilityRealLevelField('adfD')
+	constant abilityreallevelfield		ABILITY_RLF_DATA_FIELD_E									= ConvertAbilityRealLevelField('adfE')
+	constant abilityreallevelfield		ABILITY_RLF_DATA_FIELD_F									= ConvertAbilityRealLevelField('adfF')
+	constant abilityreallevelfield		ABILITY_RLF_DATA_FIELD_G									= ConvertAbilityRealLevelField('adfG')
+	constant abilityreallevelfield		ABILITY_RLF_DATA_FIELD_H									= ConvertAbilityRealLevelField('adfH')
+	constant abilityreallevelfield		ABILITY_RLF_DATA_FIELD_I									= ConvertAbilityRealLevelField('adfI')
 4. Removed Natives:
 	native GetEventDamageExtraFlags							takes nothing returns integer
 	native GetEventDamageIsExtraFlag						takes integer flag returns boolean
@@ -28,6 +40,13 @@ v1.1.28.290
 	GetProjectileDamageType now additionally takes attackIndex
 	SetProjectileDamageType now additionally takes attackIndex
 6. New Natives:
+	native B2I												takes boolean b returns integer
+	native B2S												takes boolean b returns string
+	//
+	native ParseTooltip										takes string text returns string
+	native ParseAbilityTooltipByField						takes ability whichAbility, abilitystringfield whichField, integer level returns string
+	native ParseAbilityTooltip								takes ability whichAbility, string text, integer level returns string
+	// 
 	native IsBuffPaused										takes buff whichBuff returns boolean
 	//
 	// Flags: 1 - basic disable | 2 - affect spellbook abilities | 4 - affect bonuses
