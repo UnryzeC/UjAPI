@@ -63,6 +63,7 @@ type layerstyleflag										extends flagtype
 type controlstyleflag									extends flagtype
 type framestate 										extends flagtype
 type abilitytype										extends flagtype
+type itemdisableflag									extends flagtype
 type movetype											extends flagtype
 type pathingaitype										extends flagtype
 type collisiontype										extends flagtype
@@ -142,6 +143,7 @@ constant native ConvertLayerStyleFlag					takes integer i returns layerstyleflag
 constant native ConvertControlStyleFlag					takes integer i returns controlstyleflag
 constant native ConvertFrameState						takes integer i returns framestate
 constant native ConvertAbilityType						takes integer i returns abilitytype
+constant native ConvertItemDisableFlag					takes integer i returns itemdisableflag
 constant native ConvertConnectionType					takes integer i returns connectiontype
 constant native ConvertTradeState						takes integer i returns tradestate
 
@@ -1822,6 +1824,15 @@ globals
 	constant abilitytype				ABILITY_TYPE_PHYSICAL										= ConvertAbilityType(5)
 	constant abilitytype				ABILITY_TYPE_MAGICAL										= ConvertAbilityType(6)
 	constant abilitytype				ABILITY_TYPE_AUTODISPEL										= ConvertAbilityType(7)
+
+	// item disable flags
+	constant itemdisableflag			ITEM_DISABLE_FLAG_BASIC										= ConvertItemDisableFlag(1)  // basic disable/enable call.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_SPELLBOOK									= ConvertItemDisableFlag(2)	 // any ability that contains other abilities.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_BONUSES									= ConvertItemDisableFlag(4)	 // for complex abilities that provide percent changes.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_ORDERS									= ConvertItemDisableFlag(8)  // for active abilities, making item's ability non-usable. Does not prevent item clicking with left/right mouse.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_DIRECT_BONUSES							= ConvertItemDisableFlag(16) // for abilities that only provide stat bonuses.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_AFFECT_UI									= ConvertItemDisableFlag(32) // should ability disable/hide count be even processed.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_COUNT										= ConvertItemDisableFlag(64) // actually inc/dec count when enabled/disabled.
 
 	// defense type
 	constant defensetype				DEFENSE_TYPE_LIGHT											= ConvertDefenseType(0)
@@ -3739,7 +3750,8 @@ native ItemAddAbility									takes item whichItem, ability whichAbility returns
 native ItemRemoveAbility								takes item whichItem, ability whichAbility returns boolean
 native ItemAddAbilityById								takes item whichItem, integer abilityTypeId returns boolean
 native ItemRemoveAbilityById							takes item whichItem, integer abilityTypeId returns boolean
-// Flags: 1 - basic disable | 2 - affect spellbook abilities | 4 - affect bonuses
+native IsItemDisabled									takes item whichItem returns boolean
+native GetItemDisableFlags								takes item whichItem returns integer
 native DisableItem										takes item whichItem, boolean hideUI, boolean disable, integer extraFlags returns nothing
 native EnableItem										takes item whichItem, boolean showUI, boolean enable, integer extraFlags returns nothing
 native GetItemCooldown									takes item whichItem returns real

@@ -2584,6 +2584,15 @@ globals
 	constant abilitytype				ABILITY_TYPE_MAGICAL										= ConvertAbilityType(6)
 	constant abilitytype				ABILITY_TYPE_AUTODISPEL										= ConvertAbilityType(7)
 
+	// item disable flags
+	constant itemdisableflag			ITEM_DISABLE_FLAG_BASIC										= ConvertItemDisableFlag(1)  // basic disable/enable call.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_SPELLBOOK									= ConvertItemDisableFlag(2)	 // any ability that contains other abilities.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_BONUSES									= ConvertItemDisableFlag(4)	 // for complex abilities that provide percent changes.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_ORDERS									= ConvertItemDisableFlag(8)  // for active abilities, making item's ability non-usable. Does not prevent item clicking with left/right mouse.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_DIRECT_BONUSES							= ConvertItemDisableFlag(16) // for abilities that only provide stat bonuses.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_AFFECT_UI									= ConvertItemDisableFlag(32) // should ability disable/hide count be even processed.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_COUNT										= ConvertItemDisableFlag(64) // actually inc/dec count when enabled/disabled.
+
 	// defense type
 	constant defensetype				DEFENSE_TYPE_LIGHT											= ConvertDefenseType(0)
 	constant defensetype				DEFENSE_TYPE_MEDIUM											= ConvertDefenseType(1)
@@ -2637,7 +2646,7 @@ globals
 	constant pathingflag				PATHING_FLAG_UNFLOATABLE									= ConvertPathingFlag(64)
 	constant pathingflag				PATHING_FLAG_UNAMPHIBIOUS									= ConvertPathingFlag(128)
 	constant pathingflag				PATHING_FLAG_UNITEMPLACABLE									= ConvertPathingFlag(256)
-	
+
 	constant timetype					TIME_TYPE_YEAR												= ConvertTimeType(0)
 	constant timetype					TIME_TYPE_MONTH												= ConvertTimeType(1)
 	constant timetype					TIME_TYPE_DAY_OF_WEEK										= ConvertTimeType(2)
@@ -6132,7 +6141,8 @@ native ItemAddAbility									takes item whichItem, ability whichAbility returns
 native ItemRemoveAbility								takes item whichItem, ability whichAbility returns boolean
 native ItemAddAbilityById								takes item whichItem, integer abilityTypeId returns boolean
 native ItemRemoveAbilityById							takes item whichItem, integer abilityTypeId returns boolean
-// Flags: 1 - basic disable | 2 - affect spellbook abilities | 4 - affect bonuses
+native IsItemDisabled									takes item whichItem returns boolean
+native GetItemDisableFlags								takes item whichItem returns integer
 native DisableItem										takes item whichItem, boolean hideUI, boolean disable, integer extraFlags returns nothing
 native EnableItem										takes item whichItem, boolean showUI, boolean enable, integer extraFlags returns nothing
 native GetItemCooldown									takes item whichItem returns real
