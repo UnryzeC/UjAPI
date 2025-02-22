@@ -1,0 +1,21 @@
+v1.1.29.295
+
+1. New types:
+    type itemdisableflag									extends flagtype
+2. New Convertors:
+    constant native ConvertItemDisableFlag					takes integer i returns itemdisableflag
+3. New Constants:
+	constant itemdisableflag			ITEM_DISABLE_FLAG_BASIC										= ConvertItemDisableFlag(1)  // basic disable/enable call.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_SPELLBOOK									= ConvertItemDisableFlag(2)	 // any ability that contains other abilities.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_BONUSES									= ConvertItemDisableFlag(4)	 // for complex abilities that provide percent changes.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_ORDERS									= ConvertItemDisableFlag(8)  // for active abilities, making item's ability non-usable. Does not prevent item clicking with left/right mouse.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_DIRECT_BONUSES							= ConvertItemDisableFlag(16) // for abilities that only provide stat bonuses.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_AFFECT_UI									= ConvertItemDisableFlag(32) // should ability disable/hide count be even processed.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_COUNT										= ConvertItemDisableFlag(64) // actually inc/dec count when enabled/disabled.
+4. New Natives:
+    native IsItemDisabled									takes item whichItem returns boolean
+    native GetItemDisableFlags								takes item whichItem returns integer
+5. Fixed fatal error from picking up runes.
+6. Fixed CreateIllusionFromUnit and CreateIllusionFromUnitEx being locked at 6 item slots.
+7. Fixed default illusions being created from Wand of Illusions and such being locked at 6 item slots.
+8. All illusions now also will disable any item that was disabled on unit they were created from.

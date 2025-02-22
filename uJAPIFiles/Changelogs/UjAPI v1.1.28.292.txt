@@ -1,5 +1,0 @@
-v1.1.28.292
-
-1. Fixed CreateIllusionFromUnit and CreateIllusionFromUnitEx being locked at 6 item slots.
-2. Fixed default illusions being created from Wand of Illusions and such being locked at 6 item slots.
-3. Fixed fatal error from picking up runes.
