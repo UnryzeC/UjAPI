@@ -1,0 +1,3 @@
+1. Fixed GetItemMaxCharges returning current charges instead of max charges.
+2. Fixed SetItemMaxCharges setting current charges instead of max charges.
+3. Fixed inversed CItem::IsUnlimited internal checks that caused ITEM_MOVE and ITEM_STACK from functioning properly.
