@@ -161,6 +161,7 @@ type layerstyleflag										extends flagtype
 type controlstyleflag									extends flagtype
 type framestate 										extends flagtype
 type abilitytype										extends flagtype
+type itemdisableflag									extends flagtype
 type armortype											extends handle
 type heroattribute										extends handle
 type defensetype										extends handle
@@ -277,6 +278,7 @@ constant native ConvertLayerStyleFlag					takes integer i returns layerstyleflag
 constant native ConvertControlStyleFlag					takes integer i returns controlstyleflag
 constant native ConvertFrameState						takes integer i returns framestate
 constant native ConvertAbilityType						takes integer i returns abilitytype
+constant native ConvertItemDisableFlag					takes integer i returns itemdisableflag
 constant native ConvertConnectionType					takes integer i returns connectiontype
 constant native ConvertTradeState						takes integer i returns tradestate
 
