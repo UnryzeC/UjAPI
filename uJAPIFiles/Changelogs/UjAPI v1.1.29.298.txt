@@ -1,0 +1,4 @@
+v1.1.29.298
+
+1. Removed extra SetUnitZ native register.
+2. Reworked internal X/Y/Z setting for units, which previously would cause a desync (mainly setting Z) if it was spammed enough
