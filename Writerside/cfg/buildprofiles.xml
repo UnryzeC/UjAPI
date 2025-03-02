@@ -13,6 +13,8 @@
             <download-page>https://github.com/UnryzeC/UjAPI</download-page>
             <showDownloadButton>true</showDownloadButton>
 
+            <og-image>https://repository-images.githubusercontent.com/548904220/70873f1e-78ca-4ca1-94e5-a5c4a4afd9b2</og-image>
+
             <!-- https://www.jetbrains.com/help/writerside/buildprofiles-xml.html#content-max-width -->
             <content-max-width>99999</content-max-width>
         </variables>
