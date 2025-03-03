@@ -1,2 +1,3 @@
 1. Fixed GetUnitWeaponStringField not working with UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART.
 2. Fixed fatal error when a clone was made from a unit that has no inventory by default.
+3. Fixed GetTriggerFrameMouseButton returning value that is 1 less than it should be.
