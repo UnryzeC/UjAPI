@@ -3,3 +3,4 @@
 3. Fixed GetTriggerFrameMouseButton returning value that is 1 less than it should be.
 4. Removed CUnit::Clone hook, this was causing a crash/desync and other issues for some players.
 5. CAbilityItemIllusion fully rewritten, now it supports > 6 items without aforementioned hook.
+6. CAbilityMirrorImage fully rewritten, now it supports > 6 items without aforementioned hook.
