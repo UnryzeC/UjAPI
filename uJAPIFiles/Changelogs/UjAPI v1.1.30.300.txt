@@ -4,3 +4,6 @@
 4. Removed CUnit::Clone hook, this was causing a crash/desync and other issues for some players.
 5. CAbilityItemIllusion fully rewritten, now it supports > 6 items without aforementioned hook.
 6. CAbilityMirrorImage fully rewritten, now it supports > 6 items without aforementioned hook.
+7. Fixed GetEventIsAttack/Ex returning wrong values.
+8. Fixed GetEventDamageType returning wrong values.
+9. Fixed GetEventPreDamage returning wrong values.
