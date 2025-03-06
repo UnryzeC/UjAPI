@@ -7,3 +7,4 @@
 7. Fixed GetEventIsAttack/Ex returning wrong values.
 8. Fixed GetEventDamageType returning wrong values.
 9. Fixed GetEventPreDamage returning wrong values.
+10. Fixed whosyourdaddy cheat damage modifier.
