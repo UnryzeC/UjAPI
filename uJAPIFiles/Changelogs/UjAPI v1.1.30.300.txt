@@ -8,3 +8,6 @@
 8. Fixed GetEventDamageType returning wrong values.
 9. Fixed GetEventPreDamage returning wrong values.
 10. Fixed whosyourdaddy cheat damage modifier.
+11. Fixed SetItemX/Y/Z restoring previous axis if used right after another.
+    Note: this bug is new and unrelated to Vanilla.
+12. Fixed SetDestructableX/Y/Z issue, which is same as #11.
