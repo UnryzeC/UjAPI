@@ -11,3 +11,6 @@
 11. Fixed SetItemX/Y/Z restoring previous axis if used right after another.
     Note: this bug is new and unrelated to Vanilla.
 12. Fixed SetDestructableX/Y/Z issue, which is same as #11.
+13. Fixed fatal error from IsAbilityUsable.
+14. Fixed fatal error from IsSubmenuOpen.
+15. Fixed OnDeath processing of CAbilityInventory, now it properly drops items that have Drop on Death flag or if inventory itself has Drop on Death flag.
