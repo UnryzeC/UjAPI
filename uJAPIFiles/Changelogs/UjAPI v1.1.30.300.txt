@@ -1,6 +1,8 @@
 1. New Natives:
     native GetUnitItem										takes unit whichUnit, integer itemTypeId returns item
     native GetUnitItemEx									takes unit whichUnit, integer itemTypeId, integer index returns item
+    //
+    native GetItemAbilityByIdEx								takes item whichItem, integer abilityTypeId, integer index returns ability
 2. Fixed GetUnitWeaponStringField not working with UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART.
 3. Fixed fatal error when a clone was made from a unit that has no inventory by default.
 4. Fixed GetTriggerFrameMouseButton returning value that is 1 less than it should be.
