@@ -3,20 +3,22 @@
     native GetUnitItemEx									takes unit whichUnit, integer itemTypeId, integer index returns item
     //
     native GetItemAbilityByIdEx								takes item whichItem, integer abilityTypeId, integer index returns ability
-2. Fixed GetUnitWeaponStringField not working with UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART.
-3. Fixed fatal error when a clone was made from a unit that has no inventory by default.
-4. Fixed GetTriggerFrameMouseButton returning value that is 1 less than it should be.
-5. Removed CUnit::Clone hook, this was causing a crash/desync and other issues for some players.
-6. CAbilityItemIllusion fully rewritten, now it supports > 6 items without aforementioned hook.
-7. CAbilityMirrorImage fully rewritten, now it supports > 6 items without aforementioned hook.
-8. Fixed GetEventIsAttack/Ex returning wrong values.
-9. Fixed GetEventDamageType returning wrong values.
-10. Fixed GetEventPreDamage returning wrong values.
-11. Fixed whosyourdaddy cheat damage modifier.
-12. Fixed SetItemX/Y/Z restoring previous axis if used right after another.
+2. Native Changes:
+    StartItemCooldown now no longer takes unit was parameter, as it's now obsolete.
+3. Fixed GetUnitWeaponStringField not working with UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART.
+4. Fixed fatal error when a clone was made from a unit that has no inventory by default.
+5. Fixed GetTriggerFrameMouseButton returning value that is 1 less than it should be.
+6. Removed CUnit::Clone hook, this was causing a crash/desync and other issues for some players.
+7. CAbilityItemIllusion fully rewritten, now it supports > 6 items without aforementioned hook.
+8. CAbilityMirrorImage fully rewritten, now it supports > 6 items without aforementioned hook.
+9. Fixed GetEventIsAttack/Ex returning wrong values.
+10. Fixed GetEventDamageType returning wrong values.
+11. Fixed GetEventPreDamage returning wrong values.
+12. Fixed whosyourdaddy cheat damage modifier.
+13. Fixed SetItemX/Y/Z restoring previous axis if used right after another.
     Note: this bug is new and unrelated to Vanilla.
-13. Fixed SetDestructableX/Y/Z issue, which is same as #11.
-14. Fixed fatal error from IsAbilityUsable.
-15. Fixed fatal error from IsSubmenuOpen.
-16. Fixed OnDeath processing of CAbilityInventory, now it properly drops items that have Drop on Death flag or if inventory itself has Drop on Death flag.
-17. Fixed Item freezing its cooldown, when it is transfered/picked up by someone other than the one who used it.
+14. Fixed SetDestructableX/Y/Z issue, which is same as #11.
+15. Fixed fatal error from IsAbilityUsable.
+16. Fixed fatal error from IsSubmenuOpen.
+17. Fixed OnDeath processing of CAbilityInventory, now it properly drops items that have Drop on Death flag or if inventory itself has Drop on Death flag.
+18. Fixed Item freezing its cooldown, when it is transfered/picked up by someone other than the one who used it.
