@@ -4,7 +4,7 @@
     //
     native GetItemAbilityByIdEx								takes item whichItem, integer abilityTypeId, integer index returns ability
 2. Native Changes:
-    StartItemCooldown now no longer takes unit was parameter, as it's now obsolete.
+    StartItemCooldown now no longer takes unit as parameter, as it's now obsolete.
 3. Fixed GetUnitWeaponStringField not working with UNIT_WEAPON_SF_ATTACK_PROJECTILE_ART.
 4. Fixed fatal error when a clone was made from a unit that has no inventory by default.
 5. Fixed GetTriggerFrameMouseButton returning value that is 1 less than it should be.
