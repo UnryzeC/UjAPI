@@ -19,3 +19,4 @@
 14. Fixed fatal error from IsAbilityUsable.
 15. Fixed fatal error from IsSubmenuOpen.
 16. Fixed OnDeath processing of CAbilityInventory, now it properly drops items that have Drop on Death flag or if inventory itself has Drop on Death flag.
+17. Fixed Item freezing its cooldown, when it is transfered/picked up by someone other than the one who used it.
