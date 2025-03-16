@@ -153,10 +153,10 @@ constant native GetTextTagLimit							takes nothing returns integer
 globals
 
 //===================================================
-// Game Constants    
+// Game Constants
 //===================================================
 	constant integer					JASS_MAX_ARRAY_SIZE											= GetJassArrayLimit( ) 			// Previously was hardcoded 262144, this is subject to change if needed.
-	constant integer					TEXT_TAG_MAX_SIZE											= GetTextTagLimit( )  			// Original 100 limit raised to 1024, this is subject to change if needed.
+	constant integer					TEXT_TAG_MAX_SIZE											= GetTextTagLimit( )			// Original 100 limit raised to 1024, this is subject to change if needed.
 
 	constant raritycontrol				RARITY_QUEUE												= ConvertRarityControl(2)
 
@@ -1801,19 +1801,19 @@ globals
 	constant targetflag					TARGET_FLAG_EMPTY											= ConvertTargetFlag(4294967295)
 
 	// Damage Flag
-	constant damageflag					DAMAGE_FLAG_MELEE			    							= ConvertDamageFlag(0)
-	constant damageflag					DAMAGE_FLAG_RANGED			    							= ConvertDamageFlag(1)
-    constant damageflag					DAMAGE_FLAG_IGNORE_SOURCE	    							= ConvertDamageFlag(2)
-    constant damageflag					DAMAGE_FLAG_CALL_FOR_HELP       							= ConvertDamageFlag(4)
-	constant damageflag					DAMAGE_FLAG_EXPLOSION		    							= ConvertDamageFlag(8)
-	constant damageflag					DAMAGE_FLAG_NOTIFY_ONLY		    							= ConvertDamageFlag(16)
-	constant damageflag					DAMAGE_FLAG_INVULNERABLE	    							= ConvertDamageFlag(32)
-    constant damageflag					DAMAGE_FLAG_DONT_CALL_FOR_HELP								= ConvertDamageFlag(64)
-    constant damageflag					DAMAGE_FLAG_ATTACK_ONCE		    							= ConvertDamageFlag(128)
-    constant damageflag					DAMAGE_FLAG_ATTACK              							= ConvertDamageFlag(256)
-    constant damageflag					DAMAGE_FLAG_NO_PLAYER_MESSAGE								= ConvertDamageFlag(512)
-	constant damageflag					DAMAGE_FLAG_NEVER_MISS		    							= ConvertDamageFlag(1024)
-	constant damageflag					DAMAGE_FLAG_ACTUAL_ATTACK		    						= ConvertDamageFlag(1073741824)
+	constant damageflag					DAMAGE_FLAG_MELEE											= ConvertDamageFlag(0)
+	constant damageflag					DAMAGE_FLAG_RANGED											= ConvertDamageFlag(1)
+	constant damageflag					DAMAGE_FLAG_IGNORE_SOURCE									= ConvertDamageFlag(2)
+	constant damageflag					DAMAGE_FLAG_CALL_FOR_HELP		 							= ConvertDamageFlag(4)
+	constant damageflag					DAMAGE_FLAG_EXPLOSION										= ConvertDamageFlag(8)
+	constant damageflag					DAMAGE_FLAG_NOTIFY_ONLY										= ConvertDamageFlag(16)
+	constant damageflag					DAMAGE_FLAG_INVULNERABLE									= ConvertDamageFlag(32)
+	constant damageflag					DAMAGE_FLAG_DONT_CALL_FOR_HELP								= ConvertDamageFlag(64)
+	constant damageflag					DAMAGE_FLAG_ATTACK_ONCE										= ConvertDamageFlag(128)
+	constant damageflag					DAMAGE_FLAG_ATTACK											= ConvertDamageFlag(256)
+	constant damageflag					DAMAGE_FLAG_NO_PLAYER_MESSAGE								= ConvertDamageFlag(512)
+	constant damageflag					DAMAGE_FLAG_NEVER_MISS										= ConvertDamageFlag(1024)
+	constant damageflag					DAMAGE_FLAG_ACTUAL_ATTACK									= ConvertDamageFlag(1073741824)
 
 	// ability types
 	constant abilitytype				ABILITY_TYPE_POSITIVE										= ConvertAbilityType(0)
@@ -1826,13 +1826,13 @@ globals
 	constant abilitytype				ABILITY_TYPE_AUTODISPEL										= ConvertAbilityType(7)
 
 	// item disable flags
-	constant itemdisableflag			ITEM_DISABLE_FLAG_BASIC										= ConvertItemDisableFlag(1)  // basic disable/enable call.
-	constant itemdisableflag			ITEM_DISABLE_FLAG_SPELLBOOK									= ConvertItemDisableFlag(2)	 // any ability that contains other abilities.
-	constant itemdisableflag			ITEM_DISABLE_FLAG_BONUSES									= ConvertItemDisableFlag(4)	 // for complex abilities that provide percent changes.
-	constant itemdisableflag			ITEM_DISABLE_FLAG_ORDERS									= ConvertItemDisableFlag(8)  // for active abilities, making item's ability non-usable. Does not prevent item clicking with left/right mouse.
-	constant itemdisableflag			ITEM_DISABLE_FLAG_DIRECT_BONUSES							= ConvertItemDisableFlag(16) // for abilities that only provide stat bonuses.
-	constant itemdisableflag			ITEM_DISABLE_FLAG_AFFECT_UI									= ConvertItemDisableFlag(32) // should ability disable/hide count be even processed.
-	constant itemdisableflag			ITEM_DISABLE_FLAG_COUNT										= ConvertItemDisableFlag(64) // actually inc/dec count when enabled/disabled.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_BASIC										= ConvertItemDisableFlag(1)		// basic disable/enable call.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_SPELLBOOK									= ConvertItemDisableFlag(2)		// any ability that contains other abilities.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_BONUSES									= ConvertItemDisableFlag(4)		// for complex abilities that provide percent changes.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_ORDERS									= ConvertItemDisableFlag(8)		// for active abilities, making item's ability non-usable. Does not prevent item clicking with left/right mouse.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_DIRECT_BONUSES							= ConvertItemDisableFlag(16)	// for abilities that only provide stat bonuses.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_AFFECT_UI									= ConvertItemDisableFlag(32)	// should ability disable/hide count be even processed.
+	constant itemdisableflag			ITEM_DISABLE_FLAG_COUNT										= ConvertItemDisableFlag(64)	// actually inc/dec count when enabled/disabled.
 
 	// defense type
 	constant defensetype				DEFENSE_TYPE_LIGHT											= ConvertDefenseType(0)
@@ -3198,7 +3198,7 @@ native GetWar3ImageMaterialTexture						takes war3image whichWar3Image, integer 
 native SetWar3ImageMaterialTexture						takes war3image whichWar3Image, string textureName, integer materialId, integer textureIndex returns nothing
 native GetWar3ImageTexture								takes war3image whichWar3Image, integer textureIndex returns string
 native SetWar3ImageTexture								takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing
-native SetWar3ImageReplaceableTexture					takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing // 1 - TeamColour | 2 - TeamGlow | 11 - Cliff0/1 |  21 - "grabbed texture" for CCursorFrame | 31-37 trees.
+native SetWar3ImageReplaceableTexture					takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing // 1 - TeamColour | 2 - TeamGlow | 11 - Cliff0/1 | 21 - "grabbed texture" for CCursorFrame | 31-37 trees.
 native GetWar3ImageModelObjectX							takes war3image whichWar3Image, string whichObject returns real
 native GetWar3ImageModelObjectY							takes war3image whichWar3Image, string whichObject returns real
 native GetWar3ImageModelObjectZ							takes war3image whichWar3Image, string whichObject returns real
@@ -3745,6 +3745,7 @@ native SetItemMaxLife									takes item whichItem, real maxLife returns nothing
 native GetItemMaxCharges								takes item whichItem returns integer
 native SetItemMaxCharges								takes item whichItem, integer charges returns nothing
 native GetItemAbilityById								takes item whichItem, integer abilityTypeId returns ability
+native GetItemAbilityByIdEx								takes item whichItem, integer abilityTypeId, integer index returns ability
 native GetItemAbilityByIndex							takes item whichItem, integer index returns ability
 native ItemAddAbility									takes item whichItem, ability whichAbility returns boolean
 native ItemRemoveAbility								takes item whichItem, ability whichAbility returns boolean
@@ -3756,7 +3757,7 @@ native DisableItem										takes item whichItem, boolean hideUI, boolean disabl
 native EnableItem										takes item whichItem, boolean showUI, boolean enable, integer extraFlags returns nothing
 native GetItemCooldown									takes item whichItem returns real
 native SetItemCooldown									takes item whichItem, real cooldown returns nothing
-native StartItemCooldown								takes unit whichUnit, item whichItem, real cooldown returns nothing
+native StartItemCooldown								takes item whichItem, real cooldown returns nothing
 native GetItemRemainingCooldown							takes item whichItem returns real
 native SetItemRemainingCooldown							takes item whichItem, real cooldown returns nothing
 native GetItemPlayerColour								takes item whichItem returns playercolor
@@ -3965,7 +3966,7 @@ native UnitRemoveAbilityEx								takes unit whichUnit, integer abilityTypeId, b
 native CountUnitAbilities								takes unit whichUnit, boolean alsoCountBuffs returns integer
 native CountUnitAbilitiesWithTypeId						takes unit whichUnit, boolean alsoCountBuffs, integer abilityTypeId returns integer
 native GetUnitAbility									takes unit whichUnit, integer abilityTypeId returns ability
-native GetUnitAbilityEx									takes unit whichUnit, integer abilityTypeId, integer id returns ability  // Allows you to search through duplicates.
+native GetUnitAbilityEx									takes unit whichUnit, integer abilityTypeId, integer id returns ability	// Allows you to search through duplicates.
 native GetUnitAbilityByIndex							takes unit whichUnit, integer index returns ability
 native IsUnitAbilityVisible								takes unit whichUnit, integer abilityTypeId returns boolean
 native ShowUnitAbility									takes unit whichUnit, integer abilityTypeId, boolean show returns nothing
@@ -3990,10 +3991,20 @@ native GetUnitBuffByIndex								takes unit whichUnit, integer index returns buf
 native GetUnitBuffLevel									takes unit whichUnit, integer buffTypeId returns integer
 //
 
+// Unit Item API
+native GetUnitItemSlots									takes unit whichUnit returns integer
+native SetUnitItemSlots									takes unit whichUnit, integer itemSlots returns nothing
+native GetUnitItem										takes unit whichUnit, integer itemTypeId returns item
+native GetUnitItemEx									takes unit whichUnit, integer itemTypeId, integer index returns item
+//
+
+// Unit Timed Life API
 native UnitCancelTimedLife								takes unit whichUnit returns nothing
 native UnitRestartTimedLife								takes unit whichUnit returns nothing
 native GetUnitRemainingTimedLife						takes unit whichUnit returns real
 native SetUnitRemainingTimedLife						takes unit whichUnit, real duration returns nothing
+//
+
 native IsUnitGhosted									takes unit whichUnit returns boolean
 native SetUnitGhosted									takes unit whichUnit, boolean state, real transitionTime returns nothing // This is similar to Invisibility, but uses Ghost (Agho) as base logic, just like windwalk. Attacking from this state does not cause the unit to exit Ghost state.
 native IsUnitSelectable									takes unit whichUnit returns boolean
@@ -4116,8 +4127,6 @@ native GetUnitPathingAIType								takes unit whichUnit returns pathingaitype
 native SetUnitPathingAIType								takes unit whichUnit, pathingaitype pathingAIType returns nothing
 native GetUnitPathingType								takes unit whichUnit returns pathingtype
 native SetUnitPathingType								takes unit whichUnit, pathingtype pathingType returns nothing
-native GetUnitItemSlots									takes unit whichUnit returns integer
-native SetUnitItemSlots									takes unit whichUnit, integer itemSlots returns nothing
 native SetUnitFacingEx									takes unit whichUnit, real facing, boolean isInstant returns nothing
 native SetUnitFacingInstant								takes unit whichUnit, real facing returns nothing
 native GetUnitMinimapX									takes unit whichUnit returns real
@@ -4759,10 +4768,10 @@ native GetEventAttackType								takes nothing returns attacktype
 native SetEventAttackType								takes attacktype attackType returns boolean
 
 native GetEventDamageType								takes nothing returns damagetype
-native SetEventDamageType								takes damagetype damageType returns boolean
+native SetEventDamageType								takes damagetype whichDamageType returns boolean
 
 native GetEventDamageTypeExtra							takes nothing returns damagetype // DEMOLITION is usually related to critical hits.
-native SetEventDamageTypeExtra							takes takes damagetype whichDamageType returns boolean
+native SetEventDamageTypeExtra							takes damagetype whichDamageType returns boolean
 
 native GetEventDamageTypeFlags							takes nothing returns integer
 native SetEventDamageTypeFlags							takes integer damageFlags returns boolean
@@ -4776,10 +4785,10 @@ native GetEventIsRanged									takes nothing returns boolean
 native GetEventIsCritical								takes nothing returns boolean
 
 native GetEventPreDamage								takes nothing returns real
-native SetEventPreDamage								takes real returns nothing
+native SetEventPreDamage								takes real damage returns nothing
 
 native GetEventPreDamageExtra							takes nothing returns real
-native SetEventPreDamageExtra							takes real returns nothing
+native SetEventPreDamageExtra							takes real damage returns nothing
 
 native SetEventDamage									takes real damage returns nothing
 
