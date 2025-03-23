@@ -2,3 +2,4 @@
   constant native DecPlayerTechResearched					takes player whichPlayer, integer techid, integer levels returns nothing
 2. Fixed EVENT_UNIT_ATTACK_FINISHED returning target as source instead.
 3. BlzDecPlayerTechResearched is now also implemented.
+4. SetPlayerTechResearched rewritten, now it supports tech decrease.
