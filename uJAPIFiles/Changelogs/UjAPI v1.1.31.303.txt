@@ -11,3 +11,5 @@
 5. Fixed internal function ParseArguments used in CallNative/CallFunction, now it properly parses arguments.
 6. Fixed Command Card getting forcefully closed upon item pick up.
 7. Fixed SetItemStringField with ICON/NAME fields and such not updating Inventory.
+8. CUnit::GetCurrentSight rewritten, now it also ignores internal SIGHT_MAX constant.
+9. CUnit::SetCurrentSight rewritten, now it properly works with heroes that were revived faster than 4 seconds.
