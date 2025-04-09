@@ -4,7 +4,12 @@
     native StringToBase64									takes string s returns string
     native StringFromBase64									takes string s returns string
     //
-    constant native DecPlayerTechResearched					takes player whichPlayer, integer techid, integer levels returns nothing
+    constant native DecPlayerTechResearched				    takes player whichPlayer, integer techid, integer levels returns nothing
+    //
+    native IsUnitRevealed                                   takes unit whichUnit returns boolean
+    native GetUnitRevealedTo                                takes unit whichUnit returns integer
+    native RevealUnit                                       takes unit whichUnit, integer playerMask returns nothing // id << 1 -> BitwiseShiftLeft( id, 1 ) for each player.
+    native UnrevealUnit                                     takes unit whichUnit returns nothing // only works if unit was revealed beforehand.
 2. Fixed EVENT_UNIT_ATTACK_FINISHED returning target as source instead.
 3. BlzDecPlayerTechResearched is now also implemented.
 4. SetPlayerTechResearched rewritten, now it supports tech decrease.
