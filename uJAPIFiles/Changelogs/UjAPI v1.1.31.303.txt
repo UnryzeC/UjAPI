@@ -21,5 +21,7 @@
 10. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoBar.
 11. Fixed SetUnitStringField with UNIT_SF_NAME not working for HeroBarButton.
 12. Fixed SetUnitStringField with UNIT_SF_NAME not working for TrainableButton.
-13. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoBar.
-14. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for HeroBarButton.
+13. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoPanelGroup.
+14. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoBar.
+15. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for HeroBarButton.
+16. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoPanelGroup.
