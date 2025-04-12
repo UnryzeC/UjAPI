@@ -18,3 +18,8 @@
 7. Fixed SetItemStringField with ICON/NAME fields and such not updating Inventory.
 8. CUnit::GetCurrentSight rewritten, now it also ignores internal SIGHT_MAX constant.
 9. CUnit::SetCurrentSight rewritten, now it properly works with heroes that were revived faster than 4 seconds.
+10. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoBar.
+11. Fixed SetUnitStringField with UNIT_SF_NAME not working for HeroBarButton.
+12. Fixed SetUnitStringField with UNIT_SF_NAME not working for TrainableButton.
+13. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoBar.
+14. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for HeroBarButton.
