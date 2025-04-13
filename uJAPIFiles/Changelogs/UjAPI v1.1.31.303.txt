@@ -6,6 +6,7 @@
     //
     constant native DecPlayerTechResearched				    takes player whichPlayer, integer techid, integer levels returns nothing
     //
+    native ChangeUnitTimeCycle								takes unit whichUnit, boolean isDayTime returns nothing
     native IsUnitRevealed                                   takes unit whichUnit returns boolean
     native GetUnitRevealedTo                                takes unit whichUnit returns integer
     native RevealUnit                                       takes unit whichUnit, integer playerMask returns nothing // id << 1 -> BitwiseShiftLeft( id, 1 ) for each player.
@@ -25,3 +26,4 @@
 14. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoBar.
 15. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for HeroBarButton.
 16. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoPanelGroup.
+17. Rewritten CUnit::IsMoving to instead focus on CAbilityMove::IsMoving instead of internal flags.
