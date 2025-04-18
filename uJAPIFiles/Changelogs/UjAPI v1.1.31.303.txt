@@ -27,3 +27,5 @@
 15. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for HeroBarButton.
 16. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoPanelGroup.
 17. Rewritten CUnit::IsMoving to instead focus on CAbilityMove::IsMoving instead of internal flags.
+18. SetFrameGridFrame now supports "null" frames, this will simply remove frame from the grid.
+    Note: frame won't be destroyed/erased, simply removed from grid.
