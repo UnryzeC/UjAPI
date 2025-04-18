@@ -4,6 +4,9 @@
     native StringToBase64									takes string s returns string
     native StringFromBase64									takes string s returns string
     //
+    native GetFrameGridFrameRow								takes framehandle grid, framehandle whichFrame returns integer
+    native GetFrameGridFrameColumn							takes framehandle grid, framehandle whichFrame returns integer
+    //
     constant native DecPlayerTechResearched				    takes player whichPlayer, integer techid, integer levels returns nothing
     //
     native ChangeUnitTimeCycle								takes unit whichUnit, boolean isDayTime returns nothing
