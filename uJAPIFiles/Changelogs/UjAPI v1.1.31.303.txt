@@ -1,4 +1,7 @@
-1. New Natives:
+1. New Constants:
+	constant unitstate					UNIT_STATE_REGEN_LIFE										= ConvertUnitState(4)
+	constant unitstate					UNIT_STATE_REGEN_MANA										= ConvertUnitState(5)
+2. New Natives:
     native StringEncrypt									takes string s, string keyString returns string
     native StringDecrypt									takes string s, string keyString returns string
     native StringToBase64									takes string s returns string
@@ -14,21 +17,23 @@
     native GetUnitRevealedTo                                takes unit whichUnit returns integer
     native RevealUnit                                       takes unit whichUnit, integer playerMask returns nothing // id << 1 -> BitwiseShiftLeft( id, 1 ) for each player.
     native UnrevealUnit                                     takes unit whichUnit returns nothing // only works if unit was revealed beforehand.
-2. Fixed EVENT_UNIT_ATTACK_FINISHED returning target as source instead.
-3. BlzDecPlayerTechResearched is now also implemented.
-4. SetPlayerTechResearched rewritten, now it supports tech decrease.
-5. Fixed internal function ParseArguments used in CallNative/CallFunction, now it properly parses arguments.
-6. Fixed Command Card getting forcefully closed upon item pick up.
-7. Fixed SetItemStringField with ICON/NAME fields and such not updating Inventory.
-8. CUnit::GetCurrentSight rewritten, now it also ignores internal SIGHT_MAX constant.
-9. CUnit::SetCurrentSight rewritten, now it properly works with heroes that were revived faster than 4 seconds.
-10. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoBar.
-11. Fixed SetUnitStringField with UNIT_SF_NAME not working for HeroBarButton.
-12. Fixed SetUnitStringField with UNIT_SF_NAME not working for TrainableButton.
-13. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoPanelGroup.
-14. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoBar.
-15. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for HeroBarButton.
-16. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoPanelGroup.
-17. Rewritten CUnit::IsMoving to instead focus on CAbilityMove::IsMoving instead of internal flags.
-18. SetFrameGridFrame now supports "null" frames, this will simply remove frame from the grid.
+3. Fixed EVENT_UNIT_ATTACK_FINISHED returning target as source instead.
+4. BlzDecPlayerTechResearched is now also implemented.
+5. SetPlayerTechResearched rewritten, now it supports tech decrease.
+6. Fixed internal function ParseArguments used in CallNative/CallFunction, now it properly parses arguments.
+7. Fixed Command Card getting forcefully closed upon item pick up.
+8. Fixed SetItemStringField with ICON/NAME fields and such not updating Inventory.
+9. CUnit::GetCurrentSight rewritten, now it also ignores internal SIGHT_MAX constant.
+10. CUnit::SetCurrentSight rewritten, now it properly works with heroes that were revived faster than 4 seconds.
+11. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoBar.
+12. Fixed SetUnitStringField with UNIT_SF_NAME not working for HeroBarButton.
+13. Fixed SetUnitStringField with UNIT_SF_NAME not working for TrainableButton.
+14. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoPanelGroup.
+15. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoBar.
+16. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for HeroBarButton.
+17. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoPanelGroup.
+18. Rewritten CUnit::IsMoving to instead focus on CAbilityMove::IsMoving instead of internal flags.
+19. SetFrameGridFrame now supports "null" frames, this will simply remove frame from the grid.
     Note: frame won't be destroyed/erased, simply removed from grid.
+20. GetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
+21. SetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
