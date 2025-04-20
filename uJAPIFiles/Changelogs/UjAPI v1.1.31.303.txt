@@ -3,6 +3,8 @@
 	constant unitstate					UNIT_STATE_REGEN_MANA										= ConvertUnitState(5)
 	constant unitstate					UNIT_STATE_BONUS_LIFE										= ConvertUnitState(6)
 	constant unitstate					UNIT_STATE_BONUS_MANA										= ConvertUnitState(7)
+	constant abilitybooleanfield		ABILITY_BF_REGEN_IN_PERCENT									= ConvertAbilityBooleanField('Iapc')
+	constant abilityintegerlevelfield	ABILITY_ILF_MANA_POINTS_REGENERATED_PER_SECOND				= ConvertAbilityIntegerLevelField('Impr') // Same as ABILITY_RLF_MANA_REGENERATION_BONUS_AS_FRACTION_OF_NORMAL
 2. New Natives:
     native StringEncrypt									takes string s, string keyString returns string
     native StringDecrypt									takes string s, string keyString returns string
@@ -39,3 +41,4 @@
     Note: frame won't be destroyed/erased, simply removed from grid.
 20. GetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
 21. SetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
+22. Rewritten UNIT_STATE_REGEN_LIFE/MANA processing, frequent changes to it should no longer "break" regen processing.
