@@ -3,8 +3,8 @@
 	constant unitstate					UNIT_STATE_REGEN_MANA										= ConvertUnitState(5)
 	constant unitstate					UNIT_STATE_BONUS_LIFE										= ConvertUnitState(6)
 	constant unitstate					UNIT_STATE_BONUS_MANA										= ConvertUnitState(7)
-	constant abilitybooleanfield		ABILITY_BF_REGEN_IN_PERCENT									= ConvertAbilityBooleanField('Iapc')
-	constant abilityintegerlevelfield	ABILITY_ILF_MANA_POINTS_REGENERATED_PER_SECOND				= ConvertAbilityIntegerLevelField('Impr') // Same as ABILITY_RLF_MANA_REGENERATION_BONUS_AS_FRACTION_OF_NORMAL
+	constant abilitybooleanfield		ABILITY_BF_BONUS_IN_PERCENT									= ConvertAbilityBooleanField('abip')
+	constant abilityintegerlevelfield	ABILITY_ILF_MANA_POINTS_REGENERATED_PER_SECOND				= ConvertAbilityIntegerLevelField('Impr')
 2. New Natives:
     native StringEncrypt									takes string s, string keyString returns string
     native StringDecrypt									takes string s, string keyString returns string
