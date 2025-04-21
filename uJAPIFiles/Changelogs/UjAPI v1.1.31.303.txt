@@ -18,6 +18,7 @@
     //
     constant native DecPlayerTechResearched				    takes player whichPlayer, integer techid, integer levels returns nothing
     //
+	native IsUnitPlaceableAtById							takes integer unitTypeId, player whichPlayer, real x, real y, integer ignorePreventMask, integer extraPreventMask, integer ignoreRequiresMask, integer extraRequiresMask, boolean syncTest, boolean testFog, boolean ignoreInvisWidget, boolean ignoreOwnUnits, boolean moveBlockingUnits, boolean createFakeFootprint returns boolean
     native ChangeUnitTimeCycle								takes unit whichUnit, boolean isDayTime returns nothing
     native IsUnitRevealed                                   takes unit whichUnit returns boolean
     native GetUnitRevealedTo                                takes unit whichUnit returns integer
