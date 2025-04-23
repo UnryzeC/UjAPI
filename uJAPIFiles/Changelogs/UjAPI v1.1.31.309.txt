@@ -37,24 +37,31 @@
 	native UnitReportContact								takes unit whichUnit, unit attacker, unit defender returns nothing
 	native UnitCallForHelp									takes unit whichUnit, unit attacker, boolean updateNotification returns nothing
 	native UnitFlashFog										takes unit whichUnit, integer playerMask, real minDuration returns nothing
-3. Fixed EVENT_UNIT_ATTACK_FINISHED returning target as source instead.
-4. BlzDecPlayerTechResearched is now also implemented.
-5. SetPlayerTechResearched rewritten, now it supports tech decrease.
-6. Fixed internal function ParseArguments used in CallNative/CallFunction, now it properly parses arguments.
-7. Fixed Command Card getting forcefully closed upon item pick up.
-8. Fixed SetItemStringField with ICON/NAME fields and such not updating Inventory.
-9. CUnit::GetCurrentSight rewritten, now it also ignores internal SIGHT_MAX constant.
-10. CUnit::SetCurrentSight rewritten, now it properly works with heroes that were revived faster than 4 seconds.
-11. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoBar.
-12. Fixed SetUnitStringField with UNIT_SF_NAME not working for HeroBarButton.
-13. Fixed SetUnitStringField with UNIT_SF_NAME not working for TrainableButton.
-14. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoPanelGroup.
-15. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoBar.
-16. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for HeroBarButton.
-17. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoPanelGroup.
-18. Rewritten CUnit::IsMoving to instead focus on CAbilityMove::IsMoving instead of internal flags.
-19. SetFrameGridFrame now supports "null" frames, this will simply remove frame from the grid.
+3. New Files:
+	Added UI\\Feedback\\Skill\\Indicator.blp
+	Added UI\\Feedback\\Skill\\UI-Skill-Indicator-Circle.mdx
+	Added UI\\Feedback\\Skill\\UI-Skill-Indicator-Move.mdx
+	Added UI\\Feedback\\Skill\\UI-Skill-Indicator-Sector.mdx
+	Added UI\\Feedback\\Skill\\UI-Skill-Indicator-Straight.mdx
+	Note: Thanks to BaiyuGalan on Hive.
+4. Fixed EVENT_UNIT_ATTACK_FINISHED returning target as source instead.
+5. BlzDecPlayerTechResearched is now also implemented.
+6. SetPlayerTechResearched rewritten, now it supports tech decrease.
+7. Fixed internal function ParseArguments used in CallNative/CallFunction, now it properly parses arguments.
+8. Fixed Command Card getting forcefully closed upon item pick up.
+9. Fixed SetItemStringField with ICON/NAME fields and such not updating Inventory.
+10. CUnit::GetCurrentSight rewritten, now it also ignores internal SIGHT_MAX constant.
+11. CUnit::SetCurrentSight rewritten, now it properly works with heroes that were revived faster than 4 seconds.
+12. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoBar.
+13. Fixed SetUnitStringField with UNIT_SF_NAME not working for HeroBarButton.
+14. Fixed SetUnitStringField with UNIT_SF_NAME not working for TrainableButton.
+15. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoPanelGroup.
+16. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoBar.
+17. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for HeroBarButton.
+18. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoPanelGroup.
+19. Rewritten CUnit::IsMoving to instead focus on CAbilityMove::IsMoving instead of internal flags.
+20. SetFrameGridFrame now supports "null" frames, this will simply remove frame from the grid.
     Note: frame won't be destroyed/erased, simply removed from grid.
-20. GetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
-21. SetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
-22. Rewritten UNIT_STATE_REGEN_LIFE/MANA processing, frequent changes to it should no longer "break" regen processing.
+21. GetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
+22. SetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
+23. Rewritten UNIT_STATE_REGEN_LIFE/MANA processing, frequent changes to it should no longer "break" regen processing.
