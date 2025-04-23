@@ -1,12 +1,12 @@
 1. New Constants:
-	constant unitstate					UNIT_STATE_REGEN_LIFE										= ConvertUnitState(4)
-	constant unitstate					UNIT_STATE_REGEN_MANA										= ConvertUnitState(5)
-	constant unitstate					UNIT_STATE_BONUS_LIFE										= ConvertUnitState(6)
-	constant unitstate					UNIT_STATE_BONUS_MANA										= ConvertUnitState(7)
-	constant abilitybooleanfield		ABILITY_BF_BONUS_IN_PERCENT									= ConvertAbilityBooleanField('abip')
-	constant abilitybooleanfield		ABILITY_BF_BONUS_LIFE_IN_PERCENT							= ConvertAbilityBooleanField('bhip')
-	constant abilitybooleanfield		ABILITY_BF_BONUS_MANA_IN_PERCENT							= ConvertAbilityBooleanField('bmip')
-	constant abilityintegerlevelfield	ABILITY_ILF_MANA_POINTS_REGENERATED_PER_SECOND				= ConvertAbilityIntegerLevelField('Impr')
+	constant unitstate										UNIT_STATE_REGEN_LIFE										= ConvertUnitState(4)
+	constant unitstate										UNIT_STATE_REGEN_MANA										= ConvertUnitState(5)
+	constant unitstate										UNIT_STATE_BONUS_LIFE										= ConvertUnitState(6)
+	constant unitstate										UNIT_STATE_BONUS_MANA										= ConvertUnitState(7)
+	constant abilitybooleanfield							ABILITY_BF_BONUS_IN_PERCENT									= ConvertAbilityBooleanField('abip')
+	constant abilitybooleanfield							ABILITY_BF_BONUS_LIFE_IN_PERCENT							= ConvertAbilityBooleanField('bhip')
+	constant abilitybooleanfield							ABILITY_BF_BONUS_MANA_IN_PERCENT							= ConvertAbilityBooleanField('bmip')
+	constant abilityintegerlevelfield						ABILITY_ILF_MANA_POINTS_REGENERATED_PER_SECOND				= ConvertAbilityIntegerLevelField('Impr')
 2. New Natives:
     native StringEncrypt									takes string s, string keyString returns string
     native StringDecrypt									takes string s, string keyString returns string
