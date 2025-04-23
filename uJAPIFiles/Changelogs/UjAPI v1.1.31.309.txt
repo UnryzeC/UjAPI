@@ -15,15 +15,28 @@
     //
     native GetFrameGridFrameRow								takes framehandle grid, framehandle whichFrame returns integer
     native GetFrameGridFrameColumn							takes framehandle grid, framehandle whichFrame returns integer
+	//
+	native IsFogModifierPlayerMask							takes fogmodifier whichFogModifier, integer playerMask returns boolean
+	native GetFogModifierPlayerMask							takes fogmodifier whichFogModifier returns integer
+	native SetFogModifierPlayerMask							takes fogmodifier whichFogModifier, integer playerMask returns nothing
+	native AddFogModifierPlayer								takes fogmodifier whichFogModifier, player whichPlayer returns nothing
+	native RemoveFogModifierPlayer							takes fogmodifier whichFogModifier, player whichPlayer returns nothing
+	//
+	native ForceGetPlayerMask								takes force whichForce returns integer
     //
     constant native DecPlayerTechResearched				    takes player whichPlayer, integer techid, integer levels returns nothing
+	native GetPlayerMask									takes player whichPlayer returns integer
     //
 	native IsUnitPlaceableAtById							takes integer unitTypeId, player whichPlayer, real x, real y, integer ignorePreventMask, integer extraPreventMask, integer ignoreRequiresMask, integer extraRequiresMask, boolean syncTest, boolean testFog, boolean ignoreInvisWidget, boolean ignoreOwnUnits, boolean moveBlockingUnits, boolean createFakeFootprint returns boolean
     native ChangeUnitTimeCycle								takes unit whichUnit, boolean isDayTime returns nothing
     native IsUnitRevealed                                   takes unit whichUnit returns boolean
     native GetUnitRevealedTo                                takes unit whichUnit returns integer
-    native RevealUnit                                       takes unit whichUnit, integer playerMask returns nothing // id << 1 -> BitwiseShiftLeft( id, 1 ) for each player.
+    native RevealUnit                                       takes unit whichUnit, integer playerMask returns nothing // id << 1 -> BitwiseShiftLeft( id, 1 ) or ForceGetPlayerMask( p ) for each player.
     native UnrevealUnit                                     takes unit whichUnit returns nothing // only works if unit was revealed beforehand.
+	//
+	native UnitReportContact								takes unit whichUnit, unit attacker, unit defender returns nothing
+	native UnitCallForHelp									takes unit whichUnit, unit attacker, boolean updateNotification returns nothing
+	native UnitFlashFog										takes unit whichUnit, integer playerMask, real minDuration returns nothing
 3. Fixed EVENT_UNIT_ATTACK_FINISHED returning target as source instead.
 4. BlzDecPlayerTechResearched is now also implemented.
 5. SetPlayerTechResearched rewritten, now it supports tech decrease.
