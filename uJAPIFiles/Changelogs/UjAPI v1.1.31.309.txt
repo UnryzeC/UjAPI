@@ -1,13 +1,39 @@
-1. New Constants:
-	constant unitstate										UNIT_STATE_REGEN_LIFE										= ConvertUnitState(4)
-	constant unitstate										UNIT_STATE_REGEN_MANA										= ConvertUnitState(5)
-	constant unitstate										UNIT_STATE_BONUS_LIFE										= ConvertUnitState(6)
-	constant unitstate										UNIT_STATE_BONUS_MANA										= ConvertUnitState(7)
-	constant abilitybooleanfield							ABILITY_BF_BONUS_IN_PERCENT									= ConvertAbilityBooleanField('abip')
-	constant abilitybooleanfield							ABILITY_BF_BONUS_LIFE_IN_PERCENT							= ConvertAbilityBooleanField('bhip')
-	constant abilitybooleanfield							ABILITY_BF_BONUS_MANA_IN_PERCENT							= ConvertAbilityBooleanField('bmip')
-	constant abilityintegerlevelfield						ABILITY_ILF_MANA_POINTS_REGENERATED_PER_SECOND				= ConvertAbilityIntegerLevelField('Impr')
-2. New Natives:
+1. New Types:
+	type spriteflag											extends flagtype
+2. New Convertors:
+	constant native ConvertSpriteFlag						takes integer i returns spriteflag
+3. New Constants:
+	constant unitstate					UNIT_STATE_REGEN_LIFE										= ConvertUnitState(4)
+	constant unitstate					UNIT_STATE_REGEN_MANA										= ConvertUnitState(5)
+	constant unitstate					UNIT_STATE_BONUS_LIFE										= ConvertUnitState(6)
+	constant unitstate					UNIT_STATE_BONUS_MANA										= ConvertUnitState(7)
+	constant abilitybooleanfield		ABILITY_BF_BONUS_IN_PERCENT									= ConvertAbilityBooleanField('abip')
+	constant abilitybooleanfield		ABILITY_BF_BONUS_LIFE_IN_PERCENT							= ConvertAbilityBooleanField('bhip')
+	constant abilitybooleanfield		ABILITY_BF_BONUS_MANA_IN_PERCENT							= ConvertAbilityBooleanField('bmip')
+	constant abilityintegerlevelfield	ABILITY_ILF_MANA_POINTS_REGENERATED_PER_SECOND				= ConvertAbilityIntegerLevelField('Impr')
+	//
+	constant spriteflag					SPRITE_FLAG_NO_TRACK										= ConvertSpriteFlag(1)
+	constant spriteflag					SPRITE_FLAG_NO_CLICK										= ConvertSpriteFlag(2)
+	constant spriteflag					SPRITE_FLAG_NO_SELECT										= ConvertSpriteFlag(4)
+	constant spriteflag					SPRITE_FLAG_UNSELECTRABLE									= ConvertSpriteFlag(7) // NO_TRACK | NO_CLICK | NO_SELECT
+	constant spriteflag					SPRITE_FLAG_STRUCTURE										= ConvertSpriteFlag(8)
+	constant spriteflag					SPRITE_FLAG_FLYER											= ConvertSpriteFlag(128)
+	constant spriteflag					SPRITE_FLAG_LINKED_MODEL                					= ConvertSpriteFlag(65536)
+	constant spriteflag					SPRITE_FLAG_MANAGED_TIME                					= ConvertSpriteFlag(131072)
+	constant spriteflag					SPRITE_FLAG_ABSOLUTE_TIME               					= ConvertSpriteFlag(262144)
+	constant spriteflag					SPRITE_FLAG_PAUSED_TIME                 					= ConvertSpriteFlag(524288)
+	constant spriteflag					SPRITE_FLAG_IGNORE_FOG                  					= ConvertSpriteFlag(1048576)
+	constant spriteflag					SPRITE_FLAG_UPDATED                     					= ConvertSpriteFlag(2097152)
+	constant spriteflag					SPRITE_FLAG_UBER                        					= ConvertSpriteFlag(4194304)
+	constant spriteflag					SPRITE_FLAG_MINI                        					= ConvertSpriteFlag(8388608)
+	constant spriteflag					SPRITE_FLAG_VERTEX_COLOR_LINKED         					= ConvertSpriteFlag(16777216)
+	constant spriteflag					SPRITE_FLAG_VERTEX_ALPHA_LINKED         					= ConvertSpriteFlag(33554432)
+	constant spriteflag					SPRITE_FLAG_RESET_SEQ_TIME              					= ConvertSpriteFlag(67108864)
+	constant spriteflag					SPRITE_FLAG_LOOKAT_CONSTRAIN_X          					= ConvertSpriteFlag(268435456)
+	constant spriteflag					SPRITE_FLAG_LOOKAT_CONSTRAIN_Y          					= ConvertSpriteFlag(536870912)
+	constant spriteflag					SPRITE_FLAG_LOOKAT_CONSTRAIN_Z          					= ConvertSpriteFlag(1073741824)
+	constant spriteflag					SPRITE_FLAG_MAT_PROP_LINKED             					= ConvertSpriteFlag(2147483648)
+4. New Natives:
     native StringEncrypt									takes string s, string keyString returns string
     native StringDecrypt									takes string s, string keyString returns string
     native StringToBase64									takes string s returns string
@@ -30,41 +56,75 @@
     constant native DecPlayerTechResearched				    takes player whichPlayer, integer techid, integer levels returns nothing
 	native GetPlayerMask									takes player whichPlayer returns integer
     //
+	native GetSpriteFlag									takes sprite whichSprite returns spriteflag
+	native SetSpriteFlag									takes sprite whichSprite, spriteflag whichDrawFlag, boolean isSet returns nothing
+	native IsSpriteFlag										takes sprite whichSprite, spriteflag whichDrawFlag returns boolean
+	//
+	native GetWar3ImageSpriteFlag							takes war3image whichWar3Image returns spriteflag
+	native SetWar3ImageSpriteFlag							takes war3image whichWar3Image, spriteflag whichDrawFlag, boolean isSet returns nothing
+	native IsWar3ImageSpriteFlag							takes war3image whichWar3Image, spriteflag whichDrawFlag returns boolean
+	//
+	native GetSpecialEffectSpriteFlag						takes effect whichEffect returns spriteflag
+	native SetSpecialEffectSpriteFlag						takes effect whichEffect, spriteflag whichDrawFlag, boolean isSet returns nothing
+	native IsSpecialEffectSpriteFlag						takes effect whichEffect, spriteflag whichDrawFlag returns boolean
+	//
+	native GetTrackableSpriteFlag							takes trackable whichTrackable returns spriteflag
+	native SetTrackableSpriteFlag							takes trackable whichTrackable, spriteflag whichDrawFlag, boolean isSet returns nothing
+	native IsTrackableSpriteFlag							takes trackable whichTrackable, spriteflag whichDrawFlag returns boolean
+	//
+	native GetWidgetSpriteFlag								takes widget whichWidget returns spriteflag
+	native SetWidgetSpriteFlag								takes widget whichWidget, spriteflag whichDrawFlag, boolean isSet returns nothing
+	native IsWidgetSpriteFlag								takes widget whichWidget, spriteflag whichDrawFlag returns boolean
+	//
+	native GetDestructableSpriteFlag						takes destructable whichDestructable returns spriteflag
+	native SetDestructableSpriteFlag						takes destructable whichDestructable, spriteflag whichDrawFlag, boolean isSet returns nothing
+	native IsDestructableSpriteFlag							takes destructable whichDestructable, spriteflag whichDrawFlag returns boolean
+	//
+	native GetItemSpriteFlag								takes item whichItem returns spriteflag
+	native SetItemSpriteFlag								takes item whichItem, spriteflag whichDrawFlag, boolean isSet returns nothing
+	native IsItemSpriteFlag									takes item whichItem, spriteflag whichDrawFlag returns boolean
+	//
+	native GetUnitSpriteFlag								takes unit whichUnit returns spriteflag
+	native SetUnitSpriteFlag								takes unit whichUnit, spriteflag whichDrawFlag, boolean isSet returns nothing
+	native IsUnitSpriteFlag									takes unit whichUnit, spriteflag whichDrawFlag returns boolean
 	native IsUnitPlaceableAtById							takes integer unitTypeId, player whichPlayer, real x, real y, integer ignorePreventMask, integer extraPreventMask, integer ignoreRequiresMask, integer extraRequiresMask, boolean syncTest, boolean testFog, boolean ignoreInvisWidget, boolean ignoreOwnUnits, boolean moveBlockingUnits, boolean createFakeFootprint returns boolean
     native ChangeUnitTimeCycle								takes unit whichUnit, boolean isDayTime returns nothing
     native IsUnitRevealed                                   takes unit whichUnit returns boolean
     native GetUnitRevealedTo                                takes unit whichUnit returns integer
     native RevealUnit                                       takes unit whichUnit, integer playerMask returns nothing // id << 1 -> BitwiseShiftLeft( id, 1 ) or ForceGetPlayerMask( p ) for each player.
     native UnrevealUnit                                     takes unit whichUnit returns nothing // only works if unit was revealed beforehand.
-	//
 	native UnitReportContact								takes unit whichUnit, unit attacker, unit defender returns nothing
 	native UnitCallForHelp									takes unit whichUnit, unit attacker, boolean updateNotification returns nothing
 	native UnitFlashFog										takes unit whichUnit, integer playerMask, real minDuration returns nothing
-3. New Files:
+	//
+	native GetProjectileSpriteFlag							takes projectile whichProjectile returns spriteflag
+	native SetProjectileSpriteFlag							takes projectile whichProjectile, spriteflag whichDrawFlag, boolean isSet returns nothing
+	native IsProjectileSpriteFlag							takes projectile whichProjectile, spriteflag whichDrawFlag returns boolean
+5. New Files:
 	Added UI\\Feedback\\Skill\\Indicator.blp
 	Added UI\\Feedback\\Skill\\UI-Skill-Indicator-Circle.mdx
 	Added UI\\Feedback\\Skill\\UI-Skill-Indicator-Move.mdx
 	Added UI\\Feedback\\Skill\\UI-Skill-Indicator-Sector.mdx
 	Added UI\\Feedback\\Skill\\UI-Skill-Indicator-Straight.mdx
 	Note: Thanks to BaiyuGalan on Hive.
-4. Fixed EVENT_UNIT_ATTACK_FINISHED returning target as source instead.
-5. BlzDecPlayerTechResearched is now also implemented.
-6. SetPlayerTechResearched rewritten, now it supports tech decrease.
-7. Fixed internal function ParseArguments used in CallNative/CallFunction, now it properly parses arguments.
-8. Fixed Command Card getting forcefully closed upon item pick up.
-9. Fixed SetItemStringField with ICON/NAME fields and such not updating Inventory.
-10. CUnit::GetCurrentSight rewritten, now it also ignores internal SIGHT_MAX constant.
-11. CUnit::SetCurrentSight rewritten, now it properly works with heroes that were revived faster than 4 seconds.
-12. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoBar.
-13. Fixed SetUnitStringField with UNIT_SF_NAME not working for HeroBarButton.
-14. Fixed SetUnitStringField with UNIT_SF_NAME not working for TrainableButton.
-15. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoPanelGroup.
-16. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoBar.
-17. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for HeroBarButton.
-18. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoPanelGroup.
-19. Rewritten CUnit::IsMoving to instead focus on CAbilityMove::IsMoving instead of internal flags.
-20. SetFrameGridFrame now supports "null" frames, this will simply remove frame from the grid.
+6. Fixed EVENT_UNIT_ATTACK_FINISHED returning target as source instead.
+7. BlzDecPlayerTechResearched is now also implemented.
+8. SetPlayerTechResearched rewritten, now it supports tech decrease.
+9. Fixed internal function ParseArguments used in CallNative/CallFunction, now it properly parses arguments.
+10. Fixed Command Card getting forcefully closed upon item pick up.
+11. Fixed SetItemStringField with ICON/NAME fields and such not updating Inventory.
+12. CUnit::GetCurrentSight rewritten, now it also ignores internal SIGHT_MAX constant.
+13. CUnit::SetCurrentSight rewritten, now it properly works with heroes that were revived faster than 4 seconds.
+14. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoBar.
+15. Fixed SetUnitStringField with UNIT_SF_NAME not working for HeroBarButton.
+16. Fixed SetUnitStringField with UNIT_SF_NAME not working for TrainableButton.
+17. Fixed SetUnitStringField with UNIT_SF_NAME not working for InfoPanelGroup.
+18. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoBar.
+19. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for HeroBarButton.
+20. Fixed SetUnitStringField with UNIT_SF_PROPER_NAME not working for InfoPanelGroup.
+21. Rewritten CUnit::IsMoving to instead focus on CAbilityMove::IsMoving instead of internal flags.
+22. SetFrameGridFrame now supports "null" frames, this will simply remove frame from the grid.
     Note: frame won't be destroyed/erased, simply removed from grid.
-21. GetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
-22. SetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
-23. Rewritten UNIT_STATE_REGEN_LIFE/MANA processing, frequent changes to it should no longer "break" regen processing.
+23. GetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
+24. SetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
+25. Rewritten UNIT_STATE_REGEN_LIFE/MANA processing, frequent changes to it should no longer "break" regen processing.
