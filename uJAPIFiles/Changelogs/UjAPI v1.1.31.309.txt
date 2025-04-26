@@ -12,6 +12,9 @@
     native StringDecrypt									takes string s, string keyString returns string
     native StringToBase64									takes string s returns string
     native StringFromBase64									takes string s returns string
+	//
+	native GetPathingHeartbeat								takes nothing returns real
+	native StartPathingHeartbeat							takes boolean isStart, real time returns nothing
     //
     native GetFrameGridFrameRow								takes framehandle grid, framehandle whichFrame returns integer
     native GetFrameGridFrameColumn							takes framehandle grid, framehandle whichFrame returns integer
