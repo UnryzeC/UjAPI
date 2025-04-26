@@ -128,3 +128,4 @@
 23. GetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
 24. SetUnitState now support UNIT_STATE_MAX_LIFE, UNIT_STATE_MAX_MANA and new unit states.
 25. Rewritten UNIT_STATE_REGEN_LIFE/MANA processing, frequent changes to it should no longer "break" regen processing.
+26. Setting SPRITE_FLAG_IGNORE_FOG flag will force the game to draw unit/item/whatever is related to sprites even while fogged. 
