@@ -70,6 +70,7 @@ type collisiontype										extends flagtype
 type targetflag											extends flagtype
 type damageflag											extends flagtype
 type pathingflag										extends flagtype
+type spriteflag											extends flagtype
 type armortype											extends handle
 type heroattribute										extends handle
 type defensetype										extends handle
@@ -146,6 +147,7 @@ constant native ConvertAbilityType						takes integer i returns abilitytype
 constant native ConvertItemDisableFlag					takes integer i returns itemdisableflag
 constant native ConvertConnectionType					takes integer i returns connectiontype
 constant native ConvertTradeState						takes integer i returns tradestate
+constant native ConvertSpriteFlag						takes integer i returns spriteflag
 
 constant native GetJassArrayLimit						takes nothing returns integer
 constant native GetTextTagLimit							takes nothing returns integer
@@ -288,6 +290,11 @@ globals
 	constant cursoranimtype				CURSORANIM_TYPE_RIGHT										= ConvertCursorAnimType(8)
 	constant cursoranimtype				CURSORANIM_TYPE_UP											= ConvertCursorAnimType(9)
 	constant cursoranimtype				CURSORANIM_TYPE_DOWN										= ConvertCursorAnimType(10)
+
+	constant unitstate					UNIT_STATE_REGEN_LIFE										= ConvertUnitState(4)
+	constant unitstate					UNIT_STATE_REGEN_MANA										= ConvertUnitState(5)
+	constant unitstate					UNIT_STATE_BONUS_LIFE										= ConvertUnitState(6)
+	constant unitstate					UNIT_STATE_BONUS_MANA										= ConvertUnitState(7)
 
 	//===================================================
 	// For use with TriggerRegisterWidgetEvent
@@ -779,6 +786,9 @@ globals
 	constant abilitybooleanfield		ABILITY_BF_ITEM_ABILITY										= ConvertAbilityBooleanField('aite')
 	constant abilitybooleanfield		ABILITY_BF_CHECK_DEPENDENCIES								= ConvertAbilityBooleanField('achd')
 	constant abilitybooleanfield		ABILITY_BF_HOMING											= ConvertAbilityBooleanField('amho')
+	constant abilitybooleanfield		ABILITY_BF_BONUS_IN_PERCENT									= ConvertAbilityBooleanField('abip')
+	constant abilitybooleanfield		ABILITY_BF_BONUS_LIFE_IN_PERCENT							= ConvertAbilityBooleanField('bhip')
+	constant abilitybooleanfield		ABILITY_BF_BONUS_MANA_IN_PERCENT							= ConvertAbilityBooleanField('bmip')
 
 	constant abilityrealfield			ABILITY_RF_ARF_MISSILE_ARC									= ConvertAbilityRealField('amac')
 	constant abilityrealfield			ABILITY_RF_AURA_REFRESH_TIME								= ConvertAbilityRealField('artm')
@@ -879,6 +889,7 @@ globals
 	constant abilityintegerlevelfield	ABILITY_ILF_MAXIMUM_CREEP_LEVEL_ICRE						= ConvertAbilityIntegerLevelField('Icre')
 	constant abilityintegerlevelfield	ABILITY_ILF_MOVEMENT_SPEED_BONUS							= ConvertAbilityIntegerLevelField('Imvb')
 	constant abilityintegerlevelfield	ABILITY_ILF_HIT_POINTS_REGENERATED_PER_SECOND				= ConvertAbilityIntegerLevelField('Ihpr')
+	constant abilityintegerlevelfield	ABILITY_ILF_MANA_POINTS_REGENERATED_PER_SECOND				= ConvertAbilityIntegerLevelField('Impr')
 	constant abilityintegerlevelfield	ABILITY_ILF_SIGHT_RANGE_BONUS								= ConvertAbilityIntegerLevelField('Isib')
 	constant abilityintegerlevelfield	ABILITY_ILF_DAMAGE_PER_DURATION								= ConvertAbilityIntegerLevelField('Icfd')
 	constant abilityintegerlevelfield	ABILITY_ILF_MANA_USED_PER_SECOND							= ConvertAbilityIntegerLevelField('Icfm')
@@ -1217,6 +1228,7 @@ globals
 	constant abilityreallevelfield		ABILITY_RLF_DELAY_FOR_TARGET_EFFECT							= ConvertAbilityRealLevelField('Idel')
 	constant abilityreallevelfield		ABILITY_RLF_DAMAGE_DEALT_PERCENT_OF_NORMAL					= ConvertAbilityRealLevelField('Iild')
 	constant abilityreallevelfield		ABILITY_RLF_DAMAGE_RECEIVED_MULTIPLIER						= ConvertAbilityRealLevelField('Iilw')
+	constant abilityreallevelfield		ABILITY_RLF_HIT_REGENERATION_BONUS_AS_FRACTION_OF_NORMAL	= ConvertAbilityRealLevelField('Ihrp')
 	constant abilityreallevelfield		ABILITY_RLF_MANA_REGENERATION_BONUS_AS_FRACTION_OF_NORMAL	= ConvertAbilityRealLevelField('Imrp')
 	constant abilityreallevelfield		ABILITY_RLF_MOVEMENT_SPEED_INCREASE_ISPI					= ConvertAbilityRealLevelField('Ispi')
 	constant abilityreallevelfield		ABILITY_RLF_DAMAGE_PER_SECOND_IDPS							= ConvertAbilityRealLevelField('Idps')
@@ -1515,6 +1527,9 @@ globals
 	constant abilitystringlevelfield	ABILITY_SLF_SPAWN_UNIT_ID_NSY2								= ConvertAbilityStringLevelField('Nsy2')
 
 	// Buff
+	constant abilitybooleanfield		BUFF_BF_DRAIN_BONUS_LIFE_PERCENT							= ConvertAbilityBooleanField('bdrL')
+	constant abilitybooleanfield		BUFF_BF_DRAIN_BONUS_MANA_PERCENT							= ConvertAbilityBooleanField('bdrM')
+
 	constant abilitystringfield			BUFF_SF_ICON_NORMAL											= ConvertAbilityStringField('fart')
 	constant abilitystringfield			BUFF_SF_TOOLTIP_NORMAL										= ConvertAbilityStringField('ftip')
 	constant abilitystringfield			BUFF_SF_TOOLTIP_NORMAL_EXTENDED								= ConvertAbilityStringField('fube')
@@ -2004,6 +2019,28 @@ globals
 	constant tradestate					TRADE_STATE_IGNORE_TARGET_TAX								= ConvertTradeState(128) // Ignores received resource tax calculation. Default: On.
 	constant tradestate					TRADE_STATE_IGNORE_TARGET_LOSS								= ConvertTradeState(256) // Ignores received resource lost calculation, usually used by pilfer(ing). Default: On.
 	constant tradestate					TRADE_STATE_IGNORE_NOTIFICATION								= ConvertTradeState(512) // Ignores default notification of resource trading. Default: Off.
+
+	constant spriteflag					SPRITE_FLAG_NO_TRACK										= ConvertSpriteFlag(1)
+	constant spriteflag					SPRITE_FLAG_NO_CLICK										= ConvertSpriteFlag(2)
+	constant spriteflag					SPRITE_FLAG_NO_SELECT										= ConvertSpriteFlag(4)
+	constant spriteflag					SPRITE_FLAG_UNSELECTRABLE									= ConvertSpriteFlag(7) // NO_TRACK | NO_CLICK | NO_SELECT
+	constant spriteflag					SPRITE_FLAG_STRUCTURE										= ConvertSpriteFlag(8)
+	constant spriteflag					SPRITE_FLAG_FLYER											= ConvertSpriteFlag(128)
+	constant spriteflag					SPRITE_FLAG_LINKED_MODEL                					= ConvertSpriteFlag(65536)
+	constant spriteflag					SPRITE_FLAG_MANAGED_TIME                					= ConvertSpriteFlag(131072)
+	constant spriteflag					SPRITE_FLAG_ABSOLUTE_TIME               					= ConvertSpriteFlag(262144)
+	constant spriteflag					SPRITE_FLAG_PAUSED_TIME                 					= ConvertSpriteFlag(524288)
+	constant spriteflag					SPRITE_FLAG_IGNORE_FOG                  					= ConvertSpriteFlag(1048576)
+	constant spriteflag					SPRITE_FLAG_UPDATED                     					= ConvertSpriteFlag(2097152)
+	constant spriteflag					SPRITE_FLAG_UBER                        					= ConvertSpriteFlag(4194304)
+	constant spriteflag					SPRITE_FLAG_MINI                        					= ConvertSpriteFlag(8388608)
+	constant spriteflag					SPRITE_FLAG_VERTEX_COLOR_LINKED         					= ConvertSpriteFlag(16777216)
+	constant spriteflag					SPRITE_FLAG_VERTEX_ALPHA_LINKED         					= ConvertSpriteFlag(33554432)
+	constant spriteflag					SPRITE_FLAG_RESET_SEQ_TIME              					= ConvertSpriteFlag(67108864)
+	constant spriteflag					SPRITE_FLAG_LOOKAT_CONSTRAIN_X          					= ConvertSpriteFlag(268435456)
+	constant spriteflag					SPRITE_FLAG_LOOKAT_CONSTRAIN_Y          					= ConvertSpriteFlag(536870912)
+	constant spriteflag					SPRITE_FLAG_LOOKAT_CONSTRAIN_Z          					= ConvertSpriteFlag(1073741824)
+	constant spriteflag					SPRITE_FLAG_MAT_PROP_LINKED             					= ConvertSpriteFlag(2147483648)
 endglobals
 
 //================Custom natives=====================
@@ -2270,6 +2307,10 @@ native StringTrim										takes string s, boolean caseSensitive returns string
 native StringReverse									takes string s, boolean caseSensitive returns string
 native StringReplace									takes string s, string whichString, string replaceWith, boolean caseSensitive returns string
 native StringInsert										takes string s, string whichString, integer whichPosition, boolean caseSensitive returns string
+native StringEncrypt									takes string s, string keyString returns string
+native StringDecrypt									takes string s, string keyString returns string
+native StringToBase64									takes string s returns string
+native StringFromBase64									takes string s returns string
 //
 
 // Debug API
@@ -2464,6 +2505,15 @@ native GetMouseWorldY									takes nothing returns real
 native GetMouseWorldZ									takes nothing returns real
 //
 
+//============================================================================
+// Game API
+//
+native GetConnectionType								takes nothing returns connectiontype
+native IsReplay											takes nothing returns boolean
+native GetPathingHeartbeat								takes nothing returns real
+native StartPathingHeartbeat							takes boolean isStart, real time returns nothing
+//
+
 // Chat API
 native DisplayWarningMessage							takes player toPlayer, string message returns nothing
 native DisplayTimedWarningMessage						takes player toPlayer, real duration, string message returns nothing
@@ -2543,31 +2593,32 @@ native LoadHandleList									takes hashtable whichHashtable, integer parentKey,
 // Player API
 //
 native GetHostPlayer									takes nothing returns player
+native GetPlayerMask									takes player whichPlayer returns integer
 native IsPlayerMuted 									takes player whichPlayer returns boolean
 native SetPlayerMuted 									takes player whichPlayer, boolean isMute returns nothing
 native IsPlayerMutedForPlayer							takes player whichPlayer, player toPlayer returns boolean
 native SetPlayerMutedForPlayer 							takes player whichPlayer, player toPlayer, boolean isMute returns nothing
+constant native DecPlayerTechResearched					takes player whichPlayer, integer techid, integer levels returns nothing
 //
 
 //============================================================================
 // Force API
 //
+native ForceGetPlayerMask								takes force whichForce returns integer
 native ForceHasPlayer									takes force whichForce, player whichPlayer returns boolean
 native ForceCountPlayers								takes force whichForce returns integer
 //
 
 //============================================================================
-// Game API
-//
-native GetConnectionType								takes nothing returns connectiontype
-native IsReplay											takes nothing returns boolean
-//
-
-//============================================================================
 // Fog Modifier API
 //
+native IsFogModifierPlayerMask						takes fogmodifier whichFogModifier, integer playerMask returns boolean
+native GetFogModifierPlayerMask						takes fogmodifier whichFogModifier returns integer
+native SetFogModifierPlayerMask						takes fogmodifier whichFogModifier, integer playerMask returns nothing
 native GetFogModifierForPlayer						takes fogmodifier whichFogModifier returns player
 native SetFogModifierForPlayer						takes fogmodifier whichFogModifier, player whichPlayer returns nothing
+native AddFogModifierPlayer							takes fogmodifier whichFogModifier, player whichPlayer returns nothing
+native RemoveFogModifierPlayer						takes fogmodifier whichFogModifier, player whichPlayer returns nothing
 native IsFogModifierFogState						takes fogmodifier whichFogModifier, fogstate whichState returns boolean
 native SetFogModifierFogState						takes fogmodifier whichFogModifier, fogstate whichState, boolean isSet returns nothing
 // For FOG_OF_WAR_RECT: GetX/Y returns CenterX/CenterY | GetRadius returns area of a rectangle: minX + maxX * minY + maxY.
@@ -3145,159 +3196,6 @@ native GetTriggerBuffTarget								takes nothing returns unit
 //
 
 //============================================================================
-// War3Image API
-//
-// This is API for the "lowest" in terms of hierarchy object type for any and all widgets. Sprites and doodads are exception, however this API can distinguish between them and handle accordingly.
-native GetWar3ImageSprite								takes war3image whichWar3Image returns sprite
-native IsWar3ImageVisible								takes war3image whichWar3Image returns boolean
-native SetWar3ImageVisible								takes war3image whichWar3Image, boolean visible returns nothing
-native IsWar3ImageInvulnerable							takes war3image whichWar3Image returns boolean
-native SetWar3ImageInvulnerable							takes war3image whichWar3Image, boolean invulnerable returns nothing
-native GetWar3ImageX									takes war3image whichWar3Image returns real
-native GetWar3ImageY									takes war3image whichWar3Image returns real
-native GetWar3ImageZ									takes war3image whichWar3Image returns real
-native GetWar3ImagePositionLoc							takes war3image whichWar3Image returns location
-native SetWar3ImagePositionLoc							takes war3image whichWar3Image, location whichLocation returns nothing
-native SetWar3ImagePosition								takes war3image whichWar3Image, real x, real y returns nothing
-native SetWar3ImagePositionWithZ						takes war3image whichWar3Image, real x, real y, real z returns nothing
-native SetWar3ImageX									takes war3image whichWar3Image, real x returns nothing
-native SetWar3ImageY									takes war3image whichWar3Image, real y returns nothing
-native SetWar3ImageZ									takes war3image whichWar3Image, real z returns nothing
-native ResetWar3ImageZ									takes war3image whichWar3Image returns nothing // returns Z control to game.
-native GetWar3ImageHeight								takes war3image whichWar3Image returns real
-native SetWar3ImageHeight								takes war3image whichWar3Image, real height returns nothing
-native GetWar3ImageScreenX								takes war3image whichWar3Image returns real
-native GetWar3ImageScreenY								takes war3image whichWar3Image returns real
-native GetWar3ImagePlayerColour							takes war3image whichWar3Image returns playercolor // This gets glow/team colour.
-native SetWar3ImagePlayerColour							takes war3image whichWar3Image, playercolor color returns nothing // This sets Glow and Team Colour. Mimics the SetUnitColor.
-native GetWar3ImageVertexColour							takes war3image whichWar3Image returns integer
-native SetWar3ImageVertexColour							takes war3image whichWar3Image, integer red, integer green, integer blue, integer alpha returns nothing
-native GetWar3ImageTimeScale							takes war3image whichWar3Image returns real
-native SetWar3ImageTimeScale							takes war3image whichWar3Image, real timeScale returns nothing
-native GetWar3ImageScale								takes war3image whichWar3Image returns real
-native SetWar3ImageScale								takes war3image whichWar3Image, real scale returns nothing
-native GetWar3ImageFacing								takes war3image whichWar3Image returns real
-native SetWar3ImageFacing								takes war3image whichWar3Image, real facing, boolean isInstant returns nothing
-native GetWar3ImageMatrixScaleX							takes war3image whichWar3Image returns real
-native GetWar3ImageMatrixScaleY							takes war3image whichWar3Image returns real
-native GetWar3ImageMatrixScaleZ							takes war3image whichWar3Image returns real
-native SetWar3ImageMatrixScale							takes war3image whichWar3Image, real x, real y, real z returns nothing
-native ResetWar3ImageMatrix								takes war3image whichWar3Image returns nothing
-native SetWar3ImageOrientationEx						takes war3image whichWar3Image, real yaw, real pitch, real roll, integer eulerOrder returns nothing
-native SetWar3ImageOrientation							takes war3image whichWar3Image, real yaw, real pitch, real roll returns nothing
-native GetWar3ImageYaw									takes war3image whichWar3Image returns real
-native SetWar3ImageYaw									takes war3image whichWar3Image, real yaw returns nothing
-native GetWar3ImagePitch								takes war3image whichWar3Image returns real
-native SetWar3ImagePitch								takes war3image whichWar3Image, real pitch returns nothing
-native GetWar3ImageRoll									takes war3image whichWar3Image returns real
-native SetWar3ImageRoll									takes war3image whichWar3Image, real roll returns nothing
-native GetWar3ImageModel								takes war3image whichWar3Image returns string
-native SetWar3ImageModel								takes war3image whichWar3Image, string modelFile returns nothing
-native SetWar3ImageModelEx								takes war3image whichWar3Image, string modelFile, integer playerId returns nothing // 0-15, -1 to ignore the colour.
-native GetWar3ImageMaterialTexture						takes war3image whichWar3Image, integer materialId, integer textureIndex returns string
-native SetWar3ImageMaterialTexture						takes war3image whichWar3Image, string textureName, integer materialId, integer textureIndex returns nothing
-native GetWar3ImageTexture								takes war3image whichWar3Image, integer textureIndex returns string
-native SetWar3ImageTexture								takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing
-native SetWar3ImageReplaceableTexture					takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing // 1 - TeamColour | 2 - TeamGlow | 11 - Cliff0/1 | 21 - "grabbed texture" for CCursorFrame | 31-37 trees.
-native GetWar3ImageModelObjectX							takes war3image whichWar3Image, string whichObject returns real
-native GetWar3ImageModelObjectY							takes war3image whichWar3Image, string whichObject returns real
-native GetWar3ImageModelObjectZ							takes war3image whichWar3Image, string whichObject returns real
-native GetWar3ImageModelObjectPositionLoc				takes war3image whichWar3Image, string whichObject returns location
-native GetWar3ImageCurrentAnimationId					takes war3image whichWar3Image returns integer
-native GetWar3ImageCurrentAnimationName					takes war3image whichWar3Image returns string
-native SetWar3ImageAnimationWithRarityByIndex			takes war3image whichWar3Image, integer animIndex, raritycontrol rarity returns nothing
-native SetWar3ImageAnimationWithRarity					takes war3image whichWar3Image, string animationName, raritycontrol rarity returns nothing
-native SetWar3ImageAnimationByIndex						takes war3image whichWar3Image, integer animIndex returns nothing
-native SetWar3ImageAnimation							takes war3image whichWar3Image, string animationName returns nothing
-native QueueWar3ImageAnimationByIndex					takes war3image whichWar3Image, integer animIndex returns nothing
-native QueueWar3ImageAnimation							takes war3image whichWar3Image, string animationName returns nothing
-native GetWar3ImageAnimationOffsetPercent				takes war3image whichWar3Image returns real
-native SetWar3ImageAnimationOffsetPercent				takes war3image whichWar3Image, real percent returns nothing
-native IsWar3ImageAnimationFrozen						takes war3image whichWar3Image returns boolean
-native SetWar3ImageAnimationFrozen						takes war3image whichWar3Image, boolean isFreeze returns nothing
-//
-
-//============================================================================
-// Sprite API
-//
-// Note: any axis setter is ignored by sprites created via AddSpriteToTarget, since they inherit nearly all data from sprite they are attached to.
-
-native CreateSprite										takes boolean isUber returns sprite // axis do not matter, as sprites MUST be attached to something.
-native AttachSpriteToTarget								takes sprite whichSprite, sprite targetSprite, string attachPointName returns sprite
-native AddSpriteToTarget								takes string modelName, sprite targetSprite, string attachPointName returns sprite // always creates CSpriteUber
-native GetSpriteChildrenCount							takes sprite whichSprite returns integer
-native GetSpriteChildById								takes sprite whichSprite, integer index returns sprite
-
-native DetachSprite										takes sprite whichSprite returns nothing
-native RemoveSprite										takes sprite whichSprite returns nothing
-native IsSpriteUber										takes sprite whichSprite returns boolean
-native GetSpriteX										takes sprite whichSprite returns real
-native GetSpriteY										takes sprite whichSprite returns real
-native GetSpriteZ										takes sprite whichSprite returns real
-native GetSpriteHeight									takes sprite whichSprite returns real
-native GetSpritePositionLoc								takes sprite whichSprite returns location
-native SetSpritePosition								takes sprite whichSprite, real x, real y returns nothing
-native SetSpritePositionWithZ							takes sprite whichSprite, real x, real y, real z returns nothing
-native SetSpritePositionLoc								takes sprite whichSprite, location loc returns nothing
-native SetSpriteX										takes sprite whichSprite, real x returns nothing
-native SetSpriteY										takes sprite whichSprite, real y returns nothing
-native SetSpriteZ										takes sprite whichSprite, real z returns nothing
-native SetSpriteHeight									takes sprite whichSprite, real height returns nothing
-native GetSpriteScreenX									takes sprite whichSprite returns real
-native GetSpriteScreenY									takes sprite whichSprite returns real
-native GetSpriteScale									takes sprite whichSprite returns real
-native SetSpriteScale									takes sprite whichSprite, real scale returns nothing
-native GetSpriteTimeScale								takes sprite whichSprite returns real
-native SetSpriteTimeScale								takes sprite whichSprite, real timescale returns nothing
-native GetSpritePlayerColour							takes sprite whichSprite returns playercolor
-native SetSpritePlayerColour							takes sprite whichSprite, playercolor color returns nothing
-native GetSpriteColour									takes sprite whichSprite returns integer
-native SetSpriteColour									takes sprite whichSprite, integer colour returns nothing
-native SetSpriteAlpha									takes sprite whichSprite, integer alpha returns nothing
-native SetSpriteVertexColour							takes sprite whichSprite, integer red, integer green, integer blue, integer alpha returns nothing
-native GetSpriteMatrixScaleX							takes sprite whichSprite returns real
-native GetSpriteMatrixScaleY							takes sprite whichSprite returns real
-native GetSpriteMatrixScaleZ							takes sprite whichSprite returns real
-native SetSpriteMatrixScale								takes sprite whichSprite, real x, real y, real z returns nothing
-native ResetSpriteMatrix								takes sprite whichSprite returns nothing
-native SetSpriteOrientationEx							takes sprite whichSprite, real yaw, real pitch, real roll, integer eulerOrder returns nothing // XYZ = 0, YZX = 1, ZXY = 2, ZYX = 3, YXZ = 4, XZY = 5
-native GetSpriteYaw										takes sprite whichSprite returns real // X
-native SetSpriteYaw										takes sprite whichSprite, real yaw returns nothing // X
-native GetSpriteFacing									takes sprite whichSprite returns real // X same as Yaw
-native SetSpriteFacing									takes sprite whichSprite, real facing returns nothing // X same as Yaw
-native GetSpritePitch									takes sprite whichSprite returns real // Y
-native SetSpritePitch									takes sprite whichSprite, real pitch returns nothing // Y
-native GetSpriteRoll									takes sprite whichSprite returns real // Z
-native SetSpriteRoll									takes sprite whichSprite, real roll returns nothing // Z
-native SetSpriteOrientation								takes sprite whichSprite, real yaw, real pitch, real roll returns nothing // uses SetSpriteOrientationEx with XYZ orientation as default
-native GetSpriteMaterialTexture							takes sprite whichSprite, integer materialId, integer textureIndex returns string
-native SetSpriteMaterialTexture							takes sprite whichSprite, string textureName, integer materialId, integer textureIndex returns nothing
-native GetSpriteTexture									takes sprite whichSprite, integer textureIndex returns string
-native SetSpriteTexture									takes sprite whichSprite, string textureName, integer textureIndex returns nothing
-native SetSpriteReplaceableTexture						takes sprite whichSprite, string textureName, integer textureIndex returns nothing
-native GetSpriteModel									takes sprite whichSprite returns string
-native SetSpriteModel									takes sprite whichSprite, string modelName returns nothing
-native SetSpriteModelEx									takes sprite whichSprite, string modelName, integer playerColour returns nothing // 0-15, -1 to ignore the colour.
-// whichObject can be bone, reference, sound, aka any object of a model
-native GetSpriteModelObjectX							takes sprite whichSprite, string whichObject returns real
-native GetSpriteModelObjectY							takes sprite whichSprite, string whichObject returns real
-native GetSpriteModelObjectZ							takes sprite whichSprite, string whichObject returns real
-native GetSpriteModelObjectPositionLoc					takes sprite whichSprite, string whichObject returns location
-native GetSpriteCurrentAnimationId						takes sprite whichSprite returns integer
-native GetSpriteCurrentAnimationName					takes sprite whichSprite returns string
-native SetSpriteAnimationWithRarityByIndex				takes sprite whichSprite, integer animIndex, raritycontrol rarity returns nothing
-native SetSpriteAnimationWithRarity						takes sprite whichSprite, string animationName, raritycontrol rarity returns nothing
-native SetSpriteAnimationByIndex						takes sprite whichSprite, integer animIndex returns nothing
-native SetSpriteAnimation								takes sprite whichSprite, string animationName returns nothing
-native QueueSpriteAnimationByIndex						takes sprite whichSprite, integer animIndex returns nothing
-native QueueSpriteAnimation								takes sprite whichSprite, string animationName returns nothing
-native GetSpriteAnimationOffsetPercent					takes sprite whichSprite returns real
-native SetSpriteAnimationOffsetPercent					takes sprite whichSprite, real percent returns nothing
-native IsSpriteAnimationFrozen							takes sprite whichSprite returns boolean
-native SetSpriteAnimationFrozen							takes sprite whichSprite, boolean isFreeze returns nothing
-//
-
-//============================================================================
 // Doodad API
 //
 native CreateDoodad										takes integer objectTypeId, real x, real y, real facing, real scale, integer variation returns doodad
@@ -3374,9 +3272,171 @@ native EnumDoodadsInRectEx								takes rect whichRect, integer typeId, boolean 
 //
 
 //============================================================================
+// Sprite API
+//
+// Note: any axis setter is ignored by sprites created via AddSpriteToTarget, since they inherit nearly all data from sprite they are attached to.
+native CreateSprite										takes boolean isUber returns sprite // axis do not matter, as sprites MUST be attached to something.
+native AttachSpriteToTarget								takes sprite whichSprite, sprite targetSprite, string attachPointName returns sprite
+native AddSpriteToTarget								takes string modelName, sprite targetSprite, string attachPointName returns sprite // always creates CSpriteUber
+native GetSpriteChildrenCount							takes sprite whichSprite returns integer
+native GetSpriteChildById								takes sprite whichSprite, integer index returns sprite
+native GetSpriteFlag									takes sprite whichSprite returns spriteflag
+native SetSpriteFlag									takes sprite whichSprite, spriteflag whichDrawFlag, boolean isSet returns nothing
+native IsSpriteFlag										takes sprite whichSprite, spriteflag whichDrawFlag returns boolean
+native DetachSprite										takes sprite whichSprite returns nothing
+native RemoveSprite										takes sprite whichSprite returns nothing
+native IsSpriteUber										takes sprite whichSprite returns boolean
+native GetSpriteX										takes sprite whichSprite returns real
+native GetSpriteY										takes sprite whichSprite returns real
+native GetSpriteZ										takes sprite whichSprite returns real
+native GetSpriteHeight									takes sprite whichSprite returns real
+native GetSpritePositionLoc								takes sprite whichSprite returns location
+native SetSpritePosition								takes sprite whichSprite, real x, real y returns nothing
+native SetSpritePositionWithZ							takes sprite whichSprite, real x, real y, real z returns nothing
+native SetSpritePositionLoc								takes sprite whichSprite, location loc returns nothing
+native SetSpriteX										takes sprite whichSprite, real x returns nothing
+native SetSpriteY										takes sprite whichSprite, real y returns nothing
+native SetSpriteZ										takes sprite whichSprite, real z returns nothing
+native SetSpriteHeight									takes sprite whichSprite, real height returns nothing
+native GetSpriteScreenX									takes sprite whichSprite returns real
+native GetSpriteScreenY									takes sprite whichSprite returns real
+native GetSpriteScale									takes sprite whichSprite returns real
+native SetSpriteScale									takes sprite whichSprite, real scale returns nothing
+native GetSpriteTimeScale								takes sprite whichSprite returns real
+native SetSpriteTimeScale								takes sprite whichSprite, real timescale returns nothing
+native GetSpritePlayerColour							takes sprite whichSprite returns playercolor
+native SetSpritePlayerColour							takes sprite whichSprite, playercolor color returns nothing
+native GetSpriteColour									takes sprite whichSprite returns integer
+native SetSpriteColour									takes sprite whichSprite, integer colour returns nothing
+native SetSpriteAlpha									takes sprite whichSprite, integer alpha returns nothing
+native SetSpriteVertexColour							takes sprite whichSprite, integer red, integer green, integer blue, integer alpha returns nothing
+native GetSpriteMatrixScaleX							takes sprite whichSprite returns real
+native GetSpriteMatrixScaleY							takes sprite whichSprite returns real
+native GetSpriteMatrixScaleZ							takes sprite whichSprite returns real
+native SetSpriteMatrixScale								takes sprite whichSprite, real x, real y, real z returns nothing
+native ResetSpriteMatrix								takes sprite whichSprite returns nothing
+native SetSpriteOrientationEx							takes sprite whichSprite, real yaw, real pitch, real roll, integer eulerOrder returns nothing // XYZ = 0, YZX = 1, ZXY = 2, ZYX = 3, YXZ = 4, XZY = 5
+native GetSpriteYaw										takes sprite whichSprite returns real // X
+native SetSpriteYaw										takes sprite whichSprite, real yaw returns nothing // X
+native GetSpriteFacing									takes sprite whichSprite returns real // X same as Yaw
+native SetSpriteFacing									takes sprite whichSprite, real facing returns nothing // X same as Yaw
+native GetSpritePitch									takes sprite whichSprite returns real // Y
+native SetSpritePitch									takes sprite whichSprite, real pitch returns nothing // Y
+native GetSpriteRoll									takes sprite whichSprite returns real // Z
+native SetSpriteRoll									takes sprite whichSprite, real roll returns nothing // Z
+native SetSpriteOrientation								takes sprite whichSprite, real yaw, real pitch, real roll returns nothing // uses SetSpriteOrientationEx with XYZ orientation as default
+native GetSpriteMaterialTexture							takes sprite whichSprite, integer materialId, integer textureIndex returns string
+native SetSpriteMaterialTexture							takes sprite whichSprite, string textureName, integer materialId, integer textureIndex returns nothing
+native GetSpriteTexture									takes sprite whichSprite, integer textureIndex returns string
+native SetSpriteTexture									takes sprite whichSprite, string textureName, integer textureIndex returns nothing
+native SetSpriteReplaceableTexture						takes sprite whichSprite, string textureName, integer textureIndex returns nothing
+native GetSpriteModel									takes sprite whichSprite returns string
+native SetSpriteModel									takes sprite whichSprite, string modelName returns nothing
+native SetSpriteModelEx									takes sprite whichSprite, string modelName, integer playerColour returns nothing // 0-15, -1 to ignore the colour.
+// whichObject can be bone, reference, sound, aka any object of a model
+native GetSpriteModelObjectX							takes sprite whichSprite, string whichObject returns real
+native GetSpriteModelObjectY							takes sprite whichSprite, string whichObject returns real
+native GetSpriteModelObjectZ							takes sprite whichSprite, string whichObject returns real
+native GetSpriteModelObjectPositionLoc					takes sprite whichSprite, string whichObject returns location
+native GetSpriteCurrentAnimationId						takes sprite whichSprite returns integer
+native GetSpriteCurrentAnimationName					takes sprite whichSprite returns string
+native SetSpriteAnimationWithRarityByIndex				takes sprite whichSprite, integer animIndex, raritycontrol rarity returns nothing
+native SetSpriteAnimationWithRarity						takes sprite whichSprite, string animationName, raritycontrol rarity returns nothing
+native SetSpriteAnimationByIndex						takes sprite whichSprite, integer animIndex returns nothing
+native SetSpriteAnimation								takes sprite whichSprite, string animationName returns nothing
+native QueueSpriteAnimationByIndex						takes sprite whichSprite, integer animIndex returns nothing
+native QueueSpriteAnimation								takes sprite whichSprite, string animationName returns nothing
+native GetSpriteAnimationOffsetPercent					takes sprite whichSprite returns real
+native SetSpriteAnimationOffsetPercent					takes sprite whichSprite, real percent returns nothing
+native IsSpriteAnimationFrozen							takes sprite whichSprite returns boolean
+native SetSpriteAnimationFrozen							takes sprite whichSprite, boolean isFreeze returns nothing
+//
+
+//============================================================================
+// War3Image API
+//
+// This is API for the "lowest" in terms of hierarchy object type for any and all widgets. Sprites and doodads are exception, however this API can distinguish between them and handle accordingly.
+native GetWar3ImageSprite								takes war3image whichWar3Image returns sprite
+native GetWar3ImageSpriteFlag							takes war3image whichWar3Image returns spriteflag
+native SetWar3ImageSpriteFlag							takes war3image whichWar3Image, spriteflag whichDrawFlag, boolean isSet returns nothing
+native IsWar3ImageSpriteFlag							takes war3image whichWar3Image, spriteflag whichDrawFlag returns boolean
+
+native IsWar3ImageVisible								takes war3image whichWar3Image returns boolean
+native SetWar3ImageVisible								takes war3image whichWar3Image, boolean visible returns nothing
+native IsWar3ImageInvulnerable							takes war3image whichWar3Image returns boolean
+native SetWar3ImageInvulnerable							takes war3image whichWar3Image, boolean invulnerable returns nothing
+native GetWar3ImageX									takes war3image whichWar3Image returns real
+native GetWar3ImageY									takes war3image whichWar3Image returns real
+native GetWar3ImageZ									takes war3image whichWar3Image returns real
+native GetWar3ImagePositionLoc							takes war3image whichWar3Image returns location
+native SetWar3ImagePositionLoc							takes war3image whichWar3Image, location whichLocation returns nothing
+native SetWar3ImagePosition								takes war3image whichWar3Image, real x, real y returns nothing
+native SetWar3ImagePositionWithZ						takes war3image whichWar3Image, real x, real y, real z returns nothing
+native SetWar3ImageX									takes war3image whichWar3Image, real x returns nothing
+native SetWar3ImageY									takes war3image whichWar3Image, real y returns nothing
+native SetWar3ImageZ									takes war3image whichWar3Image, real z returns nothing
+native ResetWar3ImageZ									takes war3image whichWar3Image returns nothing // returns Z control to game.
+native GetWar3ImageHeight								takes war3image whichWar3Image returns real
+native SetWar3ImageHeight								takes war3image whichWar3Image, real height returns nothing
+native GetWar3ImageScreenX								takes war3image whichWar3Image returns real
+native GetWar3ImageScreenY								takes war3image whichWar3Image returns real
+native GetWar3ImagePlayerColour							takes war3image whichWar3Image returns playercolor // This gets glow/team colour.
+native SetWar3ImagePlayerColour							takes war3image whichWar3Image, playercolor color returns nothing // This sets Glow and Team Colour. Mimics the SetUnitColor.
+native GetWar3ImageVertexColour							takes war3image whichWar3Image returns integer
+native SetWar3ImageVertexColour							takes war3image whichWar3Image, integer red, integer green, integer blue, integer alpha returns nothing
+native GetWar3ImageTimeScale							takes war3image whichWar3Image returns real
+native SetWar3ImageTimeScale							takes war3image whichWar3Image, real timeScale returns nothing
+native GetWar3ImageScale								takes war3image whichWar3Image returns real
+native SetWar3ImageScale								takes war3image whichWar3Image, real scale returns nothing
+native GetWar3ImageFacing								takes war3image whichWar3Image returns real
+native SetWar3ImageFacing								takes war3image whichWar3Image, real facing, boolean isInstant returns nothing
+native GetWar3ImageMatrixScaleX							takes war3image whichWar3Image returns real
+native GetWar3ImageMatrixScaleY							takes war3image whichWar3Image returns real
+native GetWar3ImageMatrixScaleZ							takes war3image whichWar3Image returns real
+native SetWar3ImageMatrixScale							takes war3image whichWar3Image, real x, real y, real z returns nothing
+native ResetWar3ImageMatrix								takes war3image whichWar3Image returns nothing
+native SetWar3ImageOrientationEx						takes war3image whichWar3Image, real yaw, real pitch, real roll, integer eulerOrder returns nothing
+native SetWar3ImageOrientation							takes war3image whichWar3Image, real yaw, real pitch, real roll returns nothing
+native GetWar3ImageYaw									takes war3image whichWar3Image returns real
+native SetWar3ImageYaw									takes war3image whichWar3Image, real yaw returns nothing
+native GetWar3ImagePitch								takes war3image whichWar3Image returns real
+native SetWar3ImagePitch								takes war3image whichWar3Image, real pitch returns nothing
+native GetWar3ImageRoll									takes war3image whichWar3Image returns real
+native SetWar3ImageRoll									takes war3image whichWar3Image, real roll returns nothing
+native GetWar3ImageModel								takes war3image whichWar3Image returns string
+native SetWar3ImageModel								takes war3image whichWar3Image, string modelFile returns nothing
+native SetWar3ImageModelEx								takes war3image whichWar3Image, string modelFile, integer playerId returns nothing // 0-15, -1 to ignore the colour.
+native GetWar3ImageMaterialTexture						takes war3image whichWar3Image, integer materialId, integer textureIndex returns string
+native SetWar3ImageMaterialTexture						takes war3image whichWar3Image, string textureName, integer materialId, integer textureIndex returns nothing
+native GetWar3ImageTexture								takes war3image whichWar3Image, integer textureIndex returns string
+native SetWar3ImageTexture								takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing
+native SetWar3ImageReplaceableTexture					takes war3image whichWar3Image, string textureName, integer textureIndex returns nothing // 1 - TeamColour | 2 - TeamGlow | 11 - Cliff0/1 | 21 - "grabbed texture" for CCursorFrame | 31-37 trees.
+native GetWar3ImageModelObjectX							takes war3image whichWar3Image, string whichObject returns real
+native GetWar3ImageModelObjectY							takes war3image whichWar3Image, string whichObject returns real
+native GetWar3ImageModelObjectZ							takes war3image whichWar3Image, string whichObject returns real
+native GetWar3ImageModelObjectPositionLoc				takes war3image whichWar3Image, string whichObject returns location
+native GetWar3ImageCurrentAnimationId					takes war3image whichWar3Image returns integer
+native GetWar3ImageCurrentAnimationName					takes war3image whichWar3Image returns string
+native SetWar3ImageAnimationWithRarityByIndex			takes war3image whichWar3Image, integer animIndex, raritycontrol rarity returns nothing
+native SetWar3ImageAnimationWithRarity					takes war3image whichWar3Image, string animationName, raritycontrol rarity returns nothing
+native SetWar3ImageAnimationByIndex						takes war3image whichWar3Image, integer animIndex returns nothing
+native SetWar3ImageAnimation							takes war3image whichWar3Image, string animationName returns nothing
+native QueueWar3ImageAnimationByIndex					takes war3image whichWar3Image, integer animIndex returns nothing
+native QueueWar3ImageAnimation							takes war3image whichWar3Image, string animationName returns nothing
+native GetWar3ImageAnimationOffsetPercent				takes war3image whichWar3Image returns real
+native SetWar3ImageAnimationOffsetPercent				takes war3image whichWar3Image, real percent returns nothing
+native IsWar3ImageAnimationFrozen						takes war3image whichWar3Image returns boolean
+native SetWar3ImageAnimationFrozen						takes war3image whichWar3Image, boolean isFreeze returns nothing
+//
+
+//============================================================================
 // SpecialEffect API
 //
 native GetSpecialEffectSprite							takes effect whichEffect returns sprite
+native GetSpecialEffectSpriteFlag						takes effect whichEffect returns spriteflag
+native SetSpecialEffectSpriteFlag						takes effect whichEffect, spriteflag whichDrawFlag, boolean isSet returns nothing
+native IsSpecialEffectSpriteFlag						takes effect whichEffect, spriteflag whichDrawFlag returns boolean
+
 native IsSpecialEffectVisible							takes effect whichEffect returns boolean
 native SetSpecialEffectVisible							takes effect whichEffect, boolean visibility returns nothing
 native GetSpecialEffectX								takes effect whichEffect returns real
@@ -3455,6 +3515,10 @@ native EnumSpecialEffectsInRange						takes real x, real y, real radius, boolexp
 // Since trackables are extension of effects, all the functions do exactly the same thing.
 //
 native GetTrackableSprite								takes trackable whichTrackable returns sprite
+native GetTrackableSpriteFlag							takes trackable whichTrackable returns spriteflag
+native SetTrackableSpriteFlag							takes trackable whichTrackable, spriteflag whichDrawFlag, boolean isSet returns nothing
+native IsTrackableSpriteFlag							takes trackable whichTrackable, spriteflag whichDrawFlag returns boolean
+
 native IsTrackableVisible								takes trackable whichTrackable returns boolean
 native SetTrackableVisible								takes trackable whichTrackable, boolean visibility returns nothing
 native GetTrackableX									takes trackable whichTrackable returns real
@@ -3531,8 +3595,12 @@ native EnumTrackablesInRange							takes real x, real y, real radius, boolexpr f
 //============================================================================
 // Widget API
 //
-native GetWidgetUnderCursor								takes nothing returns widget // Async
 native GetWidgetSprite									takes widget whichWidget returns sprite
+native GetWidgetSpriteFlag								takes widget whichWidget returns spriteflag
+native SetWidgetSpriteFlag								takes widget whichWidget, spriteflag whichDrawFlag, boolean isSet returns nothing
+native IsWidgetSpriteFlag								takes widget whichWidget, spriteflag whichDrawFlag returns boolean
+
+native GetWidgetUnderCursor								takes nothing returns widget // Async
 native GetWidgetTypeId									takes widget whichWidget returns integer
 native GetWidgetName									takes widget whichWidget returns string
 native IsWidgetTipEnabled								takes nothing returns boolean // Internally this is called CUnitTip, but used for all widgets.
@@ -3614,19 +3682,22 @@ native TriggerRegisterWidgetEvent						takes trigger whichTrigger, widget whichW
 // Destructable API
 //
 
-native GetDestructableUnderCursor						takes nothing returns destructable // Async
-
 // Field API
 native GetDestructableStringField						takes destructable whichDestructable, destructablestringfield whichField returns string
 native SetDestructableStringField						takes destructable whichDestructable, destructablestringfield whichField, string value returns boolean
 //
 
+native GetDestructableSprite							takes destructable whichDestructable returns sprite
+native GetDestructableSpriteFlag						takes destructable whichDestructable returns spriteflag
+native SetDestructableSpriteFlag						takes destructable whichDestructable, spriteflag whichDrawFlag, boolean isSet returns nothing
+native IsDestructableSpriteFlag							takes destructable whichDestructable, spriteflag whichDrawFlag returns boolean
+
+native GetDestructableUnderCursor						takes nothing returns destructable // Async
 native GetDestructableVariation							takes destructable whichDestructable returns integer
 native SetDestructableVariation							takes destructable whichDestructable, integer variation returns nothing
 native SetDestructableVariationEx						takes destructable whichDestructable, integer variation, boolean ignoreStateCheck returns nothing // ignoreStateCheck will skip checking for dead/alive variations of the model.
 native IsDestructableBlighted							takes destructable whichDestructable returns boolean
 native SetDestructableBlighted							takes destructable whichDestructable, boolean flag returns nothing
-native GetDestructableSprite							takes destructable whichDestructable returns sprite
 native GetDestructableZ									takes destructable whichDestructable returns real
 native ResetDestructableZ								takes destructable whichDestructable returns nothing // returns Z control to game.
 native GetDestructableHeight							takes destructable whichDestructable returns real
@@ -3724,10 +3795,14 @@ native SetItemStringField								takes item whichItem, itemstringfield whichFiel
 //
 
 // Normal API
+native GetItemSprite									takes item whichItem returns sprite
+native GetItemSpriteFlag								takes item whichItem returns spriteflag
+native SetItemSpriteFlag								takes item whichItem, spriteflag whichDrawFlag, boolean isSet returns nothing
+native IsItemSpriteFlag									takes item whichItem, spriteflag whichDrawFlag returns boolean
+
 native GetItemUnderCursor								takes nothing returns item // Async
 native GetItemOwner										takes item whichItem returns unit
 native IsItemDroppable									takes item whichItem returns boolean
-native GetItemSprite									takes item whichItem returns sprite
 native GetItemZ											takes item whichItem returns real
 native SetItemPositionWithZ								takes item whichItem, real x, real y, real z returns nothing
 native SetItemX											takes item whichItem, real x returns nothing
@@ -3898,9 +3973,17 @@ native GetUnitWeaponStringField							takes unit whichUnit, unitweaponstringfiel
 native SetUnitWeaponStringField							takes unit whichUnit, unitweaponstringfield whichField, integer index, string value returns boolean
 //
 
+// Placement API
+native IsUnitPlaceableAtById							takes integer unitTypeId, player whichPlayer, real x, real y, integer ignorePreventMask, integer extraPreventMask, integer ignoreRequiresMask, integer extraRequiresMask, boolean syncTest, boolean testFog, boolean ignoreInvisWidget, boolean ignoreOwnUnits, boolean moveBlockingUnits, boolean createFakeFootprint returns boolean
+//
+
 // Normal API
-native GetUnitUnderCursor								takes nothing returns unit // Async
 native GetUnitSprite									takes unit whichUnit returns sprite
+native GetUnitSpriteFlag								takes unit whichUnit returns spriteflag
+native SetUnitSpriteFlag								takes unit whichUnit, spriteflag whichDrawFlag, boolean isSet returns nothing
+native IsUnitSpriteFlag									takes unit whichUnit, spriteflag whichDrawFlag returns boolean
+
+native GetUnitUnderCursor								takes nothing returns unit // Async
 native SetUnitPositionEx								takes unit whichUnit, boolean breakOrder, boolean checkPathing, real x, real y, real z returns nothing
 native SetUnitPositionWithZ								takes unit whichUnit, real x, real y, real z returns nothing
 native SetUnitZ											takes unit whichUnit, real z returns nothing
@@ -4011,6 +4094,10 @@ native IsUnitSelectable									takes unit whichUnit returns boolean
 native SetUnitSelectable								takes unit whichUnit, boolean selectable returns nothing
 native IsUnitTargetable									takes unit whichUnit returns boolean
 native SetUnitTargetable								takes unit whichUnit, boolean targetable returns nothing
+native IsUnitRevealed									takes unit whichUnit returns boolean
+native GetUnitRevealedTo								takes unit whichUnit returns integer
+native RevealUnit										takes unit whichUnit, integer playerMask returns nothing // 1 << id -> BitwiseShiftLeft( 1, id ) or ForceGetPlayerMask( p ) for each player.
+native UnrevealUnit										takes unit whichUnit returns nothing // only works if unit was revealed beforehand.
 native IsUnitTruesightImmune							takes unit whichUnit returns boolean
 native SetUnitTruesightImmuneState						takes unit whichUnit, boolean state returns nothing
 native SetUnitVisibleByPlayer							takes unit whichUnit, player whichPlayer, boolean flag returns nothing // These are supposed to be used in EVENT_PLAYER_UNIT_DETECTED и EVENT_UNIT_DETECTED events.
@@ -4093,6 +4180,7 @@ native GetUnitVertexColour								takes unit whichUnit returns integer
 native UnitAddItemToSlot								takes unit whichUnit, item whichItem, integer itemSlot returns boolean
 native ReviveUnit										takes unit whichUnit, real x, real y returns boolean
 native ReviveUnitLoc									takes unit whichUnit, location loc returns boolean
+native ChangeUnitTimeCycle								takes unit whichUnit, boolean isDayTime returns nothing
 native GetUnitCurrentLife								takes unit whichUnit returns real
 native SetUnitCurrentLife								takes unit whichUnit, real life returns nothing
 native GetUnitMaxLife									takes unit whichUnit returns real
@@ -4249,6 +4337,12 @@ native UnitReverseOrders								takes unit whichUnit returns nothing
 native UnitClearOrders									takes unit whichUnit, boolean onlyQueued returns nothing
 native UnitForceStopOrder								takes unit whichUnit, boolean clearQueue returns nothing
 //
+
+// Report API
+native UnitReportContact								takes unit whichUnit, unit attacker, unit defender returns nothing
+native UnitCallForHelp									takes unit whichUnit, unit attacker, boolean updateNotification returns nothing
+native UnitFlashFog										takes unit whichUnit, integer playerMask, real minDuration returns nothing
+//
 //
 
 //============================================================================
@@ -4276,6 +4370,11 @@ native OrderGetTargetUnit								takes orderhandle whichOrder returns unit
 // Projectile API
 // For Projectile Type Ids: https://github.com/UnryzeC/UjAPI/blob/main/TypeData/ in there check out these files: WC3BulletList.txt / WC3MissileList.txt / WC3ArtilleryList.txt
 //
+native GetProjectileSprite								takes projectile whichProjectile returns sprite
+native GetProjectileSpriteFlag							takes projectile whichProjectile returns spriteflag
+native SetProjectileSpriteFlag							takes projectile whichProjectile, spriteflag whichDrawFlag, boolean isSet returns nothing
+native IsProjectileSpriteFlag							takes projectile whichProjectile, spriteflag whichDrawFlag returns boolean
+
 native CreateProjectile									takes integer projectileTypeId returns projectile
 native CreateProjectileEx								takes unit owner, integer projectileTypeId, integer attackIndex returns projectile
 native SetProjectileUnitData							takes projectile whichProjectile, unit owner, integer attackIndex returns nothing
@@ -4285,7 +4384,6 @@ native LaunchProjectile									takes projectile whichProjectile returns nothing
 native LaunchProjectileTarget							takes projectile whichProjectile, widget whichWidget returns nothing
 native LaunchProjectileAt								takes projectile whichProjectile, real x, real y, real z returns nothing
 
-native GetProjectileSprite								takes projectile whichProjectile returns sprite
 native GetProjectileTypeId								takes projectile whichProjectile returns integer
 native IsProjectileType									takes projectile whichProjectile, projectiletype whichType returns boolean
 native IsProjectileAlive								takes projectile whichProjectile returns boolean
@@ -4590,6 +4688,8 @@ native SetFrameGridSize 								takes framehandle grid, integer row, integer col
 native GetFrameGridFrame 								takes framehandle grid, integer row, integer column returns framehandle
 native GetFrameGridFrameById 							takes framehandle grid, integer id returns framehandle
 native SetFrameGridFrame 								takes framehandle grid, integer row, integer column, framehandle whichFrame returns nothing
+native GetFrameGridFrameRow								takes framehandle grid, framehandle whichFrame returns integer
+native GetFrameGridFrameColumn							takes framehandle grid, framehandle whichFrame returns integer
 native IsBuffBarRenderDuplicates 						takes nothing returns boolean
 native SetBuffBarRenderDuplicates 						takes boolean allow returns nothing // this will allow the rendering (drawing) of duplicate (similar) buffs. By default is off.
 //
