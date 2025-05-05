@@ -1,0 +1,3 @@
+1. Fixed incorrect handling of CAbilityAttributeBonus field values.
+2. Fixed incorrect handling of CAbilityAttributeModSkill field values.
+3. Fixed AntiHack triggering on hack id 41, this offset is now used internally.
