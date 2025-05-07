@@ -3,3 +3,4 @@
 3. UnitApplyTimedLife now fully supports custom Buffs.
 4. Rewritten all internal node-based loops from while to for.
   Note: mostly QoL for my own eyes.
+5. UnitCancelTimedLife no longer makes unit cost food, this should have been in control of the mapmaker instead.
