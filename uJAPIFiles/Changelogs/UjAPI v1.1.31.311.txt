@@ -1,0 +1,5 @@
+1. Fixed fatal error from CancelResearchAt.
+2. Fixed internal error in CAbilityQueue::CancelAt that was causing fatal error.
+3. UnitApplyTimedLife now fully supports custom Buffs.
+4. Rewritten all internal node-based loops from while to for.
+  Note: mostly QoL for my own eyes.
