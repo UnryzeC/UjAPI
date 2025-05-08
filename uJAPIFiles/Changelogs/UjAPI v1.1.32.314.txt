@@ -26,6 +26,20 @@
     constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_DAMAGE_BONUS							= ConvertUnitWeaponRealField('ud1+') // Get Only
     constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_RANGE_BONUS							= ConvertUnitWeaponRealField('ur1+') // Get Only
 4. New Natives:
+	native GetMinimapPingSource								takes nothing returns player // same as GetTriggerPlayer( )
+	native GetMinimapPingTargetX							takes nothing returns real
+	native SetMinimapPingTargetX							takes real x returns nothing
+	native GetMinimapPingTargetY							takes nothing returns real
+	native SetMinimapPingTargetY							takes real y returns nothing
+	native GetMinimapPingDuration							takes nothing returns real
+	native SetMinimapPingDuration							takes real duration returns nothing
+	native GetMinimapPingColour								takes nothing returns integer // ARGB colour
+	native SetMinimapPingColour								takes integer colour returns nothing
+	native IsMinimapPingVisible								takes nothing returns boolean // Enemies cannot see ally pings, which are handled by Minimap.
+	native SetMinimapPingVisible							takes boolean isShow returns nothing
+	native IsMinimapPingAlly								takes nothing returns boolean
+	native SetMinimapPingAlly								takes boolean isShow returns nothing
+	//
     native GetUnitBonusRealAttribute						takes unit whichUnit, bonusattribute whichBonusAttribute, boolean checkFake, integer index returns real // checkFake -> will instead return fakeMods calculation
     native GetUnitBonusIntegerAttribute						takes unit whichUnit, bonusattribute whichBonusAttribute, boolean checkFake, integer index returns integer // damage and hero stats are integers.
 5. Tons of internal changes related to ABILITY_STAT_MODIFIER.
