@@ -29,3 +29,4 @@
     native GetUnitBonusRealAttribute						takes unit whichUnit, bonusattribute whichBonusAttribute, boolean checkFake, integer index returns real // checkFake -> will instead return fakeMods calculation
     native GetUnitBonusIntegerAttribute						takes unit whichUnit, bonusattribute whichBonusAttribute, boolean checkFake, integer index returns integer // damage and hero stats are integers.
 5. Tons of internal changes related to ABILITY_STAT_MODIFIER.
+6. Fixed Fatal Error from UnitApplyTimedLife if non-existent buffId was provided.
