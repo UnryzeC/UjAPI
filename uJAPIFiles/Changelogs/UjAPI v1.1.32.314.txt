@@ -1,0 +1,31 @@
+1. New types:
+    type bonusattribute										extends handle
+2. New Convertors:
+    constant native ConvertBonusAttribute					takes integer i returns bonusattribute
+3. New Constants:
+	constant bonusattribute				BONUS_ATTRIBUTE_ATTACK_DAMAGE								= ConvertBonusAttribute(1)
+	constant bonusattribute				BONUS_ATTRIBUTE_ATTACK_RANGE								= ConvertBonusAttribute(2)
+	constant bonusattribute				BONUS_ATTRIBUTE_ATTACK_SPEED								= ConvertBonusAttribute(3)
+	constant bonusattribute				BONUS_ATTRIBUTE_ARMOUR										= ConvertBonusAttribute(4)
+	constant bonusattribute				BONUS_ATTRIBUTE_MOVE_SPEED									= ConvertBonusAttribute(5)
+	constant bonusattribute				BONUS_ATTRIBUTE_SIGHT										= ConvertBonusAttribute(6)
+	constant bonusattribute				BONUS_ATTRIBUTE_LIFE_FROM_STRENGTH							= ConvertBonusAttribute(7)
+	constant bonusattribute				BONUS_ATTRIBUTE_MANA_FROM_INTELLIGENCE						= ConvertBonusAttribute(8)
+	constant bonusattribute				BONUS_ATTRIBUTE_LIFE_CURRENT								= ConvertBonusAttribute(9)
+	constant bonusattribute				BONUS_ATTRIBUTE_MANA_CURRENT								= ConvertBonusAttribute(10)
+	constant bonusattribute				BONUS_ATTRIBUTE_LIFE_MAX									= ConvertBonusAttribute(11)
+	constant bonusattribute				BONUS_ATTRIBUTE_MANA_MAX									= ConvertBonusAttribute(12)
+	constant bonusattribute				BONUS_ATTRIBUTE_LIFE_REGEN									= ConvertBonusAttribute(13)
+	constant bonusattribute				BONUS_ATTRIBUTE_MANA_REGEN									= ConvertBonusAttribute(14)
+	constant bonusattribute				BONUS_ATTRIBUTE_STRENGTH									= ConvertBonusAttribute(15)
+	constant bonusattribute				BONUS_ATTRIBUTE_AGILITY										= ConvertBonusAttribute(16)
+	constant bonusattribute				BONUS_ATTRIBUTE_INTELLIGENCE								= ConvertBonusAttribute(17)
+    //
+    constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_RANGE_BUFFER							= ConvertUnitWeaponRealField('urb1')
+    constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_SPEED									= ConvertUnitWeaponRealField('uasp')
+    constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_DAMAGE_BONUS							= ConvertUnitWeaponRealField('ud1+') // Get Only
+    constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_RANGE_BONUS							= ConvertUnitWeaponRealField('ur1+') // Get Only
+4. New Natives:
+    native GetUnitBonusRealAttribute						takes unit whichUnit, bonusattribute whichBonusAttribute, boolean checkFake, integer index returns real // checkFake -> will instead return fakeMods calculation
+    native GetUnitBonusIntegerAttribute						takes unit whichUnit, bonusattribute whichBonusAttribute, boolean checkFake, integer index returns integer // damage and hero stats are integers.
+5. Tons of internal changes related to ABILITY_STAT_MODIFIER.
