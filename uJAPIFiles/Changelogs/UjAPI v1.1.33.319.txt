@@ -1,0 +1,6 @@
+1. New Natives:
+    // timerIndex: 0 - React | 1 - Cooldown | 2 - Damage Point (delay) | 3 - Backswing | 4 - Guard | 5 - Acquire | 6 - In Combat | 7-15 - Unpathable Target
+    // timeType: 0 - Timeout/Duration | 1 - Period | 2 - Remaining | 3 - Elapsed (this cannot be set)
+    native GetUnitAttackTimerTimeByIndex					takes unit whichUnit, integer timerIndex, integer timeType returns real
+    native SetUnitAttackTimerTimeByIndex					takes unit whichUnit, integer timerIndex, integer timeType, real time returns nothing
+2. 
