@@ -3,4 +3,5 @@
     // timeType: 0 - Timeout/Duration | 1 - Period | 2 - Remaining | 3 - Elapsed (this cannot be set)
     native GetUnitAttackTimerTimeByIndex					takes unit whichUnit, integer timerIndex, integer timeType returns real
     native SetUnitAttackTimerTimeByIndex					takes unit whichUnit, integer timerIndex, integer timeType, real time returns nothing
-2. 
+2. Added internal desync detector, this one actually correctly reports desyncs.
+3. CAgentTimer.cpp and CAgentTimerExtended.cpp cleaned up.
