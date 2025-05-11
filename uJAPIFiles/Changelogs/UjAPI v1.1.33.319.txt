@@ -1,4 +1,7 @@
 1. New Natives:
+    native CopyAbility										takes ability whichAbility returns ability
+    native CopyAbilityStats									takes ability toAbility, ability fromAbility returns nothing
+    //
     native CopyBuff											takes buff whichBuff returns buff
     native CopyBuffStats									takes buff toBuff, buff fromBuff returns nothing
     //
