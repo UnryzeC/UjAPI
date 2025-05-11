@@ -1,6 +1,9 @@
 1. New Natives:
     native CopyBuff											takes buff whichBuff returns buff
     native CopyBuffStats									takes buff toBuff, buff fromBuff returns nothing
+    //
+    native CopyProjectile									takes projectile whichProjectile returns projectile
+    native CopyProjectileStats								takes projectile toProjectile, projectile fromProjectile returns nothing
     // timerIndex: 0 - React | 1 - Cooldown | 2 - Damage Point (delay) | 3 - Backswing | 4 - Guard | 5 - Acquire | 6 - In Combat | 7-15 - Unpathable Target
     // timeType: 0 - Timeout/Duration | 1 - Period | 2 - Remaining | 3 - Elapsed (this cannot be set)
     native GetUnitAttackTimerTimeByIndex					takes unit whichUnit, integer timerIndex, integer timeType returns real
