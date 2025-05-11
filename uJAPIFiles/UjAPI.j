@@ -72,6 +72,7 @@ type damageflag											extends flagtype
 type pathingflag										extends flagtype
 type spriteflag											extends flagtype
 type armortype											extends handle
+type bonusattribute										extends handle
 type heroattribute										extends handle
 type defensetype										extends handle
 type regentype											extends handle
@@ -130,6 +131,7 @@ constant native ConvertCollisionType					takes integer i returns collisiontype
 constant native ConvertTargetFlag						takes integer i returns targetflag
 constant native ConvertDamageFlag						takes integer i returns damageflag
 constant native ConvertArmorType						takes integer i returns armortype
+constant native ConvertBonusAttribute					takes integer i returns bonusattribute
 constant native ConvertHeroAttribute					takes integer i returns heroattribute
 constant native ConvertDefenseType						takes integer i returns defensetype
 constant native ConvertRegenType						takes integer i returns regentype
@@ -1746,6 +1748,10 @@ globals
 	constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_MEDIUM_DAMAGE			= ConvertUnitWeaponRealField('ua1h')
 	constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_AREA_OF_EFFECT_SMALL_DAMAGE			= ConvertUnitWeaponRealField('ua1q')
 	constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_RANGE									= ConvertUnitWeaponRealField('ua1r')
+	constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_RANGE_BUFFER							= ConvertUnitWeaponRealField('urb1')
+	constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_SPEED									= ConvertUnitWeaponRealField('uasp')
+	constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_DAMAGE_BONUS							= ConvertUnitWeaponRealField('ud1+') // Get Only
+	constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_RANGE_BONUS							= ConvertUnitWeaponRealField('ur1+') // Get Only
 	constant unitweaponrealfield		UNIT_WEAPON_RF_ATTACK_SPEED_BONUS							= ConvertUnitWeaponRealField('us1+') // Get Only
 
 	constant unitweaponbooleanfield		UNIT_WEAPON_BF_ATTACK_SHOW_UI								= ConvertUnitWeaponBooleanField('uwu1')
@@ -1858,6 +1864,25 @@ globals
 	constant defensetype				DEFENSE_TYPE_HERO											= ConvertDefenseType(5)
 	constant defensetype				DEFENSE_TYPE_DIVINE											= ConvertDefenseType(6)
 	constant defensetype				DEFENSE_TYPE_NONE											= ConvertDefenseType(7)
+
+	// Bonus Attribute
+	constant bonusattribute				BONUS_ATTRIBUTE_ATTACK_DAMAGE								= ConvertBonusAttribute(1)
+	constant bonusattribute				BONUS_ATTRIBUTE_ATTACK_RANGE								= ConvertBonusAttribute(2)
+	constant bonusattribute				BONUS_ATTRIBUTE_ATTACK_SPEED								= ConvertBonusAttribute(3)
+	constant bonusattribute				BONUS_ATTRIBUTE_ARMOUR										= ConvertBonusAttribute(4)
+	constant bonusattribute				BONUS_ATTRIBUTE_MOVE_SPEED									= ConvertBonusAttribute(5)
+	constant bonusattribute				BONUS_ATTRIBUTE_SIGHT										= ConvertBonusAttribute(6)
+	constant bonusattribute				BONUS_ATTRIBUTE_LIFE_FROM_STRENGTH							= ConvertBonusAttribute(7)
+	constant bonusattribute				BONUS_ATTRIBUTE_MANA_FROM_INTELLIGENCE						= ConvertBonusAttribute(8)
+	constant bonusattribute				BONUS_ATTRIBUTE_LIFE_CURRENT								= ConvertBonusAttribute(9)
+	constant bonusattribute				BONUS_ATTRIBUTE_MANA_CURRENT								= ConvertBonusAttribute(10)
+	constant bonusattribute				BONUS_ATTRIBUTE_LIFE_MAX									= ConvertBonusAttribute(11)
+	constant bonusattribute				BONUS_ATTRIBUTE_MANA_MAX									= ConvertBonusAttribute(12)
+	constant bonusattribute				BONUS_ATTRIBUTE_LIFE_REGEN									= ConvertBonusAttribute(13)
+	constant bonusattribute				BONUS_ATTRIBUTE_MANA_REGEN									= ConvertBonusAttribute(14)
+	constant bonusattribute				BONUS_ATTRIBUTE_STRENGTH									= ConvertBonusAttribute(15)
+	constant bonusattribute				BONUS_ATTRIBUTE_AGILITY										= ConvertBonusAttribute(16)
+	constant bonusattribute				BONUS_ATTRIBUTE_INTELLIGENCE								= ConvertBonusAttribute(17)
 
 	// Hero Attribute
 	constant heroattribute				HERO_ATTRIBUTE_STR											= ConvertHeroAttribute(1)
@@ -2667,6 +2692,23 @@ native TradePlayerResources								takes player fromPlayer, player toPlayer, int
 //
 
 //============================================================================
+// Player Minimap Ping Event API | EVENT_PLAYER_MINIMAP_PING
+native GetMinimapPingSource								takes nothing returns player // same as GetTriggerPlayer( )
+native GetMinimapPingTargetX							takes nothing returns real
+native SetMinimapPingTargetX							takes real x returns nothing
+native GetMinimapPingTargetY							takes nothing returns real
+native SetMinimapPingTargetY							takes real y returns nothing
+native GetMinimapPingDuration							takes nothing returns real
+native SetMinimapPingDuration							takes real duration returns nothing
+native GetMinimapPingColour								takes nothing returns integer // ARGB colour
+native SetMinimapPingColour								takes integer colour returns nothing
+native IsMinimapPingVisible								takes nothing returns boolean // Enemies cannot see ally pings, which are handled by Minimap.
+native SetMinimapPingVisible							takes boolean isShow returns nothing
+native IsMinimapPingAlly								takes nothing returns boolean
+native SetMinimapPingAlly								takes boolean isShow returns nothing
+//
+
+//============================================================================
 // Handle List API
 // For some of the functions, follow these rules: handleTypeId is base typeId of the object, such as '+w3u' for units, more on this below. And last, but not least typeId is the id of a widget/ability/buff, i.e. 'hfoo' for footman, etc.
 // Handle Type Id List:
@@ -3163,11 +3205,13 @@ native ResetBuffFieldData								takes buff whichBuff returns boolean // Acts sa
 // Normal API
 // Supported buffs are available here: https://github.com/UnryzeC/UjAPI/blob/main/TypeData/WC3BuffListSupportedInBuffAPI.txt
 native CreateBuff										takes integer buffTypeId returns buff
+native CopyBuff											takes buff whichBuff returns buff
 native RemoveBuff										takes buff whichBuff returns nothing
 
 native IsBuffType										takes buff whichBuff, abilitytype whichAbilityType returns boolean
 native GetBuffTypeId									takes buff whichBuff returns integer
 native GetBuffBaseTypeId								takes buff whichBuff returns integer
+native CopyBuffStats									takes buff toBuff, buff fromBuff returns nothing
 native GetBuffOwner										takes buff whichbuff returns unit
 native SetBuffOwner										takes buff whichBuff, unit whichUnit returns nothing
 native GetBuffOwningAbility								takes buff whichbuff returns ability // experimental
@@ -4163,6 +4207,10 @@ native GetUnitBackswingPointByIndex						takes unit whichUnit, integer attackInd
 native SetUnitBackswingPointByIndex						takes unit whichUnit, integer attackIndex, real backswing returns nothing
 native GetUnitDamagePointByIndex						takes unit whichUnit, integer attackIndex returns real
 native SetUnitDamagePointByIndex						takes unit whichUnit, integer attackIndex, real damagePoint returns nothing
+// timerIndex: 0 - React | 1 - Cooldown | 2 - Damage Point (delay) | 3 - Backswing | 4 - Guard | 5 - Acquire | 6 - In Combat | 7-15 - Unpathable Target
+// timeType: 0 - Timeout/Duration | 1 - Period | 2 - Remaining | 3 - Elapsed (this cannot be set)
+native GetUnitAttackTimerTimeByIndex					takes unit whichUnit, integer timerIndex, integer timeType returns real
+native SetUnitAttackTimerTimeByIndex					takes unit whichUnit, integer timerIndex, integer timeType, real time returns nothing
 native GetUnitAttacksEnabledIndex						takes unit whichUnit returns integer
 native GetUnitArmourType								takes unit whichUnit returns defensetype
 native SetUnitArmourType								takes unit whichUnit, defensetype whichArmour returns nothing
@@ -4197,6 +4245,8 @@ native GetUnitManaRegen									takes unit whichUnit returns real
 native SetUnitManaRegen									takes unit whichUnit, real manaRegen returns nothing
 native IsUnitManaRegenEnabled							takes unit whichUnit returns boolean
 native SetUnitManaRegenEnabled							takes unit whichUnit, boolean enable returns nothing
+native GetUnitBonusRealAttribute						takes unit whichUnit, bonusattribute whichBonusAttribute, boolean checkFake, integer index returns real // checkFake -> will instead return fakeMods calculation
+native GetUnitBonusIntegerAttribute						takes unit whichUnit, bonusattribute whichBonusAttribute, boolean checkFake, integer index returns integer // damage and hero stats are integers.
 native GetHeroPrimaryAttribute							takes unit whichUnit returns heroattribute
 native SetHeroPrimaryAttribute							takes unit whichUnit, heroattribute whichHeroAttribute returns nothing
 native GetUnitModel										takes unit whichUnit returns string
