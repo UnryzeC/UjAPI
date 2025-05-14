@@ -1,4 +1,7 @@
 1. New Natives:
+    native GetCommandTime									takes nothing returns integer // This affects TurnData flushing intervals, the lower the value, the faster it is, default: 50. (originally: <= 1.27a -> 200 | >= 1.27b -> 62 )
+    native SetCommandTime									takes integer value returns nothing
+    //
     native CopyAbility										takes ability whichAbility returns ability
     native CopyAbilityStats									takes ability toAbility, ability fromAbility returns nothing
     //
@@ -13,6 +16,6 @@
     native SetUnitAttackTimerTimeByIndex					takes unit whichUnit, integer timerIndex, integer timeType, real time returns nothing
 2. Added internal desync detector, this one actually correctly reports desyncs.
 3. CAgentTimer.cpp and CAgentTimerExtended.cpp cleaned up.
-4. Re-introduced CNetPacketUnlocker, it wasn't active before.
-5. Added internal packet length patching from 1460 up to 3840 bytes.
-    Note: PacketUnlocker and packet length changes are experimental.
+4. Re-introduced CNetPacketUnlocker, it wasn't active before. This mostly affects TOTAL amount of data that can be handled at once.
+5. Rewritten Net::NetClient::FlushUnsentTurns, lowered ms delay for < 1.27b from 200/from 62 for 1.27b and 1.28f to 50.
+6. Even more QoL changes and code optimisation.
