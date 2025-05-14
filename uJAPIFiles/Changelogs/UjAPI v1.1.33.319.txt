@@ -19,3 +19,5 @@
 4. Re-introduced CNetPacketUnlocker, it wasn't active before. This mostly affects TOTAL amount of data that can be handled at once.
 5. Rewritten Net::NetClient::FlushUnsentTurns, lowered ms delay for < 1.27b from 200/from 62 for 1.27b and 1.28f to 50.
 6. Even more QoL changes and code optimisation.
+7. Added CDataStore::SendEvent hook, now all of the packets are handled by UjAPI.
+8. Added CNetData::SendOutgoingCommands hook, now all commands are handled by UjAPI.
