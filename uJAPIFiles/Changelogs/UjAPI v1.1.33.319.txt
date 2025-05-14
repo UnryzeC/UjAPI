@@ -21,3 +21,5 @@
 6. Even more QoL changes and code optimisation.
 7. Added CDataStore::SendEvent hook, now all of the packets are handled by UjAPI.
 8. Added CNetData::SendOutgoingCommands hook, now all commands are handled by UjAPI.
+9. Fixed unit getting paused whenever an item was dropped due to any reason.
+10. Fixed RefreshBuff crash, this was related to incorrect handling in CAgentTimerExtended.
