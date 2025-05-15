@@ -23,3 +23,4 @@
 8. Added CNetData::SendOutgoingCommands hook, now all commands are handled by UjAPI.
 9. Fixed unit getting paused whenever an item was dropped due to any reason.
 10. Fixed RefreshBuff crash, this was related to incorrect handling in CAgentTimerExtended.
+11. Fixed UnitApplyTimedLife with 'BTLF'.
