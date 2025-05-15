@@ -15,10 +15,9 @@
     native GetUnitAttackTimerTimeByIndex					takes unit whichUnit, integer timerIndex, integer timeType returns real
     native SetUnitAttackTimerTimeByIndex					takes unit whichUnit, integer timerIndex, integer timeType, real time returns nothing
     //
-    native ItemAddAbilityByIdEx								takes item whichItem, integer abilityTypeId, boolean checkDuplicates returns ability // Only removes item's duplicates.
+    native ItemAddAbilityByIdEx								takes item whichItem, integer abilityTypeId, boolean checkDuplicates returns ability // Only checks item's duplicates.
     native ItemRemoveAbilityByIdEx							takes item whichItem, integer abilityTypeId, boolean checkDuplicates returns boolean // Only removes item's duplicates.
 2. Native Changes:
-    UnitAddAbility now returns ability instead of boolean.
     UnitAddAbilityEx now returns ability instead of boolean.
     //
     UnitAddBuffById now returns buff instead of boolean.
