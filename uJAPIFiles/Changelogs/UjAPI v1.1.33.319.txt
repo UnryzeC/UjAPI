@@ -1,4 +1,6 @@
-1. New Natives:
+1. Removed Natives:
+    native CreateProjectileEx								takes integer projectileTypeId, real x, real y, unit owner, integer attackIndex returns projectile // Use SetProjectileUnitData instead
+2. New Natives:
     native GetCommandTime									takes nothing returns integer // This affects TurnData flushing intervals, the lower the value, the faster it is, default: 50. (originally: <= 1.27a -> 200 | >= 1.27b -> 62 )
     native SetCommandTime									takes integer value returns nothing
     //
@@ -17,20 +19,22 @@
     //
     native ItemAddAbilityByIdEx								takes item whichItem, integer abilityTypeId, boolean checkDuplicates returns ability // Only checks item's duplicates.
     native ItemRemoveAbilityByIdEx							takes item whichItem, integer abilityTypeId, boolean checkDuplicates returns boolean // Only removes item's duplicates.
-2. Native Changes:
+3. Native Changes:
     UnitAddAbilityEx now returns ability instead of boolean.
     //
     UnitAddBuffById now returns buff instead of boolean.
     UnitAddBuffByIdEx now returns buff instead of boolean.
     //
     ItemAddAbilityById now returnw ability instead of boolean.
-3. Added internal desync detector, this one actually correctly reports desyncs.
-4. CAgentTimer.cpp and CAgentTimerExtended.cpp cleaned up.
-5. Re-introduced CNetPacketUnlocker, it wasn't active before. This mostly affects TOTAL amount of data that can be handled at once.
-6. Rewritten Net::NetClient::FlushUnsentTurns, lowered ms delay for < 1.27b from 200/from 62 for 1.27b and 1.28f to 50.
-7. Even more QoL changes and code optimisation.
-8. Added CDataStore::SendEvent hook, now all of the packets are handled by UjAPI.
-9. Added CNetData::SendOutgoingCommands hook, now all commands are handled by UjAPI.
-10. Fixed unit getting paused whenever an item was dropped due to any reason.
-11. Fixed RefreshBuff crash, this was related to incorrect handling in CAgentTimerExtended.
-12. Fixed UnitApplyTimedLife with 'BTLF'.
+    //
+    CreateProjectile now takes all axis and facing.
+4. Added internal desync detector, this one actually correctly reports desyncs.
+5. CAgentTimer.cpp and CAgentTimerExtended.cpp cleaned up.
+6. Re-introduced CNetPacketUnlocker, it wasn't active before. This mostly affects TOTAL amount of data that can be handled at once.
+7. Rewritten Net::NetClient::FlushUnsentTurns, lowered ms delay for < 1.27b from 200/from 62 for 1.27b and 1.28f to 50.
+8. Even more QoL changes and code optimisation.
+9. Added CDataStore::SendEvent hook, now all of the packets are handled by UjAPI.
+10. Added CNetData::SendOutgoingCommands hook, now all commands are handled by UjAPI.
+11. Fixed unit getting paused whenever an item was dropped due to any reason.
+12. Fixed RefreshBuff crash, this was related to incorrect handling in CAgentTimerExtended.
+13. Fixed UnitApplyTimedLife with 'BTLF'.
