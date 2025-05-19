@@ -4,11 +4,19 @@
     native GetCommandTime									takes nothing returns integer // This affects TurnData flushing intervals, the lower the value, the faster it is, default: 50. (originally: <= 1.27a -> 200 | >= 1.27b -> 62 )
     native SetCommandTime									takes integer value returns nothing
     //
+    native GetGameTime										takes timetype whichTimeType, boolean isStart returns integer // isStart -> returns the actual time when game started.
+    //
+    native RemoveModelFromCache								takes string modelPath, boolean includeTextures returns nothing
+    //
+    native GetPlayerAPM										takes player whichPlayer returns real
+    //
     native CopyAbility										takes ability whichAbility returns ability
     native CopyAbilityStats									takes ability toAbility, ability fromAbility returns nothing
+    native GetSpellTargetAbility							takes nothing returns ability // BUFF_STOLEN and ABILITY_BLOCKED events.
     //
     native CopyBuff											takes buff whichBuff returns buff
     native CopyBuffStats									takes buff toBuff, buff fromBuff returns nothing
+    native GetSpellTargetBuff								takes nothing returns buff // BUFF_STOLEN and ABILITY_BLOCKED events.
     //
     native CopyProjectile									takes projectile whichProjectile returns projectile
     native CopyProjectileStats								takes projectile toProjectile, projectile fromProjectile returns nothing
