@@ -55,3 +55,8 @@
 12. Fixed unit getting paused whenever an item was dropped due to any reason.
 13. Fixed RefreshBuff crash, this was related to incorrect handling in CAgentTimerExtended.
 14. Fixed UnitApplyTimedLife with 'BTLF'.
+
+Editor Changes:
+
+1. Fixed -loadfile always launching game and bypassing -launch "Editor" option.
+2. Fixed whole process of CLI World Editor launch, it wasn't reading settings properly.
