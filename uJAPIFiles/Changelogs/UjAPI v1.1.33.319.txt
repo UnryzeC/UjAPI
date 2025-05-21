@@ -70,6 +70,7 @@
 14. Fixed RefreshBuff crash, this was related to incorrect handling in CAgentTimerExtended.
 15. Fixed UnitApplyTimedLife with 'BTLF'.
 16. Rewritten internal CUnit::IsStunned to instead use in-game logic.
+17. Fixed random desync from CreateIllusion/CreateIllusionAtLoc/CreateIllusionFromUnit/CreateIllusionFromUnitEx and from Mirror Image/Wand of Illusions.
 
 Editor Changes:
 
