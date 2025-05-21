@@ -1,11 +1,13 @@
 1. New Constants:
     constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_STOLEN								= ConvertPlayerUnitEvent(520)
     constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_BLOCKED							= ConvertPlayerUnitEvent(521)
-    
+    //
     constant unitevent					EVENT_UNIT_BUFF_STOLEN										= ConvertUnitEvent(522)
     constant unitevent					EVENT_UNIT_ABILITY_BLOCKED									= ConvertUnitEvent(523)
 2. Removed Natives:
     native CreateProjectileEx								takes integer projectileTypeId, real x, real y, unit owner, integer attackIndex returns projectile // Use SetProjectileUnitData instead
+    native GetUnitStunCounter								takes unit whichUnit returns integer
+    native SetUnitStunCounter								takes unit whichUnit, integer stunCounter returns nothing
 3. Disabled Natives:
     native GetTriggerBuffSourceAbility						takes nothing returns ability // disabled, as it does not work properly.
     native GetTriggerBuffSourceUnit							takes nothing returns unit // disabled, as it does not work properly.
@@ -32,6 +34,12 @@
     //
     native CopyProjectile									takes projectile whichProjectile returns projectile
     native CopyProjectileStats								takes projectile toProjectile, projectile fromProjectile returns nothing
+    //
+    native IsUnitSnared										takes unit whichUnit returns boolean
+    // 0 - pause | 1 - invulnerable | 2 - auto attack ignore | 3 - invisibility | 4 - frost | 5 - stone | 6 - ethereal | 7 - magic immunity | 8 - dispel immunity | 9 - uninterruptable (previously stun) | 10 - order
+    // 11 - disabled | 12 - disabled magic | 13 - disabled physical | 14 - disabled hidden | 15 - disabled hidden magical | 16 - disabled hidden physical | 17 - silence | 18 - abilities | 19 - buffs | 20 - ground
+    native GetUnitControlCount								takes unit whichUnit, integer index returns integer
+    native SetUnitControlCount								takes unit whichUnit, integer index, integer count returns nothing
     // timerIndex: 0 - React | 1 - Cooldown | 2 - Damage Point (delay) | 3 - Backswing | 4 - Guard | 5 - Acquire | 6 - In Combat | 7-15 - Unpathable Target
     // timeType: 0 - Timeout/Duration | 1 - Period | 2 - Remaining | 3 - Elapsed (this cannot be set)
     native GetUnitAttackTimerTimeByIndex					takes unit whichUnit, integer timerIndex, integer timeType returns real
@@ -48,6 +56,9 @@
     ItemAddAbilityById now returnw ability instead of boolean.
     //
     CreateProjectile now takes all axis and facing.
+    //
+    GetUnitStunCounter is now GetUnitUninterruptableCount.
+    SetUnitStunCounter is now SetUnitUninterruptableCount.
 6. Added internal desync detector, this one actually correctly reports desyncs.
 7. CAgentTimer.cpp and CAgentTimerExtended.cpp cleaned up.
 8. Re-introduced CNetPacketUnlocker, it wasn't active before. This mostly affects TOTAL amount of data that can be handled at once.
@@ -58,6 +69,7 @@
 13. Fixed unit getting paused whenever an item was dropped due to any reason.
 14. Fixed RefreshBuff crash, this was related to incorrect handling in CAgentTimerExtended.
 15. Fixed UnitApplyTimedLife with 'BTLF'.
+16. Rewritten internal CUnit::IsStunned to instead use in-game logic.
 
 Editor Changes:
 
