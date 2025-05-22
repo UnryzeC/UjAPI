@@ -72,6 +72,7 @@
 15. Fixed UnitApplyTimedLife with 'BTLF'.
 16. Rewritten internal CUnit::IsStunned to instead use in-game logic.
 17. Fixed random desync from CreateIllusion/CreateIllusionAtLoc/CreateIllusionFromUnit/CreateIllusionFromUnitEx and from Mirror Image/Wand of Illusions.
+18. Fixed incorrect handling of CAbilityAttributeModSkill based abilities.
 
 Editor Changes:
 
