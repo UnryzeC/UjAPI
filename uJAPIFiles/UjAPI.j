@@ -377,6 +377,7 @@ globals
 	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_REFRESHED							= ConvertPlayerUnitEvent(501)
 	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_ENDED								= ConvertPlayerUnitEvent(502)
 	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_REMOVED								= ConvertPlayerUnitEvent(508)
+	constant playerunitevent			EVENT_PLAYER_UNIT_BUFF_STOLEN								= ConvertPlayerUnitEvent(520)
 
 	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_ADDED								= ConvertPlayerUnitEvent(503)
 	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_REMOVED							= ConvertPlayerUnitEvent(504)
@@ -384,6 +385,7 @@ globals
 	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_AUTOCAST_OFF						= ConvertPlayerUnitEvent(506)
 	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_LEVEL_CHANGED						= ConvertPlayerUnitEvent(507)
 	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_COOLDOWN_FINISHED					= ConvertPlayerUnitEvent(509)
+	constant playerunitevent			EVENT_PLAYER_UNIT_ABILITY_BLOCKED							= ConvertPlayerUnitEvent(521)
 
 	constant playerunitevent			EVENT_PLAYER_UNIT_PROJECTILE_LAUNCH							= ConvertPlayerUnitEvent(600)
 	constant playerunitevent			EVENT_PLAYER_UNIT_PROJECTILE_HIT							= ConvertPlayerUnitEvent(601)
@@ -396,6 +398,7 @@ globals
 	constant unitevent					EVENT_UNIT_BUFF_REFRESHED									= ConvertUnitEvent(511)
 	constant unitevent					EVENT_UNIT_BUFF_ENDED										= ConvertUnitEvent(512)
 	constant unitevent					EVENT_UNIT_BUFF_REMOVED										= ConvertUnitEvent(518)
+	constant unitevent					EVENT_UNIT_BUFF_STOLEN										= ConvertUnitEvent(522)
 
 	constant unitevent					EVENT_UNIT_ABILITY_ADDED									= ConvertUnitEvent(513)
 	constant unitevent					EVENT_UNIT_ABILITY_REMOVED									= ConvertUnitEvent(514)
@@ -403,6 +406,7 @@ globals
 	constant unitevent					EVENT_UNIT_ABILITY_AUTOCAST_OFF								= ConvertUnitEvent(516)
 	constant unitevent					EVENT_UNIT_ABILITY_LEVEL_CHANGED							= ConvertUnitEvent(517)
 	constant unitevent					EVENT_UNIT_ABILITY_COOLDOWN_FINISHED						= ConvertUnitEvent(519)
+	constant unitevent					EVENT_UNIT_ABILITY_BLOCKED									= ConvertUnitEvent(523)
 
 	constant unitevent					EVENT_UNIT_PROJECTILE_LAUNCH								= ConvertUnitEvent(610)
 	constant unitevent					EVENT_UNIT_PROJECTILE_HIT									= ConvertUnitEvent(611)
@@ -2462,7 +2466,9 @@ native ReplaceMIDISound									takes sound whichSound, string soundLabel, integ
 // Time API
 native GetSystemTime									takes timetype whichTimeType returns integer
 native GetLocalTime										takes timetype whichTimeType returns integer
-native GetTimeStamp										takes boolean isLocalTime, integer isMiliseconds returns string
+native GetGameTime										takes timetype whichTimeType, boolean isStart returns integer // isStart -> returns the actual time when game started.
+native GetTimeStamp										takes boolean isLocalTime, integer mode returns string
+native GetGameTimeStamp									takes boolean isStart, integer mode returns string
 native GetTickCount										takes nothing returns integer
 //
 
@@ -2535,8 +2541,14 @@ native GetMouseWorldZ									takes nothing returns real
 //
 native GetConnectionType								takes nothing returns connectiontype
 native IsReplay											takes nothing returns boolean
+native GetCommandTime									takes nothing returns integer // This affects TurnData flushing intervals, the lower the value, the faster it is, default: 50. (originally: <= 1.27a -> 200 | >= 1.27b -> 62 )
+native SetCommandTime									takes integer value returns nothing
 native GetPathingHeartbeat								takes nothing returns real
 native StartPathingHeartbeat							takes boolean isStart, real time returns nothing
+native CacheModel										takes string modelPath, boolean forceCreateGeosets returns nothing
+native RemoveModelFromCache								takes string modelPath, boolean includeTextures returns nothing
+native RemoveAllModelsFromCache							takes boolean includeTextures returns nothing
+native ClearStrings										takes nothing returns nothing
 //
 
 // Chat API
@@ -2623,6 +2635,7 @@ native IsPlayerMuted 									takes player whichPlayer returns boolean
 native SetPlayerMuted 									takes player whichPlayer, boolean isMute returns nothing
 native IsPlayerMutedForPlayer							takes player whichPlayer, player toPlayer returns boolean
 native SetPlayerMutedForPlayer 							takes player whichPlayer, player toPlayer, boolean isMute returns nothing
+native GetPlayerAPM										takes player whichPlayer returns real
 constant native DecPlayerTechResearched					takes player whichPlayer, integer techid, integer levels returns nothing
 //
 
@@ -3075,11 +3088,15 @@ native IsAbilityBaseTargetAllowed						takes integer abilityTypeId, widget sourc
 
 // Normal API
 native CreateAbility									takes integer abilityTypeId returns ability
+native CopyAbility										takes ability whichAbility returns ability
 native RemoveAbility									takes ability whichAbility returns nothing
 
 native GetTriggerAbility								takes nothing returns ability // mimics GetSpellAbility
+native GetSpellTargetAbility							takes nothing returns ability // BUFF_STOLEN and ABILITY_BLOCKED events.
+native GetSpellTargetWidget								takes nothing returns widget
 native GetTriggerAbilityPreviousLevel					takes nothing returns integer
 native IsAbilityType									takes ability whichAbility, abilitytype whichAbilityType returns boolean
+native CopyAbilityStats									takes ability toAbility, ability fromAbility returns nothing
 native GetAbilityOwner									takes ability whichAbility returns unit
 native SetAbilityOwner									takes ability whichAbility, unit whichUnit returns nothing
 native GetAbilityOwningAbility							takes ability whichAbility returns ability // if it belongs to Spellbook (Aspb) and so on.
@@ -3234,8 +3251,9 @@ native GetEnumBuff										takes nothing returns buff
 native EnumUnitBuffs									takes unit whichUnit, boolexpr whichBoolexpr, code whichCode returns boolean
 
 native GetTriggerBuff									takes nothing returns buff
-native GetTriggerBuffSourceAbility						takes nothing returns ability
-native GetTriggerBuffSourceUnit							takes nothing returns unit
+native GetSpellTargetBuff								takes nothing returns buff // BUFF_STOLEN
+//native GetTriggerBuffSourceAbility						takes nothing returns ability // disabled, as it does not work properly.
+//native GetTriggerBuffSourceUnit							takes nothing returns unit // disabled, as it does not work properly.
 native GetTriggerBuffTarget								takes nothing returns unit
 //
 
@@ -3868,8 +3886,10 @@ native GetItemAbilityByIdEx								takes item whichItem, integer abilityTypeId, 
 native GetItemAbilityByIndex							takes item whichItem, integer index returns ability
 native ItemAddAbility									takes item whichItem, ability whichAbility returns boolean
 native ItemRemoveAbility								takes item whichItem, ability whichAbility returns boolean
-native ItemAddAbilityById								takes item whichItem, integer abilityTypeId returns boolean
+native ItemAddAbilityById								takes item whichItem, integer abilityTypeId returns ability // ignores duplicate check.
+native ItemAddAbilityByIdEx								takes item whichItem, integer abilityTypeId, boolean checkDuplicates returns ability // Only removes item's duplicates.
 native ItemRemoveAbilityById							takes item whichItem, integer abilityTypeId returns boolean
+native ItemRemoveAbilityByIdEx							takes item whichItem, integer abilityTypeId, boolean checkDuplicates returns boolean // Only removes item's duplicates.
 native IsItemDisabled									takes item whichItem returns boolean
 native GetItemDisableFlags								takes item whichItem returns integer
 native DisableItem										takes item whichItem, boolean hideUI, boolean disable, integer extraFlags returns nothing
@@ -4050,6 +4070,7 @@ native IsUnitDead										takes unit whichUnit returns boolean // checks intern
 native IsUnitIdle										takes unit whichUnit returns boolean
 native IsUnitMoving										takes unit whichUnit returns boolean
 native IsUnitStunned									takes unit whichUnit returns boolean
+native IsUnitSnared										takes unit whichUnit returns boolean
 native IsUnitInvulnerable								takes unit whichUnit returns boolean
 native IsUnitHero										takes unit whichUnit returns boolean
 native IsUnitTower										takes unit whichUnit returns boolean
@@ -4087,7 +4108,7 @@ native UnitUnapplyUpgrades								takes unit whichUnit returns nothing
 native UnitApplyUpgrades								takes unit whichUnit returns nothing
 
 // Unit Ability API
-native UnitAddAbilityEx									takes unit whichUnit, integer abilityTypeId, boolean checkForDuplicates returns boolean
+native UnitAddAbilityEx									takes unit whichUnit, integer abilityTypeId, boolean checkForDuplicates returns ability
 native UnitRemoveAbilityEx								takes unit whichUnit, integer abilityTypeId, boolean removeDuplicates returns boolean
 
 native CountUnitAbilities								takes unit whichUnit, boolean alsoCountBuffs returns integer
@@ -4107,8 +4128,8 @@ native EnableUnitAbilityEx								takes unit whichUnit, integer abilityTypeId, b
 // Unit Buff API
 native UnitAddBuff										takes unit whichUnit, buff whichBuff returns boolean // Does not add duplicates!
 native UnitAddBuffEx									takes unit whichUnit, buff whichBuff, boolean checkForDuplicates returns boolean
-native UnitAddBuffById									takes unit whichUnit, integer buffTypeId returns boolean // Does not add duplicates!
-native UnitAddBuffByIdEx								takes unit whichUnit, integer buffTypeId, boolean checkForDuplicates returns boolean
+native UnitAddBuffById									takes unit whichUnit, integer buffTypeId returns buff // Does not add duplicates!
+native UnitAddBuffByIdEx								takes unit whichUnit, integer buffTypeId, boolean checkForDuplicates returns buff
 
 native CountUnitBuffs									takes unit whichUnit returns integer
 native CountUnitBuffsWithTypeId							takes unit whichUnit, integer buffTypeId returns integer
@@ -4277,8 +4298,9 @@ native UnitApplySilence									takes unit whichUnit, boolean state returns noth
 native UnitDisableAbilities								takes unit whichUnit, boolean state returns nothing // Also hides abilities
 native PauseUnitEx										takes unit whichUnit, boolean pause returns nothing
 native SetUnitStunned									takes unit whichUnit, boolean state returns nothing
-native GetUnitStunCounter								takes unit whichUnit returns integer
-native SetUnitStunCounter								takes unit whichUnit, integer stunCounter returns nothing // by default is 0. When set to anything more than 0, unit will only accept one order and ignore the rest until current order is finished.
+//  by default is 0. When set to anything more than 0, unit will only accept one order and ignore the rest until current order is finished.
+native GetUnitControlCount								takes unit whichUnit, integer index returns integer
+native SetUnitControlCount								takes unit whichUnit, integer index, integer count returns nothing
 native SetUnitKiller									takes unit whichUnit, unit killer returns nothing
 native KillUnitEx										takes unit whichUnit, unit killer returns nothing
 native GetUnitTarget									takes unit whichUnit returns widget
@@ -4425,8 +4447,9 @@ native GetProjectileSpriteFlag							takes projectile whichProjectile returns sp
 native SetProjectileSpriteFlag							takes projectile whichProjectile, spriteflag whichDrawFlag, boolean isSet returns nothing
 native IsProjectileSpriteFlag							takes projectile whichProjectile, spriteflag whichDrawFlag returns boolean
 
-native CreateProjectile									takes integer projectileTypeId returns projectile
-native CreateProjectileEx								takes unit owner, integer projectileTypeId, integer attackIndex returns projectile
+native CreateProjectile									takes integer projectileTypeId, real x, real y, real z, real facing returns projectile
+native CopyProjectile									takes projectile whichProjectile returns projectile
+native CopyProjectileStats								takes projectile toProjectile, projectile fromProjectile returns nothing
 native SetProjectileUnitData							takes projectile whichProjectile, unit owner, integer attackIndex returns nothing
 native KillProjectile									takes projectile whichProjectile returns nothing
 native RemoveProjectile									takes projectile whichProjectile returns nothing
@@ -4679,7 +4702,7 @@ native GetFrameCheckState								takes framehandle whichFrame returns boolean
 native SetFrameCheckState								takes framehandle whichFrame, boolean isCheck returns nothing
 //
 
-native SetMiniMapTexture								takes string texturePath returns boolean
+native SetMinimapTexture								takes string texturePath returns boolean
 
 // CSlider / CScollBar API | Scrollbar extends slider, so both use the same logic.
 native GetFrameSlider 									takes framehandle whichFrame returns framehandle
