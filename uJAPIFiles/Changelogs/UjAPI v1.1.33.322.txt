@@ -1,0 +1,2 @@
+1. Fixed fatal error from CreateImage.
+2. Fixed GetTriggerFrameMouseButton always returning null.
