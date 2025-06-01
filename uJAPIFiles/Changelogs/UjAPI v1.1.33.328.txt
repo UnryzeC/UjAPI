@@ -1,0 +1,2 @@
+1. Fully rewritten processing of CAbilityAttributeBonus, now Setting its data/changing owner should be handled correctly.
+2. Fixed CAbility::CloneBase/CAbility::CloneBaseEx instead affecting global AbilDataCacheNode instead.
