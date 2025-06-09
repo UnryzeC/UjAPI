@@ -1,0 +1,9 @@
+1. Fully rewritten CBuff creation and base copying, it was barely functioning previously and got totally broken after recent update.
+2. CAbility/CBuff clone checking now uses simpler method, this should avoid additional memory allocation.
+3. CBuff::GetParentBase rewritten to use simpler method, this also avoids memory allocation.
+4. Rewritten CAbility::CloneClear, now it properly cleans up UI part as well, it used to miss it.
+5. CAbility::CloneClear is now used whenever ability is removed.
+6. CAbility::CloneClear is now used whenever a buff ends/is removed.
+7. CAbility::CloneClear addition now prevents in-game memory leak, which was cleaned upon game over.
+  Note: UI clones were still leaking, which is now fixed.
+8. AntiHack updated for 1.27a, removed faulty offset and fixed incorrect value for another offset.
