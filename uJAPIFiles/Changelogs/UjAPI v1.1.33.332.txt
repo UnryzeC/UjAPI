@@ -7,3 +7,5 @@
 7. CAbility::CloneClear addition now prevents in-game memory leak, which was cleaned upon game over.
   Note: UI clones were still leaking, which is now fixed.
 8. AntiHack updated for 1.27a, removed faulty offset and fixed incorrect value for another offset.
+9. For the last time fixed 1.28f (it broke after recent code optimisation).
+  Note: as 1.28f seems to be as dead as 1.24e, it most likely will be abandoned, as it brings more pain than it's useful for.
