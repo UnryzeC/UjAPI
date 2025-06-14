@@ -1,0 +1,2 @@
+1. Fixed IsUnitMoving always returning true.
+2. Fixed IsUnitIdle always returning false.
