@@ -1,2 +1,3 @@
 1. Fixed IsUnitMoving always returning true.
 2. Fixed IsUnitIdle always returning false.
+3. Changed GetCurrentAnimationId/GetCurrentAnimationName handling to only use CModel, instead of relying on CSprite.
