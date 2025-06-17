@@ -3,3 +3,4 @@
 3. Changed GetCurrentAnimationId/GetCurrentAnimationName handling to only use CModel, instead of relying on CSprite.
 4. Yet another, this time for sure switch to AbilDataCacheNode::Clone, to prevent crashes.
 5. Rewamped how AbilDataCacheNode clones are erased, allowing ability to get properly cleanup first and then removing cloned base.
+6. Fixed UnitAddAbility allowing addition of duplicate abilities, only Ex version was supposed to do it.
