@@ -1,0 +1,2 @@
+1. Added nullptr check to CObserver::IsEventRegistered, on some peculiar maps, nullptr was somehow sent in it.
+2. Fixed Get/Set texture natives for Sprites up to Units, it got broken recently after code refactoring.
