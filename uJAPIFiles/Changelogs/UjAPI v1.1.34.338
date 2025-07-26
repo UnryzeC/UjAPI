@@ -19,3 +19,4 @@
 5. Fixed crash related to SetFrameStepSize on SLIDER frame type.
 6. Added internal CArtillery::SetData, now it can be properly copied and fired.
 7. Fixed GetUnitBonusDamageByIndex breaking whenever bonus attack was awarded from main stat.
+8. Fixed Mouse API not working when Cursor Frame was not present, either at the very start of the game or when cursor is outside of the game window.
