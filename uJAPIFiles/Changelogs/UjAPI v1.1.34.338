@@ -1,2 +1,3 @@
 1. Fixed SetTYPEFacing not setting internal Position::Facing, hence causing GetTYPEFacing to not work properly.
 2. Fixed SetX/Y not working for destructables.
+3. Fixed PauseUnitEx not unpausing units.
