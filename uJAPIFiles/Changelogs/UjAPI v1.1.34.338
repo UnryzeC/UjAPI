@@ -1,3 +1,6 @@
-1. Fixed SetTYPEFacing not setting internal Position::Facing, hence causing GetTYPEFacing to not work properly.
-2. Fixed SetX/Y not working for destructables.
-3. Fixed PauseUnitEx not unpausing units.
+1. New Natives:
+    native GetTurnRate										takes unit whichUnit returns real
+    native SetTurnRate										takes unit whichUnit, real turnRate returns nothing
+2. Fixed SetTYPEFacing not setting internal Position::Facing, hence causing GetTYPEFacing to not work properly.
+3. Fixed SetX/Y not working for destructables.
+4. Fixed PauseUnitEx not unpausing units.
