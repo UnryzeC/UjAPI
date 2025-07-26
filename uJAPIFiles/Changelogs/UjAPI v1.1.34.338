@@ -18,3 +18,4 @@
 4. Fixed PauseUnitEx not unpausing units.
 5. Fixed crash related to SetFrameStepSize on SLIDER frame type.
 6. Added internal CArtillery::SetData, now it can be properly copied and fired.
+7. Fixed GetUnitBonusDamageByIndex breaking whenever bonus attack was awarded from main stat.
