@@ -1,4 +1,7 @@
 1. New Natives:
+    native GetFogHeartbeat									takes nothing returns real
+    native StartFogHeartbeat								takes boolean isStart, real time returns nothing
+    //
     native GetPlayerPathingLimit							takes player whichPlayer, integer queueType returns integer // 0 - deep | 1 - dynamic | 2 - fast | 3 - local
     native SetPlayerPathingLimit							takes player whichPlayer, integer value returns nothing // Set for all
     native SetPlayerPathingLimitEx							takes player whichPlayer, integer queueType, integer value returns nothing
