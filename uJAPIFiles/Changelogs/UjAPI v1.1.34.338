@@ -1,6 +1,8 @@
 1. New Natives:
     native GetUnitTurnRate									takes unit whichUnit returns real
     native SetUnitTurnRate									takes unit whichUnit, real turnRate returns nothing
+    native GetUnitPathingLimit								takes unit whichUnit, integer level returns integer // Levels: 0 or 1.
+    native SetUnitPathingLimit								takes unit whichUnit, integer level, integer limit returns nothing // Limit is 0 to 32,767 (anything lower than 0 will default to -32,767). Use -1 (or any other negative number) to "erase" limit.
 2. Fixed SetTYPEFacing not setting internal Position::Facing, hence causing GetTYPEFacing to not work properly.
 3. Fixed SetX/Y not working for destructables.
 4. Fixed PauseUnitEx not unpausing units.
