@@ -1,4 +1,8 @@
 1. New Natives:
+    native GetPlayerPathingLimit							takes player whichPlayer, integer queueType returns integer // 0 - deep | 1 - dynamic | 2 - fast | 3 - local
+    native SetPlayerPathingLimit							takes player whichPlayer, integer value returns nothing // Set for all
+    native SetPlayerPathingLimitEx							takes player whichPlayer, integer queueType, integer value returns nothing
+    //
     native GetUnitTurnRate									takes unit whichUnit returns real
     native SetUnitTurnRate									takes unit whichUnit, real turnRate returns nothing
     native GetUnitPathingLimit								takes unit whichUnit, integer level returns integer // Levels: 0 or 1.
