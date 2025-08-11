@@ -20,3 +20,6 @@
 6. Added internal CArtillery::SetData, now it can be properly copied and fired.
 7. Fixed GetUnitBonusDamageByIndex breaking whenever bonus attack was awarded from main stat.
 8. Fixed Mouse API not working when Cursor Frame was not present, either at the very start of the game or when cursor is outside of the game window.
+9. Fixed internal CAbility::CloneBase not returning cloned base and defaulting to nullptr instead, when base was already cloned.
+10. Added internal edits to Pathing and Fog heartbeat constants, to ensure their work. (Pathing seemed to be just fine).
+11. Added internal lock for SetUnitControlCount whenever a value is set to less than 0 to default to 0. Any value below 0 breaks internal counters.
