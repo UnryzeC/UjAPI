@@ -1,4 +1,6 @@
 1. New Natives:
+    native FogUpdate										takes nothing returns nothing
+    //
     native GetFogHeartbeat									takes nothing returns real
     native StartFogHeartbeat								takes boolean isStart, real time returns nothing
     //
@@ -6,6 +8,7 @@
     native SetPlayerPathingLimit							takes player whichPlayer, integer value returns nothing // Set for all
     native SetPlayerPathingLimitEx							takes player whichPlayer, integer queueType, integer value returns nothing
     //
+    native GetUnitBonusMoveSpeed							takes unit whichUnit returns real
     native GetUnitTurnRate									takes unit whichUnit returns real
     native SetUnitTurnRate									takes unit whichUnit, real turnRate returns nothing
     native IsUnitTurningOnly								takes unit whichUnit returns boolean
