@@ -26,3 +26,4 @@
 9. Fixed internal CAbility::CloneBase not returning cloned base and defaulting to nullptr instead, when base was already cloned.
 10. Added internal edits to Pathing and Fog heartbeat constants, to ensure their work. (Pathing seemed to be just fine).
 11. Added internal lock for SetUnitControlCount whenever a value is set to less than 0 to default to 0. Any value below 0 breaks internal counters.
+12. Fixed Item Name/Description changes not working in CInfoPanelItemDetail tab.
