@@ -28,3 +28,9 @@
 11. Added internal lock for SetUnitControlCount whenever a value is set to less than 0 to default to 0. Any value below 0 breaks internal counters.
 12. Fixed Item Name/Description changes not working in CInfoPanelItemDetail tab.
 13. Fixed internal CItem/CItemEx GetOrderType handling, __thiscall was used whereas __cdecl was expected. (Yes, some class member functions use __cdecl...)
+14. Fixed Doom and similar abilities not stopping item useage via its hotkeys.
+    Note: on patches other than 1.26a this was also causing fatal error in unit selection with items that had ANcl in their abilities.
+15. Fixed incorrect handling of Fortified armour damage, no damage reduction was applied on buildings that finished their construction.
+    Note: only constructing buildings are supposed to take 100% damage.
+16. Fixed incorrect offsets for widget enumeration for patches 1.24e/1.27a/1.27b/1.28f.
+    Note: EnumDestructablesInRange seemed to be affected and was causing a crash.
