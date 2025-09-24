@@ -35,3 +35,4 @@
 16. Fixed incorrect offsets for widget enumeration for patches 1.24e/1.27a/1.27b/1.28f.
     Note: EnumDestructablesInRange seemed to be affected and was causing a crash.
 17. Fixed SetTextTagPos not setting Z (ZOffset) correctly.
+18. Fixed CDoodads::GetInRect using GetInArea offset instead.
