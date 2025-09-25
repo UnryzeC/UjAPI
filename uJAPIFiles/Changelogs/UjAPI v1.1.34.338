@@ -36,3 +36,5 @@
     Note: EnumDestructablesInRange seemed to be affected and was causing a crash.
 17. Fixed SetTextTagPos not setting Z (ZOffset) correctly.
 18. Fixed CDoodads::GetInRect using GetInArea offset instead.
+19. Fixed ABILITY_REMOVED not triggering event.
+20. Fixed Projectile enumeration in Area not working.
