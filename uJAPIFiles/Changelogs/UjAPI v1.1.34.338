@@ -16,6 +16,8 @@
     native UnitAllowTurningOnly								takes unit whichUnit returns nothing
     native GetUnitPathingLimit								takes unit whichUnit, integer level returns integer // Levels: 0 or 1.
     native SetUnitPathingLimit								takes unit whichUnit, integer level, integer limit returns nothing // Limit is 0 to 32,767 (anything lower than 0 will default to -32,767). Use -1 (or any other negative number) to "erase" limit.
+    //
+    native EnableFrameButtonPushAnimation					takes framehandle whichFrame, boolean enable returns nothing
 2. Fixed SetTYPEFacing not setting internal Position::Facing, hence causing GetTYPEFacing to not work properly.
 3. Fixed SetX/Y not working for destructables.
 4. Fixed PauseUnitEx not unpausing units.
@@ -38,3 +40,4 @@
 18. Fixed CDoodads::GetInRect using GetInArea offset instead.
 19. Fixed ABILITY_REMOVED not triggering event.
 20. Fixed Projectile enumeration in Area not working.
+21. Added new CSimpleButton type, SHRINKINGBUTTON. Which can be affected by EnableFrameButtonPushAnimation, just like CCommandButton.
