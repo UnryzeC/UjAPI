@@ -7109,7 +7109,7 @@ native SetFrameCheckState								takes framehandle whichFrame, boolean isCheck r
 
 native SetMinimapTexture								takes string texturePath returns boolean
 
-// CShrinkingButton / CCommandButton API | CShrinkingButton -> SHRINKINGBUTTON (Recently added type, based off CSimpleButton).
+// CShrinkingButton / CCommandButton API | CShrinkingButton -> SHRINKINGBUTTON (Recently added type, based of CSimpleButton).
 native EnableFrameButtonPushAnimation					takes framehandle whichFrame, boolean enable returns nothing
 //
 
