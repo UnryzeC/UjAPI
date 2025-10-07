@@ -2052,7 +2052,7 @@ globals
 	constant spriteflag					SPRITE_FLAG_NO_TRACK										= ConvertSpriteFlag(1)
 	constant spriteflag					SPRITE_FLAG_NO_CLICK										= ConvertSpriteFlag(2)
 	constant spriteflag					SPRITE_FLAG_NO_SELECT										= ConvertSpriteFlag(4)
-	constant spriteflag					SPRITE_FLAG_UNSELECTRABLE									= ConvertSpriteFlag(7) // NO_TRACK | NO_CLICK | NO_SELECT
+	constant spriteflag					SPRITE_FLAG_UNSELECTABLE									= ConvertSpriteFlag(7) // NO_TRACK | NO_CLICK | NO_SELECT
 	constant spriteflag					SPRITE_FLAG_STRUCTURE										= ConvertSpriteFlag(8)
 	constant spriteflag					SPRITE_FLAG_FLYER											= ConvertSpriteFlag(128)
 	constant spriteflag					SPRITE_FLAG_LINKED_MODEL                					= ConvertSpriteFlag(65536)
@@ -2543,6 +2543,8 @@ native GetConnectionType								takes nothing returns connectiontype
 native IsReplay											takes nothing returns boolean
 native GetCommandTime									takes nothing returns integer // This affects TurnData flushing intervals, the lower the value, the faster it is, default: 50. (originally: <= 1.27a -> 200 | >= 1.27b -> 62 )
 native SetCommandTime									takes integer value returns nothing
+native GetFogHeartbeat									takes nothing returns real
+native StartFogHeartbeat								takes boolean isStart, real time returns nothing
 native GetPathingHeartbeat								takes nothing returns real
 native StartPathingHeartbeat							takes boolean isStart, real time returns nothing
 native CacheModel										takes string modelPath, boolean forceCreateGeosets returns nothing
@@ -2636,6 +2638,9 @@ native SetPlayerMuted 									takes player whichPlayer, boolean isMute returns 
 native IsPlayerMutedForPlayer							takes player whichPlayer, player toPlayer returns boolean
 native SetPlayerMutedForPlayer 							takes player whichPlayer, player toPlayer, boolean isMute returns nothing
 native GetPlayerAPM										takes player whichPlayer returns real
+native GetPlayerPathingLimit							takes player whichPlayer, integer queueType returns integer // 0 - deep | 1 - dynamic | 2 - fast | 3 - local
+native SetPlayerPathingLimit							takes player whichPlayer, integer value returns nothing // Set for all
+native SetPlayerPathingLimitEx							takes player whichPlayer, integer queueType, integer value returns nothing
 constant native DecPlayerTechResearched					takes player whichPlayer, integer techid, integer levels returns nothing
 //
 
@@ -2648,35 +2653,37 @@ native ForceCountPlayers								takes force whichForce returns integer
 //
 
 //============================================================================
-// Fog Modifier API
+// Fog of War API
 //
-native IsFogModifierPlayerMask						takes fogmodifier whichFogModifier, integer playerMask returns boolean
-native GetFogModifierPlayerMask						takes fogmodifier whichFogModifier returns integer
-native SetFogModifierPlayerMask						takes fogmodifier whichFogModifier, integer playerMask returns nothing
-native GetFogModifierForPlayer						takes fogmodifier whichFogModifier returns player
-native SetFogModifierForPlayer						takes fogmodifier whichFogModifier, player whichPlayer returns nothing
-native AddFogModifierPlayer							takes fogmodifier whichFogModifier, player whichPlayer returns nothing
-native RemoveFogModifierPlayer						takes fogmodifier whichFogModifier, player whichPlayer returns nothing
-native IsFogModifierFogState						takes fogmodifier whichFogModifier, fogstate whichState returns boolean
-native SetFogModifierFogState						takes fogmodifier whichFogModifier, fogstate whichState, boolean isSet returns nothing
+native FogUpdate										takes nothing returns nothing
+
+native IsFogModifierPlayerMask							takes fogmodifier whichFogModifier, integer playerMask returns boolean
+native GetFogModifierPlayerMask							takes fogmodifier whichFogModifier returns integer
+native SetFogModifierPlayerMask							takes fogmodifier whichFogModifier, integer playerMask returns nothing
+native GetFogModifierForPlayer							takes fogmodifier whichFogModifier returns player
+native SetFogModifierForPlayer							takes fogmodifier whichFogModifier, player whichPlayer returns nothing
+native AddFogModifierPlayer								takes fogmodifier whichFogModifier, player whichPlayer returns nothing
+native RemoveFogModifierPlayer							takes fogmodifier whichFogModifier, player whichPlayer returns nothing
+native IsFogModifierFogState							takes fogmodifier whichFogModifier, fogstate whichState returns boolean
+native SetFogModifierFogState							takes fogmodifier whichFogModifier, fogstate whichState, boolean isSet returns nothing
 // For FOG_OF_WAR_RECT: GetX/Y returns CenterX/CenterY | GetRadius returns area of a rectangle: minX + maxX * minY + maxY.
 // For FOG_OF_WAR_RADIUS and FOG_OF_WAR_RADIUS_LOCATION behaves normally.
 // Same logic applies to Setters.
-native GetFogModifierX								takes fogmodifier whichFogModifier returns real
-native SetFogModifierX								takes fogmodifier whichFogModifier, real x returns nothing
-native GetFogModifierY								takes fogmodifier whichFogModifier returns real
-native SetFogModifierY								takes fogmodifier whichFogModifier, real y returns nothing
-native GetFogModifierZ								takes fogmodifier whichFogModifier returns real
-native SetFogModifierZ								takes fogmodifier whichFogModifier, real z returns nothing
-native GetFogModifierRadius							takes fogmodifier whichFogModifier returns real
-native SetFogModifierRadius							takes fogmodifier whichFogModifier, real radius returns nothing
-native SetFogModifierRadiusEx						takes fogmodifier whichFogModifier, real x, real y, real radius returns nothing
-native SetFogModifierPosition						takes fogmodifier whichFogModifier, real x, real y returns nothing
-native SetFogModifierPositionWithZ					takes fogmodifier whichFogModifier, real x, real y, real z returns nothing
-native SetFogModifierPositionLoc					takes fogmodifier whichFogModifier, location whichLocation returns nothing
-native GetFogModifierRect							takes fogmodifier whichFogModifier returns rect
-native SetFogModifierRect							takes fogmodifier whichFogModifier, rect whichRect returns nothing
-native SetFogModifierRectEx							takes fogmodifier whichFogModifier, real minX, real minY, real maxX, real maxY returns nothing
+native GetFogModifierX									takes fogmodifier whichFogModifier returns real
+native SetFogModifierX									takes fogmodifier whichFogModifier, real x returns nothing
+native GetFogModifierY									takes fogmodifier whichFogModifier returns real
+native SetFogModifierY									takes fogmodifier whichFogModifier, real y returns nothing
+native GetFogModifierZ									takes fogmodifier whichFogModifier returns real
+native SetFogModifierZ									takes fogmodifier whichFogModifier, real z returns nothing
+native GetFogModifierRadius								takes fogmodifier whichFogModifier returns real
+native SetFogModifierRadius								takes fogmodifier whichFogModifier, real radius returns nothing
+native SetFogModifierRadiusEx							takes fogmodifier whichFogModifier, real x, real y, real radius returns nothing
+native SetFogModifierPosition							takes fogmodifier whichFogModifier, real x, real y returns nothing
+native SetFogModifierPositionWithZ						takes fogmodifier whichFogModifier, real x, real y, real z returns nothing
+native SetFogModifierPositionLoc						takes fogmodifier whichFogModifier, location whichLocation returns nothing
+native GetFogModifierRect								takes fogmodifier whichFogModifier returns rect
+native SetFogModifierRect								takes fogmodifier whichFogModifier, rect whichRect returns nothing
+native SetFogModifierRectEx								takes fogmodifier whichFogModifier, real minX, real minY, real maxX, real maxY returns nothing
 //
 
 //============================================================================
@@ -4238,11 +4245,19 @@ native SetUnitArmourType								takes unit whichUnit, defensetype whichArmour re
 native GetUnitArmour									takes unit whichUnit returns real
 native SetUnitArmour									takes unit whichUnit, real armour returns nothing
 native GetUnitTimeScale									takes unit whichUnit returns real
+native GetUnitBonusMoveSpeed							takes unit whichUnit returns real
 native GetUnitTotalMoveSpeed							takes unit whichUnit returns real
 native GetUnitBaseMoveSpeed								takes unit whichUnit returns real
 native SetUnitBaseMoveSpeed								takes unit whichUnit, real baseMoveSpeed returns nothing
 native GetUnitBonusMoveSpeedPercent						takes unit whichUnit returns real
 native SetUnitBonusMoveSpeedPercent						takes unit whichUnit, real bonusMoveSpeedPercent returns nothing
+native GetUnitTurnRate									takes unit whichUnit returns real
+native SetUnitTurnRate									takes unit whichUnit, real turnRate returns nothing
+native IsUnitTurningOnly								takes unit whichUnit returns boolean
+native UnitAllowMove									takes unit whichUnit returns nothing
+native UnitAllowTurningOnly								takes unit whichUnit returns nothing
+native GetUnitPathingLimit								takes unit whichUnit, integer level returns integer // Levels: 0 or 1.
+native SetUnitPathingLimit								takes unit whichUnit, integer level, integer limit returns nothing // Limit is 0 to 32,767 (anything lower than 0 will default to -32,767). Use -1 (or any other negative number) to "erase" limit.
 native GetUnitPlayerColour								takes unit whichUnit returns playercolor
 native SetUnitPlayerColour								takes unit whichUnit, playercolor color returns nothing
 native GetUnitVertexColour								takes unit whichUnit returns integer
@@ -4703,6 +4718,10 @@ native SetFrameCheckState								takes framehandle whichFrame, boolean isCheck r
 //
 
 native SetMinimapTexture								takes string texturePath returns boolean
+
+// CShrinkingButton / CCommandButton API | CShrinkingButton -> SHRINKINGBUTTON (Recently added type, based off CSimpleButton).
+native EnableFrameButtonPushAnimation					takes framehandle whichFrame, boolean enable returns nothing
+//
 
 // CSlider / CScollBar API | Scrollbar extends slider, so both use the same logic.
 native GetFrameSlider 									takes framehandle whichFrame returns framehandle
