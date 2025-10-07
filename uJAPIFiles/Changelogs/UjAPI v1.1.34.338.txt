@@ -42,3 +42,4 @@
 20. Fixed Projectile enumeration in Area not working.
 21. Added new CSimpleButton type, SHRINKINGBUTTON. Which can be affected by EnableFrameButtonPushAnimation, just like CCommandButton.
 22. Fixed Learn Tooltip/Ubertooltip not being updated when hovering over learnable spell.
+23. SPRITE_FLAG_UNSELECTRABLE fixed to SPRITE_FLAG_UNSELECTABLE.
