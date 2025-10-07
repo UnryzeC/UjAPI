@@ -41,3 +41,4 @@
 19. Fixed ABILITY_REMOVED not triggering event.
 20. Fixed Projectile enumeration in Area not working.
 21. Added new CSimpleButton type, SHRINKINGBUTTON. Which can be affected by EnableFrameButtonPushAnimation, just like CCommandButton.
+22. Fixed Learn Tooltip/Ubertooltip not being updated when hovering over learnable spell.
