@@ -1,0 +1,3 @@
+1. Fixed fatal error on pop up frame events.
+2. Fixed incorrect projectile launching, it was resetting to default values on each launch. Now all settings persist.
+3. Fixed enumeration for HandleList failing if null/nil Filter/Condition was passed.
