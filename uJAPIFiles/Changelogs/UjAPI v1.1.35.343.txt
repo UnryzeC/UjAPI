@@ -4,3 +4,4 @@
 4. Fixed incorrect area calculation, which was supposed to be done via radius and diameter was used instead.
 5. Fixed SetIllusionDamageDealt not working with custom Item Illusion buffs.
 6. Fixed SetIllusionDamageReceived not working with custom Item Illusion buffs.
+7. Fixed SetMouseScreenAbsoluteY being mirrored. (Same for position, only Y axis was wrong).
