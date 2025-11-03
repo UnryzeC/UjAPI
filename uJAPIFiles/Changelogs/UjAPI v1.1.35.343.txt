@@ -2,3 +2,5 @@
 2. Fixed incorrect projectile launching, it was resetting to default values on each launch. Now all settings persist.
 3. Fixed enumeration for HandleList failing if null/nil Filter/Condition was passed.
 4. Fixed incorrect area calculation, which was supposed to be done via radius and diameter was used instead.
+5. Fixed SetIllusionDamageDealt not working with custom Item Illusion buffs.
+6. Fixed SetIllusionDamageReceived not working with custom Item Illusion buffs.
