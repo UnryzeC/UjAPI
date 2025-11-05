@@ -5,3 +5,5 @@
 5. Fixed SetIllusionDamageDealt not working with custom Item Illusion buffs.
 6. Fixed SetIllusionDamageReceived not working with custom Item Illusion buffs.
 7. Fixed SetMouseScreenAbsoluteY being mirrored. (Same for position, only Y axis was wrong).
+8. Fixed SyncData triggering all registered SyncData events.
+  Note: other sync events were overhauled as well, now they should work a tad better.
