@@ -1,0 +1,2 @@
+1. Fixed UnitAddBuffById/Ex on stuns/pauses on Illusions, since buffs are "self-cast" and game internally prevents illusions from most of the actions this had to be circumvented.
+2. Updated Blizzard.as for newer AngelScript version that can use "using namespace" feature and moved all natives to Jass namespace and all Blizzard functions to BJ namespace.
