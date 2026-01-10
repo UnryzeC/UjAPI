@@ -1,0 +1,4 @@
+1. Minor update in CDataStore.h/cpp.
+2. Updates in CTerrainData.h/cpp now using const Vector2&.
+3. CAbilityInventoryEx fixed incorrect death processing (sometimes would remove items or incorrectly process drop).
+4. Fixed ItemDataNode.h/cpp strucute had one extra variable and Get/Set for hp was incorrect (as ItemDataNode only has max_hp and no current hp).
