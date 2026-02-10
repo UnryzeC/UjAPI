@@ -3,3 +3,5 @@
   Note: this just means that supplying typeId was required for % value token.
 3. Fixed SetFrameState on normal frames (only ones that extend CControl) to properly set control flags. It was effectively doing nothing.
 4. Fixed EnumSpecialEffectsInRange not working at all apart from .0, .0 axis.
+5. Massive code rehaul again.
+6. "PORTRAIT" is now accessible for CreateFrameByType.
