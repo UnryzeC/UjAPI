@@ -1,7 +1,70 @@
-1. Fully rewritten Tip/Ubertip parser for maximum efficiency.
-2. Fixed case where $DataA,%$% wouldn't work and required $A00B,DataA,%$%.
+1. New Natives:
+    native CameraCreate										takes nothing returns camerahandle
+    native CameraDestroy									takes camerahandle whichCameraHandle returns nothing
+    
+    native CameraGetPositionX								takes camerahandle whichCameraHandle returns real
+    native CameraSetPositionX								takes camerahandle whichCameraHandle, real x returns nothing
+    native CameraGetPositionY								takes camerahandle whichCameraHandle returns real
+    native CameraSetPositionY								takes camerahandle whichCameraHandle, real y returns nothing
+    native CameraGetPositionZ								takes camerahandle whichCameraHandle returns real
+    native CameraSetPositionZ								takes camerahandle whichCameraHandle, real z returns nothing
+    native CameraSetPosition								takes camerahandle whichCameraHandle, real x, real y, real z returns nothing
+    
+    native CameraGetTargetPositionX							takes camerahandle whichCameraHandle returns real
+    native CameraSetTargetPositionX							takes camerahandle whichCameraHandle, real x returns nothing
+    native CameraGetTargetPositionY							takes camerahandle whichCameraHandle returns real
+    native CameraSetTargetPositionY							takes camerahandle whichCameraHandle, real y returns nothing
+    native CameraGetTargetPositionZ							takes camerahandle whichCameraHandle returns real
+    native CameraSetTargetPositionZ							takes camerahandle whichCameraHandle, real z returns nothing
+    native CameraSetTargetPosition							takes camerahandle whichCameraHandle, real x, real y, real z returns nothing
+    
+    native CameraGetDistance								takes camerahandle whichCameraHandle returns real
+    native CameraSetDistance								takes camerahandle whichCameraHandle, real x returns nothing
+    native CameraGetFarZ									takes camerahandle whichCameraHandle returns real
+    native CameraSetFarZ									takes camerahandle whichCameraHandle, real y returns nothing
+    native CameraGetNearZ									takes camerahandle whichCameraHandle returns real
+    native CameraSetNearZ									takes camerahandle whichCameraHandle, real z returns nothing
+    
+    native CameraGetAngleOfAttackX							takes camerahandle whichCameraHandle returns real
+    native CameraSetAngleOfAttackX							takes camerahandle whichCameraHandle, real x returns nothing
+    native CameraGetAngleOfAttackY							takes camerahandle whichCameraHandle returns real
+    native CameraSetAngleOfAttackY							takes camerahandle whichCameraHandle, real y returns nothing
+    native CameraGetAngleOfAttackZ							takes camerahandle whichCameraHandle returns real
+    native CameraSetAngleOfAttackZ							takes camerahandle whichCameraHandle, real z returns nothing
+    native CameraSetAngleOfAttack							takes camerahandle whichCameraHandle, real x, real y, real z returns nothing
+    
+    native CameraGetFieldOfViewX							takes camerahandle whichCameraHandle returns real
+    native CameraSetFieldOfViewX							takes camerahandle whichCameraHandle, real x returns nothing
+    native CameraGetFieldOfViewY							takes camerahandle whichCameraHandle returns real
+    native CameraSetFieldOfViewY							takes camerahandle whichCameraHandle, real y returns nothing
+    native CameraGetFieldOfViewZ							takes camerahandle whichCameraHandle returns real
+    native CameraSetFieldOfViewZ							takes camerahandle whichCameraHandle, real z returns nothing
+    native CameraSetFieldOfView								takes camerahandle whichCameraHandle, real x, real y, real z returns nothing
+    
+    native CameraGetRollX									takes camerahandle whichCameraHandle returns real
+    native CameraSetRollX									takes camerahandle whichCameraHandle, real x returns nothing
+    native CameraGetRollY									takes camerahandle whichCameraHandle returns real
+    native CameraSetRollY									takes camerahandle whichCameraHandle, real y returns nothing
+    native CameraGetRollZ									takes camerahandle whichCameraHandle returns real
+    native CameraSetRollZ									takes camerahandle whichCameraHandle, real z returns nothing
+    native CameraSetRoll									takes camerahandle whichCameraHandle, real x, real y, real z returns nothing
+    
+    native CameraGetRotationX								takes camerahandle whichCameraHandle returns real
+    native CameraSetRotationX								takes camerahandle whichCameraHandle, real x returns nothing
+    native CameraGetRotationY								takes camerahandle whichCameraHandle returns real
+    native CameraSetRotationY								takes camerahandle whichCameraHandle, real y returns nothing
+    native CameraGetRotationZ								takes camerahandle whichCameraHandle returns real
+    native CameraSetRotationZ								takes camerahandle whichCameraHandle, real z returns nothing
+    native CameraSetRotation								takes camerahandle whichCameraHandle, real x, real y, real z returns nothing
+    //
+    native GetFrameCamera									takes framehandle whichFrame returns camerahandle
+    native SetFrameCamera									takes framehandle whichFrame, camerahandle whichCameraHandle returns nothing
+    //
+2. Fully rewritten Tip/Ubertip parser for maximum efficiency.
+3. Fixed case where $DataA,%$% wouldn't work and required $A00B,DataA,%$%.
   Note: this just means that supplying typeId was required for % value token.
-3. Fixed SetFrameState on normal frames (only ones that extend CControl) to properly set control flags. It was effectively doing nothing.
-4. Fixed EnumSpecialEffectsInRange not working at all apart from .0, .0 axis.
-5. Massive code rehaul again.
-6. "PORTRAIT" is now accessible for CreateFrameByType.
+4. Fixed SetFrameState on normal frames (only ones that extend CControl) to properly set control flags. It was effectively doing nothing.
+5. Fixed EnumSpecialEffectsInRange not working at all apart from .0, .0 axis.
+6. Massive code rehaul again.
+7. "PORTRAIT" is now accessible for CreateFrameByType.
+8. Fixed Draw priority of CSpriteFrame, now it's unaffected by terrain.
