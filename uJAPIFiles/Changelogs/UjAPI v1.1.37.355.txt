@@ -70,4 +70,4 @@
 8. Fixed Draw priority of CSpriteFrame, now it's unaffected by terrain.
 9. Library now has module tracking to prevent secondary library from loading, and it's able to see newer modules if they were loaded and so on.
   Note: this only will work starting this version with all libraries equal or higher version than this.
-    Modules: FastMenu, FPSUnlocker, UnlockMapSize, MultiWindow, RepplaySpeedUnlocker, UjAPI and WFE.
+    Modules: AngelScript, FastMenu, FPSUnlocker, UnlockMapSize, MultiWindow, RepplaySpeedUnlocker, UjAPI and WFE.
