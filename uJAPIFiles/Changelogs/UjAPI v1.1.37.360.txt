@@ -1,0 +1,3 @@
+1. Rewritten CLI handling, now it should work without issues.
+  Note: it was breaking if specific order wasn't followed.
+2. Fixed AInv being ignored by GetUnitAbility.
