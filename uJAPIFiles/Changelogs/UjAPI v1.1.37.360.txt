@@ -1,3 +1,7 @@
 1. Rewritten CLI handling, now it should work without issues.
   Note: it was breaking if specific order wasn't followed.
 2. Fixed AInv being ignored by GetUnitAbility.
+3. Added internal categorisation of Projectiles, this allows for a faster lookup and removes the need to use game's IsDescendant usage, which is very-very slow.
+4. Reworked internal structures of projectiles, also streamline Launch logic.
+5. Artillery launch logic fixed, now it uses correct offset instead of relying on CMissile.
+6. Fixed GitHub's 401 error.
