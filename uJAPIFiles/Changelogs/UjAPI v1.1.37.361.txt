@@ -1,2 +1,2 @@
-1. Fixed fatal error from Launching a Missile if not target was provided.
+1. Fixed fatal error from Launching a Missile if no target was provided.
   Note: this bug previously was "bandaid-fixed" now it fallbacks to CBullet logic if target wasn't provided.
