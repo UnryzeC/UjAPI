@@ -1,3 +1,4 @@
 1. Fixed SetFrameFocus not removing keyboard capture when CControl type frames are clicked.
 2. Internal changes done to streamline CControl::Add/RemoveStyle/Control.
 3. Fixed TextTags missing shadows.
+4. Fixed UpdateUnitInfoBar not working.
