@@ -2,3 +2,4 @@
 2. Internal changes done to streamline CControl::Add/RemoveStyle/Control.
 3. Fixed TextTags missing shadows.
 4. Fixed UpdateUnitInfoBar not working.
+5. Fixed ShowUnitAbility/Ex causing crash if too many calls were done in a short span of time.
