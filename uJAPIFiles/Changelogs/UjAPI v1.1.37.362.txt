@@ -3,3 +3,6 @@
 3. Fixed TextTags missing shadows.
 4. Fixed UpdateUnitInfoBar not working.
 5. Fixed ShowUnitAbility/Ex causing crash if too many calls were done in a short span of time.
+6. Improved internal Game.dll / Storm.dll linkage.
+7. Removed GetTerrainCliffLevel native usage in CUnit::CreateIllusion, now it uses WorldGetPathingCellCliffLevel.
+8. Fixed IPSE and WORLD axis handling, now they are 1 to 1 as in the game.
