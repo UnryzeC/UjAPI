@@ -177,6 +177,7 @@ type handlelist											extends agent
 type textfilehandle										extends agent
 type orderhandle										extends agent
 type tradestate											extends handle
+type camerahandle										extends agent
 
 constant native ConvertRace								takes integer i returns race
 constant native ConvertAllianceType						takes integer i returns alliancetype
@@ -4605,6 +4606,7 @@ native HandleToUbersplat								takes handle whichHandle returns ubersplat
 native HandleToHashtable								takes handle whichHandle returns hashtable
 native HandleToAnimType									takes handle whichHandle returns animtype
 native HandleToSubAnimType								takes handle whichHandle returns subanimtype
+native HandleToCameraHandle								takes handle whichHandle returns camerahandle
 //
 
 //============================================================================
@@ -6989,6 +6991,68 @@ native EnumProjectilesInRect							takes rect whichRect, boolexpr filter, code h
 //
 
 //============================================================================
+// Camera API | This is used for models / frames, not related to game camera.
+//
+native CameraCreate										takes nothing returns camerahandle
+native CameraDestroy									takes camerahandle whichCameraHandle returns nothing
+
+native CameraGetPositionX								takes camerahandle whichCameraHandle returns real
+native CameraSetPositionX								takes camerahandle whichCameraHandle, real x returns nothing
+native CameraGetPositionY								takes camerahandle whichCameraHandle returns real
+native CameraSetPositionY								takes camerahandle whichCameraHandle, real y returns nothing
+native CameraGetPositionZ								takes camerahandle whichCameraHandle returns real
+native CameraSetPositionZ								takes camerahandle whichCameraHandle, real z returns nothing
+native CameraSetPosition								takes camerahandle whichCameraHandle, real x, real y, real z returns nothing
+
+native CameraGetTargetPositionX							takes camerahandle whichCameraHandle returns real
+native CameraSetTargetPositionX							takes camerahandle whichCameraHandle, real x returns nothing
+native CameraGetTargetPositionY							takes camerahandle whichCameraHandle returns real
+native CameraSetTargetPositionY							takes camerahandle whichCameraHandle, real y returns nothing
+native CameraGetTargetPositionZ							takes camerahandle whichCameraHandle returns real
+native CameraSetTargetPositionZ							takes camerahandle whichCameraHandle, real z returns nothing
+native CameraSetTargetPosition							takes camerahandle whichCameraHandle, real x, real y, real z returns nothing
+
+native CameraGetDistance								takes camerahandle whichCameraHandle returns real
+native CameraSetDistance								takes camerahandle whichCameraHandle, real x returns nothing
+native CameraGetFarZ									takes camerahandle whichCameraHandle returns real
+native CameraSetFarZ									takes camerahandle whichCameraHandle, real y returns nothing
+native CameraGetNearZ									takes camerahandle whichCameraHandle returns real
+native CameraSetNearZ									takes camerahandle whichCameraHandle, real z returns nothing
+
+native CameraGetAngleOfAttackX							takes camerahandle whichCameraHandle returns real
+native CameraSetAngleOfAttackX							takes camerahandle whichCameraHandle, real x returns nothing
+native CameraGetAngleOfAttackY							takes camerahandle whichCameraHandle returns real
+native CameraSetAngleOfAttackY							takes camerahandle whichCameraHandle, real y returns nothing
+native CameraGetAngleOfAttackZ							takes camerahandle whichCameraHandle returns real
+native CameraSetAngleOfAttackZ							takes camerahandle whichCameraHandle, real z returns nothing
+native CameraSetAngleOfAttack							takes camerahandle whichCameraHandle, real x, real y, real z returns nothing
+
+native CameraGetFieldOfViewX							takes camerahandle whichCameraHandle returns real
+native CameraSetFieldOfViewX							takes camerahandle whichCameraHandle, real x returns nothing
+native CameraGetFieldOfViewY							takes camerahandle whichCameraHandle returns real
+native CameraSetFieldOfViewY							takes camerahandle whichCameraHandle, real y returns nothing
+native CameraGetFieldOfViewZ							takes camerahandle whichCameraHandle returns real
+native CameraSetFieldOfViewZ							takes camerahandle whichCameraHandle, real z returns nothing
+native CameraSetFieldOfView								takes camerahandle whichCameraHandle, real x, real y, real z returns nothing
+
+native CameraGetRollX									takes camerahandle whichCameraHandle returns real
+native CameraSetRollX									takes camerahandle whichCameraHandle, real x returns nothing
+native CameraGetRollY									takes camerahandle whichCameraHandle returns real
+native CameraSetRollY									takes camerahandle whichCameraHandle, real y returns nothing
+native CameraGetRollZ									takes camerahandle whichCameraHandle returns real
+native CameraSetRollZ									takes camerahandle whichCameraHandle, real z returns nothing
+native CameraSetRoll									takes camerahandle whichCameraHandle, real x, real y, real z returns nothing
+
+native CameraGetRotationX								takes camerahandle whichCameraHandle returns real
+native CameraSetRotationX								takes camerahandle whichCameraHandle, real x returns nothing
+native CameraGetRotationY								takes camerahandle whichCameraHandle returns real
+native CameraSetRotationY								takes camerahandle whichCameraHandle, real y returns nothing
+native CameraGetRotationZ								takes camerahandle whichCameraHandle returns real
+native CameraSetRotationZ								takes camerahandle whichCameraHandle, real z returns nothing
+native CameraSetRotation								takes camerahandle whichCameraHandle, real x, real y, real z returns nothing
+//
+
+//============================================================================
 // Frame API
 //
 native GetOriginFrame									takes originframetype whichType, integer index returns framehandle
@@ -7105,6 +7169,11 @@ native SetFrameTextVerticalAlignment					takes framehandle whichFrame, textalign
 native SetFrameTextHorizontalAlignment					takes framehandle whichFrame, textaligntype horizontalAlign returns nothing
 native GetFrameCheckState								takes framehandle whichFrame returns boolean
 native SetFrameCheckState								takes framehandle whichFrame, boolean isCheck returns nothing
+//
+
+// Frame Camera API
+native GetFrameCamera									takes framehandle whichFrame returns camerahandle
+native SetFrameCamera									takes framehandle whichFrame, camerahandle whichCameraHandle returns nothing
 //
 
 native SetMinimapTexture								takes string texturePath returns boolean
