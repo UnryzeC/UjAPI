@@ -1,0 +1,6 @@
+1. Big internal change related to CFrame::SetSize/Width/Height, now they are properly have Layout mentioned and code has been reworked.
+2. CSpriteFrame::SetLayoutScale and CSpriteFrame::SetSpriteScale have been properly separated and adjusted, now it works properly.
+3. SetFrameScale now uses CLayoutFrame::SetScale.
+  Note: CSpriteFrame uses CSpriteFrame::SetLayoutScale, which also scales sprite.
+4. SetFrameSpriteScale uses CSpriteFrame::SetSpriteScale.
+5. All internal CFrame function were rewritten to adhere to the Layout processing change.
