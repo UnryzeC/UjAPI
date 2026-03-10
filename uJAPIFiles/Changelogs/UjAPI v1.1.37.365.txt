@@ -14,3 +14,4 @@
 12. native SetFrameBackdropTexture parameter change, boolean allowTransparency -> boolean tileBackground.
 13. Fixed fatal error related to unit deletion with abilities that had custom field edits.
   Note: this was caused due to me not returning original db, as game caches abilities instead of fully re-creating them.
+14. All natives related to backdrop now properly work with CSimpleFrame completely mimicking how it works for CBackdropFrame.
