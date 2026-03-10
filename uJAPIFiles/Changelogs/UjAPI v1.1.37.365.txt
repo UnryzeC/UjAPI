@@ -4,3 +4,8 @@
   Note: CSpriteFrame uses CSpriteFrame::SetLayoutScale, which also scales sprite.
 4. SetFrameSpriteScale uses CSpriteFrame::SetSpriteScale.
 5. All internal CFrame function were rewritten to adhere to the Layout processing change.
+6. CSimpleStatusBar now supports Get/SetFrameColour.
+7. CProgressIndicator now supports Get/SetFrameColour.
+8. CBuildTimeIndicator now supports Get/SetFrameColour.
+9. CStatBar now supports Get/SetFrameColour.
+10. CHeroLevelBar now supports Get/SetFrameColour.
