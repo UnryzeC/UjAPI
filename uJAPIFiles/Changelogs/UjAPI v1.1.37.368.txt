@@ -4,3 +4,5 @@
 4. CMouse::ToIndex logic simplified.
 5. CMouse::FromIndex no longer calls for CMouse::ConvertKey and its logic was simplified.
 6. CMouse::GetPressedKey logic simplified.
+7. Fixed Model's geoset "breaking" when too many geosets are present in a draw call.
+  Note: default 30000 limit was increased to 100000 and automatic growth was added if new limit is exceeded.
