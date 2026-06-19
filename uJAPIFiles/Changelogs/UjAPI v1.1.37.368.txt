@@ -1,8 +1,0 @@
-1. Fixed SPRITE_CLICK_EVENT / SPRITE_GHOST_CLICK_EVENT, not converting Mouse Button to index for the event.
-2. Fixed TERRAIN_CLICK_EVENT, not converting Mouse Button to index for the event.
-3. Removed redundant CMouse::ConvertKey.
-4. CMouse::ToIndex logic simplified.
-5. CMouse::FromIndex no longer calls for CMouse::ConvertKey and its logic was simplified.
-6. CMouse::GetPressedKey logic simplified.
-7. Fixed Model's geoset "breaking" when too many geosets are present in a draw call.
-  Note: default 30000 limit was increased to 100000 and automatic growth was added if new limit is exceeded.

@@ -1,0 +1,29 @@
+New Constants:
+
+constant abilityintegerfield		ABILITY_IF_REQUIREMENT										= ConvertAbilityIntegerField('areq')
+constant abilityintegerfield		ABILITY_IF_REQUIREMENT_LEVELS								= ConvertAbilityIntegerField('arec')
+
+New Natives:
+
+native GetUnitBaseDamageReduction						takes unit whichUnit returns real
+native GetUnitBonusDamageReduction						takes unit whichUnit returns real
+
+Native Changes:
+
+1. GetUnitDamageReduction renamed into GetUnitTotalDamageReduction.
+
+Changes:
+
+1. Fixed SPRITE_CLICK_EVENT / SPRITE_GHOST_CLICK_EVENT, not converting Mouse Button to index for the event.
+2. Fixed TERRAIN_CLICK_EVENT, not converting Mouse Button to index for the event.
+3. Removed redundant CMouse::ConvertKey.
+4. CMouse::ToIndex logic simplified.
+5. CMouse::FromIndex no longer calls for CMouse::ConvertKey and its logic was simplified.
+6. CMouse::GetPressedKey logic simplified.
+7. Fixed Model's geoset "breaking" when too many geosets are present in a draw call.
+  Note: default 30000 limit was increased to 100000 and automatic growth was added if new limit is exceeded.
+8. Changed internal negative armour damage taken calculation to reflect how game handles it.
+9. Fixed Command Button Draw not replacing "green" texture with tinted active texture, in case Disabled Icon is missing.
+10. Fixed AnimationFrozen setter always setting to true.
+11. Fully reworked how AbilDataCacheNode, AbilityUIDef and AbilityLevelData are copied, now it's more robust.
+12. Possibly fixed all instances SUMMONED_UNIT involving types in Ability Fields.
