@@ -7,6 +7,11 @@ New Natives:
 
 native GetUnitBaseDamageReduction						takes unit whichUnit returns real
 native GetUnitBonusDamageReduction						takes unit whichUnit returns real
+native WorldToScreenX									takes real x, real y, real z returns real
+native WorldToScreenY									takes real x, real y, real z returns real
+native ScreenToWorldX									takes real x, real y returns real
+native ScreenToWorldY									takes real x, real y returns real
+native ScreenToWorldZ									takes real x, real y returns real
 
 Native Changes:
 
