@@ -12,6 +12,11 @@ native WorldToScreenY									takes real x, real y, real z returns real
 native ScreenToWorldX									takes real x, real y returns real
 native ScreenToWorldY									takes real x, real y returns real
 native ScreenToWorldZ									takes real x, real y returns real
+native WorldToMinimapX									takes real x, real y, real z returns real
+native WorldToMinimapY									takes real x, real y, real z returns real
+native MinimapToWorldX									takes real x, real y returns real
+native MinimapToWorldY									takes real x, real y returns real
+native MinimapToWorldZ									takes real x, real y returns real
 
 Native Changes:
 
