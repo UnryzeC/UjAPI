@@ -27,3 +27,4 @@ Changes:
 10. Fixed AnimationFrozen setter always setting to true.
 11. Fully reworked how AbilDataCacheNode, AbilityUIDef and AbilityLevelData are copied, now it's more robust.
 12. Possibly fixed all instances SUMMONED_UNIT involving types in Ability Fields.
+13. Fixed ORIGIN_FRAME_RESOURCE_BAR_TEXTURE / ORIGIN_FRAME_RESOURCE_BAR_TEXT getter not returning correct frames.
