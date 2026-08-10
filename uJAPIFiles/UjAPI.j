@@ -787,7 +787,9 @@ globals
 	constant abilityintegerfield		ABILITY_IF_PRIORITY											= ConvertAbilityIntegerField('apri')
 	constant abilityintegerfield		ABILITY_IF_LEVELS											= ConvertAbilityIntegerField('alev')
 	constant abilityintegerfield		ABILITY_IF_REQUIRED_LEVEL									= ConvertAbilityIntegerField('arlv')
-	constant abilityintegerfield		ABILITY_IF_LEVEL_SKIP_REQUIREMENT							= ConvertAbilityIntegerField('alsk') 
+	constant abilityintegerfield		ABILITY_IF_LEVEL_SKIP_REQUIREMENT							= ConvertAbilityIntegerField('alsk')
+	constant abilityintegerfield		ABILITY_IF_REQUIREMENT										= ConvertAbilityIntegerField('areq')
+	constant abilityintegerfield		ABILITY_IF_REQUIREMENT_LEVELS								= ConvertAbilityIntegerField('arec')
 
 	constant abilitybooleanfield		ABILITY_BF_HERO_ABILITY										= ConvertAbilityBooleanField('aher') // Get only
 	constant abilitybooleanfield		ABILITY_BF_ITEM_ABILITY										= ConvertAbilityBooleanField('aite')
@@ -2492,6 +2494,19 @@ native SetScreenFieldOfView								takes real fov returns nothing
 native SetWidescreenState								takes boolean flag returns nothing
 //
 
+// Axis API
+native WorldToScreenX									takes real x, real y, real z returns real
+native WorldToScreenY									takes real x, real y, real z returns real
+native ScreenToWorldX									takes real x, real y returns real
+native ScreenToWorldY									takes real x, real y returns real
+native ScreenToWorldZ									takes real x, real y returns real
+native WorldToMinimapX									takes real x, real y, real z returns real
+native WorldToMinimapY									takes real x, real y, real z returns real
+native MinimapToWorldX									takes real x, real y returns real
+native MinimapToWorldY									takes real x, real y returns real
+native MinimapToWorldZ									takes real x, real y returns real
+//
+
 // Window API
 native IsWindowActive									takes nothing returns boolean
 native IsWindowMode										takes nothing returns boolean
@@ -4177,7 +4192,9 @@ native SetUnitTruesightImmuneState						takes unit whichUnit, boolean state retu
 native SetUnitVisibleByPlayer							takes unit whichUnit, player whichPlayer, boolean flag returns nothing // These are supposed to be used in EVENT_PLAYER_UNIT_DETECTED и EVENT_UNIT_DETECTED events.
 native SetUnitDetectableByPlayer						takes unit whichUnit, player whichPlayer, boolean flag returns nothing // They are supposed to suppress the vision processing, but it's quite annoying to test/verify.
 native GetUnitZ											takes unit whichUnit returns real
-native GetUnitDamageReduction							takes unit whichUnit returns real
+native GetUnitBaseDamageReduction						takes unit whichUnit returns real
+native GetUnitBonusDamageReduction						takes unit whichUnit returns real
+native GetUnitTotalDamageReduction						takes unit whichUnit returns real
 native GetUnitMagicResistByType							takes unit whichUnit, integer resistType returns real
 native GetUnitEluneMagicResist							takes unit whichUnit returns real
 native GetUnitRunicMagicResist							takes unit whichUnit returns real
@@ -4746,7 +4763,7 @@ native SetFrameAlphaEx									takes framehandle whichFrame, integer textureId, 
 native GetFrameAlpha									takes framehandle whichFrame returns integer
 native SetFrameAlpha									takes framehandle whichFrame, integer alpha returns nothing
 native GetFrameTexture									takes framehandle whichFrame, integer textureId returns string
-native SetFrameBackdropTexture							takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean allowTransparency, boolean blend, string borderTextureFile, integer borderFlags, boolean isControlBackdrop returns nothing
+native SetFrameBackdropTexture							takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean tileBackground, boolean blend, string borderTextureFile, integer borderFlags, boolean isControlBackdrop returns nothing
 native SetFrameTextureEx								takes framehandle whichFrame, integer textureId, string backgroundTextureFile, boolean blend, string borderTextureFile, integer borderFlags returns nothing
 native SetFrameTexture									takes framehandle whichFrame, string textureFile, integer textureId, boolean blend returns nothing
 native GetFrameBlendMode								takes framehandle whichFrame, integer textureId returns blendmode // 0 for CSimpleRegions.
