@@ -1,0 +1,19 @@
+Changes:
+
+1. CPlayerAnyEventDataBaseEx replaced with CPlayerUnitDamagedEventData to avoid usage of a "hack" method of passing a CWidgetDamagedEventData in it, now it properly handles everything.
+2. Added a proper way of handling pre-damage data, now TDamage original is copied and its used to provide untouched data.
+3. Magic numbers replaced with enums for better and easier understanding of the code.
+4. Same logic applied to OnWidgetDamage.
+5. Increased gold/lumber limit to 100M from 1M.
+6. Event Damage Data reworked to accomodate CPlayerUnitDamagedEventData usage.
+7. Added GetFrameMenu for CPopupMenu frames.
+8. Hooked SetPlayerState to correctly process newly increased gold/lumber limit.
+9. Fixed GetTriggerPlayerMouseButton and its frame counterpart to correctly provide clicked mouse button.
+10. Slight overall code optimisation.
+11. Fixed internal Integer::SetValue handling.
+12. Optimised OnRCStringCombineTexts to use less memory and be more performant.
+13. Replaced all RCString* with JSTRING for all functions that return a JSTRING and are used as a native for Jass. Since at no point does it really return a RCString*.
+14. Added missing PLAYER_UNIT_ABILITY_COOLDOWN_FINISHED for even registration.
+15. Added TexParameters hook, to prevent maps crashing whenever specific textures were missing.
+16. Added a constructor for RCString, and added small code optimisation.
+17. Fixed incorrect offset for SetPathingLimit, this was causing SetUntPathLimit to crash.
