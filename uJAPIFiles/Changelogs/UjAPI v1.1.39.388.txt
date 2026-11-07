@@ -1,0 +1,4 @@
+1. Fixed incorrect handling of Artillery via Projectile API.
+2. Fixed game crashing whenever string slk data was empty, added nullptr check for CStringRep internally.
+3. Fixed GAME_WIDGET_DEATH and WIDGET_DEATH events no longer working with units.
+4. Added animation smoothing, now all animations should be free from 24 fps update rate.
