@@ -1,0 +1,13 @@
+Changes:
+
+1. Added progress indicator timer for buildings, trainings and upgrades.
+2. Added progress indicator timer for morphs/summons.
+3. Reworked how CBuff is copying data, it used to copy CAbility UI (aka whatever ability can apply this buff), instead of the buff data itself.
+
+Bugs reported by: hongos7065
+
+1. Fixed incorrectly processed UPKEEP_TAX for gold and lumber, which resulted in all bounties returning 0 gold or wood.
+2. Fixed GetDyingUnit incorrect processing for UNIT_DEATH and PLAYER_UNIT_DEATH events.
+3. Fixed Cooldown Indicator not working properly for Taverns / Shops.
+4. Fixed SetTextTagPosUnit not factoring UnitOverheadOffset.
+5. Fixed SetTextTagPosUnit factoring Z "twice".
