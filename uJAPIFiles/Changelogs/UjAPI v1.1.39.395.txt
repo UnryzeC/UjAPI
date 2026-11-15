@@ -1,0 +1,17 @@
+Changes:
+
+1. Reworked all internal Storm::SMem::Alloc, now the adhere closer to C++ standars.
+	Note: this change might not affect anything for players, as this is more optimisation for developer.
+2. Fixed incorrect structure of JassInstance that was broken due to recent updates.
+	Note: this as well probably has no effect on anything, but it's best to keep things working, right?
+3. Fully reworked internal methods for AbilDataCacheNode cloning and processing.
+4. Fully reworked internal methods for AbilityUIDef cloning and processing.
+5. Fully reworked how CBuff is created and how it clones AbilDataCacheNode/AbilityUIDef data.
+	Note: this was faulty and thanks to Choice map (which uses a metric ton of them) memory corruption and crashes were detected and fixed. Thanks to pinkienecro.
+6. Reworked how AbilDataCacheNode and AbilityUIDef clones are stored and cleaned, usage of std::vector resulted in not being ideal, especially when clone had to be replaced with original.
+	Note: std::map was chosen, which contains pointer to whatever it was copied from.
+7. Reworked how AbilDataCacheNode clone checks are done, now it no longer probes the original data and compares if memory is different.
+	Note: now map containing AbilDataCacheNode clones checks wherever it contains whatever has to be checked.
+8. Reworked how AbilityUIDef clone checks are done, now it no longer probes the original data and compares if memory is different.
+	Note: now map containing AbilityUIDef clones checks wherever it contains whatever has to be checked.
+9. Optimised internal Jass CallNative call for the Jass Inspector.
